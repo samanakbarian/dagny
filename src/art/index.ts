@@ -5,6 +5,7 @@ import { enemySprites } from './enemies';
 import { tileSprites } from './tiles';
 import { itemSprites } from './items';
 import { overworldSprites } from './overworld';
+import { mineSprites } from './mine';
 
 /** Every sprite in the game, keyed by id. */
 export const SPRITES: Record<string, SpriteDef> = {
@@ -14,4 +15,5 @@ export const SPRITES: Record<string, SpriteDef> = {
   ...tileSprites,
   ...itemSprites,
   ...overworldSprites,
+  ...mineSprites,
 };

@@ -1,4 +1,4 @@
-import { Kind, overlaps, touchesKind, isSolidAt, TILE, type Rect, type TileGrid } from '../engine/collision';
+import { Kind, overlaps, touchesKind, isSolidAt, rectHitsSolid, TILE, type Rect, type TileGrid } from '../engine/collision';
 import { Act } from '../engine/input';
 import { VIEW_W, VIEW_H } from '../engine/screen';
 import { drawSprite, frameCount, spriteSize } from '../engine/sprites';
@@ -17,6 +17,7 @@ import type { AreaDef, Exit, PuffKind, SpellId } from '../data/types';
 import { Player, STAND_H, type PlayerControls } from '../entities/player';
 import { Enemy, type HitHeight } from '../entities/enemy';
 import { Npc, Particles, Pickup, Projectile } from '../entities/misc';
+import { MovingPlatform } from '../entities/platform';
 import type { ProjectileInit, WorldApi } from '../entities/types';
 import { drawBackdrop } from './backdrop';
 import { DialogOverlay } from './dialog';
@@ -66,6 +67,8 @@ export class SideScene implements Scene, WorldApi {
   private npcs: Npc[] = [];
   private pickups: Pickup[] = [];
   private projectiles: Projectile[] = [];
+  private platforms: MovingPlatform[] = [];
+  private riding: MovingPlatform | null = null;
   private particles = new Particles();
   private ambient = new Particles();
   private camX = 0;
@@ -100,6 +103,9 @@ export class SideScene implements Scene, WorldApi {
     this.build();
     this.staticLayer = this.renderStatic();
     this.placePlayer();
+    const px = this.player.x;
+    this.platforms = (area.platforms ?? []).map((d) => new MovingPlatform(d, px));
+    this.player.landOn = (pl, prevBottom) => this.landOnPlatform(pl, prevBottom);
     if (area.dark) {
       this.dark = document.createElement('canvas');
       this.dark.width = VIEW_W;
@@ -240,7 +246,16 @@ export class SideScene implements Scene, WorldApi {
       for (let ty = 0; ty < h; ty++) {
         for (let tx = 0; tx < w; tx++) {
           const id = DECO[deco[ty][tx]];
-          if (id && frameCount(id) === 1) drawSprite(ctx, id, 0, tx * TILE, ty * TILE);
+          if (!id) continue;
+          if (frameCount(id) === 1) {
+            drawSprite(ctx, id, 0, tx * TILE, ty * TILE);
+          } else {
+            // Animated decor is drawn each frame; fill the wall behind it from a neighbour.
+            const n = [deco[ty][tx - 1], deco[ty][tx + 1], deco[ty - 1]?.[tx], deco[ty + 1]?.[tx]]
+              .map((ch) => (ch ? DECO[ch] : undefined))
+              .find((nid) => nid && frameCount(nid) === 1 && nid.startsWith('bg'));
+            if (n) drawSprite(ctx, n, 0, tx * TILE, ty * TILE);
+          }
         }
       }
     }
@@ -304,8 +319,8 @@ export class SideScene implements Scene, WorldApi {
     const p = this.player;
     // Store a standing position even if Dagny is ducking or a bird.
     const y = p.y + p.h - STAND_H;
-    state.loc = { area: this.area.id, x: Math.round(p.x), y: Math.round(p.onGround ? y : p.safeY) };
-    if (!p.onGround) state.loc.x = Math.round(p.safeX);
+    const solid = p.onGround && !p.onPlatform;
+    state.loc = { area: this.area.id, x: Math.round(solid ? p.x : p.safeX), y: Math.round(solid ? y : p.safeY) };
   }
 
   // --- WorldApi ---------------------------------------------------------------------------
@@ -399,6 +414,16 @@ export class SideScene implements Scene, WorldApi {
     const c = this.controls();
     p.highJump = this.spell.hopp > 0;
     const wasGround = p.onGround;
+    // Platforms move first and carry whoever stands on them.
+    const rider = this.riding;
+    for (const pl of this.platforms) pl.update(pl === rider && p.onGround);
+    if (rider && p.onGround) {
+      const ox = p.x;
+      p.x += rider.dx;
+      if (rectHitsSolid(this.grid, p)) p.x = ox;
+      p.y += rider.dy;
+    }
+    this.riding = null;
     p.update(c, this.grid);
     if (p.jumped) this.sfx('jump');
     if (p.landed && !wasGround) {
@@ -509,6 +534,19 @@ export class SideScene implements Scene, WorldApi {
   }
 
   private levelUpShown = false;
+
+  private landOnPlatform(p: Player, prevBottom: number): boolean {
+    const bottom = p.y + p.h;
+    for (const pl of this.platforms) {
+      if (p.x + p.w <= pl.x + 1 || p.x >= pl.x + pl.w - 1) continue;
+      if (prevBottom <= pl.y + 3 && bottom >= pl.y) {
+        p.y = pl.y - p.h;
+        this.riding = pl;
+        return true;
+      }
+    }
+    return false;
+  }
 
   private isWaterAt(r: Rect): boolean {
     const tx = Math.floor((r.x + r.w / 2) / TILE);
@@ -784,7 +822,7 @@ export class SideScene implements Scene, WorldApi {
       for (let y = 0; y < this.grid.h; y++) if (this.grid.kinds[y * this.grid.w] === Kind.Empty) this.grid.kinds[y * this.grid.w] = Kind.Solid;
       this.sfx('roar');
       this.shake(20, 2);
-      g.pushOverlay(new DialogOverlay(g, 'grim_vaknar', () => g.audio.playMusic(this.music())));
+      g.pushOverlay(new DialogOverlay(g, b.boss?.introDialog ?? 'boss_vaknar', () => g.audio.playMusic(this.music())));
     }
     if (this.bossOutro > 0) {
       this.bossOutro++;
@@ -987,6 +1025,7 @@ export class SideScene implements Scene, WorldApi {
     }
 
     this.renderProps(ctx, camX, camY, false);
+    for (const pl of this.platforms) pl.render(ctx, camX, camY);
     for (const pk of this.pickups) pk.render(ctx, camX, camY);
     for (const n of this.npcs) n.render(ctx, camX, camY);
     for (const e of this.enemies) e.render(ctx, camX, camY);
@@ -1108,10 +1147,20 @@ export class SideScene implements Scene, WorldApi {
     };
     const pc = this.playerCenter();
     const flicker = Math.sin(this.frame / 7) * 2;
-    light(pc.x - camX, pc.y - camY, this.spell.lyse > 0 ? 150 : 46 + flicker);
+    const base = hasItem(this.s, 'karbidlampa') ? 92 : 46;
+    light(pc.x - camX, pc.y - camY, this.spell.lyse > 0 ? 150 : base + flicker);
     for (const cp of this.checkpoints) if (cp.lit) light(cp.tx * TILE + 8 - camX, cp.ty * TILE + 4 - camY, 40 + flicker);
-    for (const a of this.anim) if (a.sprite === 'candle') light(a.x + 8 - camX, a.y + 4 - camY, 34 + flicker);
-    for (const e of this.enemies) if (e.def.id === 'lyktgubbe' && !e.dead) light(e.x + e.w / 2 - camX, e.y + e.h / 2 - camY, 26);
+    for (const a of this.anim) {
+      if (a.sprite === 'candle') light(a.x + 8 - camX, a.y + 4 - camY, 34 + flicker);
+      else if (a.sprite === 'lantern') light(a.x + 8 - camX, a.y + 6 - camY, 44 + flicker);
+    }
+    for (const e of this.enemies) {
+      if (e.dead) continue;
+      if (e.def.id === 'lyktgubbe') light(e.x + e.w / 2 - camX, e.y + e.h / 2 - camY, 26);
+      // Gruvrået carries her own carbide lantern.
+      else if (e.def.behavior === 'boss_gruvra' && e.alpha > 0.05) light(e.x + e.w / 2 - camX, e.y + 6 - camY, 56 * e.alpha);
+    }
+    for (const pr of this.projectiles) if (pr.sprite === 'stone') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
     for (const pr of this.projectiles) if (pr.sprite === 'fireball') light(pr.x + 4 - camX, pr.y + 4 - camY, 24);
     dc.globalCompositeOperation = 'source-over';
     ctx.drawImage(d, 0, 0);

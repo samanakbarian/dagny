@@ -100,6 +100,12 @@ export const TONES: Readonly<Record<string, ToneFilter>> = {
     sky: ['#2b2233', '#3d3140', '#4a3c4a'],
     hills: ['#4a3f4d', '#3d3140', '#33293a'],
   },
+  /** The old mine – amber lamplight on wet rock. */
+  gruva: {
+    tint: '#c08a50', alpha: 0.22, mode: 'multiply', fade: 0.02, vignette: 0.6,
+    sky: ['#1f1a24', '#2b2233', '#3a2f36'],
+    hills: ['#3a3038', '#30282f', '#262027'],
+  },
   /** Overworld map – soft daylight. */
   karta: {
     tint: '#f0c890', alpha: 0.1, mode: 'soft-light', fade: 0.05, vignette: 0.25,

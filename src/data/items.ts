@@ -17,7 +17,7 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
   karbidlampa: {
     id: 'karbidlampa',
     name: 'Karbidlampan',
-    description: 'Gruvarbetarnas lampa. Lyser i de mörkaste orter.',
+    description: 'Gruvarbetarnas lampa med initialerna H.D. Dagny ser dubbelt så långt i mörker.',
     sprite: 'karbidlampa',
     treasure: true,
   },

@@ -52,6 +52,19 @@ export const ENEMIES: Readonly<Record<string, EnemyDef>> = {
     box: { x: 3, y: 2, w: 10, h: 14 }, puff: 'mist', heavy: true,
     drops: { termos: 0.35 },
   },
+  gruvvatte: {
+    id: 'gruvvatte', name: 'Gruvvätte', sprite: 'gruvvatte', behavior: 'walker',
+    hp: 7, damage: 2, xp: 10, speed: 0.6,
+    box: { x: 3, y: 4, w: 10, h: 12 }, puff: 'moss',
+    drops: { bulle: 0.3, termos: 0.15 },
+    befriend: 'Gruvvätten lyfter på mössan och försvinner in i en spricka i berget.',
+  },
+  fladdermus: {
+    id: 'fladdermus', name: 'Fladdermus', sprite: 'fladdermus', behavior: 'diver',
+    hp: 3, damage: 2, xp: 9, speed: 1.6,
+    box: { x: 3, y: 2, w: 10, h: 6 }, puff: 'mist', flying: true,
+    drops: { termos: 0.2 },
+  },
   skuggvarg: {
     id: 'skuggvarg', name: 'Skuggvarg', sprite: 'skuggvarg', behavior: 'wolf',
     hp: 6, damage: 3, xp: 25, speed: 1.8,
@@ -71,18 +84,20 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
       { atHpFraction: 1, sprite: 'grim', speed: 1.7, attackEvery: 2.2 },
       { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.1, attackEvery: 1.4 },
     ],
+    introDialog: 'grim_vaknar',
     defeatDialog: 'grim_forlikad',
   },
   gruvraet: {
     id: 'gruvraet', name: 'Gruvrået', title: 'Gruvrået – bergets värdinna',
-    sprite: 'grim', behavior: 'boss_placeholder',
-    hp: 60, damage: 3, xp: 300, speed: 1.4,
-    box: { x: 4, y: 12, w: 26, h: 20 }, puff: 'mist', heavy: true,
+    sprite: 'gruvra', behavior: 'boss_gruvra',
+    hp: 56, damage: 3, xp: 320, speed: 2.4,
+    box: { x: 2, y: 6, w: 15, h: 26 }, puff: 'mist', heavy: true,
     phases: [
-      { atHpFraction: 1, sprite: 'grim', speed: 1.4, attackEvery: 2 },
-      { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.2, attackEvery: 1.3 },
+      { atHpFraction: 1, sprite: 'gruvra', speed: 2.4, attackEvery: 1.6 },
+      { atHpFraction: 0.5, sprite: 'gruvraVred', speed: 3.2, attackEvery: 1.1 },
     ],
-    defeatDialog: 'boss_forlikad',
+    introDialog: 'gruvra_vaknar',
+    defeatDialog: 'gruvra_forlikad',
   },
   backahasten: {
     id: 'backahasten', name: 'Bäckahästen', title: 'Bäckahästen – den vita hästen i forsen',
@@ -93,6 +108,7 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
       { atHpFraction: 1, sprite: 'grim', speed: 1.8, attackEvery: 1.8 },
       { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.4, attackEvery: 1.2 },
     ],
+    introDialog: 'boss_vaknar',
     defeatDialog: 'boss_forlikad',
   },
   havsfrun: {
@@ -104,6 +120,7 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
       { atHpFraction: 1, sprite: 'grim', speed: 1.5, attackEvery: 1.8 },
       { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.3, attackEvery: 1.1 },
     ],
+    introDialog: 'boss_vaknar',
     defeatDialog: 'boss_forlikad',
   },
   spelmannen: {
@@ -115,6 +132,7 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
       { atHpFraction: 1, sprite: 'grim', speed: 1.6, attackEvery: 1.6 },
       { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.5, attackEvery: 1 },
     ],
+    introDialog: 'boss_vaknar',
     defeatDialog: 'boss_forlikad',
   },
   skogsraet: {
@@ -126,6 +144,7 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
       { atHpFraction: 1, sprite: 'grim', speed: 1.7, attackEvery: 1.5 },
       { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.6, attackEvery: 1 },
     ],
+    introDialog: 'boss_vaknar',
     defeatDialog: 'boss_forlikad',
   },
   bergakungen: {
@@ -137,6 +156,7 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
       { atHpFraction: 1, sprite: 'grim', speed: 1.5, attackEvery: 1.4 },
       { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.7, attackEvery: 0.9 },
     ],
+    introDialog: 'boss_vaknar',
     defeatDialog: 'boss_forlikad',
   },
 };

@@ -41,6 +41,11 @@ export class Enemy implements Body {
   awake = false;
   phase = 0;
   stun = 0;
+  /** Opacity (Gruvrået fades in and out). */
+  alpha = 1;
+  /** Cannot be hit or hurt anyone (e.g. while faded out). */
+  untouchable = false;
+  private homeY = 0;
   sprite: string;
   frame = 0;
   readonly boss: BossDef | null;
@@ -71,12 +76,13 @@ export class Enemy implements Body {
   get harmful(): boolean {
     if (this.dead) return false;
     if (this.boss && !this.awake) return false;
-    return true;
+    return !this.untouchable;
   }
 
   takeHit(dmg: number, fromX: number, height: HitHeight, world: WorldApi): HitResult {
     if (this.dead || this.iframes > 0) return 'none';
     if (this.boss && !this.awake) return 'none';
+    if (this.untouchable) return 'none';
     // Tomtenisse-krigare parries strikes at the height he guards.
     if (this.def.behavior === 'parrier' && this.mode !== 2 && (height === 'high' || height === 'low') && height === this.guard) {
       world.sparks(this.x + (fromX < this.x ? 0 : this.w), this.guard === 'high' ? this.y + 8 : this.y + 18);
@@ -272,6 +278,9 @@ export class Enemy implements Body {
         this.fall(world);
         break;
       }
+      case 'boss_gruvra':
+        this.updateGruvra(world, dx, p);
+        break;
       case 'boss_grim':
       case 'boss_placeholder':
         this.updateBoss(world, dx, dist, p);
@@ -487,6 +496,115 @@ export class Enemy implements Body {
     }
   }
 
+  // --- Gruvrået -----------------------------------------------------------------------
+  // Appears out of the dark, throws stones, fades away and appears elsewhere.
+  // Phase two: faster, dashes along the floor and brings down the roof.
+
+  private updateGruvra(world: WorldApi, dx: number, p: { x: number; y: number }): void {
+    const b = this.boss!;
+    if (!this.awake) {
+      this.homeY = this.y;
+      this.frame = 0;
+      return;
+    }
+    if (this.phase === 0 && this.hp <= this.maxHp * b.phases[1].atHpFraction) {
+      this.phase = 1;
+      this.sprite = b.phases[1].sprite;
+      world.sfx('roar');
+      world.shake(30, 3);
+      this.mode = 3;
+      this.timer = 20;
+    }
+    const ph = b.phases[this.phase];
+    const minX = 24;
+    const maxX = world.grid.w * 16 - 24 - this.w;
+    // Phase two: the roof comes down now and then.
+    if (this.phase === 1 && this.t % 80 === 0) {
+      world.spawnProjectile({
+        x: Math.max(minX, Math.min(maxX, p.x - 4 + ((this.t * 37) % 60) - 30)),
+        y: 34, vx: 0, vy: 0.6, w: 8, h: 8, sprite: 'stone',
+        damage: 2, fromPlayer: false, life: 160, gravity: 0.14,
+      });
+      world.sfx('land');
+    }
+    switch (this.mode) {
+      case 0: // hidden
+        this.alpha = 0;
+        this.untouchable = true;
+        if (--this.timer <= 0) {
+          // Appear away from Dagny.
+          let x = minX + ((this.t * 53) % (maxX - minX));
+          if (Math.abs(x + this.w / 2 - p.x) < 70) x = p.x < (minX + maxX) / 2 ? maxX - 10 : minX + 10;
+          this.x = x;
+          this.y = this.homeY;
+          this.mode = 1;
+          this.timer = 24;
+          world.sfx('magic');
+        }
+        break;
+      case 1: // fade in
+        this.facing = dx > 0 ? 1 : -1;
+        this.alpha = 1 - this.timer / 24;
+        this.untouchable = this.alpha < 0.6;
+        if (--this.timer <= 0) {
+          this.mode = 2;
+          this.timer = Math.round(ph.attackEvery * 60) + 30;
+          this.alpha = 1;
+          this.untouchable = false;
+        }
+        break;
+      case 2: { // visible: throw stones in arcs
+        this.facing = dx > 0 ? 1 : -1;
+        const total = Math.round(ph.attackEvery * 60) + 30;
+        const elapsed = total - this.timer;
+        this.frame = elapsed % 30 > 18 ? 1 : 0;
+        if (elapsed % 30 === 24) {
+          const fx = this.facing === 1 ? this.x + this.w : this.x - 8;
+          const flight = 46;
+          world.spawnProjectile({
+            x: fx, y: this.y + 4,
+            vx: Math.max(-3, Math.min(3, (p.x - fx) / flight)),
+            vy: -3.4, w: 8, h: 8, sprite: 'stone',
+            damage: this.def.damage, fromPlayer: false, life: 140, gravity: 0.15,
+          });
+          world.sfx('sword');
+        }
+        if (--this.timer <= 0) {
+          if (this.phase === 1 && (this.t >> 3) % 2 === 0) {
+            this.mode = 4;
+            this.vx = (p.x < this.x + this.w / 2 ? -1 : 1) * ph.speed;
+            this.facing = this.vx > 0 ? 1 : -1;
+            world.sfx('roar');
+          } else {
+            this.mode = 3;
+            this.timer = 24;
+          }
+        }
+        break;
+      }
+      case 3: // fade out
+        this.frame = 0;
+        this.alpha = Math.max(0, this.timer / 24);
+        this.untouchable = this.alpha < 0.6;
+        if (--this.timer <= 0) {
+          this.mode = 0;
+          this.timer = this.phase === 1 ? 30 : 45;
+        }
+        break;
+      case 4: // dash along the floor
+        this.frame = 2;
+        this.x += this.vx;
+        if (this.x <= minX || this.x >= maxX) {
+          this.x = Math.max(minX, Math.min(maxX, this.x));
+          world.shake(10, 2);
+          world.sfx('door');
+          this.mode = 3;
+          this.timer = 24;
+        }
+        break;
+    }
+  }
+
   private clampX(world: WorldApi): void {
     const maxX = world.grid.w * 16 - 16 - this.w;
     if (this.x < 16) {
@@ -505,13 +623,17 @@ export class Enemy implements Body {
     const sx = this.x - this.def.box.x - camX;
     const sy = this.y - this.def.box.y - camY;
     if (this.flash > 0 && Math.floor(this.flash / 2) % 2 === 0) {
-      ctx.globalAlpha = 0.5;
+      ctx.globalAlpha = 0.5 * this.alpha;
       drawSprite(ctx, this.sprite, this.frame, sx, sy, flip);
       ctx.globalAlpha = 1;
       return;
     }
-    const ghostly = this.boss && this.phase === 1;
-    if (ghostly) ctx.globalAlpha = 0.85;
+    const ghostly = this.boss && this.phase === 1 && this.def.behavior === 'boss_grim';
+    ctx.globalAlpha = this.alpha * (ghostly ? 0.85 : 1);
+    if (ctx.globalAlpha <= 0.01) {
+      ctx.globalAlpha = 1;
+      return;
+    }
     drawSprite(ctx, this.sprite, this.frame, sx, sy, flip);
     ctx.globalAlpha = 1;
     if (this.stun > 0 && Math.floor(this.t / 6) % 2 === 0) {

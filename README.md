@@ -98,8 +98,12 @@ tests/         Vitest
 
 ## Status och nästa steg
 
-Klart i leverans 1: hela loopen by → karta → krypta (4 rum, nycklar, låsta dörrar, ljusstakar som checkpoints, mörkt benhus) → Kyrkogrimmen (två faser) → ekan → tillbaka till Hulda. Dessutom sidouppgiften med katten Murre i Björkhagen, mentorn som lär ut nedåtstöt, nivåmeny, alla sju läsningar i motorn (Läkning lärs ut i spelet), synliga möten på kartan, PWA och offline.
+**Leverans 1:** hela loopen by → karta → krypta (4 rum, nycklar, låsta dörrar, ljusstakar som checkpoints, mörkt benhus) → Kyrkogrimmen (två faser) → ekan → tillbaka till Hulda. Dessutom sidouppgiften med katten Murre, mentorn som lär ut nedåtstöt, nivåmeny, alla sju läsningar i motorn (Läkning lärs ut i spelet), synliga möten, PWA och offline.
 
-Nästa steg (arbetsordningen steg 14–15): templen 2–7 och resten av byarna, ett tempel i taget. Varje tempel har redan sina data (palett, musik, nyckelskatt, boss) i `src/data/temples.ts` och `src/data/enemies.ts`. Bossarna 2–7 använder tills vidare Kyrkogrimmens beteende som platshållare. Sedan polering.
+**Tempel 2 – Den gamla gruvan:** nås med ekan över sjön. Fyra rum: Gruvlaven (gruvvagn över en spikgrop), Hisschaktet (tre hissar i ett vertikalt schakt), Orten (mörk ort med gruvvagn och fladdermöss) och Bergsalen med Gruvrået. Hon tänds och släcks i mörkret, kastar sten och rusar längs golvet i fas två. Nyckelskatten Karbidlampan fördubblar Dagnys ljus i mörka rum. Gruvan har egen musik ("Gruvarbetarvisan").
+
+Motorn har nu rörliga plattformar (`platforms` i områdesdata: hissar och gruvvagnar, `loop` eller `ride`).
+
+Nästa steg: Gruvsamhället (byn vid gruvan, lär ut Lyse), därefter tempel 3–7 ett i taget, och polering.
 
 Öppna frågor från specen, t.ex. den sista Väktarens öde och upplösningen på Trollberget, är medvetet obesvarade. Fynden i kryptan antyder bara.

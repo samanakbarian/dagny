@@ -11,7 +11,7 @@ import { Kind, type TileKind } from '../engine/collision';
  *  @  default start      A–Z (except L, X)  doors / entry markers
  *  1–9  NPCs (AreaDef.npcs)
  *  v vätte  V gravvätte  l lyktgubbe  t tomtenisse  m myrkatt  r kråka
- *  s stenknekt  j sjörå-skott  w skuggvarg  B boss
+ *  s stenknekt  j sjörå-skott  w skuggvarg  f fladdermus  u gruvvätte  B boss
  *  b bulle  T termos  g lingon  M Murre the cat (side quest)
  */
 export const ENEMY_CHARS: Readonly<Record<string, string>> = {
@@ -24,6 +24,8 @@ export const ENEMY_CHARS: Readonly<Record<string, string>> = {
   s: 'stenknekt',
   j: 'sjora',
   w: 'skuggvarg',
+  f: 'fladdermus',
+  u: 'gruvvatte',
 };
 
 export const PICKUP_CHARS: Readonly<Record<string, 'bulle' | 'termos' | 'lingon'>> = {
@@ -42,6 +44,7 @@ export const THEMES: Readonly<Record<string, Theme>> = {
   meadow: { top: 'grass', fill: 'dirt', platform: 'log' },
   village: { top: 'road', fill: 'dirt', platform: 'plank' },
   crypt: { top: 'brickTop', fill: 'brick', platform: 'ledge' },
+  mine: { top: 'rockTop', fill: 'rock', platform: 'beam' },
 };
 
 /** Collision kind for a tile-layer character. */
@@ -83,4 +86,10 @@ export const DECO: Readonly<Record<string, string>> = {
   s: 'stainedGlass',
   c: 'coffin',
   x: 'web',
+  r: 'bgRock',
+  '|': 'support',
+  T: 'supportTop',
+  _: 'rail',
+  a: 'ore',
+  O: 'lantern',
 };

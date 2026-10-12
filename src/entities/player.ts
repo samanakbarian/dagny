@@ -74,6 +74,12 @@ export class Player implements Body {
   /** True on the frame the player landed (for dust and sfx). */
   landed = false;
   jumped = false;
+  /**
+   * Lets moving platforms catch a falling player. Returns true (and snaps the
+   * player's y) if the player landed on one this step.
+   */
+  landOn: ((p: Player, prevBottom: number) => boolean) | null = null;
+  onPlatform = false;
   /** Has the current attack already hit something (one hit per swing per target). */
   readonly hitIds = new Set<number>();
 
@@ -268,10 +274,17 @@ export class Player implements Body {
     this.vy = Math.min(MAX_FALL, this.vy + g);
 
     const wasGround = this.onGround;
+    const prevBottom = this.y + this.h;
     const res = moveBody(grid, this, false);
+    this.onPlatform = false;
+    if (!this.onGround && this.vy >= 0 && this.landOn?.(this, prevBottom)) {
+      this.onGround = true;
+      this.onPlatform = true;
+      this.vy = 0;
+    }
     if (res.landed || (!wasGround && this.onGround)) this.landed = true;
 
-    if (this.onGround && this.state !== 'hurt') {
+    if (this.onGround && !this.onPlatform && this.state !== 'hurt') {
       this.safeX = this.x;
       this.safeY = this.y + this.h - STAND_H;
     }

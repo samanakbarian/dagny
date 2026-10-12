@@ -48,6 +48,7 @@ export type Behavior =
   | 'shooter'
   | 'wolf'
   | 'boss_grim'
+  | 'boss_gruvra'
   | 'boss_placeholder';
 
 export type PuffKind = 'moss' | 'leaf' | 'mist';
@@ -87,6 +88,8 @@ export interface BossPhase {
 export interface BossDef extends EnemyDef {
   title: string;
   phases: [BossPhase, BossPhase];
+  /** Dialog shown when the boss wakes up. */
+  introDialog: string;
   /** Dialog shown when the boss is reconciled ("förlikad"). */
   defeatDialog: string;
 }
@@ -204,7 +207,24 @@ export interface Prop {
 }
 
 export type AreaKind = 'village' | 'path' | 'temple' | 'encounter';
-export type Backdrop = 'outdoor' | 'forest' | 'crypt' | 'none';
+export type Backdrop = 'outdoor' | 'forest' | 'crypt' | 'mine' | 'none';
+
+/**
+ * A moving platform. Lifts are 32 px wide with their top on the top edge of
+ * row `ty`; carts are 24 px wide and run along rails at the bottom of row `ty`.
+ * 'loop' moves back and forth by itself; 'ride' moves only while Dagny stands
+ * on it, towards the end it is not resting at.
+ */
+export interface PlatformDef {
+  kind: 'lift' | 'cart';
+  tx: number;
+  ty: number;
+  toTx: number;
+  toTy: number;
+  mode: 'loop' | 'ride';
+  /** Pixels per step (default 0.6 for lifts, 1.1 for carts). */
+  speed?: number;
+}
 
 export interface AreaDef {
   id: string;
@@ -214,7 +234,7 @@ export interface AreaDef {
   music: string;
   backdrop: Backdrop;
   /** Theme for '#' and '=' tiles. */
-  theme: 'meadow' | 'village' | 'crypt';
+  theme: 'meadow' | 'village' | 'crypt' | 'mine';
   /** Collision + entity layer. See data/legend.ts. */
   tiles: string[];
   /** Optional non-colliding background decor layer (same size). */
@@ -229,6 +249,7 @@ export interface AreaDef {
   left?: Exit;
   right?: Exit;
   props?: Prop[];
+  platforms?: PlatformDef[];
   /** Dark area – only lit around Dagny, candles and spells. */
   dark?: boolean;
   /** Temple this area belongs to (for keys and checkpoints). */

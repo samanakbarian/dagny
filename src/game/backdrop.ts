@@ -68,6 +68,37 @@ function build(kind: Backdrop, toneId: string): { sky: HTMLCanvasElement; layers
   const layers: Layer[] = [];
   const r = rng(kind.length * 97 + toneId.length * 13);
 
+  if (kind === 'mine') {
+    const [far, f] = canvas(LAYER_W, VIEW_H);
+    // Jagged cave walls with far-off lamps.
+    f.fillStyle = tone.hills[0];
+    for (let x = 0; x < LAYER_W; x++) {
+      const top = Math.round(30 + Math.sin(x / 23) * 10 + Math.sin(x / 7) * 3);
+      const bot = Math.round(140 + Math.sin(x / 31 + 1) * 12 + Math.sin(x / 9) * 3);
+      f.fillRect(x, 0, 1, top);
+      f.fillRect(x, bot, 1, VIEW_H - bot);
+    }
+    for (let i = 0; i < 9; i++) {
+      const x = Math.floor(r() * LAYER_W);
+      const y = 70 + Math.floor(r() * 50);
+      f.fillStyle = 'rgba(240,210,122,0.25)';
+      disc(f, x, y, 3);
+      f.fillStyle = '#f0d27a';
+      f.fillRect(x, y, 1, 1);
+    }
+    layers.push({ canvas: far, factor: 0.12, yf: 0.08 });
+    const [mid, m] = canvas(LAYER_W, VIEW_H);
+    m.fillStyle = tone.hills[1];
+    for (let x = 0; x < LAYER_W; x += 96) {
+      // Timber frames receding into the dark.
+      m.fillRect(x + 8, 20, 6, VIEW_H - 20);
+      m.fillRect(x + 62, 20, 6, VIEW_H - 20);
+      m.fillRect(x + 2, 16, 72, 6);
+    }
+    layers.push({ canvas: mid, factor: 0.32, yf: 0.18 });
+    return { sky, layers };
+  }
+
   if (kind === 'crypt') {
     // Dust specks in the dark.
     s.fillStyle = 'rgba(243,230,200,0.06)';

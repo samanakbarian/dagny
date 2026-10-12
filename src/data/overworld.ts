@@ -8,7 +8,8 @@ import type { OverworldDef } from './types';
  *  |  road (N–S)   -  road (E–W)   +  crossroads
  *  :  rye field    _  sand / shore
  *  V  Mormors by   K  the stone church (temple 1)   G  Björkhagen
- *  B  other villages   O  standing stones (temples 2–7)
+ *  M  the old mine (temple 2)
+ *  B  other villages   O  standing stones (temples 3–7)
  */
 export const OVERWORLD: OverworldDef = {
   tiles: [
@@ -18,7 +19,7 @@ export const OVERWORLD: OverworldDef = {
     '^^^^^^^^^^^^^..::::::::::.^^^^^^^^^^Offfff^^',
     '^^.............:::::K::::.^^^^^^^^^^ffffff^^',
     '^^.............::B::|::::.._~~~~~~..ffffff^^',
-    '^^.............:::::|::::.._~~~~~~..fffOff^^',
+    '^^.............:::::|::::.._~~~~~~..fffMff^^',
     '^^.............:::::|::::.._~~~~~~..ffffff^^',
     '^^..................|......_~~~~~~~~ffffff^^',
     '^^ffffffffffffffff..|.fffff_~~~~~~~~....B.^^',
@@ -56,7 +57,7 @@ export const OVERWORLD: OverworldDef = {
     { x: 20, y: 4, name: 'Stenkyrkan', area: 'krypta_1', entry: 'A' },
     { x: 4, y: 16, name: 'Björkhagen', area: 'bjorkhagen', entry: 'W' },
     // Temples 2–7: sleeping stone circles until they are built.
-    { x: 39, y: 6, name: 'Den gamla gruvan', dialog: 'tempel_sover' },
+    { x: 39, y: 6, name: 'Den gamla gruvan', area: 'gruvan_1', entry: 'A' },
     { x: 24, y: 10, name: 'Kvarnen vid forsen', dialog: 'tempel_sover' },
     { x: 31, y: 15, name: 'Fyren i skären', dialog: 'tempel_sover' },
     { x: 39, y: 14, name: 'Folkparken', dialog: 'tempel_sover' },

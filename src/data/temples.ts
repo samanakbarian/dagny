@@ -15,8 +15,8 @@ export const TEMPLES: readonly TempleDef[] = [
   {
     id: 'gruvan', number: 2, name: 'Den gamla gruvan',
     mechanic: 'Gruvvagnar, hissar, mörker.',
-    tone: 'lyktsken', music: 'gruvan', bossMusic: 'boss',
-    treasure: 'karbidlampa', boss: 'gruvraet', entryArea: null,
+    tone: 'gruva', music: 'gruvan', bossMusic: 'boss',
+    treasure: 'karbidlampa', boss: 'gruvraet', entryArea: 'gruvan_1',
     lore: 'En lampa med initialerna H.D. hänger kvar på en spik.',
   },
   {

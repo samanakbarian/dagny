@@ -192,7 +192,21 @@ export const SONGS: Record<string, SongDef> = {
 
   // Temples 2–7 have their own themes once built; until then they derive
   // variations of existing tunes so the data model is complete.
-  gruvan: { base: 'krypta', bpm: 64, loop: true, tracks: [], transpose: -5 },
+  /** "Gruvarbetarvisan" – D minor work song with pickaxe strokes, for the old mine. */
+  gruvan: {
+    bpm: 88,
+    loop: true,
+    tracks: [
+      {
+        inst: 'harp', vol: 0.75,
+        notes: `d4:4 f4:2 a4:4 g4:2 | f4:4 e4:2 d4:6 | a4:4 c5:2 bb4:4 a4:2 | g4:12 |
+                f4:4 g4:2 a4:4 bb4:2 | a4:4 g4:2 f4:6 | e4:4 f4:2 g4:4 e4:2 | d4:12`,
+      },
+      { inst: 'organ', vol: 0.5, notes: 'd3:24 c3:24 bb2:24 a2:24' },
+      { inst: 'bass', vol: 0.8, notes: 'd2:6 a2:6 | d2:6 a2:6 | f2:6 c3:6 | g2:6 d3:6 | bb2:6 f2:6 | f2:6 c3:6 | a2:6 e2:6 | d2:12' },
+      { inst: 'drum', vol: 0.35, notes: 'k:6 h:3 h:3 '.repeat(8) },
+    ],
+  },
   kvarnen: { base: 'stig', bpm: 120, loop: true, tracks: [], transpose: 2 },
   fyren: { base: 'titel', bpm: 96, loop: true, tracks: [], transpose: 3 },
   folkparken: { base: 'by', bpm: 116, loop: true, tracks: [], transpose: 5 },
