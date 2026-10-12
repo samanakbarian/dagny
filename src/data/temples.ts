@@ -23,7 +23,7 @@ export const TEMPLES: readonly TempleDef[] = [
     id: 'kvarnen', number: 3, name: 'Kvarnen vid forsen',
     mechanic: 'Vattenhjul, rörliga plattformar.',
     tone: 'gra_augusti', music: 'kvarnen', bossMusic: 'boss',
-    treasure: 'stovlar', boss: 'backahasten', entryArea: null,
+    treasure: 'stovlar', boss: 'backahasten', entryArea: 'kvarnen_1',
     lore: 'Någon har ristat en sol i kvarnstenen.',
   },
   {

@@ -49,6 +49,7 @@ export type Behavior =
   | 'wolf'
   | 'boss_grim'
   | 'boss_gruvra'
+  | 'boss_backahast'
   | 'boss_placeholder';
 
 export type PuffKind = 'moss' | 'leaf' | 'mist';
@@ -207,16 +208,21 @@ export interface Prop {
 }
 
 export type AreaKind = 'village' | 'path' | 'temple' | 'encounter';
-export type Backdrop = 'outdoor' | 'forest' | 'crypt' | 'mine' | 'none';
+export type Backdrop = 'outdoor' | 'forest' | 'crypt' | 'mine' | 'mill' | 'none';
 
 /**
  * A moving platform. Lifts are 32 px wide with their top on the top edge of
  * row `ty`; carts are 24 px wide and run along rails at the bottom of row `ty`.
+ * Logs float with their top at the bottom edge of row `ty` (level with the bank).
+ * A wheel is a water wheel centred on (tx, ty) with `count` paddles at
+ * `radius` tiles that turn by `speed` radians per step (toTx/toTy unused).
  * 'loop' moves back and forth by itself; 'ride' moves only while Dagny stands
  * on it, towards the end it is not resting at.
  */
 export interface PlatformDef {
-  kind: 'lift' | 'cart';
+  kind: 'lift' | 'cart' | 'log' | 'wheel';
+  radius?: number;
+  count?: number;
   tx: number;
   ty: number;
   toTx: number;
@@ -234,7 +240,7 @@ export interface AreaDef {
   music: string;
   backdrop: Backdrop;
   /** Theme for '#' and '=' tiles. */
-  theme: 'meadow' | 'village' | 'crypt' | 'mine';
+  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill';
   /** Collision + entity layer. See data/legend.ts. */
   tiles: string[];
   /** Optional non-colliding background decor layer (same size). */
@@ -261,7 +267,7 @@ export interface AreaDef {
   /** Show the area name when entering. */
   showName?: boolean;
   /** Ambient life. */
-  ambience?: Array<'fireflies' | 'mosquitoes' | 'dust' | 'mist' | 'leaves'>;
+  ambience?: Array<'fireflies' | 'mosquitoes' | 'dust' | 'mist' | 'leaves' | 'rain'>;
   /** Dialog started automatically the first time (needs flag to not repeat). */
   onEnter?: { dialog: string; unlessFlag: string; setFlag: string };
 }

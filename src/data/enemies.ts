@@ -65,6 +65,13 @@ export const ENEMIES: Readonly<Record<string, EnemyDef>> = {
     box: { x: 3, y: 2, w: 10, h: 6 }, puff: 'mist', flying: true,
     drops: { termos: 0.2 },
   },
+  kvarnnisse: {
+    id: 'kvarnnisse', name: 'Kvarnnisse', sprite: 'kvarnnisse', behavior: 'parrier',
+    hp: 10, damage: 2, xp: 24, speed: 0.55,
+    box: { x: 3, y: 4, w: 10, h: 20 }, puff: 'mist',
+    drops: { bulle: 0.4, termos: 0.2 },
+    befriend: 'Kvarnnissen dammar av mjölet och går för att smörja kugghjulen.',
+  },
   skuggvarg: {
     id: 'skuggvarg', name: 'Skuggvarg', sprite: 'skuggvarg', behavior: 'wolf',
     hp: 6, damage: 3, xp: 25, speed: 1.8,
@@ -101,15 +108,15 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
   },
   backahasten: {
     id: 'backahasten', name: 'Bäckahästen', title: 'Bäckahästen – den vita hästen i forsen',
-    sprite: 'grim', behavior: 'boss_placeholder',
-    hp: 70, damage: 4, xp: 400, speed: 1.8,
-    box: { x: 4, y: 12, w: 26, h: 20 }, puff: 'mist', heavy: true,
+    sprite: 'backahast', behavior: 'boss_backahast',
+    hp: 64, damage: 3, xp: 420, speed: 2.2,
+    box: { x: 3, y: 9, w: 26, h: 15 }, puff: 'mist', heavy: true,
     phases: [
-      { atHpFraction: 1, sprite: 'grim', speed: 1.8, attackEvery: 1.8 },
-      { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.4, attackEvery: 1.2 },
+      { atHpFraction: 1, sprite: 'backahast', speed: 2.2, attackEvery: 1.6 },
+      { atHpFraction: 0.5, sprite: 'backahastNack', speed: 2.8, attackEvery: 1.1 },
     ],
-    introDialog: 'boss_vaknar',
-    defeatDialog: 'boss_forlikad',
+    introDialog: 'backahast_vaknar',
+    defeatDialog: 'backahast_forlikad',
   },
   havsfrun: {
     id: 'havsfrun', name: 'Havsfrun', title: 'Havsfrun – stormens dotter',

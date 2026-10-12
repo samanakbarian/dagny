@@ -1,4 +1,4 @@
-import { groundBelow, isSolidAt, moveBody, type Body, type Rect } from '../engine/collision';
+import { Kind, groundBelow, isSolidAt, moveBody, type Body, type Rect } from '../engine/collision';
 import { drawSprite } from '../engine/sprites';
 import type { BossDef, EnemyDef } from '../data/types';
 import type { WorldApi } from './types';
@@ -278,6 +278,9 @@ export class Enemy implements Body {
         this.fall(world);
         break;
       }
+      case 'boss_backahast':
+        this.updateBackahast(world, dx, p);
+        break;
       case 'boss_gruvra':
         this.updateGruvra(world, dx, p);
         break;
@@ -602,6 +605,151 @@ export class Enemy implements Body {
           this.timer = 24;
         }
         break;
+    }
+  }
+
+  // --- Bäckahästen ------------------------------------------------------------------
+  // Lives in the pond. Leaps onto the bank on Dagny's side, gallops, leaps back.
+  // Phase two: spits water from the surface and sends waves along the ground.
+
+  private pool: [number, number] | null = null;
+
+  private findPool(world: WorldApi): [number, number] {
+    const g = world.grid;
+    const row = g.h - 2;
+    let x0 = -1;
+    let x1 = -1;
+    for (let x = 0; x < g.w; x++) {
+      if (g.kinds[row * g.w + x] === Kind.Hazard) {
+        if (x0 < 0) x0 = x;
+        x1 = x;
+      }
+    }
+    return x0 < 0 ? [g.w * 8 - 32, g.w * 8 + 32] : [x0 * 16, (x1 + 1) * 16];
+  }
+
+  private leapTo(targetX: number): void {
+    const frames = 44;
+    this.vx = (targetX - this.x) / frames;
+    this.vy = -0.3 * frames / 2;
+    this.mode = this.mode === 2 ? 3 : 1;
+    this.untouchable = false;
+    this.alpha = 1;
+  }
+
+  private updateBackahast(world: WorldApi, dx: number, p: { x: number; y: number }): void {
+    const b = this.boss!;
+    if (!this.awake) {
+      this.homeY = this.y;
+      this.alpha = 0;
+      this.untouchable = true;
+      return;
+    }
+    if (!this.pool) {
+      this.pool = this.findPool(world);
+      this.mode = 0;
+      this.timer = 30;
+    }
+    const [px0, px1] = this.pool;
+    const poolMid = (px0 + px1) / 2 - this.w / 2;
+    const gw = world.grid.w * 16;
+    if (this.phase === 0 && this.hp <= this.maxHp * b.phases[1].atHpFraction) {
+      this.phase = 1;
+      this.sprite = b.phases[1].sprite;
+      world.sfx('roar');
+      world.shake(30, 3);
+    }
+    const ph = b.phases[this.phase];
+    const splash = (): void => {
+      world.puff(this.x + this.w / 2, this.homeY + this.h, 'mist');
+      world.sfx('water');
+    };
+    switch (this.mode) {
+      case 0: // under water
+        this.alpha = 0;
+        this.untouchable = true;
+        this.x = poolMid;
+        this.y = this.homeY + 20;
+        if (--this.timer <= 0) {
+          if (this.phase === 1 && this.t % 2 === 0) {
+            this.mode = 4;
+            this.timer = 90;
+            this.y = this.homeY + 8;
+            splash();
+          } else {
+            this.y = this.homeY;
+            splash();
+            const leftSide = p.x < (px0 + px1) / 2;
+            const target = leftSide ? Math.max(20, px0 - this.w - 12) : Math.min(gw - 20 - this.w, px1 + 12);
+            this.leapTo(target);
+            world.sfx('roar');
+          }
+        }
+        break;
+      case 4: { // phase two: spit water from the surface
+        this.alpha = 1;
+        this.untouchable = true;
+        this.frame = 0;
+        this.facing = dx > 0 ? 1 : -1;
+        if (this.timer % 30 === 0) {
+          const high = (this.timer / 30) % 2 === 1;
+          const sx = this.facing === 1 ? this.x + this.w : this.x - 6;
+          world.spawnProjectile({
+            x: sx, y: this.y + 2,
+            vx: this.facing * 2, vy: ((high ? p.y - 8 : p.y + 6) - (this.y + 2)) / 60,
+            w: 6, h: 6, sprite: 'droplet', damage: 2, fromPlayer: false, life: 150,
+          });
+          world.sfx('water');
+        }
+        if (--this.timer <= 0) {
+          this.mode = 0;
+          this.timer = 10;
+        }
+        break;
+      }
+      case 1: // leap out onto a bank
+      case 3: // leap back into the pond
+        this.frame = 2;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.3;
+        this.facing = this.vx >= 0 ? 1 : -1;
+        if (this.vy > 0 && this.y >= this.homeY) {
+          this.y = this.homeY;
+          const cx = this.x + this.w / 2;
+          if (cx > px0 && cx < px1) {
+            splash();
+            this.mode = 0;
+            this.timer = this.phase === 1 ? 40 : 60;
+          } else {
+            world.shake(8, 2);
+            world.sfx('land');
+            this.mode = 2;
+            this.timer = Math.round(ph.attackEvery * 60) + 40;
+            if (this.phase === 1) {
+              // A wave rolls along the ground towards Dagny.
+              const dir = dx > 0 ? 1 : -1;
+              world.spawnProjectile({
+                x: dir === 1 ? this.x + this.w : this.x - 14, y: this.homeY + this.h - 8,
+                vx: dir * 2.2, vy: 0, w: 14, h: 8, sprite: 'wave',
+                damage: 2, fromPlayer: false, life: 120, ghost: true,
+              });
+            }
+          }
+        }
+        break;
+      case 2: { // gallop on the bank
+        const onLeft = this.x + this.w / 2 < (px0 + px1) / 2;
+        const lo = onLeft ? 16 : px1;
+        const hi = onLeft ? px0 - this.w : gw - 16 - this.w;
+        this.facing = dx > 0 ? 1 : -1;
+        this.x += this.facing * ph.speed * 0.6;
+        if (this.x < lo) this.x = lo;
+        if (this.x > hi) this.x = hi;
+        this.frame = Math.floor(this.t / 6) % 2;
+        if (--this.timer <= 0) this.leapTo(poolMid);
+        break;
+      }
     }
   }
 

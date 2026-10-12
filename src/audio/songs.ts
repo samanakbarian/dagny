@@ -227,7 +227,26 @@ export const SONGS: Record<string, SongDef> = {
       { inst: 'drum', vol: 0.35, notes: 'k:6 h:3 h:3 '.repeat(8) },
     ],
   },
-  kvarnen: { base: 'stig', bpm: 120, loop: true, tracks: [], transpose: 2 },
+  /** "Forsens visa" – rippling arpeggios in E minor for the mill by the rapids. */
+  kvarnen: {
+    bpm: 96,
+    loop: true,
+    tracks: [
+      {
+        inst: 'flute', vol: 0.8,
+        notes: `e5:6 g5:2 f#5:4 | e5:4 b4:8 | c5:6 d5:2 e5:4 | d5:12 |
+                g5:6 a5:2 g5:4 | f#5:4 d5:8 | e5:4 d5:4 b4:4 | e5:12`,
+      },
+      {
+        inst: 'harp', vol: 0.4,
+        notes: `e4:2 g4:2 b4:2 e5:2 b4:2 g4:2 | e4:2 g4:2 b4:2 e5:2 b4:2 g4:2 |
+                c4:2 e4:2 g4:2 c5:2 g4:2 e4:2 | d4:2 f#4:2 a4:2 d5:2 a4:2 f#4:2 |
+                g4:2 b4:2 d5:2 g5:2 d5:2 b4:2 | d4:2 f#4:2 a4:2 d5:2 a4:2 f#4:2 |
+                c4:2 e4:2 g4:2 c5:2 b4:2 a4:2 | e4:2 g4:2 b4:2 e5:2 b4:2 g4:2`,
+      },
+      { inst: 'bass', vol: 0.75, notes: 'e2:12 | e2:12 | c3:12 | d3:12 | g2:12 | d3:12 | c3:6 b2:6 | e2:12' },
+    ],
+  },
   fyren: { base: 'titel', bpm: 96, loop: true, tracks: [], transpose: 3 },
   folkparken: { base: 'by', bpm: 116, loop: true, tracks: [], transpose: 5 },
   fabodskogen: { base: 'stig', bpm: 104, loop: true, tracks: [], transpose: -3 },

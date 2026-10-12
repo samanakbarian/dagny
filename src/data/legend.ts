@@ -11,7 +11,7 @@ import { Kind, type TileKind } from '../engine/collision';
  *  @  default start      A–Z (except L, X)  doors / entry markers
  *  1–9  NPCs (AreaDef.npcs)
  *  v vätte  V gravvätte  l lyktgubbe  t tomtenisse  m myrkatt  r kråka
- *  s stenknekt  j sjörå-skott  w skuggvarg  f fladdermus  u gruvvätte  B boss
+ *  s stenknekt  j sjörå-skott  w skuggvarg  f fladdermus  u gruvvätte  z kvarnnisse  B boss
  *  b bulle  T termos  g lingon  M Murre the cat (side quest)
  *  q the area's quest item (AreaDef.questItem)
  */
@@ -27,6 +27,7 @@ export const ENEMY_CHARS: Readonly<Record<string, string>> = {
   w: 'skuggvarg',
   f: 'fladdermus',
   u: 'gruvvatte',
+  z: 'kvarnnisse',
 };
 
 export const PICKUP_CHARS: Readonly<Record<string, 'bulle' | 'termos' | 'lingon'>> = {
@@ -46,6 +47,7 @@ export const THEMES: Readonly<Record<string, Theme>> = {
   village: { top: 'road', fill: 'dirt', platform: 'plank' },
   crypt: { top: 'brickTop', fill: 'brick', platform: 'ledge' },
   mine: { top: 'rockTop', fill: 'rock', platform: 'beam' },
+  mill: { top: 'millTop', fill: 'millStone', platform: 'plank' },
 };
 
 /** Collision kind for a tile-layer character. */
@@ -99,4 +101,9 @@ export const DECO: Readonly<Record<string, string>> = {
   Q: 'windowY',
   e: 'doorTopY',
   E: 'doorBottomY',
+  m: 'millWall',
+  F: 'fall',
+  g: 'gear',
+  k: 'sack',
+  i: 'millWindow',
 };

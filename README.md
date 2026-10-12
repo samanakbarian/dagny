@@ -106,6 +106,10 @@ Motorn har nu rörliga plattformar (`platforms` i områdesdata: hissar och gruvv
 
 **Gruvsamhället:** byn vid gruvan, med gula gruvarbetarlängor och lavtorn. Maj på pensionatet låter Dagny vila, och man vaknar här efter ett nederlag. Gamla Elin lär ut **Lyse**. Sidouppgift: Anders fickur ligger kvar i Orten. Byn har egen musik, "Lavtornsschottis". Sidouppgiftsföremål läggs nu ut med `q` och `questItem` i områdesdata.
 
-Nästa steg: tempel 3–7 ett i taget, sedan resten av byarna och polering.
+**Tempel 3 – Kvarnen vid forsen:** i skogen öster om vägen, nås utan båt. Fyra rum i regn: Kvarnbäcken (flytande stockar och ett vattenhjul upp till nyckeln), Kvarnstugan (stort hjul över kvarnrännan och kvarnnissar som parerar), Forsen (vertikal klättring vid ett vattenfall med två hjul och en hiss) och Kvarndammen med Bäckahästen. Den hoppar upp på stranden och galopperar, och i fas två sprutar den vatten och skickar vågor längs marken (hoppa eller ducka bakom skölden). Nyckelskatten Gummistövlarna öppnar myren på kartan. Egen musik: "Forsens visa".
+
+Motorn har nu vattenhjul, flytande stockar, regn och ett kvarninteriör-tema.
+
+Nästa steg: tempel 4–7 ett i taget, sedan resten av byarna och polering.
 
 Öppna frågor från specen, t.ex. den sista Väktarens öde och upplösningen på Trollberget, är medvetet obesvarade. Fynden i kryptan antyder bara.

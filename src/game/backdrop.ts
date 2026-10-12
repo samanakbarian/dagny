@@ -68,6 +68,30 @@ function build(kind: Backdrop, toneId: string): { sky: HTMLCanvasElement; layers
   const layers: Layer[] = [];
   const r = rng(kind.length * 97 + toneId.length * 13);
 
+  if (kind === 'mill') {
+    const [far, f] = canvas(LAYER_W, VIEW_H);
+    // Plank wall with cross beams, seen through the dust of the mill.
+    for (let x = 0; x < LAYER_W; x += 6) {
+      f.fillStyle = (x / 6) % 2 === 0 ? tone.hills[0] : tone.hills[1];
+      f.fillRect(x, 0, 6, VIEW_H);
+    }
+    f.fillStyle = tone.hills[2];
+    for (let y = 30; y < VIEW_H; y += 56) f.fillRect(0, y, LAYER_W, 5);
+    for (let x = 40; x < LAYER_W; x += 160) {
+      f.fillStyle = 'rgba(215,228,220,0.18)';
+      f.fillRect(x, 60, 18, 26);
+    }
+    layers.push({ canvas: far, factor: 0.15, yf: 0.1 });
+    const [mid, m] = canvas(LAYER_W, VIEW_H);
+    m.fillStyle = tone.hills[2];
+    for (let x = 0; x < LAYER_W; x += 120) {
+      m.fillRect(x + 20, 0, 10, VIEW_H);
+      m.fillRect(x, 12, 60, 6);
+    }
+    layers.push({ canvas: mid, factor: 0.35, yf: 0.2 });
+    return { sky, layers };
+  }
+
   if (kind === 'mine') {
     const [far, f] = canvas(LAYER_W, VIEW_H);
     // Jagged cave walls with far-off lamps.

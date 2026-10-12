@@ -244,7 +244,7 @@ describe('overworld', () => {
     for (const r of OVERWORLD.tiles) expect(r.length).toBe(w);
     for (const p of OVERWORLD.places) {
       const ch = OVERWORLD.tiles[p.y]?.[p.x];
-      expect('VKGBOM').toContain(ch);
+      expect('VKGBOMQ').toContain(ch);
       if (p.area) {
         expect(AREAS[p.area], p.area).toBeDefined();
         if (p.entry) expect(AREAS[p.area].tiles.join('')).toContain(p.entry);

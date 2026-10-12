@@ -106,6 +106,12 @@ export const TONES: Readonly<Record<string, ToneFilter>> = {
     sky: ['#1f1a24', '#2b2233', '#3a2f36'],
     hills: ['#3a3038', '#30282f', '#262027'],
   },
+  /** Inside the mill – dusty brown light through small windows. */
+  kvarn: {
+    tint: '#b08a60', alpha: 0.18, mode: 'soft-light', fade: 0.05, vignette: 0.5,
+    sky: ['#2f2620', '#3a2e26', '#45372d'],
+    hills: ['#4a3a30', '#41332b', '#2f2620'],
+  },
   /** Overworld map – soft daylight. */
   karta: {
     tint: '#f0c890', alpha: 0.1, mode: 'soft-light', fade: 0.05, vignette: 0.25,

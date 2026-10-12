@@ -252,6 +252,42 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: ['Marken skälver. Något mycket gammalt vaknar.'],
   },
 
+  // --- Temple 3: Kvarnen vid forsen -------------------------------------------------
+  kvarnen_skylt1: {
+    pages: ['En skylt vid bäcken:\n"BADA EJ I FORSEN. FÖLJ EJ EFTER VITA HÄSTAR."\nNågon har strukit under sista raden.'],
+  },
+  kvarnen_skylt2: {
+    pages: ['Inristat i kvarnstenen: en sol, och under den ett namn som någon har försökt skrapa bort.'],
+  },
+  backahast_vaknar: {
+    speaker: 'Bäckahästen',
+    pages: ['Sitt upp, lilla tös. Rid med mig ner i forsen. Ingen har sagt mitt namn på länge... ingen kan tvinga mig att gå.'],
+  },
+  backahast_forlikad: {
+    speaker: 'Bäckahästen',
+    pages: [
+      'Den förra Väktaren sa mitt namn högt, och jag blev fri från vreden. Du säger ingenting...',
+      '...men jag hör det ändå. Hur du andas. Hur du står kvar. Det är samma sak.',
+      'Hon lämnade sina stövlar på stranden den sista sommaren. Ta dem. Myren bär dig nu.',
+    ],
+  },
+  fick_stovlar: {
+    pages: [
+      'Dagny fick GUMMISTÖVLARNA!\nNu kan hon gå över myren på kartan.',
+      'Regnet tunnas ut över forsen. Kvarnhjulet börjar snurra igen, och en bit till av sommarljuset kommer tillbaka.',
+    ],
+    actions: [{ type: 'flag', flag: 'kvarnen_klar' }],
+  },
+  hulda_efter_kvarnen: {
+    speaker: 'Mormor Hulda',
+    pages: [
+      'Stövlar... gröna stövlar, storlek trettioåtta. Jag köpte dem på lanthandeln i Kyrkbyn 1945.',
+      'Ja, Dagny. Jag kände henne. Mer än så säger jag inte förrän du har varit på Trollberget.',
+      'Sov nu. Tre platser har vaknat i godo. Det känns i luften.',
+    ],
+    actions: [{ type: 'flag', flag: 'hulda_efter_kvarnen' }, { type: 'rest' }],
+  },
+
   // --- Gruvsamhället ----------------------------------------------------------------
   maj_vila: {
     speaker: 'Maj på pensionatet',

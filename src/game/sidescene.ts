@@ -104,7 +104,7 @@ export class SideScene implements Scene, WorldApi {
     this.staticLayer = this.renderStatic();
     this.placePlayer();
     const px = this.player.x;
-    this.platforms = (area.platforms ?? []).map((d) => new MovingPlatform(d, px));
+    this.platforms = (area.platforms ?? []).flatMap((d) => MovingPlatform.create(d, px));
     this.player.landOn = (pl, prevBottom) => this.landOnPlatform(pl, prevBottom);
     if (area.dark) {
       this.dark = document.createElement('canvas');
@@ -984,12 +984,16 @@ export class SideScene implements Scene, WorldApi {
     const amb = this.area.ambience ?? [];
     const a = this.ambient;
     a.update();
-    if (a.list.length > 40) return;
+    if (a.list.length > (amb.includes('rain') ? 110 : 40)) return;
     const f = this.frame;
     const cx = this.camX;
     const cy = this.camY;
     for (const kind of amb) {
-      if (kind === 'fireflies' && f % 25 === 0) {
+      if (kind === 'rain') {
+        for (let i = 0; i < 2; i++) {
+          a.spawn({ x: cx + Math.random() * (VIEW_W + 60), y: cy - 8, vx: -1.2, vy: 4.5, life: 50, color: 'rgba(169,198,207,0.55)', size: 1, frames: 4 });
+        }
+      } else if (kind === 'fireflies' && f % 25 === 0) {
         a.spawn({ x: cx + Math.random() * VIEW_W, y: cy + 60 + Math.random() * 90, vx: (Math.random() - 0.5) * 0.3, vy: -0.1, life: 160, color: PALETTE.Y, size: 1 });
       } else if (kind === 'mosquitoes' && f % 18 === 0) {
         const pc = this.playerCenter();
@@ -1041,6 +1045,7 @@ export class SideScene implements Scene, WorldApi {
 
     this.renderProps(ctx, camX, camY, false);
     for (const pl of this.platforms) pl.render(ctx, camX, camY);
+    for (const pl of this.platforms) pl.renderHub(ctx, camX, camY);
     for (const pk of this.pickups) pk.render(ctx, camX, camY);
     for (const n of this.npcs) n.render(ctx, camX, camY);
     for (const e of this.enemies) e.render(ctx, camX, camY);
@@ -1126,7 +1131,8 @@ export class SideScene implements Scene, WorldApi {
           ctx.globalAlpha = 1;
           continue;
         }
-        ctx.fillRect(x, y, p.size, p.size > 4 ? Math.max(2, p.size / 4) : p.size);
+        if (p.frames > 1) ctx.fillRect(x, y, 1, p.frames);
+        else ctx.fillRect(x, y, p.size, p.size > 4 ? Math.max(2, p.size / 4) : p.size);
         ctx.globalAlpha = 1;
       }
     }
