@@ -4,6 +4,8 @@ Ett mysigt 2D-actionäventyr för webbläsaren, mobile first. Sommaren 1964, sve
 
 Det här är **Leverans 1 (vertical slice)**: Mormors by → överblickskartan → Stenkyrkans krypta (tempel 1) → Kyrkogrimmen → tillbaka till byn. Motorn och datamodellen är byggda för alla sju tempel.
 
+**Spela:** https://samanakbarian.github.io/dagny/ (publiceras automatiskt från `master`)
+
 ## Kom igång
 
 Kräver Node 20 eller senare (22 rekommenderas).
@@ -40,6 +42,12 @@ Lägg till `?debug` i adressen för att få alla läsningar och tekniker direkt,
 | Paus | Esc / P | Start | ❚❚ |
 
 Pekkontrollerna visas automatiskt vid beröring och döljs när tangentbord eller handkontroll används. Storlek, placering, genomskinlighet, styrspak/styrkors och vibration ställs in under **Inställningar**.
+
+## Android / Google Play
+
+Mappen `android/` innehåller en Trusted Web Activity som paketerar webbversionen som Android-app,
+och `.github/workflows/android.yml` bygger en signerad `.aab`. Steg för steg (Pages, signeringsnyckel,
+Play Console, Digital Asset Links) finns i [`android/README.md`](android/README.md).
 
 ## Var ligger vad?
 

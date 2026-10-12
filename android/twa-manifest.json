@@ -1,0 +1,43 @@
+{
+  "packageId": "io.github.samanakbarian.dagny",
+  "host": "samanakbarian.github.io",
+  "name": "Dagnys äventyr",
+  "launcherName": "Dagny",
+  "display": "fullscreen",
+  "themeColor": "#2B2233",
+  "themeColorDark": "#2B2233",
+  "navigationColor": "#2B2233",
+  "navigationColorDark": "#2B2233",
+  "navigationDividerColor": "#2B2233",
+  "navigationDividerColorDark": "#2B2233",
+  "backgroundColor": "#2B2233",
+  "enableNotifications": false,
+  "startUrl": "/dagny/",
+  "iconUrl": "https://samanakbarian.github.io/dagny/icons/icon-512.png",
+  "maskableIconUrl": "https://samanakbarian.github.io/dagny/icons/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./upload-keystore.jks",
+    "alias": "upload"
+  },
+  "appVersionName": "0.1.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://samanakbarian.github.io/dagny/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": false,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://samanakbarian.github.io/dagny/",
+  "minSdkVersion": 24,
+  "orientation": "landscape",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "displayOverride": []
+}
