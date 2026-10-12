@@ -1,0 +1,99 @@
+import { describe, expect, it } from 'vitest';
+import { Kind, type TileGrid } from '../src/engine/collision';
+import { Player, type PlayerControls } from '../src/entities/player';
+
+function flat(w = 30, h = 12): TileGrid {
+  const kinds = new Uint8Array(w * h);
+  for (let x = 0; x < w; x++) kinds[(h - 1) * w + x] = Kind.Solid;
+  return { w, h, kinds, wallLeft: true, wallRight: true };
+}
+
+const none: PlayerControls = { left: false, right: false, up: false, down: false, jumpHeld: false, jumpPressed: false, swordPressed: false };
+
+function settle(p: Player, g: TileGrid): void {
+  for (let i = 0; i < 60; i++) p.update(none, g);
+}
+
+function jumpHeight(holdFrames: number): number {
+  const g = flat();
+  const p = new Player();
+  p.place(100, 100);
+  settle(p, g);
+  const ground = p.y;
+  let top = p.y;
+  for (let i = 0; i < 120; i++) {
+    p.update({ ...none, jumpPressed: i === 0, jumpHeld: i < holdFrames }, g);
+    top = Math.min(top, p.y);
+  }
+  return ground - top;
+}
+
+describe('Dagny movement', () => {
+  it('a held jump clears three tiles', () => {
+    expect(jumpHeight(60)).toBeGreaterThanOrEqual(48);
+  });
+
+  it('jump height depends on how long the button is held', () => {
+    expect(jumpHeight(3)).toBeLessThan(jumpHeight(60) * 0.6);
+  });
+
+  it('coyote time allows a jump just after leaving a ledge', () => {
+    const w = 30, h = 12;
+    const kinds = new Uint8Array(w * h);
+    for (let x = 0; x < 10; x++) kinds[(h - 1) * w + x] = Kind.Solid;
+    const g: TileGrid = { w, h, kinds, wallLeft: true, wallRight: true };
+    const p = new Player();
+    p.place(140, 100);
+    settle(p, g);
+    // Walk off the ledge.
+    let frames = 0;
+    while (p.onGround && frames++ < 200) p.update({ ...none, right: true }, g);
+    expect(p.onGround).toBe(false);
+    p.update({ ...none, right: true }, g);
+    p.update({ ...none, right: true, jumpPressed: true, jumpHeld: true }, g);
+    expect(p.vy).toBeLessThan(0);
+  });
+
+  it('a jump pressed just before landing is buffered', () => {
+    const g = flat();
+    const p = new Player();
+    p.place(100, 100);
+    // Fall, press jump a few frames before touching down.
+    let jumped = false;
+    for (let i = 0; i < 120; i++) {
+      const near = !p.onGround && p.y + p.h > 11 * 16 - 8 && p.vy > 0;
+      p.update({ ...none, jumpPressed: near && !jumped, jumpHeld: true }, g);
+      if (near) jumped = true;
+      if (jumped && p.vy < 0) return;
+    }
+    throw new Error('buffered jump never happened');
+  });
+
+  it('ducking lowers the hitbox and the sword strikes low', () => {
+    const g = flat();
+    const p = new Player();
+    p.place(100, 100);
+    settle(p, g);
+    const standTop = p.y;
+    p.update({ ...none, down: true }, g);
+    expect(p.ducking).toBe(true);
+    expect(p.y).toBeGreaterThan(standTop);
+    expect(p.shieldHeight).toBe('low');
+    p.update({ ...none, down: true, swordPressed: true }, g);
+    p.update({ ...none, down: true }, g);
+    p.update({ ...none, down: true }, g);
+    expect(p.swordActive).toBe(true);
+    const box = p.swordBox({ x: 0, y: 0, w: 0, h: 0 });
+    expect(box.y).toBeGreaterThan(standTop + 8);
+  });
+
+  it('gets about a second of invulnerability when hurt', () => {
+    const g = flat();
+    const p = new Player();
+    p.place(100, 100);
+    settle(p, g);
+    p.hurt(0);
+    expect(p.invuln).toBeGreaterThanOrEqual(55);
+    expect(p.vx).toBeGreaterThan(0);
+  });
+});

@@ -1,0 +1,176 @@
+:root {
+  --bg: #2b2233;
+  --ctl-scale: 1;
+  --ctl-opacity: 0.45;
+  --ctl-offset-x: 0px;
+  --ctl-offset-y: 0px;
+  --ctl-size: calc(64px * var(--ctl-scale));
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  overscroll-behavior: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  position: fixed;
+  inset: 0;
+}
+
+#game {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#screen {
+  position: absolute;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: var(--bg);
+  touch-action: none;
+}
+
+#controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  touch-action: none;
+}
+
+#controls.hidden .ctl {
+  display: none;
+}
+
+.ctl {
+  position: absolute;
+  pointer-events: auto;
+  touch-action: none;
+  opacity: var(--ctl-opacity);
+  color: #f3e6c8;
+  font: bold calc(12px * var(--ctl-scale)) / 1 system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(243, 230, 200, 0.85);
+  background: rgba(58, 44, 52, 0.55);
+  letter-spacing: 0.03em;
+}
+
+.ctl.pressed {
+  background: rgba(214, 160, 70, 0.75);
+}
+
+/* Left side: stick / d-pad zone */
+.ctl-stick {
+  left: calc(var(--safe-left) + 16px + var(--ctl-offset-x));
+  bottom: calc(var(--safe-bottom) + 16px + var(--ctl-offset-y));
+  width: calc(var(--ctl-size) * 2.1);
+  height: calc(var(--ctl-size) * 2.1);
+  border-radius: 50%;
+}
+
+.ctl-stick .knob {
+  position: absolute;
+  width: 42%;
+  height: 42%;
+  border-radius: 50%;
+  background: rgba(243, 230, 200, 0.8);
+  left: 29%;
+  top: 29%;
+  pointer-events: none;
+}
+
+.ctl-dpad {
+  left: calc(var(--safe-left) + 16px + var(--ctl-offset-x));
+  bottom: calc(var(--safe-bottom) + 16px + var(--ctl-offset-y));
+  width: calc(var(--ctl-size) * 2.1);
+  height: calc(var(--ctl-size) * 2.1);
+  border: none;
+  background: transparent;
+}
+
+.ctl-dpad .arm {
+  position: absolute;
+  background: rgba(58, 44, 52, 0.55);
+  border: 2px solid rgba(243, 230, 200, 0.85);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.ctl-dpad .arm.on {
+  background: rgba(214, 160, 70, 0.75);
+}
+
+.ctl-dpad .up    { left: 33.3%; top: 0;      width: 33.4%; height: 36%; }
+.ctl-dpad .down  { left: 33.3%; bottom: 0;   width: 33.4%; height: 36%; }
+.ctl-dpad .left  { left: 0;     top: 33.3%;  width: 36%;   height: 33.4%; }
+.ctl-dpad .right { right: 0;    top: 33.3%;  width: 36%;   height: 33.4%; }
+
+/* Right side: action buttons */
+.ctl-btn {
+  width: var(--ctl-size);
+  height: var(--ctl-size);
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+}
+
+.ctl-jump {
+  right: calc(var(--safe-right) + 16px + var(--ctl-offset-x));
+  bottom: calc(var(--safe-bottom) + 16px + var(--ctl-offset-y));
+}
+
+.ctl-sword {
+  right: calc(var(--safe-right) + 16px + var(--ctl-size) * 1.15 + var(--ctl-offset-x));
+  bottom: calc(var(--safe-bottom) + 16px + var(--ctl-size) * 0.55 + var(--ctl-offset-y));
+}
+
+.ctl-magic {
+  right: calc(var(--safe-right) + 16px + var(--ctl-offset-x));
+  bottom: calc(var(--safe-bottom) + 16px + var(--ctl-size) * 1.2 + var(--ctl-offset-y));
+}
+
+.ctl-small {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+.ctl-pause {
+  right: calc(var(--safe-right) + 10px);
+  top: calc(var(--safe-top) + 10px);
+}
+
+.ctl-fullscreen {
+  right: calc(var(--safe-right) + 66px);
+  top: calc(var(--safe-top) + 10px);
+}
+
+
+/* Portrait shows the "turn your phone" screen – no controls needed. */
+@media (orientation: portrait) {
+  #controls {
+    display: none;
+  }
+}

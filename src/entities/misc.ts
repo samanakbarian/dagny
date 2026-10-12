@@ -1,0 +1,210 @@
+import { moveBody, type Rect, type TileGrid } from '../engine/collision';
+import { drawSprite } from '../engine/sprites';
+import { disc } from '../engine/draw';
+import { PALETTE } from '../data/palettes';
+import type { NpcDef } from '../data/types';
+import type { ProjectileInit } from './types';
+
+/** A villager standing in a side-view area. */
+export class Npc {
+  x: number;
+  y: number;
+  readonly w = 16;
+  readonly h = 24;
+  facing: 1 | -1 = -1;
+  private t: number;
+
+  constructor(readonly def: NpcDef, px: number, py: number) {
+    const size = def.sprite === 'cat' ? { w: 14, h: 10 } : { w: 16, h: 24 };
+    this.x = px - size.w / 2;
+    this.y = py - size.h;
+    this.t = Math.floor(px * 7) % 100;
+  }
+
+  get box(): Rect {
+    return this.def.sprite === 'cat'
+      ? { x: this.x, y: this.y, w: 14, h: 10 }
+      : { x: this.x, y: this.y, w: 16, h: 24 };
+  }
+
+  update(playerX: number): void {
+    this.t++;
+    const cx = this.x + 8;
+    if (Math.abs(playerX - cx) < 64) this.facing = playerX < cx ? -1 : 1;
+  }
+
+  render(ctx: CanvasRenderingContext2D, camX: number, camY: number): void {
+    const idle = this.def.idle;
+    const step = Math.floor(this.t / (idle.every * 60)) % idle.frames.length;
+    drawSprite(ctx, this.def.sprite, idle.frames[step], this.x - camX, this.y - camY, this.facing === -1);
+  }
+}
+
+export type PickupKind = 'bulle' | 'termos' | 'lingon' | 'key' | 'treasure' | 'cat';
+
+export class Pickup {
+  vy = 0;
+  t = 0;
+  taken = false;
+  /** Dropped pickups fall and blink out after a while; placed ones stay. */
+  life: number;
+  readonly w: number;
+  readonly h: number;
+
+  constructor(
+    readonly kind: PickupKind,
+    public x: number,
+    public y: number,
+    readonly sprite: string,
+    dropped: boolean,
+    /** Persistence id for keys / treasures ("area:x,y"). */
+    readonly pid: string | null = null,
+  ) {
+    this.life = dropped ? 600 : Infinity;
+    this.vy = dropped ? -2 : 0;
+    this.w = kind === 'treasure' ? 16 : kind === 'cat' ? 14 : 8;
+    this.h = kind === 'termos' ? 12 : kind === 'treasure' ? 10 : kind === 'cat' ? 10 : 8;
+    this.dropped = dropped;
+  }
+
+  private readonly dropped: boolean;
+
+  get box(): Rect {
+    return { x: this.x, y: this.y, w: this.w, h: this.h };
+  }
+
+  update(grid: TileGrid): void {
+    this.t++;
+    if (this.dropped) {
+      const body = { x: this.x, y: this.y, w: this.w, h: this.h, vx: 0, vy: this.vy, onGround: false };
+      body.vy = Math.min(4, body.vy + 0.2);
+      moveBody(grid, body);
+      this.y = body.y;
+      this.vy = body.vy;
+      this.life--;
+    }
+  }
+
+  render(ctx: CanvasRenderingContext2D, camX: number, camY: number): void {
+    if (this.life < 120 && Math.floor(this.life / 4) % 2 === 0) return;
+    const bob = this.dropped || this.kind === 'cat' ? 0 : Math.round(Math.sin(this.t / 15) * 1.5);
+    if (this.kind === 'treasure') {
+      // A soft glow behind key treasures.
+      ctx.globalAlpha = 0.35 + Math.sin(this.t / 10) * 0.15;
+      ctx.fillStyle = PALETTE.Y;
+      disc(ctx, this.x + this.w / 2 - camX, this.y + this.h / 2 - camY + bob, 14);
+      ctx.globalAlpha = 1;
+    }
+    const frame = this.kind === 'cat' ? Math.floor(this.t / 30) % 2 : 0;
+    drawSprite(ctx, this.sprite, frame, this.x - camX, this.y - camY + bob, this.kind === 'cat');
+  }
+}
+
+export class Projectile {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  w: number;
+  h: number;
+  sprite: string;
+  damage: number;
+  fromPlayer: boolean;
+  life: number;
+  gravity: number;
+  ghost: boolean;
+  dead = false;
+  t = 0;
+
+  constructor(p: ProjectileInit) {
+    this.x = p.x;
+    this.y = p.y;
+    this.vx = p.vx;
+    this.vy = p.vy;
+    this.w = p.w;
+    this.h = p.h;
+    this.sprite = p.sprite;
+    this.damage = p.damage;
+    this.fromPlayer = p.fromPlayer;
+    this.life = p.life;
+    this.gravity = p.gravity ?? 0;
+    this.ghost = !!p.ghost;
+  }
+
+  get box(): Rect {
+    return { x: this.x, y: this.y, w: this.w, h: this.h };
+  }
+
+  update(grid: TileGrid, solidAt: (x: number, y: number) => boolean): void {
+    this.t++;
+    this.vy += this.gravity;
+    this.x += this.vx;
+    this.y += this.vy;
+    if (--this.life <= 0) this.dead = true;
+    if (!this.ghost && solidAt(this.x + this.w / 2, this.y + this.h / 2)) this.dead = true;
+    if (this.y > grid.h * 16 + 32) this.dead = true;
+  }
+
+  render(ctx: CanvasRenderingContext2D, camX: number, camY: number): void {
+    drawSprite(ctx, this.sprite, Math.floor(this.t / 6) % 2, this.x - camX, this.y - camY, this.vx < 0);
+  }
+}
+
+/** Tiny pooled particle system (no allocation per particle after warm-up). */
+export interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  max: number;
+  color: string;
+  size: number;
+  gravity: number;
+  /** Sprite-based particle (e.g. the puff). */
+  sprite: string | null;
+  frames: number;
+  /** Floating text (XP). */
+  text: string | null;
+}
+
+export class Particles {
+  readonly list: Particle[] = [];
+  private pool: Particle[] = [];
+
+  spawn(init: Partial<Particle> & { x: number; y: number }): Particle {
+    const p = this.pool.pop() ?? ({} as Particle);
+    p.x = init.x;
+    p.y = init.y;
+    p.vx = init.vx ?? 0;
+    p.vy = init.vy ?? 0;
+    p.life = init.life ?? 30;
+    p.max = p.life;
+    p.color = init.color ?? PALETTE.W;
+    p.size = init.size ?? 1;
+    p.gravity = init.gravity ?? 0;
+    p.sprite = init.sprite ?? null;
+    p.frames = init.frames ?? 1;
+    p.text = init.text ?? null;
+    this.list.push(p);
+    return p;
+  }
+
+  update(): void {
+    for (let i = this.list.length - 1; i >= 0; i--) {
+      const p = this.list[i];
+      p.vy += p.gravity;
+      p.x += p.vx;
+      p.y += p.vy;
+      if (--p.life <= 0) {
+        this.list[i] = this.list[this.list.length - 1];
+        this.list.pop();
+        this.pool.push(p);
+      }
+    }
+  }
+
+  clear(): void {
+    while (this.list.length) this.pool.push(this.list.pop() as Particle);
+  }
+}
