@@ -31,7 +31,7 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
   ficklampa: {
     id: 'ficklampa',
     name: 'Ficklampan',
-    description: 'Blinkar signaler över skären.',
+    description: 'Den förra Väktarens signallampa. Kastar en ljuskägla framför Dagny i mörker.',
     sprite: 'ficklampa',
     treasure: true,
   },

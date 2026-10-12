@@ -85,6 +85,7 @@ export const SFX: Record<string, SfxStep[]> = {
     { wave: 'sine', from: 440, dur: 1.2, vol: 0.4 },
     { wave: 'sine', from: 1056, dur: 0.8, vol: 0.2 },
   ],
+  wind: [{ wave: 'noise', from: 600, to: 1400, dur: 0.6, vol: 0.25 }],
   land: [{ wave: 'noise', from: 300, to: 100, dur: 0.06, vol: 0.25 }],
   step: [{ wave: 'noise', from: 200, to: 120, dur: 0.03, vol: 0.12 }],
 };

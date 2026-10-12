@@ -112,6 +112,18 @@ export const TONES: Readonly<Record<string, ToneFilter>> = {
     sky: ['#2f2620', '#3a2e26', '#45372d'],
     hills: ['#4a3a30', '#41332b', '#2f2620'],
   },
+  /** A storm over the skerries – slate blue, wet and cold. */
+  storm: {
+    tint: '#5f7a95', alpha: 0.24, mode: 'multiply', fade: 0.03, vignette: 0.5,
+    sky: ['#3f4a5f', '#5b6676', '#7d8790'],
+    hills: ['#5b6474', '#46505e', '#3f5a6a'],
+  },
+  /** Inside the lighthouse – whitewash in grey storm light. */
+  fyr: {
+    tint: '#9fb0c0', alpha: 0.16, mode: 'soft-light', fade: 0.04, vignette: 0.45,
+    sky: ['#c9cfd0', '#d7dcd8', '#e4e2d8'],
+    hills: ['#b8bcbc', '#a8aeb0', '#9aa0a4'],
+  },
   /** Overworld map – soft daylight. */
   karta: {
     tint: '#f0c890', alpha: 0.1, mode: 'soft-light', fade: 0.05, vignette: 0.25,

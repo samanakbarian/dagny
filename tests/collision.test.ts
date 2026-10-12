@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Kind, groundBelow, moveBody, overlaps, touchesKind, type Body, type TileGrid } from '../src/engine/collision';
+import { Kind, groundBelow, moveBody, overlaps, pushX, touchesKind, type Body, type TileGrid } from '../src/engine/collision';
 
 /** Builds a grid from rows: '#' solid, '=' one-way, '^' hazard. */
 function grid(rows: string[], walls = true): TileGrid {
@@ -105,5 +105,22 @@ describe('touchesKind', () => {
     const g = grid(['....', '.^..', '####']);
     expect(touchesKind(g, { x: 18, y: 18, w: 8, h: 8 }, Kind.Hazard)).toBe(true);
     expect(touchesKind(g, { x: 36, y: 18, w: 8, h: 8 }, Kind.Hazard)).toBe(false);
+  });
+});
+
+describe('pushX (wind)', () => {
+  it('pushes sideways and stops at walls without touching vertical state', () => {
+    const g = grid(['....#', '....#', '#####']);
+    const b = body(10, 12, 10, 20);
+    b.vy = 1.5;
+    b.onGround = true;
+    expect(pushX(g, b, 5)).toBe(false);
+    expect(b.x).toBe(15);
+    expect(pushX(g, b, 100)).toBe(true);
+    expect(b.x + b.w).toBe(64);
+    expect(b.vy).toBe(1.5);
+    expect(b.onGround).toBe(true);
+    pushX(g, b, -200);
+    expect(b.x).toBe(0);
   });
 });

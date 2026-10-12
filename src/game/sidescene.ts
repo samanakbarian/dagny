@@ -1,4 +1,4 @@
-import { Kind, overlaps, touchesKind, isSolidAt, rectHitsSolid, TILE, type Rect, type TileGrid } from '../engine/collision';
+import { Kind, overlaps, touchesKind, isSolidAt, rectHitsSolid, pushX, TILE, type Rect, type TileGrid } from '../engine/collision';
 import { Act } from '../engine/input';
 import { VIEW_W, VIEW_H } from '../engine/screen';
 import { drawSprite, frameCount, spriteSize } from '../engine/sprites';
@@ -69,6 +69,9 @@ export class SideScene implements Scene, WorldApi {
   private projectiles: Projectile[] = [];
   private platforms: MovingPlatform[] = [];
   private riding: MovingPlatform | null = null;
+  /** A boss gust pushing Dagny: dx per step and steps left. */
+  private gustDx = 0;
+  private gustT = 0;
   private particles = new Particles();
   private ambient = new Particles();
   private camX = 0;
@@ -375,6 +378,48 @@ export class SideScene implements Scene, WorldApi {
     this.game.audio.play(id);
   }
 
+  gust(dx: number, frames: number): void {
+    this.gustDx = dx;
+    this.gustT = frames;
+    this.sfx('wind');
+  }
+
+  /** Current push of a wind zone at this step, or null when calm. */
+  private windAt(z: import('../data/types').WindZone): { dx: number; up: number } | null {
+    const cycle = z.on + z.off;
+    const t = (this.frame + (z.offset ?? 0)) % cycle;
+    if (t >= z.on) return null;
+    if (z.dir === 'up') return { dx: 0, up: z.force };
+    let dir = z.dir === 'left' ? -1 : 1;
+    if (z.dir === 'alternate') dir = Math.floor((this.frame + (z.offset ?? 0)) / cycle) % 2 === 0 ? 1 : -1;
+    // Ease the gust in and out.
+    const ease = Math.min(1, t / 20, (z.on - t) / 20);
+    return { dx: dir * z.force * ease, up: 0 };
+  }
+
+  private applyWind(): void {
+    const p = this.player;
+    if (p.state === 'dead') return;
+    let dx = 0;
+    for (const z of this.area.wind ?? []) {
+      const tx = (p.x + p.w / 2) / TILE;
+      const ty = (p.y + p.h / 2) / TILE;
+      if (tx < z.x0 || tx >= z.x1 + 1 || ty < z.y0 || ty >= z.y1 + 1) continue;
+      const w = this.windAt(z);
+      if (!w) continue;
+      dx += w.dx;
+      if (w.up > 0) {
+        p.vy = Math.max(-2.6, p.vy - w.up);
+        p.onGround = false;
+      }
+    }
+    if (this.gustT > 0) {
+      this.gustT--;
+      dx += this.gustDx;
+    }
+    if (dx !== 0) pushX(this.grid, p, p.onGround ? dx * 0.6 : dx);
+  }
+
   shake(frames: number, strength = 2): void {
     this.shakeT = Math.max(this.shakeT, frames);
     this.shakeS = strength;
@@ -432,6 +477,7 @@ export class SideScene implements Scene, WorldApi {
     }
     this.riding = null;
     p.update(c, this.grid);
+    this.applyWind();
     if (p.jumped) this.sfx('jump');
     if (p.landed && !wasGround) {
       this.sfx('land');
@@ -476,7 +522,7 @@ export class SideScene implements Scene, WorldApi {
     const solidAt = (x: number, y: number): boolean => isSolidAt(this.grid, x, y);
     for (const pr of this.projectiles) {
       pr.update(this.grid, solidAt);
-      if (pr.dead) continue;
+      if (pr.dead || pr.delay > 0) continue;
       if (pr.fromPlayer) {
         for (const e of this.enemies) {
           if (e.dead || !overlaps(pr.box, e.box(tmpA))) continue;
@@ -487,7 +533,7 @@ export class SideScene implements Scene, WorldApi {
           }
         }
       } else if (overlaps(pr.box, p)) {
-        if (this.shieldBlocks(pr)) {
+        if (pr.sprite !== 'bolt' && this.shieldBlocks(pr)) {
           pr.dead = true;
           this.sparks(pr.x + pr.w / 2, pr.y + pr.h / 2);
           this.sfx('block');
@@ -1006,6 +1052,19 @@ export class SideScene implements Scene, WorldApi {
         a.spawn({ x: cx - 40 + Math.random() * (VIEW_W + 40), y: cy + 120 + Math.random() * 40, vx: 0.15, vy: 0, life: 260, color: 'rgba(243,230,200,0.10)', size: 24 });
       }
     }
+    // Wind: streaks in zones while a gust blows.
+    for (const z of this.area.wind ?? []) {
+      const w = this.windAt(z);
+      if (!w || f % 3 !== 0) continue;
+      const x = (z.x0 + Math.random() * (z.x1 - z.x0 + 1)) * TILE;
+      const y = (z.y0 + Math.random() * (z.y1 - z.y0 + 1)) * TILE;
+      if (x < cx - 20 || x > cx + VIEW_W + 20 || y < cy - 20 || y > cy + VIEW_H + 20) continue;
+      if (w.up > 0) a.spawn({ x, y, vx: 0, vy: -2.5, life: 30, color: 'rgba(243,230,200,0.5)', size: 1, frames: 5 });
+      else a.spawn({ x, y, vx: w.dx * 2.5, vy: 0, life: 30, color: 'rgba(243,230,200,0.5)', size: 1, frames: -8 });
+    }
+    if (amb.includes('spray') && f % 6 === 0) {
+      a.spawn({ x: cx + Math.random() * VIEW_W, y: cy + VIEW_H - 10, vx: (Math.random() - 0.5) * 0.6, vy: -1.6 - Math.random(), gravity: 0.05, life: 50, color: 'rgba(243,230,200,0.7)', size: 1 });
+    }
     // Chimney smoke.
     if (f % 9 === 0) {
       for (const pr of this.area.props ?? []) {
@@ -1131,7 +1190,8 @@ export class SideScene implements Scene, WorldApi {
           ctx.globalAlpha = 1;
           continue;
         }
-        if (p.frames > 1) ctx.fillRect(x, y, 1, p.frames);
+        if (p.frames < 0) ctx.fillRect(x, y, -p.frames, 1);
+        else if (p.frames > 1) ctx.fillRect(x, y, 1, p.frames);
         else ctx.fillRect(x, y, p.size, p.size > 4 ? Math.max(2, p.size / 4) : p.size);
         ctx.globalAlpha = 1;
       }
@@ -1170,10 +1230,14 @@ export class SideScene implements Scene, WorldApi {
     const flicker = Math.sin(this.frame / 7) * 2;
     const base = hasItem(this.s, 'karbidlampa') ? 92 : 46;
     light(pc.x - camX, pc.y - camY, this.spell.lyse > 0 ? 150 : base + flicker);
+    // The signal flashlight throws a beam ahead of Dagny.
+    if (hasItem(this.s, 'ficklampa')) light(pc.x + this.player.facing * 70 - camX, pc.y - camY, 46);
+    for (const pr of this.projectiles) if (pr.sprite === 'bolt' && pr.delay === 0) light(pr.x + 4 - camX, pr.y + pr.h - 10 - camY, 70);
     for (const cp of this.checkpoints) if (cp.lit) light(cp.tx * TILE + 8 - camX, cp.ty * TILE + 4 - camY, 40 + flicker);
     for (const a of this.anim) {
       if (a.sprite === 'candle') light(a.x + 8 - camX, a.y + 4 - camY, 34 + flicker);
       else if (a.sprite === 'lantern') light(a.x + 8 - camX, a.y + 6 - camY, 44 + flicker);
+      else if (a.sprite === 'lens') light(a.x + 8 - camX, a.y + 8 - camY, 64 + flicker * 2);
     }
     for (const e of this.enemies) {
       if (e.dead) continue;

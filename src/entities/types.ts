@@ -14,6 +14,8 @@ export interface WorldApi {
   sparks(x: number, y: number): void;
   sfx(id: string): void;
   shake(frames: number, strength?: number): void;
+  /** A gust that pushes Dagny sideways by dx per step for `frames` steps. */
+  gust(dx: number, frames: number): void;
 }
 
 export interface ProjectileInit {
@@ -31,4 +33,6 @@ export interface ProjectileInit {
   gravity?: number;
   /** Passes through walls. */
   ghost?: boolean;
+  /** Steps before it becomes active (shown as a warning until then). */
+  delay?: number;
 }

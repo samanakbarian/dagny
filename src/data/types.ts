@@ -50,6 +50,7 @@ export type Behavior =
   | 'boss_grim'
   | 'boss_gruvra'
   | 'boss_backahast'
+  | 'boss_havsfru'
   | 'boss_placeholder';
 
 export type PuffKind = 'moss' | 'leaf' | 'mist';
@@ -208,7 +209,25 @@ export interface Prop {
 }
 
 export type AreaKind = 'village' | 'path' | 'temple' | 'encounter';
-export type Backdrop = 'outdoor' | 'forest' | 'crypt' | 'mine' | 'mill' | 'none';
+export type Backdrop = 'outdoor' | 'forest' | 'crypt' | 'mine' | 'mill' | 'sea' | 'none';
+
+/**
+ * Wind in part of an area (tile rectangle, inclusive). Gusts blow for `on`
+ * steps, then pause for `off`. 'alternate' flips direction every gust;
+ * 'up' is an updraft that lifts Dagny.
+ */
+export interface WindZone {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+  dir: 'left' | 'right' | 'up' | 'alternate';
+  /** Pixels per step (horizontal) or lift per step (updraft). */
+  force: number;
+  on: number;
+  off: number;
+  offset?: number;
+}
 
 /**
  * A moving platform. Lifts are 32 px wide with their top on the top edge of
@@ -240,7 +259,7 @@ export interface AreaDef {
   music: string;
   backdrop: Backdrop;
   /** Theme for '#' and '=' tiles. */
-  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill';
+  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill' | 'skar' | 'fyr';
   /** Collision + entity layer. See data/legend.ts. */
   tiles: string[];
   /** Optional non-colliding background decor layer (same size). */
@@ -256,6 +275,7 @@ export interface AreaDef {
   right?: Exit;
   props?: Prop[];
   platforms?: PlatformDef[];
+  wind?: WindZone[];
   /** Dark area – only lit around Dagny, candles and spells. */
   dark?: boolean;
   /** Temple this area belongs to (for keys and checkpoints). */
@@ -267,7 +287,7 @@ export interface AreaDef {
   /** Show the area name when entering. */
   showName?: boolean;
   /** Ambient life. */
-  ambience?: Array<'fireflies' | 'mosquitoes' | 'dust' | 'mist' | 'leaves' | 'rain'>;
+  ambience?: Array<'fireflies' | 'mosquitoes' | 'dust' | 'mist' | 'leaves' | 'rain' | 'spray'>;
   /** Dialog started automatically the first time (needs flag to not repeat). */
   onEnter?: { dialog: string; unlessFlag: string; setFlag: string };
 }

@@ -113,6 +113,7 @@ export class Projectile {
   life: number;
   gravity: number;
   ghost: boolean;
+  delay: number;
   dead = false;
   t = 0;
 
@@ -129,6 +130,7 @@ export class Projectile {
     this.life = p.life;
     this.gravity = p.gravity ?? 0;
     this.ghost = !!p.ghost;
+    this.delay = p.delay ?? 0;
   }
 
   get box(): Rect {
@@ -137,6 +139,10 @@ export class Projectile {
 
   update(grid: TileGrid, solidAt: (x: number, y: number) => boolean): void {
     this.t++;
+    if (this.delay > 0) {
+      this.delay--;
+      return;
+    }
     this.vy += this.gravity;
     this.x += this.vx;
     this.y += this.vy;
@@ -146,7 +152,33 @@ export class Projectile {
   }
 
   render(ctx: CanvasRenderingContext2D, camX: number, camY: number): void {
-    drawSprite(ctx, this.sprite, Math.floor(this.t / 6) % 2, this.x - camX, this.y - camY, this.vx < 0);
+    const x = Math.round(this.x - camX);
+    const y = Math.round(this.y - camY);
+    if (this.sprite === 'bolt') {
+      if (this.delay > 0) {
+        // Warning: a flickering mark where the lightning will strike.
+        if (Math.floor(this.delay / 4) % 2 === 0) {
+          ctx.fillStyle = PALETTE.Y;
+          ctx.fillRect(x - 2, y + this.h - 3, this.w + 4, 2);
+          ctx.fillRect(x + this.w / 2 - 1, y + this.h - 8, 2, 4);
+        }
+        return;
+      }
+      // Zig-zag bolt from the top of the box to the ground.
+      let bx = x + this.w / 2;
+      for (let yy = y; yy < y + this.h; yy += 6) {
+        const nx = x + this.w / 2 + (((yy * 7 + this.t * 13) % 9) - 4);
+        ctx.fillStyle = PALETTE.W;
+        ctx.fillRect(Math.min(bx, nx), yy, Math.abs(nx - bx) + 2, 2);
+        ctx.fillRect(nx, yy, 2, 6);
+        ctx.fillStyle = PALETTE.c;
+        ctx.fillRect(nx - 1, yy + 1, 1, 4);
+        bx = nx;
+      }
+      return;
+    }
+    if (this.delay > 0) return;
+    drawSprite(ctx, this.sprite, Math.floor(this.t / 6) % 2, x, y, this.vx < 0);
   }
 }
 

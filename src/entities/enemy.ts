@@ -278,6 +278,9 @@ export class Enemy implements Body {
         this.fall(world);
         break;
       }
+      case 'boss_havsfru':
+        this.updateHavsfru(world, dx, p);
+        break;
       case 'boss_backahast':
         this.updateBackahast(world, dx, p);
         break;
@@ -604,6 +607,103 @@ export class Enemy implements Body {
           this.mode = 3;
           this.timer = 24;
         }
+        break;
+    }
+  }
+
+  // --- Havsfrun ------------------------------------------------------------------------
+  // Hovers above the gallery. Spits sea water, calls gusts that push Dagny towards
+  // the edge, and swoops down. Phase two adds lightning that strikes where it warns.
+
+  private cycle = 0;
+
+  private updateHavsfru(world: WorldApi, dx: number, p: { x: number; y: number }): void {
+    const b = this.boss!;
+    if (!this.awake) {
+      this.homeY = this.y;
+      this.baseY = this.y - 64;
+      this.frame = 0;
+      return;
+    }
+    if (this.phase === 0 && this.hp <= this.maxHp * b.phases[1].atHpFraction) {
+      this.phase = 1;
+      this.sprite = b.phases[1].sprite;
+      world.sfx('thunder');
+      world.shake(30, 3);
+      this.mode = 2;
+      this.timer = 40;
+    }
+    const ph = b.phases[this.phase];
+    const gw = world.grid.w * 16;
+    const minX = 20;
+    const maxX = gw - 20 - this.w;
+    const floorY = this.homeY + this.h;
+    this.facing = dx > 0 ? 1 : -1;
+    const drift = (): void => {
+      const want = Math.max(minX, Math.min(maxX, p.x - this.w / 2 + Math.sin(this.t / 50) * 60));
+      this.x += Math.max(-ph.speed, Math.min(ph.speed, (want - this.x) * 0.05));
+      this.y += (this.baseY + Math.sin(this.t / 20) * 6 - this.y) * 0.1;
+    };
+    switch (this.mode) {
+      case 0: // drift and choose
+        this.frame = 0;
+        drift();
+        if (--this.timer <= 0) {
+          const c = this.cycle++ % 4;
+          if (c === 0) { this.mode = 1; this.timer = 34; }
+          else if (c === 1) { this.mode = this.phase === 1 ? 4 : 2; this.timer = 40; }
+          else if (c === 2) { this.mode = 3; this.timer = 70; this.vx = Math.sign(dx) * ph.speed * 1.4; }
+          else { this.mode = this.phase === 1 ? 2 : 1; this.timer = 40; }
+        }
+        break;
+      case 1: // spit a fan of sea water
+        this.frame = 1;
+        drift();
+        if (this.timer === 18) {
+          const cx = this.x + this.w / 2;
+          const cy = this.y + 12;
+          const base = Math.atan2(p.y - cy, p.x - cx);
+          for (const off of [-0.25, 0, 0.25]) {
+            world.spawnProjectile({
+              x: cx - 3, y: cy, vx: Math.cos(base + off) * 2, vy: Math.sin(base + off) * 2,
+              w: 6, h: 6, sprite: 'droplet', damage: 2, fromPlayer: false, life: 160, ghost: true,
+            });
+          }
+          world.sfx('water');
+        }
+        if (--this.timer <= 0) { this.mode = 0; this.timer = Math.round(ph.attackEvery * 60); }
+        break;
+      case 2: // call the storm: a gust towards the nearest edge
+        this.frame = 1;
+        drift();
+        if (this.timer === 30) {
+          const out = p.x > gw / 2 ? 1 : -1;
+          world.gust(out * (this.phase === 1 ? 1.3 : 0.95), 80);
+        }
+        if (--this.timer <= 0) { this.mode = 0; this.timer = Math.round(ph.attackEvery * 60); }
+        break;
+      case 3: // swoop down at Dagny
+        this.frame = 2;
+        this.x = Math.max(minX, Math.min(maxX, this.x + this.vx));
+        if (this.timer > 35) this.y += (floorY - this.h - 2 - this.y) * 0.12;
+        else this.y += (this.baseY - this.y) * 0.08;
+        if (--this.timer <= 0) { this.mode = 0; this.timer = Math.round(ph.attackEvery * 60); }
+        break;
+      case 4: // lightning where it warns
+        this.frame = 1;
+        drift();
+        if (this.timer === 38) {
+          for (const [k, off] of [[0, -36], [1, 0], [2, 36]] as const) {
+            const x = Math.max(8, Math.min(gw - 16, p.x + off - 4));
+            world.spawnProjectile({
+              x, y: 0, vx: 0, vy: 0, w: 8, h: floorY,
+              sprite: 'bolt', damage: 3, fromPlayer: false, life: 14, ghost: true, delay: 46 + k * 10,
+            });
+          }
+          world.sfx('magic');
+        }
+        if (this.timer === 1) world.sfx('thunder');
+        if (--this.timer <= 0) { this.mode = 0; this.timer = Math.round(ph.attackEvery * 60) + 20; }
         break;
     }
   }

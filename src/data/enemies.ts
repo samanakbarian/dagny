@@ -72,6 +72,12 @@ export const ENEMIES: Readonly<Record<string, EnemyDef>> = {
     drops: { bulle: 0.4, termos: 0.2 },
     befriend: 'Kvarnnissen dammar av mjölet och går för att smörja kugghjulen.',
   },
+  mas: {
+    id: 'mas', name: 'Mås', sprite: 'mas', behavior: 'diver',
+    hp: 4, damage: 2, xp: 12, speed: 1.7,
+    box: { x: 2, y: 2, w: 12, h: 8 }, puff: 'mist', flying: true,
+    drops: { bulle: 0.25, termos: 0.15 },
+  },
   skuggvarg: {
     id: 'skuggvarg', name: 'Skuggvarg', sprite: 'skuggvarg', behavior: 'wolf',
     hp: 6, damage: 3, xp: 25, speed: 1.8,
@@ -120,15 +126,15 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
   },
   havsfrun: {
     id: 'havsfrun', name: 'Havsfrun', title: 'Havsfrun – stormens dotter',
-    sprite: 'grim', behavior: 'boss_placeholder',
-    hp: 80, damage: 4, xp: 500, speed: 1.5,
-    box: { x: 4, y: 12, w: 26, h: 20 }, puff: 'mist', heavy: true,
+    sprite: 'havsfru', behavior: 'boss_havsfru',
+    hp: 72, damage: 3, xp: 520, speed: 1.6,
+    box: { x: 4, y: 6, w: 15, h: 24 }, puff: 'mist', heavy: true, flying: true,
     phases: [
-      { atHpFraction: 1, sprite: 'grim', speed: 1.5, attackEvery: 1.8 },
-      { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.3, attackEvery: 1.1 },
+      { atHpFraction: 1, sprite: 'havsfru', speed: 1.6, attackEvery: 1.7 },
+      { atHpFraction: 0.5, sprite: 'havsfruStorm', speed: 2.1, attackEvery: 1.2 },
     ],
-    introDialog: 'boss_vaknar',
-    defeatDialog: 'boss_forlikad',
+    introDialog: 'havsfru_vaknar',
+    defeatDialog: 'havsfru_forlikad',
   },
   spelmannen: {
     id: 'spelmannen', name: 'Spelmannen', title: 'Spelmannen vid dansbanan',

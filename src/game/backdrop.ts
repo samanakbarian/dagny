@@ -68,6 +68,35 @@ function build(kind: Backdrop, toneId: string): { sky: HTMLCanvasElement; layers
   const layers: Layer[] = [];
   const r = rng(kind.length * 97 + toneId.length * 13);
 
+  if (kind === 'sea') {
+    // Storm clouds, far skerries and rolling sea bands.
+    s.fillStyle = 'rgba(43,34,51,0.25)';
+    for (let i = 0; i < 7; i++) {
+      const cx = Math.round(r() * VIEW_W);
+      const cy = Math.round(10 + r() * 40);
+      for (let k = 0; k < 6; k++) disc(s, cx + k * 9 - 24, cy + (k % 2) * 3, 8);
+    }
+    const [far, f] = canvas(LAYER_W, VIEW_H);
+    f.fillStyle = tone.hills[0];
+    for (let x = 0; x < LAYER_W; x += 90 + Math.floor(r() * 60)) {
+      const w = 30 + Math.floor(r() * 50);
+      for (let i = 0; i < w; i++) {
+        const h = Math.round(Math.sin((i / w) * Math.PI) * (6 + r() * 2));
+        f.fillRect(x + i, 112 - h, 1, h);
+      }
+    }
+    f.fillStyle = tone.hills[2];
+    f.fillRect(0, 112, LAYER_W, VIEW_H - 112);
+    layers.push({ canvas: far, factor: 0.06, yf: 0.04 });
+    const [mid, m] = canvas(LAYER_W, VIEW_H);
+    for (let y = 120; y < VIEW_H; y += 7) {
+      m.fillStyle = (y / 7) % 2 === 0 ? 'rgba(132,184,176,0.35)' : 'rgba(47,59,85,0.35)';
+      for (let x = 0; x < LAYER_W; x += 2) m.fillRect(x, y + Math.round(Math.sin(x / 11 + y) * 2), 2, 2);
+    }
+    layers.push({ canvas: mid, factor: 0.2, yf: 0.1 });
+    return { sky, layers };
+  }
+
   if (kind === 'mill') {
     const [far, f] = canvas(LAYER_W, VIEW_H);
     // Plank wall with cross beams, seen through the dust of the mill.

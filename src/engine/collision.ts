@@ -144,6 +144,46 @@ export function moveBody(grid: TileGrid, b: Body, dropThrough = false): MoveResu
   return result;
 }
 
+/**
+ * Pushes a body sideways by dx (wind, conveyor), stopping at walls.
+ * Does not touch vertical state. Returns true if a wall stopped it.
+ */
+export function pushX(grid: TileGrid, b: Rect, dx: number): boolean {
+  // Step at most 8 px at a time so a strong push never tunnels through a wall.
+  let left = dx;
+  while (left !== 0) {
+    const step = Math.max(-8, Math.min(8, left));
+    left -= step;
+    if (pushStep(grid, b, step)) return true;
+  }
+  return false;
+}
+
+function pushStep(grid: TileGrid, b: Rect, dx: number): boolean {
+  const top = Math.floor(b.y / TILE);
+  const bottom = Math.floor((b.y + b.h - EPS) / TILE);
+  const nx = b.x + dx;
+  if (dx > 0) {
+    const tx = Math.floor((nx + b.w - EPS) / TILE);
+    for (let ty = top; ty <= bottom; ty++) {
+      if (kindAt(grid, tx, ty) === Kind.Solid) {
+        b.x = tx * TILE - b.w;
+        return true;
+      }
+    }
+  } else {
+    const tx = Math.floor(nx / TILE);
+    for (let ty = top; ty <= bottom; ty++) {
+      if (kindAt(grid, tx, ty) === Kind.Solid) {
+        b.x = (tx + 1) * TILE;
+        return true;
+      }
+    }
+  }
+  b.x = nx;
+  return false;
+}
+
 /** True if there is something to stand on directly below the body. */
 export function groundBelow(grid: TileGrid, b: Rect, dropThrough = false): boolean {
   const footY = b.y + b.h;

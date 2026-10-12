@@ -29,8 +29,8 @@ export const TEMPLES: readonly TempleDef[] = [
   {
     id: 'fyren', number: 4, name: 'Fyren i skären',
     mechanic: 'Vind som knuffar, uppåt i torn.',
-    tone: 'midnattssol', music: 'fyren', bossMusic: 'boss',
-    treasure: 'ficklampa', boss: 'havsfrun', entryArea: null,
+    tone: 'storm', music: 'fyren', bossMusic: 'boss',
+    treasure: 'ficklampa', boss: 'havsfrun', entryArea: 'fyren_1',
     lore: 'Fyrvaktarens loggbok, midsommarnatten 1946: "Ett ljus gick ner över Kyrkbyn."',
   },
   {

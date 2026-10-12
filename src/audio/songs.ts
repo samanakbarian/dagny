@@ -247,7 +247,32 @@ export const SONGS: Record<string, SongDef> = {
       { inst: 'bass', vol: 0.75, notes: 'e2:12 | e2:12 | c3:12 | d3:12 | g2:12 | d3:12 | c3:6 b2:6 | e2:12' },
     ],
   },
-  fyren: { base: 'titel', bpm: 96, loop: true, tracks: [], transpose: 3 },
+  /** "Fyrvaktarens vals" – an A minor waltz for the lighthouse in the storm. */
+  fyren: {
+    bpm: 112,
+    loop: true,
+    tracks: [
+      {
+        inst: 'accordion', vol: 0.55,
+        notes: `a4:8 c5:4 | e5:8 d5:4 | c5:4 b4:4 a4:4 | b4:12 |
+                g4:8 b4:4 | d5:8 c5:4 | b4:4 a4:4 g#4:4 | a4:12 |
+                c5:8 e5:4 | a5:8 g5:4 | f5:4 e5:4 d5:4 | e5:12 |
+                f5:8 e5:4 | d5:8 c5:4 | b4:4 c5:4 b4:4 | a4:12`,
+      },
+      {
+        inst: 'harp', vol: 0.35,
+        notes: `r:4 c4:4 e4:4 | r:4 c4:4 e4:4 | r:4 c4:4 f4:4 | r:4 b3:4 e4:4 |
+                r:4 b3:4 d4:4 | r:4 c4:4 e4:4 | r:4 d4:4 e4:4 | r:4 c4:4 e4:4 |
+                r:4 e4:4 a4:4 | r:4 e4:4 a4:4 | r:4 d4:4 f4:4 | r:4 e4:4 g#4:4 |
+                r:4 d4:4 f4:4 | r:4 e4:4 a4:4 | r:4 d4:4 g#4:4 | r:4 c4:4 e4:4`,
+      },
+      {
+        inst: 'bass', vol: 0.8,
+        notes: `a2:12 | a2:12 | f2:12 | e2:12 | g2:12 | a2:12 | e2:12 | a2:12 |
+                a2:12 | c3:12 | d3:12 | e2:12 | d3:12 | a2:12 | e2:12 | a2:12`,
+      },
+    ],
+  },
   folkparken: { base: 'by', bpm: 116, loop: true, tracks: [], transpose: 5 },
   fabodskogen: { base: 'stig', bpm: 104, loop: true, tracks: [], transpose: -3 },
   trollberget: { base: 'boss', bpm: 132, loop: true, tracks: [], transpose: -2 },

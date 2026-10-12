@@ -110,6 +110,10 @@ Motorn har nu rörliga plattformar (`platforms` i områdesdata: hissar och gruvv
 
 Motorn har nu vattenhjul, flytande stockar, regn och ett kvarninteriör-tema.
 
-Nästa steg: tempel 4–7 ett i taget, sedan resten av byarna och polering.
+**Tempel 4 – Fyren i skären:** på ön mitt i sjön, nås med ekan. Storm och regn. Skäret (vindbyar som knuffar Dagny över havet, stolpar att hoppa på), Fyrtornet (vertikal klättring med vindbyar genom fönstren och en uppvind i trapphålet), Linsrummet (mörkt, med fyrlinser som ljuskällor och hål i golvet) och Fyrgalleriet med Havsfrun. Hon svävar över galleriet, sprutar havsvatten, kallar vindbyar mot kanten och dyker ner. I fas två slår blixtar ner där det först blinkar en varning. Nyckelskatten Ficklampan kastar en ljuskägla framför Dagny i mörker. Egen musik: "Fyrvaktarens vals".
+
+Motorn har nu vindzoner (`wind` i områdesdata: sidvind, växlande byar och uppvind), fördröjda projektiler med varning och ett havsbakgrundstema.
+
+Nästa steg: tempel 5–7 ett i taget, sedan resten av byarna och polering.
 
 Öppna frågor från specen, t.ex. den sista Väktarens öde och upplösningen på Trollberget, är medvetet obesvarade. Fynden i kryptan antyder bara.
