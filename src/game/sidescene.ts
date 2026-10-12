@@ -174,6 +174,13 @@ export class SideScene implements Scene, WorldApi {
             this.altar = { tx, ty };
             this.tileSprite[i] = 'altar';
             break;
+          case 'q': {
+            const item = a.questItem;
+            if (item && ITEMS[item] && !hasItem(s, item) && !hasFlag(s, `${item}_klar`)) {
+              this.pickups.push(new Pickup('quest', px - 4, py - 10, ITEMS[item].sprite, false, item));
+            }
+            break;
+          }
           case 'M':
             if (!hasItem(s, 'murre') && !hasFlag(s, 'murre_hemma')) {
               this.pickups.push(new Pickup('cat', px - 7, py - 10, 'cat', false));
@@ -675,6 +682,14 @@ export class SideScene implements Scene, WorldApi {
         g.pushOverlay(new DialogOverlay(g, 'murre_hittad'));
         g.save();
         break;
+      case 'quest': {
+        const id = pk.pid ?? '';
+        if (id && !s.items.includes(id)) s.items.push(id);
+        this.sfx('key');
+        g.pushOverlay(new DialogOverlay(g, `hittade_${id}`));
+        g.save();
+        break;
+      }
       case 'treasure': {
         const id = pk.pid ?? '';
         if (id && !s.items.includes(id)) s.items.push(id);

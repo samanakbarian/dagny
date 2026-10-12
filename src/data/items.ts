@@ -49,6 +49,12 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
     sprite: 'naverlur',
     treasure: true,
   },
+  fickur: {
+    id: 'fickur',
+    name: 'Fickuret',
+    description: 'Anders lyckofickur i mässing. Det tickar fortfarande.',
+    sprite: 'fickur',
+  },
   murre: {
     id: 'murre',
     name: 'Murre',
@@ -58,4 +64,4 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
 };
 
 /** Order shown in the items menu. */
-export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'murre'];
+export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'murre', 'fickur'];

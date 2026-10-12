@@ -254,6 +254,8 @@ export interface AreaDef {
   dark?: boolean;
   /** Temple this area belongs to (for keys and checkpoints). */
   temple?: string;
+  /** Side-quest item lying at 'q' (picked up once; dialog `hittade_<item>`). */
+  questItem?: string;
   /** Treasure item lying on the altar ('X' in the tile layer). */
   treasure?: string;
   /** Show the area name when entering. */

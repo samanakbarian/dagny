@@ -64,7 +64,7 @@ export const VILLAGES: readonly VillageDef[] = [
   { id: 'mormors_by', name: 'Mormors by', area: 'mormors_by', wakeEntry: 'H', teaches: 'lakning' },
   { id: 'bruksorten', name: 'Bruksorten', area: null, wakeEntry: 'H', teaches: 'skydd' },
   { id: 'fiskelaget', name: 'Fiskeläget', area: null, wakeEntry: 'H', teaches: 'hopp' },
-  { id: 'gruvsamhallet', name: 'Gruvsamhället', area: null, wakeEntry: 'H', teaches: 'lyse' },
+  { id: 'gruvsamhallet', name: 'Gruvsamhället', area: 'gruvsamhallet', wakeEntry: 'H', teaches: 'lyse' },
   { id: 'kyrkbyn', name: 'Kyrkbyn', area: null, wakeEntry: 'H', teaches: 'eld' },
   { id: 'faboden', name: 'Fäboden', area: null, wakeEntry: 'H', teaches: 'hamn' },
   { id: 'stationssamhallet', name: 'Stationssamhället', area: null, wakeEntry: 'H', teaches: 'aska' },

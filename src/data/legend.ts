@@ -13,6 +13,7 @@ import { Kind, type TileKind } from '../engine/collision';
  *  v vätte  V gravvätte  l lyktgubbe  t tomtenisse  m myrkatt  r kråka
  *  s stenknekt  j sjörå-skott  w skuggvarg  f fladdermus  u gruvvätte  B boss
  *  b bulle  T termos  g lingon  M Murre the cat (side quest)
+ *  q the area's quest item (AreaDef.questItem)
  */
 export const ENEMY_CHARS: Readonly<Record<string, string>> = {
   v: 'vatte',
@@ -92,4 +93,10 @@ export const DECO: Readonly<Record<string, string>> = {
   _: 'rail',
   a: 'ore',
   O: 'lantern',
+  W: 'wallY',
+  '{': 'cornerY',
+  '}': 'cornerRY',
+  Q: 'windowY',
+  e: 'doorTopY',
+  E: 'doorBottomY',
 };

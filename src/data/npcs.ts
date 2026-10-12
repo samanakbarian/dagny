@@ -68,6 +68,52 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
       { dialog: 'olle' },
     ],
   },
+  // --- Gruvsamhället ---
+  maj: {
+    id: 'maj',
+    sprite: 'maj',
+    idle: { frames: [0, 0, 2, 0, 1, 0], every: 0.8 },
+    talk: [{ dialog: 'maj_vila' }],
+  },
+  elin: {
+    id: 'elin',
+    sprite: 'elin',
+    idle: { frames: [0, 0, 1, 1, 0, 2], every: 0.8 },
+    talk: [
+      { if: [{ notSpell: 'lyse' }], dialog: 'elin_lar' },
+      { if: [{ flag: 'gruvan_klar' }], dialog: 'elin_efter' },
+      { dialog: 'elin_igen' },
+    ],
+  },
+  anders: {
+    id: 'anders',
+    sprite: 'miner',
+    idle: { frames: [0, 0, 2, 0], every: 0.9 },
+    talk: [
+      { if: [{ item: 'fickur' }, { notFlag: 'fickur_klar' }], dialog: 'anders_tack' },
+      { if: [{ flag: 'fickur_klar' }], dialog: 'anders_glad' },
+      { if: [{ flag: 'fickur_uppdrag' }], dialog: 'anders_vantar' },
+      { dialog: 'anders_uppdrag' },
+    ],
+  },
+  lisa: {
+    id: 'lisa',
+    sprite: 'kid2',
+    idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 },
+    talk: [
+      { if: [{ flag: 'gruvan_klar' }], dialog: 'lisa_efter' },
+      { dialog: 'lisa' },
+    ],
+  },
+  nils: {
+    id: 'nils',
+    sprite: 'miner',
+    idle: { frames: [0, 2, 0, 0, 1], every: 0.9 },
+    talk: [
+      { if: [{ flag: 'gruvan_klar' }], dialog: 'nils_efter' },
+      { dialog: 'nils' },
+    ],
+  },
   greta: {
     id: 'greta',
     sprite: 'woman2',

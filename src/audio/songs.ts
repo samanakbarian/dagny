@@ -190,6 +190,26 @@ export const SONGS: Record<string, SongDef> = {
     ],
   },
 
+  /** "Lavtornsschottis" – a G major schottis for Gruvsamhället. */
+  gruvby: {
+    bpm: 108,
+    loop: true,
+    tracks: [
+      {
+        inst: 'accordion', vol: 0.55,
+        notes: `g4:3 b4:1 d5:4 b4:4 g4:4 | a4:3 c5:1 e5:4 c5:4 a4:4 | b4:3 d5:1 g5:4 f#5:4 e5:4 | d5:12 r:4 |
+                e5:3 d5:1 c5:4 e5:4 c5:4 | d5:3 c5:1 b4:4 d5:4 b4:4 | c5:4 a4:4 f#4:4 a4:4 | g4:12 r:4`,
+      },
+      {
+        inst: 'flute', vol: 0.4,
+        notes: `r:16 | r:16 | r:8 d6:4 c6:4 | b5:8 a5:8 |
+                g5:8 e5:8 | f#5:8 d5:8 | e5:4 d5:4 c5:4 a4:4 | b4:12 r:4`,
+      },
+      { inst: 'bass', vol: 0.8, notes: 'g2:8 d3:8 | a2:8 e3:8 | g2:8 b2:8 | d3:8 a2:8 | c3:8 g2:8 | g2:8 d3:8 | d3:8 d2:8 | g2:8 d3:8' },
+      { inst: 'drum', vol: 0.35, notes: 'k:4 h:4 s:4 h:4 '.repeat(8) },
+    ],
+  },
+
   // Temples 2–7 have their own themes once built; until then they derive
   // variations of existing tunes so the data model is complete.
   /** "Gruvarbetarvisan" – D minor work song with pickaxe strokes, for the old mine. */

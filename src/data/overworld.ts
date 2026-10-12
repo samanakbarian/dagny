@@ -67,7 +67,7 @@ export const OVERWORLD: OverworldDef = {
     { x: 17, y: 5, name: 'Kyrkbyn', dialog: 'by_avsparrad' },
     { x: 39, y: 11, name: 'Bruksorten', dialog: 'by_avsparrad' },
     { x: 37, y: 20, name: 'Fiskeläget', dialog: 'by_avsparrad' },
-    { x: 40, y: 9, name: 'Gruvsamhället', dialog: 'by_avsparrad' },
+    { x: 40, y: 9, name: 'Gruvsamhället', area: 'gruvsamhallet', entry: 'W' },
     { x: 24, y: 24, name: 'Fäboden', dialog: 'by_avsparrad' },
     { x: 40, y: 26, name: 'Stationssamhället', dialog: 'by_avsparrad' },
   ],

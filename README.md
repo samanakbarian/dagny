@@ -104,6 +104,8 @@ tests/         Vitest
 
 Motorn har nu rörliga plattformar (`platforms` i områdesdata: hissar och gruvvagnar, `loop` eller `ride`).
 
-Nästa steg: Gruvsamhället (byn vid gruvan, lär ut Lyse), därefter tempel 3–7 ett i taget, och polering.
+**Gruvsamhället:** byn vid gruvan, med gula gruvarbetarlängor och lavtorn. Maj på pensionatet låter Dagny vila, och man vaknar här efter ett nederlag. Gamla Elin lär ut **Lyse**. Sidouppgift: Anders fickur ligger kvar i Orten. Byn har egen musik, "Lavtornsschottis". Sidouppgiftsföremål läggs nu ut med `q` och `questItem` i områdesdata.
+
+Nästa steg: tempel 3–7 ett i taget, sedan resten av byarna och polering.
 
 Öppna frågor från specen, t.ex. den sista Väktarens öde och upplösningen på Trollberget, är medvetet obesvarade. Fynden i kryptan antyder bara.
