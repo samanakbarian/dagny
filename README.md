@@ -6,6 +6,8 @@ Det här är **Leverans 1 (vertical slice)**: Mormors by → överblickskartan �
 
 **Spela:** https://samanakbarian.github.io/dagny/ (publiceras automatiskt från `master`)
 
+**Sätta upp publicering och Google Play:** se [`SETUP.md`](SETUP.md).
+
 ## Kom igång
 
 Kräver Node 20 eller senare (22 rekommenderas).
