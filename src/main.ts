@@ -83,8 +83,8 @@ function boot(): void {
   window.addEventListener('pagehide', () => game.save());
   window.addEventListener('blur', () => game.save());
 
-  // Expose for debugging / automated tests.
-  (window as unknown as { dagny: Game }).dagny = game;
+  // Expose for debugging and automated tests – in development only.
+  if (import.meta.env.DEV) (window as unknown as { dagny: Game }).dagny = game;
 
   // Service worker for offline play (production builds only).
   if (import.meta.env.PROD && 'serviceWorker' in navigator) {
