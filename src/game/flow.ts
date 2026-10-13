@@ -2,7 +2,7 @@ import { AREAS } from '../data/areas';
 import { STR } from '../data/strings';
 import { VILLAGES } from '../data/temples';
 import type { Game } from './game';
-import { newGame } from './state';
+import { newGame, setFlag } from './state';
 import { maxHp, maxMp } from './progression';
 import { SideScene, type Spawn } from './sidescene';
 import { OverworldScene } from './overworld';
@@ -96,5 +96,34 @@ export function showSliceEnd(game: Game): void {
         goToArea(game, st.lastVillage, { entry: 'H' });
       }, 'soluppgang'),
     );
+  });
+}
+
+/** Trollberget is reconciled: sunrise on midsummer morning, then the epilogue. */
+export function playEnding(game: Game): void {
+  const st = game.state;
+  if (!st) return;
+  game.transition(() => {
+    game.overlays = [];
+    game.setScene(
+      new CardsScene(game, STR.ending, 'soluppgang', () => goToArea(game, 'epilog', { entry: 'W', facing: 1 }), 'soluppgang'),
+    );
+    // Quitting during the cards resumes in the epilogue.
+    st.loc = { area: 'epilog', x: -1, y: -1 };
+    game.save();
+  });
+}
+
+/** The end: credits, a glimpse of part two, and back to the title screen. */
+export function playCredits(game: Game): void {
+  const st = game.state;
+  if (!st) return;
+  setFlag(st, 'spelet_klart');
+  st.lastVillage = 'mormors_by';
+  // Continuing later starts where Dagny stood, among the midsummer guests.
+  game.save();
+  game.transition(() => {
+    game.overlays = [];
+    game.setScene(new CardsScene(game, [...STR.credits, ...STR.teaser], 'midsommar', () => toTitle(game), 'soluppgang'));
   });
 }

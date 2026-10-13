@@ -53,6 +53,7 @@ export type Behavior =
   | 'boss_havsfru'
   | 'boss_spelman'
   | 'boss_skogsra'
+  | 'boss_bergakung'
   | 'boss_placeholder';
 
 export type PuffKind = 'moss' | 'leaf' | 'mist';
@@ -145,7 +146,9 @@ export type DialogAction =
   | { type: 'xp'; amount: number }
   | { type: 'giveItem'; item: string }
   | { type: 'takeItem'; item: string }
-  | { type: 'heal' };
+  | { type: 'heal' }
+  /** Hands over to a story scene (the ending, the credits). */
+  | { type: 'scene'; scene: 'ending' | 'credits' };
 
 export interface DialogChoice {
   text: string;
@@ -267,7 +270,7 @@ export interface AreaDef {
   music: string;
   backdrop: Backdrop;
   /** Theme for '#' and '=' tiles. */
-  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill' | 'skar' | 'fyr' | 'park' | 'skog';
+  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill' | 'skar' | 'fyr' | 'park' | 'skog' | 'berg';
   /** Collision + entity layer. See data/legend.ts. */
   tiles: string[];
   /** Optional non-colliding background decor layer (same size). */
@@ -302,6 +305,8 @@ export interface AreaDef {
   showName?: boolean;
   /** Ambient life. */
   ambience?: Array<'fireflies' | 'mosquitoes' | 'dust' | 'mist' | 'leaves' | 'rain' | 'spray'>;
+  /** NPC that appears where the boss stood once it is reconciled. */
+  afterBoss?: { npc: string; tx: number; ty: number };
   /** Dialog started automatically the first time (needs flag to not repeat). */
   onEnter?: { dialog: string; unlessFlag: string; setFlag: string };
 }
@@ -318,6 +323,8 @@ export interface OverworldPlace {
   entry?: string;
   /** Dialog shown instead (e.g. a temple that is not built yet). */
   dialog?: string;
+  /** Flags needed before the area opens; `dialog` is shown until then. */
+  requires?: string[];
 }
 
 export interface EncounterDef {

@@ -229,6 +229,8 @@ export class Game {
 
   /** Hook for scenes that need to react to actions (e.g. resting heals visually). */
   onAction: ((a: DialogAction) => void) | null = null;
+  /** Story scenes (the ending, the credits), wired up in main.ts. */
+  onScene: ((scene: 'ending' | 'credits') => void) | null = null;
 
   runAction(a: DialogAction): void {
     const s = this.state;
@@ -265,6 +267,9 @@ export class Game {
         break;
       case 'takeItem':
         s.items = s.items.filter((i) => i !== a.item);
+        break;
+      case 'scene':
+        this.onScene?.(a.scene);
         break;
     }
     this.onAction?.(a);

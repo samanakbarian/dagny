@@ -162,14 +162,14 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
   },
   bergakungen: {
     id: 'bergakungen', name: 'Bergakungen', title: 'Bergakungen – han under Trollberget',
-    sprite: 'grim', behavior: 'boss_placeholder',
-    hp: 140, damage: 6, xp: 0, speed: 1.5,
-    box: { x: 4, y: 12, w: 26, h: 20 }, puff: 'moss', heavy: true,
+    sprite: 'bergakung', behavior: 'boss_bergakung',
+    hp: 150, damage: 4, xp: 1000, speed: 1.4,
+    box: { x: 6, y: 16, w: 28, h: 32 }, puff: 'moss', heavy: true,
     phases: [
-      { atHpFraction: 1, sprite: 'grim', speed: 1.5, attackEvery: 1.4 },
-      { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.7, attackEvery: 0.9 },
+      { atHpFraction: 1, sprite: 'bergakung', speed: 1.4, attackEvery: 1.5 },
+      { atHpFraction: 0.5, sprite: 'bergakungSvag', speed: 1.8, attackEvery: 1.05 },
     ],
-    introDialog: 'boss_vaknar',
-    defeatDialog: 'boss_forlikad',
+    introDialog: 'bergakung_vaknar',
+    defeatDialog: 'bergakung_forlikad',
   },
 };

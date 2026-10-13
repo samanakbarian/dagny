@@ -50,9 +50,9 @@ export const TEMPLES: readonly TempleDef[] = [
   {
     id: 'trollberget', number: 7, name: 'Trollberget',
     mechanic: 'Allt kombinerat, högt och farligt.',
-    tone: 'lyktsken', music: 'trollberget', bossMusic: 'boss',
-    treasure: null, boss: 'bergakungen', entryArea: null,
-    lore: 'Svaret väntar på toppen.',
+    tone: 'troll', music: 'trollberget', bossMusic: 'bergakung',
+    treasure: null, boss: 'bergakungen', entryArea: 'troll_1',
+    lore: 'Dagmar gick in i berget midsommarnatten 1946 och band sig vid Bergakungen, för att hålla vreden borta.',
   },
 ];
 

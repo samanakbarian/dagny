@@ -325,5 +325,52 @@ export const SONGS: Record<string, SongDef> = {
   },
   /** Skogsrået's dance – the boss polska, lower and darker. */
   skogsraboss: { base: 'boss', bpm: 140, loop: true, tracks: [], transpose: -3 },
-  trollberget: { base: 'boss', bpm: 132, loop: true, tracks: [], transpose: -2 },
+  /** Trollberget – a slow, heavy march up the mountain in E minor. */
+  trollberget: {
+    bpm: 88,
+    loop: true,
+    tracks: [
+      {
+        inst: 'flute', vol: 0.75,
+        notes: `e4:4 g4:4 b4:6 a4:2 | g4:4 f#4:4 e4:8 | e4:4 g4:4 b4:4 e5:4 | d5:6 c5:2 b4:8 |
+                c5:4 b4:4 a4:4 c5:4 | b4:4 a4:4 g4:8 | a4:4 f#4:4 d#4:4 f#4:4 | e4:12 r:4`,
+      },
+      { inst: 'organ', vol: 0.4, notes: 'e3:16 e3:16 e3:16 b2:16 a2:16 e3:16 b2:16 e3:16' },
+      { inst: 'bass', vol: 0.9, notes: 'e2:2 r:2 e2:2 r:2 g2:2 r:2 b2:2 r:2 '.repeat(3) + 'b1:2 r:2 b1:2 r:2 d#2:2 r:2 f#2:2 r:2 a1:2 r:2 a1:2 r:2 c2:2 r:2 e2:2 r:2 e2:2 r:2 e2:2 r:2 g2:2 r:2 b2:2 r:2 b1:2 r:2 b1:2 r:2 d#2:2 r:2 f#2:2 r:2 e2:2 r:2 e2:2 r:2 b1:2 r:2 e2:2 r:2' },
+      { inst: 'drum', vol: 0.5, notes: 'k:4 r:4 k:4 s:4 '.repeat(8) },
+    ],
+  },
+  /** Bergakungen – the boss fight, driving and stomping. */
+  bergakung: {
+    bpm: 150,
+    loop: true,
+    tracks: [
+      {
+        inst: 'accordion', vol: 0.8,
+        notes: `e5:2 e5:2 g5:2 e5:2 b5:4 a5:4 | g5:2 f#5:2 e5:2 f#5:2 g5:4 e5:4 |
+                e5:2 e5:2 g5:2 e5:2 c6:4 b5:4 | a5:2 g5:2 f#5:2 d#5:2 e5:8 |
+                c5:2 e5:2 a5:2 e5:2 c5:2 e5:2 a5:4 | b4:2 d#5:2 f#5:2 d#5:2 b4:2 d#5:2 f#5:4 |
+                e5:2 g5:2 b5:2 e6:2 d6:2 b5:2 g5:4 | f#5:2 a5:2 d#5:2 f#5:2 e5:8`,
+      },
+      { inst: 'bass', vol: 0.95, notes: 'e2:2 e3:2 '.repeat(16) + 'a2:2 a3:2 '.repeat(4) + 'b2:2 b3:2 '.repeat(4) + 'e2:2 e3:2 '.repeat(4) + 'b2:2 b3:2 '.repeat(4) },
+      { inst: 'drum', vol: 0.6, notes: 'k:2 h:2 s:2 h:2 k:2 k:2 s:2 h:2 '.repeat(8) },
+    ],
+  },
+  /** "Midsommarpolska" – the epilogue: a happy polska round the maypole. */
+  midsommar: {
+    bpm: 116,
+    loop: true,
+    tracks: [
+      {
+        inst: 'flute', vol: 0.85,
+        notes: `g5:2 a5:1 b5:1 d6:2 b5:2 g5:2 b5:2 | a5:2 f#5:2 d5:2 f#5:2 a5:2 c6:2 |
+                b5:2 c6:1 d6:1 e6:2 d6:2 b5:2 g5:2 | a5:3 b5:1 a5:4 d5:4 |
+                g5:2 b5:2 d6:2 g6:2 f#6:2 e6:2 | d6:2 c6:2 b5:2 a5:2 g5:2 a5:2 |
+                b5:2 g5:2 e5:2 f#5:2 a5:2 f#5:2 | g5:8 r:4`,
+      },
+      { inst: 'accordion', vol: 0.4, notes: 'g4:4 b4:4 d5:4 | d4:4 f#4:4 a4:4 | g4:4 b4:4 d5:4 | d4:4 f#4:4 c5:4 | g4:4 b4:4 d5:4 | c4:4 e4:4 g4:4 | c4:4 e4:4 a4:4 | g4:4 b4:4 d5:4' },
+      { inst: 'bass', vol: 0.85, notes: 'g2:4 d3:4 g3:4 | d2:4 a2:4 d3:4 | g2:4 d3:4 g3:4 | d2:4 a2:4 d3:4 | g2:4 d3:4 g3:4 | c3:4 g2:4 c3:4 | d3:4 a2:4 d3:4 | g2:4 d3:4 g2:4' },
+      { inst: 'drum', vol: 0.5, notes: 'k:4 h:2 h:2 s:4 '.repeat(8) },
+    ],
+  },
 };

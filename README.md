@@ -2,7 +2,7 @@
 
 Ett mysigt 2D-actionäventyr för webbläsaren, mobile first. Sommaren 1964, svensk folktro, en tyst hjältinna med en gammal klinga och kyrkklockans kläpp som fäste.
 
-Det här är **Leverans 1 (vertical slice)**: Mormors by → överblickskartan → Stenkyrkans krypta (tempel 1) → Kyrkogrimmen → tillbaka till byn. Motorn och datamodellen är byggda för alla sju tempel.
+Hela spelet går att spela från början till slut: alla sju heliga platser, finalen på Trollberget, ett slut i soluppgången och en epilog på midsommarafton. (Några byar på kartan är fortfarande avspärrade.)
 
 **Spela:** https://samanakbarian.github.io/dagny/ (publiceras automatiskt från `master`)
 
@@ -122,6 +122,10 @@ Motorn har nu rytmrutor (`%`/`&` + `beat`), karuseller (elliptiska banor), dolda
 
 Motorn har nu ett förgrundslager (`front`), dörrar som visar en dialog efter ankomst (`dialog` på utgångar) och väsen som bara kan skadas bakifrån (`backOnly`).
 
-Nästa steg: Trollberget (tempel 7) med finalen, sedan resten av byarna och polering.
+**Tempel 7 – Trollberget:** i nordost, öppnas först när de sex andra platserna är förlikade (`requires` på platser i kartdata). Bergsfoten (vindbyar, ett hjul över en spikklyfta, skuggvargar), Trollgrottan (mörk, med kristaller som ljuskällor, gruvvagn över spikar och nyckeln bakom en dold vägg som radion avslöjar), Bergshjärtat (vertikalt: uppvind, ett hjul och en låst port högst upp) och Bergakungens sal. Bergakungen stampar så att sten faller från taket och en tryckvåg rullar längs golvet. Efter stampen står han och flåsar, och då ska man slå. Han rullar också stenblock som ingen sköld stoppar (hoppa över dem) och kastar sten. I fas två lyser ljuset genom sprickorna i honom och han kallar på skuggvargar. Egen musik: "Uppför berget" och bossmusiken "Bergakungen".
 
-Öppna frågor från specen, t.ex. den sista Väktarens öde och upplösningen på Trollberget, är medvetet obesvarade. Fynden i kryptan antyder bara.
+**Finalen och epilogen:** när Bergakungen är förlikad står Dagmar, den sista Väktaren och Dagnys mamma, kvar i salen. Midsommarnatten 1946 band hon sig vid Bergakungen för att hålla hans vrede borta så länge människorna mindes de heliga platserna. Nu behövs inte bandet längre. Avskedet slutar i soluppgång på midsommarmorgonen. Sedan kommer epilogen, midsommarafton ett år senare i Mormors by, med majstång och gäster från hela spelet. Den slutar med eftertexter och en glimt av Dagnys äventyr 2.
+
+Motorn har nu bossar som kallar på väsen (`spawnEnemy`), projektiler som skölden inte kan stoppa, NPC:er som dyker upp efter en boss (`afterBoss`) och dialoghandlingen `scene`, som startar slutet och eftertexterna.
+
+Nästa steg: resten av byarna och polering. Sedan Dagnys äventyr 2.

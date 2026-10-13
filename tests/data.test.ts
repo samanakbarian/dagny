@@ -253,7 +253,7 @@ describe('overworld', () => {
     for (const r of OVERWORLD.tiles) expect(r.length).toBe(w);
     for (const p of OVERWORLD.places) {
       const ch = OVERWORLD.tiles[p.y]?.[p.x];
-      expect('VKGBOMQYPZ').toContain(ch);
+      expect('VKGBOMQYPZT').toContain(ch);
       if (p.area) {
         expect(AREAS[p.area], p.area).toBeDefined();
         if (p.entry) expect(AREAS[p.area].tiles.join('')).toContain(p.entry);
@@ -290,6 +290,43 @@ describe('overworld', () => {
     expect(seen.has(`${glade.x},${glade.y}`)).toBe(true);
     const bruksorten = OVERWORLD.places.find((p) => p.name === 'Bruksorten')!;
     expect(seen.has(`${bruksorten.x},${bruksorten.y}`)).toBe(false);
+  });
+});
+
+describe('the ending', () => {
+  const actionsOf = (id: string): DialogAction[] => {
+    const d = DIALOG[id];
+    return [...(d.actions ?? []), ...(d.choices ?? []).flatMap((c) => c.actions ?? [])];
+  };
+  const flagsSet = new Set(
+    Object.keys(DIALOG).flatMap((id) => actionsOf(id).flatMap((a) => (a.type === 'flag' ? [a.flag] : []))),
+  );
+
+  it('Trollberget opens only when the six other places are restored', () => {
+    const troll = OVERWORLD.places.find((p) => p.name === 'Trollberget')!;
+    expect(troll.area).toBe('troll_1');
+    expect(troll.requires).toHaveLength(6);
+    for (const t of TEMPLES.filter((x) => x.id !== 'trollberget')) {
+      expect(troll.requires).toContain(`${t.id}_klar`);
+      expect(flagsSet.has(`${t.id}_klar`), `${t.id}_klar is set by some dialog`).toBe(true);
+    }
+  });
+
+  it('the guardian of the last room leaves Dagmar behind, and her farewell starts the ending', () => {
+    const ab = AREAS.troll_4.afterBoss!;
+    expect(NPCS[ab.npc]).toBeDefined();
+    expect(AREAS.troll_4.tiles[ab.ty + 1][ab.tx]).toBe('#');
+    const chain = ['dagmar_avsked', ...DIALOG.dagmar_avsked.choices!.map((c) => c.next!)];
+    const actions = chain.flatMap(actionsOf);
+    expect(actions).toContainEqual({ type: 'flag', flag: 'trollberget_klar' });
+    expect(actions).toContainEqual({ type: 'scene', scene: 'ending' });
+  });
+
+  it('the epilogue exists and Hulda can end the game', () => {
+    expect(AREAS.epilog).toBeDefined();
+    expect(AREAS.epilog.tiles.join('')).toContain('W');
+    expect(actionsOf('hulda_epilog')).toContainEqual({ type: 'scene', scene: 'credits' });
+    for (const card of [...STR.ending, ...STR.credits, ...STR.teaser]) expect(wrap(card, 236).length).toBeLessThanOrEqual(8);
   });
 });
 

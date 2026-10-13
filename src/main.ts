@@ -10,6 +10,7 @@ import { PauseOverlay } from './game/menus';
 import { RotateScreen } from './game/rotate';
 import { SPELL_ORDER } from './data/spells';
 import { maxMp } from './game/progression';
+import { playCredits, playEnding } from './game/flow';
 
 /** Boot: build the sprite cache, wire up the shell and start the 60 Hz loop. */
 function boot(): void {
@@ -42,6 +43,8 @@ function boot(): void {
       origSet(scene);
     };
   }
+
+  game.onScene = (scene) => (scene === 'ending' ? playEnding(game) : playCredits(game));
 
   game.setScene(new TitleScene(game));
 

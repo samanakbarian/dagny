@@ -251,6 +251,7 @@ export class SideScene implements Scene, WorldApi {
     }
     // The treasure appears on the altar once the guardian is reconciled.
     if (this.altar && a.treasure && !hasItem(s, a.treasure) && (!this.boss)) this.spawnTreasure();
+    if (a.afterBoss && a.temple && hasFlag(s, `${a.temple}_boss`)) this.spawnAfterBoss();
     // Animated decor (candles).
     if (a.deco) {
       for (let ty = 0; ty < h; ty++) {
@@ -260,6 +261,16 @@ export class SideScene implements Scene, WorldApi {
         }
       }
     }
+  }
+
+  /** Someone who was waiting behind the guardian (Dagmar in Trollberget). */
+  private spawnAfterBoss(): void {
+    const ab = this.area.afterBoss;
+    const def = ab ? NPCS[ab.npc] : undefined;
+    if (!ab || !def || this.npcs.some((n) => n.def.id === def.id)) return;
+    const n = new Npc(def, ab.tx * TILE + 8, (ab.ty + 1) * TILE);
+    this.npcs.push(n);
+    this.puff(n.x + n.w / 2, n.y + n.h / 2, 'mist');
   }
 
   private spawnTreasure(): void {
@@ -426,6 +437,20 @@ export class SideScene implements Scene, WorldApi {
     this.gustDx = dx;
     this.gustT = frames;
     this.sfx('wind');
+  }
+
+  spawnEnemy(id: string, px: number, py: number): boolean {
+    const def = ENEMIES[id];
+    if (!def || this.minions() >= 2) return false;
+    const e = new Enemy(def, px, py);
+    e.facing = px < this.player.x ? 1 : -1;
+    this.enemies.push(e);
+    this.puff(px, py - 8, 'mist');
+    return true;
+  }
+
+  minions(): number {
+    return this.enemies.filter((e) => !e.dead && e !== this.boss).length;
   }
 
   /** Current push of a wind zone at this step, or null when calm. */
@@ -602,7 +627,7 @@ export class SideScene implements Scene, WorldApi {
           }
         }
       } else if (overlaps(pr.box, p)) {
-        if (pr.sprite !== 'bolt' && this.shieldBlocks(pr)) {
+        if (pr.sprite !== 'bolt' && pr.sprite !== 'boulder' && this.shieldBlocks(pr)) {
           pr.dead = true;
           this.sparks(pr.x + pr.w / 2, pr.y + pr.h / 2);
           this.sfx('block');
@@ -756,6 +781,13 @@ export class SideScene implements Scene, WorldApi {
     if (e === this.boss) {
       this.bossOutro = 1;
       this.shake(40, 3);
+      // Whatever the guardian called up goes with it.
+      for (const m of this.enemies) {
+        if (m.dead || m === e) continue;
+        m.dead = true;
+        this.puff(m.x + m.w / 2, m.y + m.h / 2, m.def.puff);
+      }
+      this.projectiles = this.projectiles.filter((pr) => pr.fromPlayer);
       return;
     }
     const d = e.def.drops ?? {};
@@ -981,6 +1013,7 @@ export class SideScene implements Scene, WorldApi {
         const dlg = (b.boss?.defeatDialog) ?? 'boss_forlikad';
         g.pushOverlay(new DialogOverlay(g, dlg, () => {
           this.spawnTreasure();
+          this.spawnAfterBoss();
           g.save();
         }));
         this.boss = null;
@@ -1384,12 +1417,14 @@ export class SideScene implements Scene, WorldApi {
       if (a.sprite === 'bulbs') light(a.x + 8 - camX, a.y + 5 - camY, 36);
       else if (a.sprite === 'candle') light(a.x + 8 - camX, a.y + 4 - camY, 34 + flicker);
       else if (a.sprite === 'lantern') light(a.x + 8 - camX, a.y + 6 - camY, 44 + flicker);
+      else if (a.sprite === 'crystal') light(a.x + 8 - camX, a.y + 7 - camY, 40 + flicker);
       else if (a.sprite === 'lens') light(a.x + 8 - camX, a.y + 8 - camY, 64 + flicker * 2);
     }
     for (const e of this.enemies) {
       if (e.dead) continue;
       if (e.def.id === 'lyktgubbe') light(e.x + e.w / 2 - camX, e.y + e.h / 2 - camY, 26);
       // Gruvrået carries her own carbide lantern.
+      else if (e.def.behavior === 'boss_bergakung' && e.phase === 1) light(e.x + e.w / 2 - camX, e.y + 8 - camY, 50);
       else if (e.def.behavior === 'boss_spelman') light(e.x + e.w / 2 - camX, e.y + 10 - camY, 60);
       else if (e.def.behavior === 'boss_gruvra' && e.alpha > 0.05) light(e.x + e.w / 2 - camX, e.y + 6 - camY, 56 * e.alpha);
     }
@@ -1405,6 +1440,7 @@ export class SideScene implements Scene, WorldApi {
     }
     for (const pr of this.area.props ?? []) if (pr.sprite === 'irrbloss') light(pr.tx * TILE + 4 + (pr.dx ?? 0) - camX, (pr.ty + 1) * TILE - 4 + (pr.dy ?? 0) - camY, 34 + flicker);
     for (const pr of this.projectiles) if (pr.sprite === 'noteShot') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
+    for (const n of this.npcs) if (n.def.id === 'dagmar') light(n.x + 8 - camX, n.y + 10 - camY, 60 + flicker);
     for (const pr of this.projectiles) if (pr.sprite === 'stone') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
     for (const pr of this.projectiles) if (pr.sprite === 'fireball') light(pr.x + 4 - camX, pr.y + 4 - camY, 24);
     dc.globalCompositeOperation = 'source-over';

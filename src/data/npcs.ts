@@ -125,4 +125,26 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     idle: { frames: [0, 0, 1, 0, 0, 2], every: 0.8 },
     talk: [{ dialog: 'greta' }],
   },
+  // --- Trollberget ---
+  dagmar: {
+    id: 'dagmar',
+    sprite: 'dagmar',
+    idle: { frames: [0, 0, 2, 0], every: 0.9 },
+    talk: [{ dialog: 'dagmar_avsked' }],
+  },
+  // --- Epilogue: midsummer eve in Mormors by ---
+  hulda_ep: {
+    id: 'hulda_ep',
+    sprite: 'hulda',
+    idle: { frames: [0, 0, 0, 2, 0, 1, 1, 0], every: 0.7 },
+    talk: [{ dialog: 'hulda_epilog' }],
+  },
+  sven_ep: { id: 'sven_ep', sprite: 'man', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'sven_epilog' }] },
+  karin_ep: { id: 'karin_ep', sprite: 'woman', idle: { frames: [0, 0, 2, 0], every: 0.8 }, talk: [{ dialog: 'karin_epilog' }] },
+  maj_ep: { id: 'maj_ep', sprite: 'maj', idle: { frames: [0, 0, 2, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'maj_epilog' }] },
+  anders_ep: { id: 'anders_ep', sprite: 'miner', idle: { frames: [0, 0, 2, 0], every: 0.9 }, talk: [{ dialog: 'anders_epilog' }] },
+  olle_ep: { id: 'olle_ep', sprite: 'kid', idle: { frames: [0, 1, 0, 1, 0, 0], every: 0.3 }, talk: [{ dialog: 'olle_epilog' }] },
+  greta_ep: { id: 'greta_ep', sprite: 'woman2', idle: { frames: [0, 0, 1, 0, 0, 2], every: 0.8 }, talk: [{ dialog: 'greta_epilog' }] },
+  murre_ep: { id: 'murre_ep', sprite: 'cat', idle: { frames: [0, 0, 1, 0, 1], every: 0.5 }, talk: [{ dialog: 'murre_epilog' }] },
+  vatte_ep: { id: 'vatte_ep', sprite: 'vatte', idle: { frames: [0, 1], every: 0.4 }, talk: [{ dialog: 'vatte_epilog' }] },
 };

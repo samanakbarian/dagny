@@ -9,7 +9,7 @@ import type { EncounterDef, OverworldPlace } from '../data/types';
 import { DialogOverlay } from './dialog';
 import type { Game, Scene } from './game';
 import { drawHud } from './hud';
-import { hasItem, type GameState } from './state';
+import { hasFlag, hasItem, type GameState } from './state';
 import * as flow from './flow';
 
 const T = 16;
@@ -36,6 +36,7 @@ const TILE_SPRITE: Record<string, string> = {
   Q: 'owMill',
   Y: 'owLighthouse',
   P: 'owPark',
+  T: 'owTroll',
   Z: 'owFabod',
 };
 
@@ -71,7 +72,7 @@ function buildStatic(): HTMLCanvasElement {
       const ch = tiles[y][x];
       if (ch === '~') continue;
       // Places sit on grass.
-      if ('VKGBOMQYPZ'.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
+      if ('VKGBOMQYPZT'.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
       drawSprite(ctx, TILE_SPRITE[ch] ?? 'owGrass', 0, x * T, y * T);
     }
   }
@@ -198,7 +199,8 @@ export class OverworldScene implements Scene {
     if (this.frame % 2 === 0) this.game.audio.play('step');
     const place = this.placeAt(me.x, me.y);
     if (place) {
-      if (place.area) {
+      const locked = place.requires && !place.requires.every((f) => hasFlag(this.s, f));
+      if (place.area && !locked) {
         this.leaving = true;
         this.game.audio.play('door');
         flow.goToArea(this.game, place.area, { entry: place.entry });

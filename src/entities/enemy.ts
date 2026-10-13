@@ -288,6 +288,9 @@ export class Enemy implements Body {
         this.fall(world);
         break;
       }
+      case 'boss_bergakung':
+        this.updateBergakung(world, dx, p);
+        break;
       case 'boss_skogsra':
         this.updateSkogsra(world, dx, p);
         break;
@@ -622,6 +625,128 @@ export class Enemy implements Body {
           world.sfx('door');
           this.mode = 3;
           this.timer = 24;
+        }
+        break;
+    }
+  }
+
+  // --- Bergakungen ----------------------------------------------------------------------
+  // A slow giant. Stomps (stones fall from the roof and a shock wave runs along the
+  // floor – after a stomp he stands panting, the moment to strike), rolls boulders that
+  // no shield can stop (jump them) and throws rocks. Phase two: the bond weakens, light
+  // shines through the cracks, he calls up skuggvargar and rolls boulders in pairs.
+
+  private updateBergakung(world: WorldApi, dx: number, p: { x: number; y: number }): void {
+    const b = this.boss!;
+    if (!this.awake) {
+      this.homeY = this.y;
+      this.frame = 0;
+      return;
+    }
+    const gw = world.grid.w * 16;
+    const floorY = this.homeY + this.h;
+    const minX = 20;
+    const maxX = gw - 20 - this.w;
+    const summon = (): void => {
+      world.spawnEnemy('skuggvarg', 40, floorY);
+      world.spawnEnemy('skuggvarg', gw - 40, floorY);
+      world.sfx('roar');
+    };
+    if (this.phase === 0 && this.hp <= this.maxHp * b.phases[1].atHpFraction) {
+      this.phase = 1;
+      this.sprite = b.phases[1].sprite;
+      this.stun = 0;
+      this.mode = 0;
+      this.timer = 50;
+      world.shake(30, 3);
+      summon();
+    }
+    const ph = b.phases[this.phase];
+    this.y = this.homeY;
+    if (this.stun > 0) {
+      // Panting after a stomp.
+      this.stun--;
+      this.frame = 0;
+      return;
+    }
+    const rest = (): void => {
+      this.mode = 0;
+      this.timer = Math.round(ph.attackEvery * 60);
+    };
+    const boulder = (dir: number, speed: number, delay = 0): void =>
+      world.spawnProjectile({
+        x: dir === 1 ? this.x + this.w - 4 : this.x - 10, y: floorY - 14, vx: dir * speed, vy: 0,
+        w: 14, h: 14, sprite: 'boulder', damage: 3, fromPlayer: false, life: 420, delay,
+      });
+    switch (this.mode) {
+      case 0: { // lumber towards Dagny
+        this.facing = dx > 0 ? 1 : -1;
+        this.frame = Math.floor(this.t / 20) % 2 === 0 ? 0 : 2;
+        if (Math.abs(dx) > 44) this.x = Math.max(minX, Math.min(maxX, this.x + this.facing * ph.speed * 0.3));
+        if (this.t % 40 === 0) world.shake(3, 1);
+        if (--this.timer <= 0) {
+          const order = this.phase === 0 ? [1, 2, 1, 3] : [1, 2, 4, 1, 3, 2];
+          this.mode = order[this.cycle++ % order.length];
+          this.timer = this.mode === 1 ? 40 : 30;
+          if (this.mode === 4 && world.minions() >= 2) this.mode = 3;
+        }
+        break;
+      }
+      case 1: // stomp: arms up, then the ground shakes
+        this.frame = 1;
+        if (--this.timer <= 0) {
+          this.frame = 0;
+          world.shake(24, 3);
+          world.sfx('door');
+          const n = this.phase === 1 ? 5 : 3;
+          for (let i = 0; i < n; i++) {
+            const x = Math.max(20, Math.min(gw - 28, p.x - 4 + (i - (n - 1) / 2) * 34));
+            world.spawnProjectile({
+              x, y: 18, vx: 0, vy: 0.4, w: 8, h: 8, sprite: 'stone',
+              damage: 2, fromPlayer: false, life: 200, gravity: 0.13, delay: 10 + i * 9, ghost: true,
+            });
+          }
+          for (const dir of [-1, 1]) {
+            world.spawnProjectile({
+              x: dir === 1 ? this.x + this.w : this.x - 14, y: floorY - 8, vx: dir * 2, vy: 0,
+              w: 14, h: 8, sprite: 'wave', damage: 2, fromPlayer: false, life: 140, ghost: true,
+            });
+          }
+          this.stun = this.phase === 1 ? 50 : 70;
+          rest();
+        }
+        break;
+      case 2: // roll a boulder (two in phase two)
+        this.frame = 2;
+        if (--this.timer <= 0) {
+          boulder(this.facing, this.phase === 1 ? 2 : 1.6);
+          if (this.phase === 1) boulder(this.facing, 2, 50);
+          world.sfx('door');
+          rest();
+        }
+        break;
+      case 3: // throw rocks in arcs
+        this.frame = 1;
+        if (this.timer === 12) {
+          const n = this.phase === 1 ? 4 : 3;
+          for (let i = 0; i < n; i++) {
+            const tx = p.x + (i - (n - 1) / 2) * 22;
+            const flight = 55;
+            const sx = this.x + this.w / 2;
+            world.spawnProjectile({
+              x: sx, y: this.y, vx: (tx - sx) / flight, vy: -3.8 - i * 0.25,
+              w: 8, h: 8, sprite: 'stone', damage: 2, fromPlayer: false, life: 160, gravity: 0.14,
+            });
+          }
+          world.sfx('sword');
+        }
+        if (--this.timer <= 0) rest();
+        break;
+      case 4: // call the skuggvargar
+        this.frame = 1;
+        if (--this.timer <= 0) {
+          summon();
+          rest();
         }
         break;
     }

@@ -55,6 +55,7 @@ export const THEMES: Readonly<Record<string, Theme>> = {
   fyr: { top: 'fyrFloor', fill: 'whiteStone', platform: 'plank' },
   park: { top: 'boardwalk', fill: 'dirt', platform: 'plank' },
   skog: { top: 'mossTop', fill: 'peat', platform: 'log' },
+  berg: { top: 'bergTop', fill: 'bergRock', platform: 'beam' },
 };
 
 /** Collision kind for a tile-layer character. */
@@ -131,6 +132,8 @@ export const DECO: Readonly<Record<string, string>> = {
   A: 'pathArch',
   G: 'timber',
   Z: 'turfRoof',
+  X: 'crystal',
+  J: 'throne',
 };
 
 /** Foreground layer characters (AreaDef.front) → sprite id. */

@@ -16,6 +16,10 @@ export interface WorldApi {
   shake(frames: number, strength?: number): void;
   /** A gust that pushes Dagny sideways by dx per step for `frames` steps. */
   gust(dx: number, frames: number): void;
+  /** Calls up a creature (by enemy id) standing at px/py; false if the room is full. */
+  spawnEnemy(id: string, px: number, py: number): boolean;
+  /** Live creatures in the room besides the boss. */
+  minions(): number;
 }
 
 export interface ProjectileInit {

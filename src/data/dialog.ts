@@ -510,6 +510,102 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   trollberget_sover: {
     pages: ['Trollberget reser sig svart mot himlen. Vägen upp är stängd så länge de andra platserna sover.'],
   },
+
+  // --- Trollberget ------------------------------------------------------------
+  troll_skylt1: {
+    pages: ['Någon har ristat i berget, för länge sedan:\n"D. GICK HÄR MIDSOMMARNATT 1946. GLÖM OSS INTE."'],
+  },
+  bergakung_vaknar: {
+    speaker: 'Bergakungen',
+    pages: [
+      'SÅ. ÄNTLIGEN KOMMER NÅGON UPP FÖR BERGET IGEN.',
+      'DE STENGÄRDSGÅRDAR NI RIVER. DE KÄLLOR NI FYLLER IGEN. DE NAMN NI GLÖMMER. ALLT DET BÄR JAG.',
+      'HON SOM BAND MIG ÄR SVAG NU. VISA MIG OM DU ÄR STARKARE, LILLA VÄKTARE.',
+    ],
+  },
+  bergakung_forlikad: {
+    speaker: 'Bergakungen',
+    pages: [
+      'Du slog... men inte för att döda. Och du gick upp hela vägen, genom sex platser som alla har vaknat i godo.',
+      'Då minns människorna oss igen. Vreden får vila.',
+      'Hon som väntar här har hållit mig i arton år. Gå till henne nu. Hon har väntat längre på dig än på mig.',
+    ],
+  },
+  dagmar_avsked: {
+    speaker: 'Dagmar',
+    pages: [
+      'Dagny. Du har blivit så stor.',
+      'Midsommarnatten 1946 sov alla platserna in, och Bergakungen vaknade i vrede. Det fanns ingen annan Väktare än jag.',
+      'Så jag lade dig i näverfilten under klockstapeln, där Hulda skulle hitta dig. Och så gick jag upp i berget.',
+      'Jag band mig vid honom, så länge människorna mindes de heliga platserna. Men de glömde. Bandet blev svagare för varje sommar.',
+      'Nu har du väckt dem igen, en efter en. Bandet behövs inte längre. Och jag... jag kan inte stanna, älskling.',
+    ],
+    choices: [{ text: 'Krama henne', next: 'dagmar_ljus' }],
+  },
+  dagmar_ljus: {
+    speaker: 'Dagmar',
+    pages: [
+      'Där. Nu vet jag hur det känns. Det räckte gott.',
+      'Du behöver inte säga något. Det har du aldrig behövt. Ditt namn säger allt: ny dag.',
+      'Hälsa Hulda. Tacka henne från mig, för allt hon har gjort.',
+      'Se. Solen går upp.',
+    ],
+    actions: [{ type: 'flag', flag: 'trollberget_klar' }, { type: 'scene', scene: 'ending' }],
+  },
+
+  // --- Epilogue -----------------------------------------------------------------
+  epilog_intro: {
+    pages: ['Midsommarafton, ett år senare. Hela byn har kommit ut på vägen. Någon har rest en majstång mitt i byn.'],
+  },
+  hulda_epilog: {
+    speaker: 'Mormor Hulda',
+    pages: [
+      'Där är du ju! Kom hit med dig. Jag hälsade på vid klockstapeln i morse. Det låg färska blommor där.',
+      'Dagmar vävde aldrig klart filten. Så jag gjorde det i vintras, med din hjälp. Den hänger över din säng nu.',
+      'Varje midsommar ska vi tända ljusen på de sju platserna. Så glömmer ingen igen.',
+      'Gå nu och dansa. Det är midsommar, och sommaren är ljus igen.',
+    ],
+    choices: [
+      { text: 'Dansa runt stången', actions: [{ type: 'scene', scene: 'credits' }] },
+      { text: 'Inte än', next: 'hulda_epilog_vanta' },
+    ],
+  },
+  hulda_epilog_vanta: {
+    speaker: 'Mormor Hulda',
+    pages: ['Gå runt och hälsa på gästerna du, så väntar jag här. Dansen börjar när du vill.'],
+  },
+  sven_epilog: {
+    speaker: 'Sven',
+    pages: ['Jag har sett många midsomrar, Dagny. Men ingen där solen kändes som den gör i år.'],
+  },
+  karin_epilog: {
+    speaker: 'Karin',
+    pages: ['Murre har inte smitit en enda gång sedan i fjol. Han vet var han har det bra. Det vet vi alla nu.'],
+  },
+  maj_epilog: {
+    speaker: 'Maj',
+    pages: ['Vi tog bussen från Gruvsamhället hela vägen hit! Elin hälsar. Hon säger att lampan i gruvan lyser av sig själv om nätterna.'],
+  },
+  anders_epilog: {
+    speaker: 'Anders',
+    pages: ['Fickuret går fortfarande. Jag ställde det på midsommar, så det alltid ska påminna mig om dig.'],
+  },
+  olle_epilog: {
+    speaker: 'Olle',
+    pages: ['Radion spelar bara dansband nu! Inget brus alls. Ibland hör jag en fiol långt bakom musiken, men den låter glad.'],
+  },
+  greta_epilog: {
+    speaker: 'Greta',
+    pages: ['Jag har bakat sju sorters kakor, en för varje plats. Ta en med kanel, det är den för Trollberget.'],
+    actions: [{ type: 'heal' }],
+  },
+  murre_epilog: {
+    pages: ['Murre har en blomkrans runt halsen. Han ser inte glad ut över den. Men han spinner ändå.'],
+  },
+  vatte_epilog: {
+    speaker: 'Vätten',
+    pages: ['Blås inte i luren i dag, Väktare. I dag kommer vi ändå. Vi har aldrig sett en majstång så nära förut!'],
+  },
   by_avsparrad: {
     pages: ['En skylt vid vägen:\n"VÄGARBETE – AVSTÄNGT TILLS VIDARE"'],
   },

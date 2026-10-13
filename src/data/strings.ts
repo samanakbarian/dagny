@@ -89,6 +89,25 @@ export const STR = {
     'En av sju platser är förlikad. Sex sover ännu.',
     'Tack för att du spelade första delen av Dagnys äventyr!',
   ],
+  // Trollberget is reconciled – sunrise on midsummer morning.
+  ending: [
+    'Dagmar blev ljus. Ljuset steg genom berget och ut över skogen, sjön och åkrarna.',
+    'I Kyrkbyn började klockan i klockstapeln ringa av sig själv. Den här gången väckte den ingen vrede.',
+    'Över Trollberget gick solen upp. Det var midsommarmorgon, och sommaren var ljus igen.',
+    'Alla sju platser är förlikade.',
+  ],
+  // The credits after the epilogue.
+  credits: [
+    'Dagnys äventyr\n\nEtt spel om att minnas.',
+    'Idé och manus\nSaman\n\nProgrammering, grafik och musik\nSaman med Claude',
+    'Tack till alla väsen som lät sig förlikas, och till alla som spelade ända hit.',
+  ],
+  // A glimpse of part two.
+  teaser: [
+    'Hösten 1965. Ett brev kommer till Mormors by, utan frimärke och utan avsändare.',
+    '"Det finns fler platser än sju. Norrut, där tåget slutar gå."',
+    'Dagnys äventyr 2 – kommer.',
+  ],
 };
 
 export type Strings = typeof STR;

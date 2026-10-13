@@ -136,6 +136,12 @@ export const TONES: Readonly<Record<string, ToneFilter>> = {
     sky: ['#6f7f72', '#8a9a88', '#a9b5a0'],
     hills: ['#5a6e5a', '#465a46', '#33473a'],
   },
+  /** Trollberget – red-violet dusk on the last night before midsummer. */
+  troll: {
+    tint: '#8a5a8a', alpha: 0.22, mode: 'multiply', fade: 0.04, vignette: 0.5,
+    sky: ['#3a2440', '#6a3a55', '#b0605a'],
+    hills: ['#4a3348', '#3a283a', '#2b1f2e'],
+  },
   /** Overworld map – soft daylight. */
   karta: {
     tint: '#f0c890', alpha: 0.1, mode: 'soft-light', fade: 0.05, vignette: 0.25,

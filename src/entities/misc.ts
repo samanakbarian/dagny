@@ -1,5 +1,5 @@
 import { moveBody, type Rect, type TileGrid } from '../engine/collision';
-import { drawSprite } from '../engine/sprites';
+import { drawSprite, spriteSize } from '../engine/sprites';
 import { disc } from '../engine/draw';
 import { PALETTE } from '../data/palettes';
 import type { NpcDef } from '../data/types';
@@ -9,27 +9,27 @@ import type { ProjectileInit } from './types';
 export class Npc {
   x: number;
   y: number;
-  readonly w = 16;
-  readonly h = 24;
+  readonly w: number;
+  readonly h: number;
   facing: 1 | -1 = -1;
   private t: number;
 
   constructor(readonly def: NpcDef, px: number, py: number) {
-    const size = def.sprite === 'cat' ? { w: 14, h: 10 } : { w: 16, h: 24 };
+    const size = spriteSize(def.sprite);
+    this.w = size.w;
+    this.h = size.h;
     this.x = px - size.w / 2;
     this.y = py - size.h;
     this.t = Math.floor(px * 7) % 100;
   }
 
   get box(): Rect {
-    return this.def.sprite === 'cat'
-      ? { x: this.x, y: this.y, w: 14, h: 10 }
-      : { x: this.x, y: this.y, w: 16, h: 24 };
+    return { x: this.x, y: this.y, w: this.w, h: this.h };
   }
 
   update(playerX: number): void {
     this.t++;
-    const cx = this.x + 8;
+    const cx = this.x + this.w / 2;
     if (Math.abs(playerX - cx) < 64) this.facing = playerX < cx ? -1 : 1;
   }
 
