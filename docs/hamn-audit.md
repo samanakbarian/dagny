@@ -61,4 +61,4 @@ Ett **fängelse** betyder en plats som fågeln når, där Dagny får plats men i
 ## Kvar att göra
 
 - Modellen ser inte fysiken. Den vet till exempel inte hur högt Dagny hoppar. Ett rum där fågeln flyger upp till en avsats som Dagny bara kan lämna genom att klättra *uppåt* skulle inte upptäckas, men något sådant rum finns inte i dagens kartor. Det bör ändå provspelas.
-- En utgång *ut ur* rummet räknas som en väg ut. Om fågeln tar sig till nästa rum förbi en port och nästa rum också är låst, kan Dagny gå tillbaka genom utgången. Den porten hon flög förbi är fortfarande låst, men utgången till rummet före ligger på samma sida.
+- Om fågeln en dag skulle komma förbi en låst port (till exempel i ett nytt rum utan tak eller med en lucka i väggen) kan Dagny hamna mellan två låsta portar. Testet i `tests/hamn.test.ts` fångar luckor i väggar, och fågeln stannar under rummets överkant, så i dagens kartor kan det inte hända. Nya rum bör ändå få ett tak eller en vägg ända upp ovanför sina portar.
