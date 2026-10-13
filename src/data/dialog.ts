@@ -590,6 +590,9 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   tjuvgrottan_skylt: {
     pages: ['Någon har ristat i berget med en kniv:\n"HÄR GÖMDE GRÅ-PELLE SITT SILVER 1899. DET SYNS BARA I RÄTT LJUS."'],
   },
+  jattegrytan_skylt: {
+    pages: ['Vattnet har svarvat ut en jättegryta i berget. Längre in är det beckmörkt. Med en riktigt stark lampa skulle man kanske se vad som döljer sig på väggarna.'],
+  },
   jattegrytan_ristning: {
     pages: ['I lampans sken syns två bokstäver ristade i berget, nästan utplånade av vattnet: D. och H. Under dem en liten sol.'],
   },

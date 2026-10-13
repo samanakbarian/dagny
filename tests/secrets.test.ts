@@ -193,3 +193,82 @@ describe('sword upgrades', () => {
     }
   });
 });
+
+/**
+ * Coarse platformer reachability: Dagny stands on a cell with floor under it,
+ * walks, falls, and jumps up to 3 tiles high and 4 tiles across. Rooms with
+ * moving platforms, wind or dance squares are left out (they need timing).
+ */
+function softlocks(a: AreaDef, radio: boolean): string[] {
+  const t = a.tiles;
+  const h = t.length;
+  const w = t[0].length;
+  const solid = (x: number, y: number): boolean => y >= h || (x >= 0 && x < w && y >= 0 && (t[y][x] === '#' || t[y][x] === 'L' || (t[y][x] === '?' && !radio)));
+  const free = (x: number, y: number): boolean => x >= 0 && x < w && y < h && (y < 0 || (!solid(x, y) && !'^~n'.includes(t[y][x])));
+  const floor = (x: number, y: number): boolean => y + 1 < h && (solid(x, y + 1) || '=%&'.includes(t[y + 1][x]));
+  const stand = (x: number, y: number): boolean => free(x, y) && free(x, y - 1) && floor(x, y);
+  const land = (x: number, y: number): [number, number] | null => {
+    let yy = y;
+    while (yy < h && free(x, yy) && !floor(x, yy)) yy++;
+    return yy < h && stand(x, yy) ? [x, yy] : null;
+  };
+  const moves = (x: number, y: number): Array<[number, number]> => {
+    const out: Array<[number, number]> = [];
+    for (const dx of [-1, 1]) {
+      if (free(x + dx, y) && free(x + dx, y - 1)) {
+        const l = land(x + dx, y);
+        if (l) out.push(l);
+      }
+    }
+    for (let up = 1; up <= 3 && free(x, y - up); up++) {
+      for (let dx = -4; dx <= 4; dx++) {
+        let ok = true;
+        for (let cx = x; cx !== x + dx + Math.sign(dx || 1) && ok; cx += Math.sign(dx || 1)) if (!free(cx, y - up)) ok = false;
+        const l = ok ? land(x + dx, y - up) : null;
+        if (l) out.push(l);
+        if (dx === 0) continue;
+      }
+    }
+    return out;
+  };
+  const exits = new Set<string>();
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const ch = t[y][x];
+      if (((x === 0 || x === w - 1) && free(x, y)) || (/[A-Z]/.test(ch) && !'LXBMT'.includes(ch))) exits.add(`${x},${y}`);
+    }
+  }
+  const key = (c: [number, number]): string => `${c[0]},${c[1]}`;
+  const starts = [...exits].map((k) => k.split(',').map(Number) as [number, number]).map(([x, y]) => land(x, y)).filter((c): c is [number, number] => !!c);
+  const seen = new Map<string, [number, number]>();
+  const stack = [...starts];
+  while (stack.length) {
+    const c = stack.pop()!;
+    if (seen.has(key(c))) continue;
+    seen.set(key(c), c);
+    for (const n of moves(...c)) if (!seen.has(key(n))) stack.push(n);
+  }
+  const good = new Set<string>([...seen.keys()].filter((k) => {
+    const [x, y] = k.split(',').map(Number);
+    return exits.has(k) || exits.has(`${x - 1},${y}`) || exits.has(`${x + 1},${y}`) || x === 0 || x === w - 1;
+  }));
+  for (let changed = true; changed;) {
+    changed = false;
+    for (const [k, c] of seen) {
+      if (!good.has(k) && moves(...c).some((n) => good.has(key(n)))) {
+        good.add(k);
+        changed = true;
+      }
+    }
+  }
+  return [...seen.keys()].filter((k) => !good.has(k));
+}
+
+describe('no pits to get stuck in', () => {
+  it('from every place Dagny can stand she can get back to an exit (without keys, with or without the radio)', () => {
+    for (const a of Object.values(AREAS)) {
+      if (a.platforms || a.wind || a.beat) continue;
+      for (const radio of [false, true]) expect(softlocks(a, radio), `${a.id} radio=${radio}`).toEqual([]);
+    }
+  });
+});
