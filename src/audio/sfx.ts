@@ -15,6 +15,11 @@ export const SFX: Record<string, SfxStep[]> = {
     { wave: 'triangle', from: 1400, to: 1300, dur: 0.12, vol: 0.4 },
     { wave: 'square', from: 2100, to: 2000, dur: 0.05, vol: 0.15 },
   ],
+  /** A bird about to dive: a short rising shriek. */
+  screech: [
+    { wave: 'sawtooth', from: 900, to: 1700, dur: 0.12, vol: 0.22 },
+    { wave: 'sawtooth', from: 1100, to: 1900, dur: 0.1, vol: 0.18, at: 0.13 },
+  ],
   hurt: [
     { wave: 'sawtooth', from: 380, to: 120, dur: 0.22, vol: 0.4 },
     { wave: 'noise', from: 800, to: 200, dur: 0.15, vol: 0.3 },

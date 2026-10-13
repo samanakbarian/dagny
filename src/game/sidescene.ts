@@ -804,6 +804,13 @@ export class SideScene implements Scene, WorldApi {
     return this.area.tiles[ty]?.[tx] === '~';
   }
 
+  /** Whether Dagny holds her shield towards something at x. */
+  private shieldFaces(x: number): boolean {
+    const p = this.player;
+    if (p.attacking || p.state !== 'normal' || p.downThrust) return false;
+    return (x > p.x + p.w / 2 ? 1 : -1) === p.facing;
+  }
+
   private shieldBlocks(pr: Projectile): boolean {
     const p = this.player;
     if (p.attacking || p.state === 'hurt' || p.state === 'bird' || p.downThrust) return false;
@@ -857,6 +864,14 @@ export class SideScene implements Scene, WorldApi {
           if (r === 'dead') this.killEnemy(e);
         }
         if (p.downThrust && r !== 'none') p.bounce();
+        continue;
+      }
+      // A diving bird meets the shield: it is turned away and left dazed.
+      if (e.diving && overlaps(eb, p) && this.shieldFaces(e.x + e.w / 2)) {
+        e.parry(p.x + p.w / 2);
+        this.sparks(e.x + e.w / 2, e.y + e.h / 2);
+        this.sfx('block');
+        this.game.vibrate(15);
         continue;
       }
       if (e.harmful && overlaps(eb, p) && p.invuln === 0) {

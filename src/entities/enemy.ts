@@ -46,6 +46,8 @@ export class Enemy implements Body {
   /** Cannot be hit or hurt anyone (e.g. while faded out). */
   untouchable = false;
   private homeY = 0;
+  /** A bird about to dive (drawn with a warning mark). */
+  warn = false;
   /** Centre of a waltz, and how far round it has turned. */
   private cx = 0;
   private ang = 0;
@@ -214,13 +216,27 @@ export class Enemy implements Body {
         break;
       }
       case 'diver': {
-        // mode 0 hover, 1 dive, 2 climb back.
+        // mode 0 hover, 3 wind-up (the warning), 1 dive, 4 dazed, 2 climb back.
         if (this.mode === 0) {
           this.facing = dx > 0 ? 1 : -1;
           this.x += Math.sign(dx) * 0.4 * (dist > 10 ? 1 : 0);
           this.y = this.baseY + Math.sin(this.t / 12) * 3;
           this.frame = Math.floor(this.t / 7) % 2;
           if (--this.timer <= 0 && dist < 90 && p.y > cy) {
+            // Stop, rise a little and shriek: the dive comes in half a second.
+            this.mode = 3;
+            this.timer = 30;
+            world.sfx('screech');
+          }
+        } else if (this.mode === 3) {
+          this.facing = dx > 0 ? 1 : -1;
+          this.y -= 0.35;
+          this.x += Math.sin(this.t * 1.7) * 0.8;
+          this.frame = Math.floor(this.t / 3) % 2;
+          this.warn = true;
+          if (--this.timer <= 0) {
+            // The aim is locked now: step aside, or turn the shield to it.
+            this.warn = false;
             this.mode = 1;
             const ang = Math.atan2(p.y - cy, dx);
             this.vx = Math.cos(ang) * sp * 1.6;
@@ -230,7 +246,15 @@ export class Enemy implements Body {
           this.frame = 2;
           this.x += this.vx;
           this.y += this.vy;
-          if (this.y > this.baseY + 90 || isSolidAt(world.grid, cx, this.y + this.h) || this.t % 200 === 0) this.mode = 2;
+          if (isSolidAt(world.grid, cx, this.y + this.h)) {
+            // Crashed into the ground: dazed for a moment.
+            this.mode = 4;
+            this.stun = 55;
+          } else if (this.y > this.baseY + 90 || this.t % 200 === 0) this.mode = 2;
+        } else if (this.mode === 4) {
+          this.frame = 0;
+          this.y += Math.sin(this.t / 4) * 0.3;
+          if (--this.stun <= 0) this.mode = 2;
         } else {
           this.frame = Math.floor(this.t / 5) % 2;
           this.y -= 1.2;
@@ -1249,6 +1273,20 @@ export class Enemy implements Body {
     }
   }
 
+  /** True while a bird is diving (the shield can turn it away). */
+  get diving(): boolean {
+    return this.def.behavior === 'diver' && this.mode === 1;
+  }
+
+  /** The shield caught a diving bird: it tumbles back, dazed. */
+  parry(fromX: number): void {
+    this.mode = 4;
+    this.stun = 70;
+    this.vx = 0;
+    this.vy = 0;
+    this.x += this.x + this.w / 2 < fromX ? -6 : 6;
+  }
+
   private clampX(world: WorldApi): void {
     const maxX = world.grid.w * 16 - 16 - this.w;
     if (this.x < 16) {
@@ -1280,6 +1318,14 @@ export class Enemy implements Body {
     }
     drawSprite(ctx, this.sprite, this.frame, sx, sy, flip);
     ctx.globalAlpha = 1;
+    if (this.warn && Math.floor(this.t / 4) % 2 === 0) {
+      // "!" over a bird about to dive.
+      ctx.fillStyle = '#f0d27a';
+      const wx = Math.round(sx + this.def.box.x + this.w / 2 - 1);
+      const wy = Math.round(sy + this.def.box.y - 9);
+      ctx.fillRect(wx, wy, 2, 5);
+      ctx.fillRect(wx, wy + 6, 2, 2);
+    }
     if (this.stun > 0 && Math.floor(this.t / 6) % 2 === 0) {
       drawSprite(ctx, 'spark', 0, sx + this.def.box.x + this.w / 2 - 4, sy + this.def.box.y - 8, false);
     }

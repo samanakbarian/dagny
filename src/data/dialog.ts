@@ -96,7 +96,10 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   },
   algot_igen: {
     speaker: 'Smeden Algot',
-    pages: ['En stöt nedåt studsar dig upp igen. Bra mot väsen med sköld, och mot stenar som behöver knäckas.'],
+    pages: [
+      'En stöt nedåt studsar dig upp igen. Bra mot väsen med sköld, och mot stenar som behöver knäckas.',
+      'Och fåglarna, kråkor och fladdermöss: de skriker och stannar upp innan de dyker. Vänd skölden mot dem då, så blir de yra en stund. Sedan slår du.',
+    ],
   },
 
   // --- Side quest: Murre the cat ---------------------------------------------------
