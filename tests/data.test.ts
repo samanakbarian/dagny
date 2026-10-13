@@ -367,6 +367,21 @@ describe('music and sound', () => {
     }
   });
 
+  it('the soundtrack hangs together: one temple theme, one guardian fight, the last temple its own', () => {
+    for (const t of TEMPLES) {
+      const last = t.id === 'trollberget';
+      expect(t.music, t.id).toBe(last ? 'trollberget' : 'tempel');
+      expect(t.bossMusic, t.id).toBe(last ? 'bergakung' : 'boss');
+      for (const a of Object.values(AREAS).filter((x) => x.temple === t.id)) expect(a.music, a.id).toBe(t.music);
+    }
+  });
+
+  it('every song is used somewhere', () => {
+    const used = new Set([...Object.values(AREAS).map((a) => a.music), ...TEMPLES.flatMap((t) => [t.music, t.bossMusic])]);
+    const elsewhere = ['titel', 'karta', 'seger', 'somnar', 'soluppgang', 'midsommar'];
+    for (const id of Object.keys(SONGS)) expect(used.has(id) || elsewhere.includes(id), id).toBe(true);
+  });
+
   it('has the sound effects the spec asks for', () => {
     for (const id of ['jump', 'sword', 'hit', 'block', 'xp', 'levelup', 'dialog', 'door', 'water']) expect(SFX[id], id).toBeDefined();
   });
