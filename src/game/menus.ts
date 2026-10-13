@@ -277,18 +277,18 @@ export class SettingsOverlay extends SubOverlay {
       ],
       game.audio,
     );
-    this.menu.rowHeight = 12;
+    this.menu.rowHeight = 11;
   }
   protected tick(): void {
     this.menu.update(this.game.input);
   }
   render(ctx: CanvasRenderingContext2D): void {
     const f = this.frame(ctx, STR.settings);
-    this.menu.render(ctx, f.x + 14, f.y + 22, 200);
+    this.menu.render(ctx, f.x + 14, f.y + 19, 200);
     const cur = this.menu.cursor;
-    if (cur === 2) drawText(ctx, STR.calmHelp, f.x + 14, f.y + f.h - 14, 'G');
-    else if (cur === 7) drawText(ctx, STR.lowButtonHelp, f.x + 14, f.y + f.h - 14, 'G');
-    else drawText(ctx, '< > ändrar', f.x + 14, f.y + f.h - 14, 'G');
+    if (cur === 2) drawText(ctx, STR.calmHelp, f.x + 14, f.y + f.h - 12, 'G');
+    else if (cur === 7) drawText(ctx, STR.lowButtonHelp, f.x + 14, f.y + f.h - 12, 'G');
+    else drawText(ctx, '< > ändrar', f.x + 14, f.y + f.h - 12, 'G');
   }
 }
 
