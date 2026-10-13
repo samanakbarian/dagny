@@ -68,30 +68,24 @@ export const SONGS: Record<string, SongDef> = {
   },
 
   /** "Vandringsvisa" – G major, for the overworld. */
+  /**
+   * "Vägen ut" – the overworld: a driving adventure march in D minor for
+   * NES-style pulse waves, galloping octave bass and snappy drums.
+   */
   karta: {
-    bpm: 116,
+    bpm: 150,
     loop: true,
     tracks: [
       {
-        inst: 'flute', vol: 0.9,
-        notes: `g4:4 b4:4 d5:4 b4:4 | c5:4 e5:4 d5:8 | b4:4 g4:4 a4:4 b4:4 | a4:12 r:4 |
-                g4:4 b4:4 d5:4 g5:4 | f#5:4 e5:4 d5:8 | c5:4 a4:4 b4:4 a4:4 | g4:12 r:4 |
-                e5:4 e5:4 d5:4 b4:4 | c5:4 c5:4 b4:8 | a4:4 b4:4 c5:4 d5:4 | e5:4 d5:4 b4:8 |
-                g4:4 b4:4 d5:4 g5:4 | f#5:4 a5:4 g5:8 | d5:4 b4:4 a4:4 f#4:4 | g4:12 r:4`,
+        inst: 'pulse', vol: 0.9,
+        notes: `d5:3 a4:1 d5:2 f5:2 e5:4 d5:2 c5:2 | d5:6 a4:2 bb4:4 c5:4 | d5:3 a4:1 d5:2 f5:2 g5:4 f5:2 e5:2 | a5:12 r:2 a5:2 |
+                bb5:3 a5:1 g5:2 f5:2 g5:4 f5:2 e5:2 | f5:6 e5:2 d5:4 c5:4 | bb4:3 c5:1 d5:2 e5:2 f5:2 e5:2 c#5:4 | d5:12 r:4 |
+                f5:2 f5:2 r:2 f5:2 a5:4 g5:2 f5:2 | e5:2 e5:2 r:2 e5:2 g5:4 f5:2 e5:2 | d5:2 d5:2 r:2 d5:2 f5:4 e5:2 d5:2 | c#5:4 e5:4 a5:8 |
+                bb5:3 a5:1 bb5:2 c6:2 d6:4 c6:2 bb5:2 | a5:3 g5:1 a5:2 bb5:2 c6:4 a5:4 | g5:2 a5:2 bb5:2 a5:2 g5:2 f5:2 e5:2 c#5:2 | d5:8 r:4 a4:2 c#5:2`,
       },
-      {
-        inst: 'accordion', vol: 0.35,
-        notes: `r:4 b3:4 r:4 b3:4 | r:4 c4:4 r:4 b3:4 | r:4 b3:4 r:4 b3:4 | r:4 a3:4 r:4 c4:4 |
-                r:4 b3:4 r:4 b3:4 | r:4 a3:4 r:4 a3:4 | r:4 c4:4 r:4 c4:4 | r:4 b3:4 r:4 b3:4 |
-                r:4 g3:4 r:4 g3:4 | r:4 e4:4 r:4 d4:4 | r:4 a3:4 r:4 a3:4 | r:4 g3:4 r:4 g3:4 |
-                r:4 b3:4 r:4 b3:4 | r:4 a3:4 r:4 b3:4 | r:4 c4:4 r:4 c4:4 | r:4 b3:4 r:4 b3:4`,
-      },
-      {
-        inst: 'bass', vol: 0.8,
-        notes: `g2:8 d3:8 | c3:8 g2:8 | g2:8 d3:8 | d3:8 a2:8 | g2:8 d3:8 | d3:8 a2:8 | c3:8 d3:8 | g2:8 d2:8 |
-                e2:8 b2:8 | c3:8 g2:8 | d3:8 a2:8 | e3:8 b2:8 | g2:8 d3:8 | d3:8 g2:8 | d3:8 d2:8 | g2:8 d3:8`,
-      },
-      { inst: 'drum', vol: 0.3, notes: 'k:4 h:4 s:4 h:4 '.repeat(16) },
+      { inst: 'pulse2', vol: 0.55, notes: 'd4:2 f4:2 a4:2 f4:2 d4:2 f4:2 a4:2 f4:2 | bb3:2 d4:2 f4:2 d4:2 bb3:2 d4:2 f4:2 d4:2 | d4:2 f4:2 a4:2 f4:2 d4:2 f4:2 a4:2 f4:2 | f4:2 a4:2 c5:2 a4:2 f4:2 a4:2 c5:2 a4:2 | g4:2 bb4:2 d5:2 bb4:2 g4:2 bb4:2 d5:2 bb4:2 | d4:2 f4:2 a4:2 f4:2 d4:2 f4:2 a4:2 f4:2 | a3:2 c#4:2 e4:2 c#4:2 a3:2 c#4:2 e4:2 c#4:2 | d4:2 f4:2 a4:2 f4:2 d4:2 f4:2 a4:2 f4:2 | f4:2 a4:2 c5:2 a4:2 f4:2 a4:2 c5:2 a4:2 | c4:2 e4:2 g4:2 e4:2 c4:2 e4:2 g4:2 e4:2 | d4:2 f4:2 a4:2 f4:2 d4:2 f4:2 a4:2 f4:2 | a3:2 c#4:2 e4:2 c#4:2 a3:2 c#4:2 e4:2 c#4:2 | bb3:2 d4:2 f4:2 d4:2 bb3:2 d4:2 f4:2 d4:2 | f4:2 a4:2 c5:2 a4:2 f4:2 a4:2 c5:2 a4:2 | g4:2 bb4:2 d5:2 bb4:2 g4:2 bb4:2 d5:2 bb4:2 | d4:2 f4:2 a4:2 f4:2 d4:2 f4:2 a4:2 f4:2' },
+      { inst: 'bass', vol: 0.95, notes: 'd2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 | g2:2 g3:2 g2:2 g3:2 g2:2 g3:2 g2:2 g3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 | c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 | f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 | g2:2 g3:2 g2:2 g3:2 g2:2 g3:2 g2:2 g3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2' },
+      { inst: 'drum', vol: 0.45, notes: 'k:2 h:2 s:2 h:2 k:2 k:2 s:2 h:2 '.repeat(16) },
     ],
   },
 

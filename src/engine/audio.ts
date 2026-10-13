@@ -8,7 +8,7 @@
  * (or resumed) by `unlock()` on the first tap / key press.
  */
 
-export type InstrumentId = 'accordion' | 'harp' | 'bass' | 'flute' | 'bell' | 'organ' | 'drum';
+export type InstrumentId = 'accordion' | 'harp' | 'bass' | 'flute' | 'bell' | 'organ' | 'pulse' | 'pulse2' | 'drum';
 
 export interface TrackDef {
   inst: InstrumentId;
@@ -432,9 +432,56 @@ export class AudioEngine {
         g.linearRampToValueAtTime(0, end + 0.12);
         break;
       }
+      case 'pulse':
+      case 'pulse2': {
+        // NES-style pulse wave: 25 % duty for leads, 12.5 % for thin harmony.
+        const o = ctx.createOscillator();
+        o.setPeriodicWave(this.pulseWave(t.inst === 'pulse' ? 0.25 : 0.125));
+        o.frequency.value = hz;
+        // A little vibrato on long notes only, like the old sound chips.
+        if (dur > 0.3) {
+          const vib = ctx.createOscillator();
+          const vibGain = ctx.createGain();
+          vib.frequency.value = 6;
+          vibGain.gain.setValueAtTime(0, when);
+          vibGain.gain.linearRampToValueAtTime(hz * 0.008, when + 0.25);
+          vib.connect(vibGain).connect(o.frequency);
+          vib.start(when);
+          vib.stop(end + 0.02);
+        }
+        o.connect(env);
+        const peak = vol * (t.inst === 'pulse' ? 0.13 : 0.09);
+        g.setValueAtTime(0, when);
+        g.linearRampToValueAtTime(peak, when + 0.005);
+        g.linearRampToValueAtTime(peak * 0.7, when + Math.min(0.12, dur * 0.5));
+        g.setValueAtTime(peak * 0.7, Math.max(when + 0.01, end - 0.02));
+        g.linearRampToValueAtTime(0, end);
+        o.start(when);
+        o.stop(end + 0.02);
+        break;
+      }
       default:
         break;
     }
+  }
+
+  private pulseWaves = new Map<number, PeriodicWave>();
+
+  /** A band-limited pulse wave with the given duty cycle (built once per duty). */
+  private pulseWave(duty: number): PeriodicWave {
+    let w = this.pulseWaves.get(duty);
+    if (!w) {
+      const n = 48;
+      const real = new Float32Array(n);
+      const imag = new Float32Array(n);
+      for (let k = 1; k < n; k++) {
+        real[k] = (2 / (k * Math.PI)) * Math.sin(k * Math.PI * duty) * Math.cos(k * Math.PI * duty);
+        imag[k] = (2 / (k * Math.PI)) * Math.sin(k * Math.PI * duty) * Math.sin(k * Math.PI * duty);
+      }
+      w = this.ctx!.createPeriodicWave(real, imag);
+      this.pulseWaves.set(duty, w);
+    }
+    return w;
   }
 
   private drum(kind: number, when: number, vol: number, bus: AudioNode): void {
