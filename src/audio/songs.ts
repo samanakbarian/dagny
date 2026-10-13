@@ -319,19 +319,25 @@ export const SONGS: Record<string, SongDef> = {
   },
   /** Skogsrået's dance – the boss polska, lower and darker. */
   skogsraboss: { base: 'boss', bpm: 140, loop: true, tracks: [], transpose: -3 },
-  /** Trollberget – a slow, heavy march up the mountain in E minor. */
+  /**
+   * Trollberget – the last temple: fast and relentless in E minor, a grinding
+   * octave bass, restless sixteenth arpeggios, a dark Neapolitan F chord and
+   * a lead that keeps climbing. Never lets Dagny catch her breath.
+   */
   trollberget: {
-    bpm: 88,
+    bpm: 158,
     loop: true,
     tracks: [
       {
-        inst: 'flute', vol: 0.75,
-        notes: `e4:4 g4:4 b4:6 a4:2 | g4:4 f#4:4 e4:8 | e4:4 g4:4 b4:4 e5:4 | d5:6 c5:2 b4:8 |
-                c5:4 b4:4 a4:4 c5:4 | b4:4 a4:4 g4:8 | a4:4 f#4:4 d#4:4 f#4:4 | e4:12 r:4`,
+        inst: 'pulse', vol: 0.95,
+        notes: `e5:2 b4:2 e5:2 f#5:2 g5:4 f#5:2 e5:2 | d5:2 e5:2 b4:4 r:2 b4:2 e5:2 g5:2 | c6:4 b5:2 a5:2 g5:2 e5:2 c5:2 e5:2 | d5:2 f#5:2 a5:4 g5:2 f#5:2 d5:4 |
+                e5:2 b4:2 e5:2 f#5:2 g5:4 a5:2 b5:2 | e6:6 d6:2 b5:4 g5:4 | f5:2 a5:2 c6:2 a5:2 f5:2 e5:2 f5:4 | d#5:4 f#5:4 b5:4 a5:2 f#5:2 |
+                a5:3 a5:1 c6:2 a5:2 e5:4 a5:4 | g5:2 a5:2 b5:2 c6:2 b5:2 a5:2 g5:2 e5:2 | g5:3 g5:1 b5:2 g5:2 e5:4 g5:4 | f#5:2 g5:2 a5:2 b5:2 a5:2 g5:2 f#5:2 d#5:2 |
+                e5:2 g5:2 c6:2 e6:2 d6:2 c6:2 b5:2 a5:2 | f#5:2 a5:2 d6:2 f#6:2 e6:2 d6:2 c6:2 a5:2 | b5:4 a#5:2 b5:2 d#6:4 f#6:4 | f6:2 e6:2 d#6:2 c6:2 b5:4 r:4`,
       },
-      { inst: 'organ', vol: 0.4, notes: 'e3:16 e3:16 e3:16 b2:16 a2:16 e3:16 b2:16 e3:16' },
-      { inst: 'bass', vol: 0.9, notes: 'e2:2 r:2 e2:2 r:2 g2:2 r:2 b2:2 r:2 '.repeat(3) + 'b1:2 r:2 b1:2 r:2 d#2:2 r:2 f#2:2 r:2 a1:2 r:2 a1:2 r:2 c2:2 r:2 e2:2 r:2 e2:2 r:2 e2:2 r:2 g2:2 r:2 b2:2 r:2 b1:2 r:2 b1:2 r:2 d#2:2 r:2 f#2:2 r:2 e2:2 r:2 e2:2 r:2 b1:2 r:2 e2:2 r:2' },
-      { inst: 'drum', vol: 0.5, notes: 'k:4 r:4 k:4 s:4 '.repeat(8) },
+      { inst: 'pulse2', vol: 0.5, notes: 'e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 | d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | f4:1 a4:1 c5:1 a4:1 f4:1 a4:1 c5:1 a4:1 f4:1 a4:1 c5:1 a4:1 f4:1 a4:1 c5:1 a4:1 | b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 | a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 | a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 | d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 | b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 | b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1' },
+      { inst: 'bass', vol: 1, notes: 'e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d#3:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 a#2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 a#2:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 b2:2' },
+      { inst: 'drum', vol: 0.5, notes: 'k:2 h:1 h:1 s:2 h:1 h:1 k:1 k:1 h:2 s:2 h:2 '.repeat(16) },
     ],
   },
   /** Bergakungen – the boss fight, driving and stomping. */
