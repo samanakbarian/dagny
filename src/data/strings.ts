@@ -73,6 +73,7 @@ export const STR = {
   gameOverText: 'Men XP och minnen finns kvar.',
   retryCheckpoint: 'Försök igen vid ljusstaken',
   wakeHome: 'Vakna hos mormor',
+  wakeIn: 'Vakna i',
 
   // Rotate screen
   rotate: 'Vänd telefonen',

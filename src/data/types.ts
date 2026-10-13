@@ -47,6 +47,8 @@ export type Behavior =
   | 'tank'
   | 'shooter'
   | 'wolf'
+  | 'waltzer'
+  | 'blinker'
   | 'boss_grim'
   | 'boss_gruvra'
   | 'boss_backahast'
@@ -79,6 +81,8 @@ export interface EnemyDef {
   flying?: boolean;
   /** Can only be hurt from behind (strikes from the front are blocked). */
   backOnly?: boolean;
+  /** Projectile sprite for shooters (default: a water droplet). */
+  shot?: string;
   /** Becomes friendly after being defeated (flavour text shown). */
   befriend?: string;
 }

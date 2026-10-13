@@ -12,6 +12,7 @@ import { Kind, type TileKind } from '../engine/collision';
  *  1–9  NPCs (AreaDef.npcs)
  *  v vätte  V gravvätte  l lyktgubbe  t tomtenisse  m myrkatt  r kråka
  *  s stenknekt  j sjörå-skott  w skuggvarg  f fladdermus  u gruvvätte  z kvarnnisse  e mås  B boss
+ *  d dansgast  i fiolspöke  y dimvätte  x strandkrabba  o stubbtroll  a bergtroll
  *  b bulle  T termos  g lingon  M Murre the cat (side quest)
  *  q the area's quest item (AreaDef.questItem)
  *  %  &  dance-floor squares that come and go with the beat (AreaDef.beat)
@@ -32,6 +33,12 @@ export const ENEMY_CHARS: Readonly<Record<string, string>> = {
   u: 'gruvvatte',
   z: 'kvarnnisse',
   e: 'mas',
+  d: 'dansgast',
+  i: 'fiolspoke',
+  y: 'dimvatte',
+  x: 'strandkrabba',
+  o: 'stubbtroll',
+  a: 'bergtroll',
 };
 
 export const PICKUP_CHARS: Readonly<Record<string, 'bulle' | 'termos' | 'lingon'>> = {

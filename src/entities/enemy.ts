@@ -46,6 +46,9 @@ export class Enemy implements Body {
   /** Cannot be hit or hurt anyone (e.g. while faded out). */
   untouchable = false;
   private homeY = 0;
+  /** Centre of a waltz, and how far round it has turned. */
+  private cx = 0;
+  private ang = 0;
   sprite: string;
   frame = 0;
   readonly boss: BossDef | null;
@@ -261,12 +264,13 @@ export class Enemy implements Body {
               vy: 0,
               w: 6,
               h: 6,
-              sprite: 'droplet',
+              sprite: this.def.shot ?? 'droplet',
               damage: this.def.damage,
               fromPlayer: false,
               life: 180,
+              ghost: !!this.def.shot,
             });
-            world.sfx('water');
+            world.sfx(this.def.shot ? 'magic' : 'water');
           }
           this.timer = 95;
         }
@@ -286,6 +290,46 @@ export class Enemy implements Body {
         }
         this.frame = Math.floor(this.t / 5) % 2;
         this.fall(world);
+        break;
+      }
+      case 'waltzer': {
+        // Dansgasten: waltzes in a figure of eight, drifting towards Dagny.
+        if (this.t === 1) this.cx = this.x;
+        this.cx += Math.sign(dx) * sp * (dist > 24 ? 0.35 : 0);
+        this.ang += 0.045;
+        this.x = this.cx + Math.cos(this.ang) * 22;
+        this.y = this.baseY - 6 + Math.sin(this.ang * 2) * 10;
+        this.facing = Math.cos(this.ang + Math.PI / 2) > 0 ? 1 : -1;
+        this.alpha = 0.75 + Math.sin(this.t / 15) * 0.15;
+        this.frame = Math.floor(this.t / 12) % 2;
+        break;
+      }
+      case 'blinker': {
+        // Dimvätten: drifts close, fades into the fog and shows up beside Dagny.
+        this.facing = dx > 0 ? 1 : -1;
+        this.frame = Math.floor(this.t / 10) % 2;
+        if (this.mode === 0) {
+          this.x += Math.sign(dx) * sp * 0.5;
+          this.y += (p.y - 8 - (this.y + this.h / 2)) * 0.01;
+          if (--this.timer <= 0) this.mode = 1;
+        } else if (this.mode === 1) {
+          this.alpha = Math.max(0, this.alpha - 0.04);
+          this.untouchable = this.alpha < 0.35;
+          if (this.alpha <= 0) {
+            const side = this.t % 2 === 0 ? 1 : -1;
+            this.x = p.x + side * 44 - this.w / 2;
+            this.y = p.y - 18;
+            this.clampX(world);
+            this.mode = 2;
+          }
+        } else {
+          this.alpha = Math.min(1, this.alpha + 0.05);
+          this.untouchable = this.alpha < 0.35;
+          if (this.alpha >= 1) {
+            this.mode = 0;
+            this.timer = 120 + ((this.id * 31) % 60);
+          }
+        }
         break;
       }
       case 'boss_bergakung':

@@ -78,6 +78,45 @@ export const ENEMIES: Readonly<Record<string, EnemyDef>> = {
     box: { x: 2, y: 2, w: 12, h: 8 }, puff: 'mist', flying: true,
     drops: { bulle: 0.25, termos: 0.15 },
   },
+  // --- Each temple's own väsen ---------------------------------------------------
+  dansgast: {
+    id: 'dansgast', name: 'Dansgasten', sprite: 'dansgast', behavior: 'waltzer',
+    hp: 7, damage: 2, xp: 22, speed: 0.7,
+    box: { x: 3, y: 3, w: 10, h: 19 }, puff: 'mist', flying: true,
+    drops: { termos: 0.3, bulle: 0.2 },
+    befriend: 'Dansgasten niger, tackar för dansen och bleknar bort i ljusslingorna.',
+  },
+  fiolspoke: {
+    id: 'fiolspoke', name: 'Fiolspöket', sprite: 'fiolspoke', behavior: 'shooter',
+    hp: 6, damage: 2, xp: 18, speed: 0, shot: 'noteShot',
+    box: { x: 2, y: 2, w: 12, h: 12 }, puff: 'mist', heavy: true,
+    drops: { termos: 0.35 },
+  },
+  dimvatte: {
+    id: 'dimvatte', name: 'Dimvätten', sprite: 'dimvatte', behavior: 'blinker',
+    hp: 6, damage: 2, xp: 20, speed: 0.8,
+    box: { x: 2, y: 3, w: 10, h: 11 }, puff: 'mist', flying: true,
+    drops: { termos: 0.3 },
+  },
+  strandkrabba: {
+    id: 'strandkrabba', name: 'Strandkrabba', sprite: 'strandkrabba', behavior: 'walker',
+    hp: 10, damage: 2, xp: 18, speed: 0.8,
+    box: { x: 2, y: 3, w: 12, h: 9 }, puff: 'mist', heavy: true,
+    drops: { lingon: 0.3, bulle: 0.2 },
+  },
+  stubbtroll: {
+    id: 'stubbtroll', name: 'Stubbtroll', sprite: 'stubbtroll', behavior: 'hopper',
+    hp: 12, damage: 3, xp: 28, speed: 1.1,
+    box: { x: 2, y: 3, w: 12, h: 13 }, puff: 'leaf',
+    drops: { lingon: 0.35, bulle: 0.2 },
+    befriend: 'Stubbtrollet gäspar, sätter ner rötterna och blir en stubbe igen.',
+  },
+  bergtroll: {
+    id: 'bergtroll', name: 'Bergtroll', sprite: 'bergtroll', behavior: 'tank',
+    hp: 26, damage: 4, xp: 45, speed: 0.35,
+    box: { x: 2, y: 3, w: 12, h: 21 }, puff: 'moss', heavy: true,
+    drops: { lingon: 0.4, termos: 0.3 },
+  },
   skuggvarg: {
     id: 'skuggvarg', name: 'Skuggvarg', sprite: 'skuggvarg', behavior: 'wolf',
     hp: 6, damage: 3, xp: 25, speed: 1.8,

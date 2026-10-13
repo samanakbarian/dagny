@@ -1,3 +1,4 @@
+import { VILLAGES } from '../data/temples';
 import { VIEW_W, VIEW_H } from '../engine/screen';
 import { drawSprite } from '../engine/sprites';
 import { drawText, measure, wrap, LINE_HEIGHT } from '../engine/text';
@@ -363,7 +364,10 @@ export class GameOverOverlay implements Overlay {
     const canRetry = !!s.checkpoint && temple !== null && AREAS[s.checkpoint.area]?.temple === temple;
     const items = [];
     if (canRetry) items.push({ label: STR.retryCheckpoint, onSelect: () => flow.retryCheckpoint(game) });
-    items.push({ label: STR.wakeHome, onSelect: () => flow.wakeAtVillage(game) });
+    // Wake where Dagny last rested (the button names the village).
+    const village = VILLAGES.find((v) => v.area === s.lastVillage) ?? VILLAGES[0];
+    const label = village.id === 'mormors_by' ? STR.wakeHome : `${STR.wakeIn} ${village.name}`;
+    items.push({ label, onSelect: () => flow.wakeAtVillage(game) });
     this.menu = new ListMenu(items, game.audio);
   }
 
