@@ -1,7 +1,7 @@
 {
   "name": "dagny",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Dagnys äventyr – ett mysigt 2D-actionäventyr i 1960-talets Sverige",
   "type": "module",
   "scripts": {

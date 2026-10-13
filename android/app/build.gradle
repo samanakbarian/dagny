@@ -59,7 +59,7 @@ android {
         targetSdkVersion 36
         // CI passes -PversionCode=<run number> so every upload to Play gets a new code.
         versionCode((project.findProperty('versionCode') ?: '1') as int)
-        versionName "0.1.0"
+        versionName "1.0"
 
         // The name for the application
         resValue "string", "appName", twaManifest.name

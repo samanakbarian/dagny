@@ -12,7 +12,7 @@ export const STR = {
   confirmNew: 'Börja om? Ditt sparade spel skrivs över.',
   yes: 'Ja',
   no: 'Nej',
-  version: 'Leverans 1',
+  version: 'Version 1.0',
 
   // Pause menu
   paused: 'Paus',
