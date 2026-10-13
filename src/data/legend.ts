@@ -134,6 +134,14 @@ export const DECO: Readonly<Record<string, string>> = {
   Z: 'turfRoof',
   X: 'crystal',
   J: 'throne',
+  v: 'wallW',
+  '<': 'cornerW',
+  '>': 'cornerRW',
+  V: 'windowW',
+  n: 'wallB',
+  '!': 'cornerB',
+  $: 'cornerRB',
+  q: 'windowB',
 };
 
 /** Foreground layer characters (AreaDef.front) → sprite id. */

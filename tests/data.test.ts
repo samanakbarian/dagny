@@ -293,6 +293,37 @@ describe('overworld', () => {
   });
 });
 
+describe('villages', () => {
+  const allActions = Object.values(DIALOG).flatMap((d) => [...(d.actions ?? []), ...(d.choices ?? []).flatMap((c) => c.actions ?? [])]);
+
+  it('every village is built and has somewhere to wake up', () => {
+    for (const v of VILLAGES) {
+      expect(v.area, v.id).not.toBeNull();
+      const a = AREAS[v.area!];
+      expect(a, v.id).toBeDefined();
+      expect(a.kind).toBe('village');
+      expect(a.tiles.join(''), v.id).toContain(v.wakeEntry);
+      expect(OVERWORLD.places.some((p) => p.area === v.area), `${v.id} on the map`).toBe(true);
+    }
+  });
+
+  it('every läsning and technique can be learned in the game', () => {
+    for (const id of SPELL_ORDER) expect(allActions, id).toContainEqual({ type: 'learnSpell', spell: id });
+    for (const id of ['nedatstot', 'uppatstot']) expect(allActions, id).toContainEqual({ type: 'learnSkill', skill: id });
+  });
+
+  it('every side-quest item lies in exactly one room and someone takes it back', () => {
+    const quest = Object.values(AREAS).flatMap((a) => (a.questItem ? [a.questItem] : []));
+    expect(new Set(quest).size).toBe(quest.length);
+    for (const item of quest) {
+      expect(ITEMS[item], item).toBeDefined();
+      expect(DIALOG[`hittade_${item}`], item).toBeDefined();
+      expect(allActions, item).toContainEqual({ type: 'takeItem', item });
+      expect(allActions, item).toContainEqual({ type: 'flag', flag: `${item}_klar` });
+    }
+  });
+});
+
 describe('the ending', () => {
   const actionsOf = (id: string): DialogAction[] => {
     const d = DIALOG[id];

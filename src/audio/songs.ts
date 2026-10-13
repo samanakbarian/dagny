@@ -373,4 +373,75 @@ export const SONGS: Record<string, SongDef> = {
       { inst: 'drum', vol: 0.5, notes: 'k:4 h:2 h:2 s:4 '.repeat(8) },
     ],
   },
+  /** Kyrkbyn – a hymn in D major with organ and the church bell. */
+  kyrkby: {
+    bpm: 80,
+    loop: true,
+    tracks: [
+      {
+        inst: 'flute', vol: 0.8,
+        notes: `d5:4 f#5:4 a5:4 f#5:4 | g5:4 f#5:4 e5:8 | d5:4 e5:4 f#5:4 a5:4 | b5:8 a5:8 |
+                b5:4 a5:4 g5:4 f#5:4 | e5:4 f#5:4 g5:8 | f#5:4 e5:4 d5:4 e5:4 | d5:16`,
+      },
+      { inst: 'organ', vol: 0.45, notes: 'd3:16 a2:16 b2:16 g2:16 g2:16 a2:16 d3:8 a2:8 d3:16' },
+      { inst: 'bell', vol: 0.35, notes: 'd6:16 r:16 '.repeat(4) },
+      { inst: 'bass', vol: 0.7, notes: 'd2:8 a2:8 a2:8 e2:8 b1:8 f#2:8 g2:8 d2:8 g2:8 d2:8 a2:8 e2:8 d2:8 a2:8 d2:16' },
+    ],
+  },
+  /** Bruksorten – "Hammarschottis", a brisk works march in C major. */
+  bruk: {
+    bpm: 112,
+    loop: true,
+    tracks: [
+      {
+        inst: 'accordion', vol: 0.75,
+        notes: `c5:2 e5:2 g5:2 e5:2 c6:4 g5:4 | a5:2 g5:2 f5:2 e5:2 d5:8 | b4:2 d5:2 f5:2 d5:2 b5:4 a5:4 | g5:2 f5:2 e5:2 d5:2 c5:8 |
+                e5:4 e5:2 f5:2 g5:4 e5:4 | f5:4 f5:2 g5:2 a5:4 f5:4 | g5:2 a5:2 g5:2 f5:2 e5:2 d5:2 c5:2 b4:2 | c5:12 r:4`,
+      },
+      { inst: 'bass', vol: 0.85, notes: 'c2:4 g2:4 c2:4 g2:4 | g2:4 d2:4 g2:4 d2:4 | g2:4 d2:4 g2:4 d2:4 | c2:4 g2:4 c2:4 g2:4 | c2:4 g2:4 c2:4 g2:4 | f2:4 c2:4 f2:4 c2:4 | g2:4 d2:4 g2:4 d2:4 | c2:4 g2:4 c2:4 g2:4' },
+      { inst: 'drum', vol: 0.5, notes: 'k:4 h:4 s:4 h:4 '.repeat(8) },
+    ],
+  },
+  /** Fiskeläget – "Sjöbodsvalsen", a rolling waltz by the sea. */
+  fiske: {
+    bpm: 100,
+    loop: true,
+    tracks: [
+      {
+        inst: 'accordion', vol: 0.75,
+        notes: `e5:4 a5:4 c6:4 | b5:6 a5:2 g5:4 | a5:4 e5:4 c5:4 | d5:12 |
+                d5:4 g5:4 b5:4 | a5:6 g5:2 f5:4 | e5:4 g#5:4 b5:4 | a5:12`,
+      },
+      { inst: 'harp', vol: 0.45, notes: 'r:4 c4:4 e4:4 | r:4 b3:4 e4:4 | r:4 c4:4 e4:4 | r:4 d4:4 f4:4 | r:4 b3:4 d4:4 | r:4 a3:4 c4:4 | r:4 g#3:4 b3:4 | r:4 c4:4 e4:4' },
+      { inst: 'bass', vol: 0.8, notes: 'a2:12 | e2:12 | a2:12 | d2:12 | g2:12 | f2:12 | e2:12 | a2:12' },
+    ],
+  },
+  /** Fäboden – a light herding tune in G major over a drone. */
+  fabodby: {
+    bpm: 96,
+    loop: true,
+    tracks: [
+      {
+        inst: 'flute', vol: 0.85,
+        notes: `d5:4 g5:4 b5:6 a5:2 | g5:4 e5:4 d5:8 | e5:4 g5:4 a5:4 b5:4 | a5:12 r:4 |
+                b5:4 d6:4 b5:4 g5:4 | a5:4 b5:4 a5:4 e5:4 | d5:4 e5:4 g5:4 a5:4 | g5:12 r:4`,
+      },
+      { inst: 'harp', vol: 0.4, notes: 'g3:4 d4:4 g4:4 d4:4 | c4:4 g4:4 c5:4 g4:4 | c4:4 e4:4 g4:4 e4:4 | d4:4 f#4:4 a4:4 f#4:4 | g3:4 d4:4 g4:4 d4:4 | d4:4 f#4:4 a4:4 f#4:4 | c4:4 e4:4 g4:4 e4:4 | g3:4 d4:4 g4:4 r:4' },
+      { inst: 'organ', vol: 0.3, notes: 'g2:64 g2:64' },
+    ],
+  },
+  /** Stationssamhället – "Rallarfoxen", chugging along like the train. */
+  station: {
+    bpm: 126,
+    loop: true,
+    tracks: [
+      {
+        inst: 'accordion', vol: 0.7,
+        notes: `f5:4 a5:2 c6:2 a5:4 f5:4 | g5:4 bb5:2 g5:2 e5:8 | f5:2 g5:2 a5:2 bb5:2 c6:4 a5:4 | g5:12 r:4 |
+                a5:4 c6:2 a5:2 f5:4 a5:4 | bb5:4 d6:2 bb5:2 g5:4 bb5:4 | a5:2 g5:2 f5:2 e5:2 g5:4 e5:4 | f5:12 r:4`,
+      },
+      { inst: 'bass', vol: 0.85, notes: 'f2:4 a2:4 c3:4 a2:4 | c2:4 e2:4 g2:4 e2:4 | f2:4 a2:4 c3:4 a2:4 | c2:4 e2:4 g2:4 e2:4 | f2:4 a2:4 c3:4 a2:4 | bb1:4 d2:4 f2:4 d2:4 | c2:4 e2:4 g2:4 e2:4 | f2:4 a2:4 c3:4 a2:4' },
+      { inst: 'drum', vol: 0.45, notes: 'k:2 h:2 h:2 h:2 s:2 h:2 h:2 h:2 '.repeat(8) },
+    ],
+  },
 };

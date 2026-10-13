@@ -68,13 +68,13 @@ export const OVERWORLD: OverworldDef = {
       x: 36, y: 3, name: 'Trollberget', area: 'troll_1', entry: 'A', dialog: 'trollberget_sover',
       requires: ['krypta_klar', 'gruvan_klar', 'kvarnen_klar', 'fyren_klar', 'folkparken_klar', 'fabodskogen_klar'],
     },
-    // Villages still to be built.
-    { x: 17, y: 5, name: 'Kyrkbyn', dialog: 'by_avsparrad' },
-    { x: 39, y: 11, name: 'Bruksorten', dialog: 'by_avsparrad' },
-    { x: 37, y: 20, name: 'Fiskeläget', dialog: 'by_avsparrad' },
+    // Villages.
+    { x: 17, y: 5, name: 'Kyrkbyn', area: 'kyrkbyn', entry: 'W' },
+    { x: 39, y: 11, name: 'Bruksorten', area: 'bruksorten', entry: 'W' },
+    { x: 37, y: 20, name: 'Fiskeläget', area: 'fiskelaget', entry: 'W' },
     { x: 40, y: 9, name: 'Gruvsamhället', area: 'gruvsamhallet', entry: 'W' },
-    { x: 24, y: 24, name: 'Fäboden', dialog: 'by_avsparrad' },
-    { x: 40, y: 26, name: 'Stationssamhället', dialog: 'by_avsparrad' },
+    { x: 24, y: 24, name: 'Fäboden', area: 'faboden', entry: 'W' },
+    { x: 40, y: 26, name: 'Stationssamhället', area: 'stationssamhallet', entry: 'W' },
   ],
   encounters: [
     { sprite: 'owShadow', terrain: '.:|', x: 14, y: 7 },

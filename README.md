@@ -2,7 +2,7 @@
 
 Ett mysigt 2D-actionäventyr för webbläsaren, mobile first. Sommaren 1964, svensk folktro, en tyst hjältinna med en gammal klinga och kyrkklockans kläpp som fäste.
 
-Hela spelet går att spela från början till slut: alla sju heliga platser, finalen på Trollberget, ett slut i soluppgången och en epilog på midsommarafton. (Några byar på kartan är fortfarande avspärrade.)
+Hela spelet går att spela från början till slut: alla sju heliga platser, finalen på Trollberget, ett slut i soluppgången och en epilog på midsommarafton.
 
 **Spela:** https://samanakbarian.github.io/dagny/ (publiceras automatiskt från `master`)
 
@@ -128,4 +128,13 @@ Motorn har nu ett förgrundslager (`front`), dörrar som visar en dialog efter a
 
 Motorn har nu bossar som kallar på väsen (`spawnEnemy`), projektiler som skölden inte kan stoppa, NPC:er som dyker upp efter en boss (`afterBoss`) och dialoghandlingen `scene`, som startar slutet och eftertexterna.
 
-Nästa steg: resten av byarna och polering. Sedan Dagnys äventyr 2.
+**Byarna:** alla sju byar är byggda, med egen musik. Varje by har ett ställe att vila och vakna efter ett nederlag. Varje by har också en äldre som lär ut en läsning, och alla läsningar och tekniker går nu att lära sig i spelet:
+- **Kyrkbyn:** kyrkan och klockstapeln där Dagny hittades. Prosten lär ut Eld när kryptan är förlikad. Gamla Tyra minns natten 1946.
+- **Bruksorten:** järnbruket med sin skorsten. Smeden Holm lär ut Skydd och förman Karlsson lär ut Uppåtstöt.
+- **Fiskeläget:** sjöbodar, brygga och båt. Nätlagerskan Viola lär ut Hopp, och gamle fyrvaktaren Ture har sin loggbok.
+- **Fäboden:** timmerstugor med torvtak och fjällkor. Gammelmor Karna lär ut Hamn när gruvan är förlikad.
+- **Stationssamhället:** järnvägshotellet, stationen och loket. Telegrafisten Oskar lär ut Åska.
+
+Fem nya sidouppdrag, ett per by, där föremålen ligger i templen: Ingrids psalmbok (kryptan), Rosas medaljong (kvarnen), fiskaren Johans kompass (fyren), Lill-Pers koskälla (Fäbodskogen) och stinsens visselpipa (folkparken).
+
+Nästa steg: polering. Sedan Dagnys äventyr 2.

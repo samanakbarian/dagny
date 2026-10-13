@@ -511,6 +511,447 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: ['Trollberget reser sig svart mot himlen. Vägen upp är stängd så länge de andra platserna sover.'],
   },
 
+  // --- The other villages ---------------------------------------------------------
+  signe_vila: {
+    speaker: 'Signe i prästgården',
+    pages: ['Kom in, kom in. Prästgården har fler rum än präster. Vill du vila en stund?'],
+    choices: [
+      { text: 'Vila i prästgården', next: 'signe_vilat', actions: [{ type: 'rest' }] },
+      { text: 'Inte nu', next: 'signe_hej' },
+    ],
+  },
+  signe_vilat: {
+    speaker: 'Signe i prästgården',
+    pages: ['Sovit gott? Det gör alla under kyrkklockan. Du är alltid välkommen tillbaka hit.'],
+  },
+  signe_hej: {
+    speaker: 'Signe i prästgården',
+    pages: ['Dörren är olåst. Det har den varit sedan 1700-talet.'],
+  },
+  prosten_lar: {
+    speaker: 'Prosten',
+    pages: [
+      'Så du är flickan från klockstapeln. Jag döpte dig, vet du. Du skrek så att det ekade i valvet.',
+      'Kryptan sover lugnt nu. Då kan jag lära dig det min företrädare lärde sig av den förra Väktaren.',
+      '"Eld i järn, eld i sol, eld som midsommarnatten stal..." Så. Nu brinner det i klingan när du ber den.',
+    ],
+    actions: [{ type: 'learnSpell', spell: 'eld' }],
+    next: 'lart_eld',
+  },
+  lart_eld: {
+    pages: ['Dagny lärde sig läsningen ELD!\nSvärdet skjuter eldbollar en stund.'],
+  },
+  prosten_igen: {
+    speaker: 'Prosten',
+    pages: ['Eld är inte till för att förstöra. Den är till för att lysa upp och värma. Glöm aldrig det.'],
+  },
+  prosten_vanta: {
+    speaker: 'Prosten',
+    pages: [
+      'Det är något som rör sig under kyrkan. Jag hör det på nätterna, som stenar som skaver mot varandra.',
+      'Gå ner i kryptan och se vad som är fel. Kom sedan tillbaka, så har jag något åt dig.',
+    ],
+  },
+  prosten_efter: {
+    speaker: 'Prosten',
+    pages: ['I morse ringde klockan av sig själv igen. Men den här gången lät den glad. Jag vet inte hur jag ska förklara det.'],
+  },
+  ingrid_uppdrag: {
+    speaker: 'Ingrid',
+    pages: [
+      'Min psalmbok! Jag tappade den i kryptan när ljusen slocknade och alla sprang ut.',
+      'Mor fick den på sin konfirmation. Det ligger pressade blommor från varje midsommar i den. Om du ser den...',
+    ],
+    actions: [{ type: 'flag', flag: 'psalmbok_uppdrag' }],
+  },
+  ingrid_vantar: {
+    speaker: 'Ingrid',
+    pages: ['Den måste ligga i kryptan, i rummet med de tre valven. Jag satt alltid längst upp.'],
+  },
+  ingrid_tack: {
+    speaker: 'Ingrid',
+    pages: [
+      'Där är den! Och blommorna ligger kvar, varenda en.',
+      'Här, ta det här. Och nästa midsommar pressar vi en blomma åt dig också.',
+    ],
+    actions: [{ type: 'takeItem', item: 'psalmbok' }, { type: 'flag', flag: 'psalmbok_klar' }, { type: 'xp', amount: 150 }, { type: 'heal' }],
+    next: 'ingrid_xp',
+  },
+  ingrid_xp: {
+    pages: ['Dagny fick 150 XP och känner sig utvilad.'],
+  },
+  ingrid_glad: {
+    speaker: 'Ingrid',
+    pages: ['Jag har pressat en prästkrage åt dig. Den ligger på sidan för midsommarpsalmen.'],
+  },
+  hittade_psalmbok: {
+    pages: ['Dagny hittade en PSALMBOK. Det sticker ut torkade blommor mellan bladen. Den är nog Ingrids.'],
+  },
+  bosse: {
+    speaker: 'Bosse',
+    pages: ['Jag har klättrat upp i klockstapeln! Nästan. Halvvägs. Prosten blev arg.'],
+  },
+  bosse_efter: {
+    speaker: 'Bosse',
+    pages: ['Det spökar inte i kryptan längre, säger prosten. Då vågar jag gå ner. Kanske. Om du följer med.'],
+  },
+  kyrkby_klockstapel: {
+    pages: [
+      'Den gamla klockstapeln. Klockan har hängt här i trehundra år.',
+      'En liten mässingsskylt på stolpen:\n"MIDSOMMARNATTEN 1946 RINGDE JAG AV MIG SJÄLV."',
+    ],
+  },
+  tyra: {
+    speaker: 'Gamla Tyra',
+    pages: [
+      'Jag var vaken den natten, 1946. Jag såg en kvinna med kopparhår gå förbi med en korg.',
+      'Hon stannade vid klockstapeln och grät. Sedan gick hon mot Trollberget, utan korgen.',
+      'Du har hennes hår, lilla vän. Och hennes sätt att lyssna utan att säga något.',
+    ],
+  },
+  tyra_efter: {
+    speaker: 'Gamla Tyra',
+    pages: ['Jag såg ljuset över Trollberget i morse. Jag förstod att hon fick komma hem till slut.'],
+  },
+  rut_vila: {
+    speaker: 'Rut på värdshuset',
+    pages: ['Värdshuset har mat och sängar, och ingen frågar varifrån man kommer. Vill du vila?'],
+    choices: [
+      { text: 'Vila på värdshuset', next: 'rut_vilat', actions: [{ type: 'rest' }] },
+      { text: 'Inte nu', next: 'rut_hej' },
+    ],
+  },
+  rut_vilat: {
+    speaker: 'Rut på värdshuset',
+    pages: ['Där är du ju. Gröten står framme. Kom tillbaka när du vill, så har vi en säng åt dig.'],
+  },
+  rut_hej: {
+    speaker: 'Rut på värdshuset',
+    pages: ['Det är skiftbyte snart. Då blir det trångt här inne, så passa på medan det är lugnt.'],
+  },
+  holm_lar: {
+    speaker: 'Smeden Holm',
+    pages: [
+      'Du bär en gammal klinga. Bra smide, fast fästet är en klockkläpp. Det har jag aldrig sett förut.',
+      'Min far lärde mig en sak i hyttan, när gnistorna flög. Ett kors av rönn över bröstet, och en läsning.',
+      '"Rönn för bröstet, järn för hand, inget ont går över min rand." Så. Nu tar du bara halva smällen.',
+    ],
+    actions: [{ type: 'learnSpell', spell: 'skydd' }],
+    next: 'lart_skydd',
+  },
+  lart_skydd: {
+    pages: ['Dagny lärde sig läsningen SKYDD!\nHalverar skadan Dagny tar en stund.'],
+  },
+  holm_igen: {
+    speaker: 'Smeden Holm',
+    pages: ['Skyddet håller en stund. Men en bra sköld och ett bra öga håller längre.'],
+  },
+  karlsson_lar: {
+    speaker: 'Förman Karlsson',
+    pages: [
+      'Jaså, du har lärt dig stöta nedåt hos Algot? Då ska du få lära dig åt andra hållet också.',
+      'Håll UPP och slå, så går klingan rakt upp. Bra mot fladdermöss och sådant som hänger i taket.',
+    ],
+    actions: [{ type: 'learnSkill', skill: 'uppatstot' }, { type: 'flag', flag: 'karlsson_lart' }],
+    next: 'lart_uppatstot',
+  },
+  lart_uppatstot: {
+    pages: ['Dagny lärde sig UPPÅTSTÖT!\nHåll UPP och slå för att stöta svärdet uppåt.'],
+  },
+  karlsson_igen: {
+    speaker: 'Förman Karlsson',
+    pages: ['Upp och ner, upp och ner. Precis som hissen i gruvan, fast med svärd.'],
+  },
+  rosa_uppdrag: {
+    speaker: 'Rosa',
+    pages: [
+      'Jag hade en medaljong med Gunnars kort i. Han var flottare och drunknade i forsen för länge sedan.',
+      'Jag tappade den vid kvarnen när jag satt och tittade på vattnet. Bäckahästen skrämde mig så jag sprang.',
+    ],
+    actions: [{ type: 'flag', flag: 'medaljong_uppdrag' }],
+  },
+  rosa_vantar: {
+    speaker: 'Rosa',
+    pages: ['Medaljongen föll nog ner någonstans vid vattenfallet bakom kvarnen. Var försiktig, det är halt.'],
+  },
+  rosa_tack: {
+    speaker: 'Rosa',
+    pages: [
+      'Gunnar... Där är du ju. Jag trodde att jag aldrig skulle få se dig igen.',
+      'Ta det här, lilla vän. Han skulle ha tyckt om dig.',
+    ],
+    actions: [{ type: 'takeItem', item: 'medaljong' }, { type: 'flag', flag: 'medaljong_klar' }, { type: 'xp', amount: 200 }, { type: 'heal' }],
+    next: 'rosa_xp',
+  },
+  rosa_xp: {
+    pages: ['Dagny fick 200 XP och känner sig utvilad.'],
+  },
+  rosa_glad: {
+    speaker: 'Rosa',
+    pages: ['Jag har satt medaljongen på en ny kedja. Nu tar jag aldrig av den igen.'],
+  },
+  hittade_medaljong: {
+    pages: ['Dagny hittade en MEDALJONG. Inuti sitter ett fotografi av en ung man med keps.'],
+  },
+  sigge: {
+    speaker: 'Sigge',
+    pages: ['Pappa säger att hammaren i bruket stannade när kvarnen slutade mala. Allt hänger ihop, säger han.'],
+  },
+  sigge_efter: {
+    speaker: 'Sigge',
+    pages: ['Hammaren går igen! Dunk, dunk, dunk hela dagen. Jag har aldrig tyckt att det låtit så fint.'],
+  },
+  hilma_vila: {
+    speaker: 'Hilma i sjöboden',
+    pages: ['Sjöboden luktar tjära och strömming, men sängarna är torra. Vill du vila?'],
+    choices: [
+      { text: 'Vila i sjöboden', next: 'hilma_vilat', actions: [{ type: 'rest' }] },
+      { text: 'Inte nu', next: 'hilma_hej' },
+    ],
+  },
+  hilma_vilat: {
+    speaker: 'Hilma i sjöboden',
+    pages: ['God morgon! Du sov som en säl. Kom tillbaka när du vill, nyckeln ligger under stenen.'],
+  },
+  hilma_hej: {
+    speaker: 'Hilma i sjöboden',
+    pages: ['Havet ger och havet tar, brukar vi säga. Men just nu tar det mest.'],
+  },
+  viola_lar: {
+    speaker: 'Nätlagerskan Viola',
+    pages: [
+      'Du hoppar bra, men du hoppar som en människa. Jag ska lära dig hoppa som en sädesärla.',
+      'Min mormor sa läsningen varje vår när fåglarna kom tillbaka. Hon påstod att hon kunde hoppa över båtarna.',
+      '"Fjäder i fot och vind under häl, lätt som en ärla, lätt som en själ." Så. Nu ska du se.',
+    ],
+    actions: [{ type: 'learnSpell', spell: 'hopp' }],
+    next: 'lart_hopp',
+  },
+  lart_hopp: {
+    pages: ['Dagny lärde sig läsningen HOPP!\nDagny hoppar högre en stund.'],
+  },
+  viola_igen: {
+    speaker: 'Nätlagerskan Viola',
+    pages: ['Akta så att du inte hoppar ner i sjön. Nät har jag gott om, men håvar har jag inga.'],
+  },
+  johan_uppdrag: {
+    speaker: 'Fiskaren Johan',
+    pages: [
+      'Min kompass är borta! Jag rodde ut till fyren när stormen kom och tappade den i tornet.',
+      'Utan den hittar jag inte hem i dimman. Den sitter i en mässingsdosa med en röd nål.',
+    ],
+    actions: [{ type: 'flag', flag: 'kompass_uppdrag' }],
+  },
+  johan_vantar: {
+    speaker: 'Fiskaren Johan',
+    pages: ['Den ligger nog uppe i fyren, i rummet med de stora linserna. Jag sprang därifrån så fort jag kunde.'],
+  },
+  johan_tack: {
+    speaker: 'Fiskaren Johan',
+    pages: [
+      'Där är den! Och nålen pekar mot norr igen. Då har stormen lagt sig på riktigt.',
+      'Ta det här. Och kom ut med båten en morgon, så ska jag visa dig var gäddorna står.',
+    ],
+    actions: [{ type: 'takeItem', item: 'kompass' }, { type: 'flag', flag: 'kompass_klar' }, { type: 'xp', amount: 250 }, { type: 'heal' }],
+    next: 'johan_xp',
+  },
+  johan_xp: {
+    pages: ['Dagny fick 250 XP och känner sig utvilad.'],
+  },
+  johan_glad: {
+    speaker: 'Fiskaren Johan',
+    pages: ['Nålen har inte darrat en enda gång sedan du kom med den. Havet är lugnt igen.'],
+  },
+  hittade_kompass: {
+    pages: ['Dagny hittade en KOMPASS i en mässingsdosa. Nålen darrar och pekar mot norr. Den är nog Johans.'],
+  },
+  fiske_skylt: {
+    pages: ['En skylt på bryggan:\n"FISKELÄGETS BRYGGA. HOPPA EJ I. VATTNET ÄR KALLT, ÄVEN I JULI."'],
+  },
+  stina: {
+    speaker: 'Stina',
+    pages: ['Fyren har inte lyst på hela sommaren. Pappa säger att Havsfrun har blåst ut den.'],
+  },
+  stina_efter: {
+    speaker: 'Stina',
+    pages: ['Fyren lyser igen! Jag räknar blinkarna innan jag somnar. Jag kommer alltid till tjugo.'],
+  },
+  ture: {
+    speaker: 'Gamle Ture',
+    pages: [
+      'Jag var fyrvaktare en gång, innan de gjorde fyren automatisk. Ensamt, men vackert.',
+      'Midsommarnatten 1946 såg jag ett ljus gå ner över Kyrkbyn. Jag skrev det i loggboken. Ingen trodde mig.',
+    ],
+  },
+  ture_efter: {
+    speaker: 'Gamle Ture',
+    pages: ['Har du läst min loggbok? Då vet du att jag inte ljög. Tack för att du tände fyren igen.'],
+  },
+  anna_vila: {
+    speaker: 'Budejan Anna',
+    pages: ['Du ser trött ut. Det finns mjölk i kallkällan och en bädd i stugan. Vill du vila?'],
+    choices: [
+      { text: 'Vila i stugan', next: 'anna_vilat', actions: [{ type: 'rest' }] },
+      { text: 'Inte nu', next: 'anna_hej' },
+    ],
+  },
+  anna_vilat: {
+    speaker: 'Budejan Anna',
+    pages: ['Korna har redan gått ut. Du sov så gott att jag inte nändes väcka dig. Kom tillbaka när du vill.'],
+  },
+  anna_hej: {
+    speaker: 'Budejan Anna',
+    pages: ['Gå inte för långt in i skogen. Det är lätt att gå vilse i Fäbodskogen, även för oss som bor här.'],
+  },
+  karna_lar: {
+    speaker: 'Gammelmor Karna',
+    pages: [
+      'Jaså, det är du. Skogen har viskat om dig ett tag nu. Om flickan som förlikar.',
+      'Jag kan en läsning som få kan. Man byter hamn, blir en liten fågel som kommer in där ingen annan kommer in.',
+      '"Hamn av fjäder, hamn av vind, byt mig om och ta mig in." Så. Men flyg inte för länge, då glömmer du vem du är.',
+    ],
+    actions: [{ type: 'learnSpell', spell: 'hamn' }],
+    next: 'lart_hamn',
+  },
+  lart_hamn: {
+    pages: ['Dagny lärde sig läsningen HAMN!\nDagny blir en liten fågel en stund och kan flyga genom trånga passager.'],
+  },
+  karna_igen: {
+    speaker: 'Gammelmor Karna',
+    pages: ['En fågel ser världen uppifrån. Det är nyttigt för en Väktare. Man ser vad som hänger ihop.'],
+  },
+  karna_vanta: {
+    speaker: 'Gammelmor Karna',
+    pages: [
+      'Du är inte redo än, lilla vän. Att byta hamn är farligt för den som inte vet vem hon är.',
+      'Gå ner i gruvan först. Den som har varit i mörkret vet var ljuset finns. Kom tillbaka sedan.',
+    ],
+  },
+  lillper_uppdrag: {
+    speaker: 'Lill-Per',
+    pages: [
+      'Stjärna har tappat sin skälla! Nu hittar jag henne inte när hon går in i skogen.',
+      'Jag tror att den ramlade av vid de tre stigarna. Där vågar jag inte gå. Det fnissar mellan granarna.',
+    ],
+    actions: [{ type: 'flag', flag: 'skalla_uppdrag' }],
+  },
+  lillper_vantar: {
+    speaker: 'Lill-Per',
+    pages: ['Skällan ligger nog vid Villvägarna i skogen, där stigen delar sig i tre. Lyssna efter klangen!'],
+  },
+  lillper_tack: {
+    speaker: 'Lill-Per',
+    pages: [
+      'Den klingar! Stjärna, hör du? Nu kan du gå vart du vill igen.',
+      'Ta det här. Mamma säger att man ska betala sina skulder. Och jag har inget annat.',
+    ],
+    actions: [{ type: 'takeItem', item: 'skalla' }, { type: 'flag', flag: 'skalla_klar' }, { type: 'xp', amount: 150 }, { type: 'heal' }],
+    next: 'lillper_xp',
+  },
+  lillper_xp: {
+    pages: ['Dagny fick 150 XP och känner sig utvilad.'],
+  },
+  lillper_glad: {
+    speaker: 'Lill-Per',
+    pages: ['Stjärna går aldrig vilse längre. Jag hör skällan ända från stugan.'],
+  },
+  hittade_skalla: {
+    pages: ['Dagny hittade en KOSKÄLLA. Den klingar klart när hon skakar den. Den är nog Stjärnas.'],
+  },
+  stjarna: {
+    pages: ['Kon tittar på Dagny med stora, fuktiga ögon. Hon saknar sin skälla.'],
+  },
+  stjarna_glad: {
+    pages: ['Stjärna råmar nöjt. Skällan klingar när hon vänder på huvudet.'],
+  },
+  rosen: {
+    pages: ['En kraftig fjällko med stora horn. Hon tuggar och tuggar och bryr sig inte om någonting annat.'],
+  },
+  britta: {
+    speaker: 'Britta',
+    pages: ['Mormor Karna säger att hon kan bli en uggla. Jag har aldrig sett det. Men hon vet saker hon inte borde veta.'],
+  },
+  britta_efter: {
+    speaker: 'Britta',
+    pages: ['Skogsrået sjunger om nätterna nu! Inte läskigt, mest vackert. Mormor sjunger med.'],
+  },
+  lind_vila: {
+    speaker: 'Fru Lind på järnvägshotellet',
+    pages: ['Järnvägshotellet har rum med utsikt över spåren. Tågen går inte just nu, så det är tyst. Vill du vila?'],
+    choices: [
+      { text: 'Vila på hotellet', next: 'lind_vilat', actions: [{ type: 'rest' }] },
+      { text: 'Inte nu', next: 'lind_hej' },
+    ],
+  },
+  lind_vilat: {
+    speaker: 'Fru Lind på järnvägshotellet',
+    pages: ['God morgon! Frukosten är serverad, och det är kaffe på kannan. Ditt rum står alltid redo.'],
+  },
+  lind_hej: {
+    speaker: 'Fru Lind på järnvägshotellet',
+    pages: ['Det kom inte ett enda tåg i går. Inte i förrgår heller. Gästerna blir färre och färre.'],
+  },
+  oskar_lar: {
+    speaker: 'Telegrafisten Oskar',
+    pages: [
+      'Telegrafen tystnade i maj, men trådarna sjunger fortfarande. Hör du? Det är åskan som bor i dem.',
+      'Min farfar var rallare. Han lärde mig en läsning som han fick av en gammal man vid Torsåsen. Tors vrede.',
+      '"Åska i tråd och åska i sten, slå alla onda, skona var en." Så. Använd den sparsamt. Den tar mycket kraft.',
+    ],
+    actions: [{ type: 'learnSpell', spell: 'aska' }],
+    next: 'lart_aska',
+  },
+  lart_aska: {
+    pages: ['Dagny lärde sig läsningen ÅSKA!\nTräffar alla väsen på skärmen. Kostar mycket magi.'],
+  },
+  oskar_igen: {
+    speaker: 'Telegrafisten Oskar',
+    pages: ['Åskan är inte arg. Den är bara stark. Det är skillnad.'],
+  },
+  berg_uppdrag: {
+    speaker: 'Stinsen Berg',
+    pages: [
+      'Min visselpipa! En pojke lånade den och sprang till folkparken. Sedan kom han hem utan.',
+      'Utan visselpipan kan jag inte släppa iväg några tåg. Det står i reglementet.',
+    ],
+    actions: [{ type: 'flag', flag: 'visselpipa_uppdrag' }],
+  },
+  berg_vantar: {
+    speaker: 'Stinsen Berg',
+    pages: ['Pojken sa att han tappade den vid karusellen i folkparken. Han red på den svarta hästen.'],
+  },
+  berg_tack: {
+    speaker: 'Stinsen Berg',
+    pages: [
+      'Där är den! Nu ska vi se...',
+      'Priiip! Hör du? Nu kan tågen gå igen. Här, ta det här för besväret.',
+    ],
+    actions: [{ type: 'takeItem', item: 'visselpipa' }, { type: 'flag', flag: 'visselpipa_klar' }, { type: 'xp', amount: 250 }, { type: 'heal' }],
+    next: 'berg_xp',
+  },
+  berg_xp: {
+    pages: ['Dagny fick 250 XP och känner sig utvilad.'],
+  },
+  berg_glad: {
+    speaker: 'Stinsen Berg',
+    pages: ['Tåget till Kyrkbyn går klockan tolv. Det är det första på hela sommaren.'],
+  },
+  hittade_visselpipa: {
+    pages: ['Dagny hittade en VISSELPIPA i nysilver. Den är nog stinsens.'],
+  },
+  resenaren: {
+    speaker: 'Resenären',
+    pages: ['Jag har väntat på tåget i tre dagar. Det har varit en mycket lugn semester, måste jag säga.'],
+  },
+  kalle: {
+    speaker: 'Kalle',
+    pages: ['Jag lånade stinsens visselpipa och tappade den. Säg inget till honom. Snälla.'],
+  },
+  kalle_efter: {
+    speaker: 'Kalle',
+    pages: ['Lyktorna i folkparken lyser igen! Mamma säger att jag får gå dit på lördag. Om jag inte tappar något.'],
+  },
+
   // --- Trollberget ------------------------------------------------------------
   troll_skylt1: {
     pages: ['Någon har ristat i berget, för länge sedan:\n"D. GICK HÄR MIDSOMMARNATT 1946. GLÖM OSS INTE."'],

@@ -55,6 +55,36 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
     description: 'Anders lyckofickur i mässing. Det tickar fortfarande.',
     sprite: 'fickur',
   },
+  psalmbok: {
+    id: 'psalmbok',
+    name: 'Psalmboken',
+    description: 'Ingrids gamla psalmbok med pressade blommor mellan bladen.',
+    sprite: 'psalmbok',
+  },
+  medaljong: {
+    id: 'medaljong',
+    name: 'Medaljongen',
+    description: 'En medaljong i mässing. Inuti sitter ett litet fotografi av en ung man.',
+    sprite: 'medaljong',
+  },
+  kompass: {
+    id: 'kompass',
+    name: 'Kompassen',
+    description: 'Fiskaren Johans kompass. Nålen pekar stadigt mot norr igen.',
+    sprite: 'kompass',
+  },
+  skalla: {
+    id: 'skalla',
+    name: 'Koskällan',
+    description: 'Stjärnas skälla. Den klingar klart när man skakar den.',
+    sprite: 'skalla',
+  },
+  visselpipa: {
+    id: 'visselpipa',
+    name: 'Visselpipan',
+    description: 'Stinsens visselpipa i nysilver. Utan den går inga tåg.',
+    sprite: 'visselpipa',
+  },
   murre: {
     id: 'murre',
     name: 'Murre',
@@ -64,4 +94,4 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
 };
 
 /** Order shown in the items menu. */
-export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'murre', 'fickur'];
+export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'murre', 'fickur', 'psalmbok', 'medaljong', 'kompass', 'skalla', 'visselpipa'];

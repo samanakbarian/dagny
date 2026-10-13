@@ -125,6 +125,37 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     idle: { frames: [0, 0, 1, 0, 0, 2], every: 0.8 },
     talk: [{ dialog: 'greta' }],
   },
+  // --- Kyrkbyn ---
+  signe: { id: 'signe', sprite: 'signe', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'signe_vila' }] },
+  prosten: { id: 'prosten', sprite: 'prost', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notSpell: 'eld' }, { flag: 'krypta_klar' }], dialog: 'prosten_lar' }, { if: [{ notSpell: 'eld' }], dialog: 'prosten_vanta' }, { if: [{ flag: 'trollberget_klar' }], dialog: 'prosten_efter' }, { dialog: 'prosten_igen' }] },
+  ingrid: { id: 'ingrid', sprite: 'woman2', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'psalmbok' }, { notFlag: 'psalmbok_klar' }], dialog: 'ingrid_tack' }, { if: [{ flag: 'psalmbok_klar' }], dialog: 'ingrid_glad' }, { if: [{ flag: 'psalmbok_uppdrag' }], dialog: 'ingrid_vantar' }, { dialog: 'ingrid_uppdrag' }] },
+  bosse: { id: 'bosse', sprite: 'kid3', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'krypta_klar' }], dialog: 'bosse_efter' }, { dialog: 'bosse' }] },
+  tyra: { id: 'tyra', sprite: 'tyra', idle: { frames: [0, 0, 0, 2, 0, 1, 1, 0], every: 0.7 }, talk: [{ if: [{ flag: 'trollberget_klar' }], dialog: 'tyra_efter' }, { dialog: 'tyra' }] },
+  // --- Bruksorten ---
+  rut: { id: 'rut', sprite: 'woman', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'rut_vila' }] },
+  holm: { id: 'holm', sprite: 'smed', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notSpell: 'skydd' }], dialog: 'holm_lar' }, { dialog: 'holm_igen' }] },
+  karlsson: { id: 'karlsson', sprite: 'forman', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notFlag: 'karlsson_lart' }], dialog: 'karlsson_lar' }, { dialog: 'karlsson_igen' }] },
+  rosa: { id: 'rosa', sprite: 'resenar', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'medaljong' }, { notFlag: 'medaljong_klar' }], dialog: 'rosa_tack' }, { if: [{ flag: 'medaljong_klar' }], dialog: 'rosa_glad' }, { if: [{ flag: 'medaljong_uppdrag' }], dialog: 'rosa_vantar' }, { dialog: 'rosa_uppdrag' }] },
+  sigge: { id: 'sigge', sprite: 'kid4', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'kvarnen_klar' }], dialog: 'sigge_efter' }, { dialog: 'sigge' }] },
+  // --- Fiskeläget ---
+  hilma: { id: 'hilma', sprite: 'maj', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'hilma_vila' }] },
+  viola: { id: 'viola', sprite: 'natlagerska', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notSpell: 'hopp' }], dialog: 'viola_lar' }, { dialog: 'viola_igen' }] },
+  johan: { id: 'johan', sprite: 'fiskare', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'kompass' }, { notFlag: 'kompass_klar' }], dialog: 'johan_tack' }, { if: [{ flag: 'kompass_klar' }], dialog: 'johan_glad' }, { if: [{ flag: 'kompass_uppdrag' }], dialog: 'johan_vantar' }, { dialog: 'johan_uppdrag' }] },
+  stina: { id: 'stina', sprite: 'kid2', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'fyren_klar' }], dialog: 'stina_efter' }, { dialog: 'stina' }] },
+  ture: { id: 'ture', sprite: 'shopkeeper', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ flag: 'fyren_klar' }], dialog: 'ture_efter' }, { dialog: 'ture' }] },
+  // --- Fäboden ---
+  anna: { id: 'anna', sprite: 'budeja', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'anna_vila' }] },
+  karna: { id: 'karna', sprite: 'karna', idle: { frames: [0, 0, 0, 2, 0, 1, 1, 0], every: 0.7 }, talk: [{ if: [{ notSpell: 'hamn' }, { flag: 'gruvan_klar' }], dialog: 'karna_lar' }, { if: [{ notSpell: 'hamn' }], dialog: 'karna_vanta' }, { dialog: 'karna_igen' }] },
+  lillper: { id: 'lillper', sprite: 'kid4', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ item: 'skalla' }, { notFlag: 'skalla_klar' }], dialog: 'lillper_tack' }, { if: [{ flag: 'skalla_klar' }], dialog: 'lillper_glad' }, { if: [{ flag: 'skalla_uppdrag' }], dialog: 'lillper_vantar' }, { dialog: 'lillper_uppdrag' }] },
+  stjarna: { id: 'stjarna', sprite: 'ko', idle: { frames: [0, 0, 1, 1, 0, 2], every: 0.9 }, talk: [{ if: [{ flag: 'skalla_klar' }], dialog: 'stjarna_glad' }, { dialog: 'stjarna' }] },
+  rosen: { id: 'rosen', sprite: 'ko', idle: { frames: [0, 0, 1, 1, 0, 2], every: 1.1 }, talk: [{ dialog: 'rosen' }] },
+  britta: { id: 'britta', sprite: 'kid3', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'fabodskogen_klar' }], dialog: 'britta_efter' }, { dialog: 'britta' }] },
+  // --- Stationssamhället ---
+  lind: { id: 'lind', sprite: 'woman2', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'lind_vila' }] },
+  oskar: { id: 'oskar', sprite: 'telegrafist', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notSpell: 'aska' }], dialog: 'oskar_lar' }, { dialog: 'oskar_igen' }] },
+  berg: { id: 'berg', sprite: 'stins', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'visselpipa' }, { notFlag: 'visselpipa_klar' }], dialog: 'berg_tack' }, { if: [{ flag: 'visselpipa_klar' }], dialog: 'berg_glad' }, { if: [{ flag: 'visselpipa_uppdrag' }], dialog: 'berg_vantar' }, { dialog: 'berg_uppdrag' }] },
+  resenaren: { id: 'resenaren', sprite: 'woman', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'resenaren' }] },
+  kalle: { id: 'kalle', sprite: 'kid', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'folkparken_klar' }], dialog: 'kalle_efter' }, { dialog: 'kalle' }] },
   // --- Trollberget ---
   dagmar: {
     id: 'dagmar',
