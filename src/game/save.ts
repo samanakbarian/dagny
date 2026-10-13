@@ -5,6 +5,7 @@ import { OVERWORLD } from '../data/overworld';
 import { SPELL_ORDER } from '../data/spells';
 import { maxHp, maxMp } from './progression';
 import { hpMax, mpMax, newGame, type GameState, type Location } from './state';
+import { repairReach } from './reach';
 
 /** Bump when the format changes, and add a migration below. */
 export const SAVE_VERSION = 3;
@@ -106,6 +107,8 @@ export function deserialize(text: string | null): SaveFile | null {
   };
   state.hp = Math.max(1, Math.min(hpMax(state), num(s.hp, d.hp)));
   state.mp = Math.max(0, Math.min(mpMax(state), num(s.mp, d.mp)));
+  // Never leave Dagny where she can't get out with what she carries.
+  repairReach(state);
   return { v: SAVE_VERSION, savedAt: num(file.savedAt, 0), state };
 }
 

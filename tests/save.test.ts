@@ -125,10 +125,29 @@ describe('storage', () => {
 describe('version 3 (the larger overworld)', () => {
   it('puts Dagny beside her last village instead of at old map coordinates', async () => {
     const { OVERWORLD } = await import('../src/data/overworld');
-    const old = { ...newGame(), lastVillage: 'gruvsamhallet', ow: { x: 40, y: 9 }, loc: { area: 'overworld', x: 40, y: 9 } };
+    const old = { ...newGame(), items: ['svard', 'eka'], lastVillage: 'gruvsamhallet', ow: { x: 40, y: 9 }, loc: { area: 'overworld', x: 40, y: 9 } };
     const f = deserialize(JSON.stringify({ v: 2, savedAt: 0, state: old }))!;
     const p = OVERWORLD.places.find((x) => x.area === 'gruvsamhallet')!;
     expect(f.state.ow).toEqual({ x: p.x, y: p.y + 1 });
     expect(f.state.loc).toEqual({ area: 'overworld', x: p.x, y: p.y + 1 });
+  });
+
+  it('a save in a region Dagny cannot leave (no lamp) is moved home to Mormors by', async () => {
+    const { OVERWORLD } = await import('../src/data/overworld');
+    const p = OVERWORLD.places.find((x) => x.area === 'stationssamhallet')!;
+    const stuck = {
+      ...newGame(), items: ['svard', 'eka', 'karbidlampa', 'stovlar'], lastVillage: 'stationssamhallet',
+      ow: { x: p.x, y: p.y + 1 }, loc: { area: 'stationssamhallet', x: 40, y: 100 },
+      checkpoint: { area: 'folkparken_2', x: 10, y: 10 },
+    };
+    const f = deserialize(serialize(stuck))!;
+    expect(f.state.loc.area).toBe('mormors_by');
+    expect(f.state.lastVillage).toBe('mormors_by');
+    expect(f.state.ow).toEqual(OVERWORLD.start);
+    expect(f.state.checkpoint).toBeNull();
+    // With the flashlight the same save stays where it was.
+    const fine = deserialize(serialize({ ...stuck, items: [...stuck.items, 'ficklampa'] }))!;
+    expect(fine.state.loc.area).toBe('stationssamhallet');
+    expect(fine.state.lastVillage).toBe('stationssamhallet');
   });
 });
