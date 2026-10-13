@@ -507,6 +507,9 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   tempel_sover: {
     pages: ['En ring av resta stenar. Det surrar svagt i luften, som från en ledning.\nPlatsen sover ännu.'],
   },
+  bjorkhagen_nasslor: {
+    pages: ['En lapp på en pinne, skriven med barnhandstil:\n"AKTA BRÄNNÄSSLORNA I GROPEN! HOPPA ÖVER! /OLLE"'],
+  },
   trollberget_sover: {
     pages: ['Trollberget reser sig svart mot himlen. Vägen upp är stängd så länge de andra platserna sover.'],
   },

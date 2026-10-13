@@ -79,7 +79,9 @@ export const AREAS: Record<string, AreaDef> = {
     ambience: ['mosquitoes', 'leaves'],
     left: { to: 'overworld', ow: { x: 4, y: 17 } },
     right: { to: 'overworld', ow: { x: 4, y: 17 } },
+    signs: { I: 'bjorkhagen_nasslor' },
     props: [
+      { sprite: 'skylt', tx: 21, ty: 9 },
       { sprite: 'birch', tx: 5, ty: 9 },
       { sprite: 'birch', tx: 21, ty: 9, dx: 8 },
       { sprite: 'spruce', tx: 37, ty: 9 },
@@ -95,7 +97,7 @@ export const AREAS: Record<string, AreaDef> = {
     "..........................................g..........ME.",
     "................b..............m........====......######",
     "..............======........######................######",
-    "..W......v...............v..#########..v..........??gb##",
+    "..W......v...........I...v..#########..v..........??gb##",
     "##############~~~~~~##nnn###############################",
     "##############~~~~~~####################################",
   ],

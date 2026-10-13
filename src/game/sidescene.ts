@@ -182,6 +182,8 @@ export class SideScene implements Scene, WorldApi {
             break;
           case 'n':
             this.tileSprite[i] = 'nettles';
+            // Nettle tops stick up above the ground so the patch reads as a hazard.
+            if (at(tx, ty - 1) !== 'n') this.anim.push({ x: tx * TILE, y: (ty - 1) * TILE, sprite: 'nettleTops', offset: tx });
             break;
           case '~':
             if (at(tx, ty - 1) === '~') this.tileSprite[i] = 'waterDeep';
