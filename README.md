@@ -51,6 +51,17 @@ Mappen `android/` innehåller en Trusted Web Activity som paketerar webbversione
 och `.github/workflows/android.yml` bygger en signerad `.aab`. Steg för steg (Pages, signeringsnyckel,
 Play Console, Digital Asset Links) finns i [`android/README.md`](android/README.md).
 
+## Dokumentation
+
+| Dokument | Innehåll |
+|---|---|
+| [docs/arkitektur.md](docs/arkitektur.md) | Kodens uppbyggnad, mönster, kvalitet och känd teknisk skuld |
+| [docs/speldesign.md](docs/speldesign.md) | Progression, vem som lär ut vad, liv och Game Over, templens ordning, Trollberget |
+| [docs/soundtrack.md](docs/soundtrack.md) | Musiken: två ljudvärldar, Väktarmotivet, alla låtar och jinglar |
+| [docs/lore-audit.md](docs/lore-audit.md) | Genomgång av berättelsen och dess detaljer |
+| [docs/hamn-audit.md](docs/hamn-audit.md) | Regler för fågelformen Hamn |
+| [docs/mobil-testchecklista.md](docs/mobil-testchecklista.md) | Checklista för att testa på telefon |
+
 ## Var ligger vad?
 
 ```
@@ -81,7 +92,7 @@ tests/         Vitest
 | `src/data/npcs.ts` | Bybor och vilken dialog de väljer beroende på flaggor |
 | `src/data/spells.ts` | De sju läsningarna och teknikerna (nedåtstöt, uppåtstöt) |
 | `src/data/items.ts` | Föremål och nyckelskatter |
-| `src/data/progression.ts` | XP-kurvan och värden per nivå (Styrka, Magi, Liv, 1–8) |
+| `src/data/progression.ts` | XP-kurvan och värden per nivå (Styrka, Magi, Liv, 1–12) |
 | `src/data/strings.ts` | All gränssnittstext (förberett för översättning) |
 | `src/art/*.ts` | Sprites som rutnät av tecken mot paletten. `getSprite(id, frame)` i `src/engine/sprites.ts` är det enda gränssnittet, så handritade PNG-ark kan ersätta datat senare |
 | `src/audio/songs.ts` | Musiken som noter (`"e5:4 f#5:2 r:2"`, längd i sextondelar) |
@@ -93,10 +104,12 @@ tests/         Vitest
 - **Rendering:** Canvas 2D i 320×180. Heltalsskalning när den fyller minst ~85 % av skärmen, annars den största skalan som får plats. `image-rendering: pixelated`. Statiska tiles förrenderas per område och sprites cachas på offscreen-canvas vid uppstart.
 - **Spelloop:** fast tidssteg 60 Hz, rendering på `requestAnimationFrame`. Vid `visibilitychange` pausas och sparas spelet, ljudet stängs av och pausmenyn öppnas när man kommer tillbaka.
 - **Sparning:** `localStorage` bakom en wrapper som aldrig kastar fel och faller tillbaka på minnet. Spelet autosparar vid varje områdesbyte, vila, ljusstake (checkpoint), nyckel och när appen tappar fokus. Sparfilen är versionerad och valideras fält för fält.
-- **Ljud:** Web Audio-synt med dragspels-, nyckelharps-, flöjt-, kyrkklocke- och orgelklanger. Låses upp vid första tryck (krav på iOS).
+- **Ljud:** Web Audio-synt med folkklanger (dragspel, harpa, flöjt, kyrkklocka, orgel) för byarna och NES-pulsvågor för äventyret. Jinglar spelas ovanpå musiken. Låses upp vid första tryck (krav på iOS). Se [docs/soundtrack.md](docs/soundtrack.md).
 - **Förlåtande styrning:** coyote time, hoppbuffert, variabel hopphöjd, stora träffytor och "lugnt läge" som halverar skadan.
 
 ## Status och nästa steg
+
+*Historiken nedan berättar hur spelet byggdes. Templens egna låtar som nämns där har sedan ersatts av en gemensam tempellåt (se [docs/soundtrack.md](docs/soundtrack.md)).*
 
 **Leverans 1:** hela loopen by → karta → krypta (4 rum, nycklar, låsta dörrar, ljusstakar som checkpoints, mörkt benhus) → Kyrkogrimmen (två faser) → ekan → tillbaka till Hulda. Dessutom sidouppgiften med katten Murre, mentorn som lär ut nedåtstöt, nivåmeny, alla sju läsningar i motorn (Läkning lärs ut i spelet), synliga möten, PWA och offline.
 
@@ -139,4 +152,8 @@ Fem nya sidouppdrag, ett per by, där föremålen ligger i templen: Ingrids psal
 
 **Världen (version 1.1):** överblickskartan är 80 × 56 rutor, mot 44 × 32 förut. Den är delad i sju regioner, och varje tempels skatt öppnar vägen till nästa, som i Zelda II: ekan (sjön), karbidlampan (den mörka gruvgången), stövlarna (tidvattenkärret), ficklampan (Nattskogen), radion (det dolda passet) och sist vägen till Trollberget. Varje skatt säger vart den leder.
 
-Nästa steg: polering. Sedan Dagnys äventyr 2.
+**Liv och ett svårare slut (version 1.2):** Dagny har 3 liv. Game Over skickar henne tillbaka till mormor, men i Trollberget till bergets fot. Åtta näverdockor ger extra liv. Trollberget har fått tuffare väsen, labyrinten Trollgångarna och Skuggsalen, där Dagnys egen skugga väntar. Läkning och Nedåtstöt får man inte längre gratis i början: Sven vill ha johannesört från Björkhagen, och Algot lär ut sitt knep först när kryptan är klarad.
+
+**Soundtracket:** tempel 1–6 delar en tempellåt och en bosslåt, som i Zelda II. Väktarmotivet binder ihop templen, bossarna, Trollberget och segerfanfaren. Nytt finns också: möteslåt, grottlåt, Skuggans tema och jinglar för fynd och lärdomar. Se [docs/soundtrack.md](docs/soundtrack.md).
+
+Nästa steg: polering, minskad teknisk skuld (se [docs/arkitektur.md](docs/arkitektur.md)), och sedan Dagnys äventyr 2.

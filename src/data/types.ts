@@ -327,7 +327,7 @@ export interface AreaDef {
    * The way on stays shut until every creature here is beaten (Skuggan's hall).
    * Once cleared, flag `<area id>_rensad` keeps the room empty for good.
    */
-  sealed?: { dialog: string };
+  sealed?: { dialog: string; music?: string };
   /** Tougher creatures (the last temple): more health and harder blows. */
   hard?: boolean;
   /** Dialog started automatically the first time (needs flag to not repeat). */

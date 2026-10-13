@@ -452,6 +452,7 @@ export class SideScene implements Scene, WorldApi {
     if (this.boss && this.boss.awake && !this.boss.dead) {
       return templeById(this.area.temple ?? '')?.bossMusic ?? 'boss';
     }
+    if (this.seal === 2 && this.area.sealed?.music) return this.area.sealed.music;
     return this.area.music;
   }
 
@@ -968,7 +969,7 @@ export class SideScene implements Scene, WorldApi {
         const [kind, ...rest] = (pk.pid ?? '').split(':');
         const k = kind === 'magi' ? 'magi' : 'liv';
         if (addContainer(s, k, rest.join(':'))) {
-          g.audio.play('levelup');
+          g.audio.jingle('fynd');
           g.pushOverlay(new DialogOverlay(g, k === 'liv' ? 'fick_livbehallare' : 'fick_magibehallare'));
           g.save();
         }
@@ -977,7 +978,7 @@ export class SideScene implements Scene, WorldApi {
       case 'life': {
         if (pk.pid && !s.opened.includes(pk.pid)) s.opened.push(pk.pid);
         s.lives = Math.min(MAX_LIVES, s.lives + 1);
-        g.audio.play('levelup');
+        g.audio.jingle('fynd');
         this.particles.spawn({ x: pk.x - 4, y: pk.y - 6, vy: -0.5, life: 60, text: '+1', color: PALETTE.Y });
         // The first doll explains itself; later ones just count.
         if (!hasFlag(s, 'naverdocka_sedd')) {
@@ -990,7 +991,7 @@ export class SideScene implements Scene, WorldApi {
       case 'quest': {
         const id = pk.pid ?? '';
         if (id && !s.items.includes(id)) s.items.push(id);
-        this.sfx('key');
+        g.audio.jingle('fynd');
         g.pushOverlay(new DialogOverlay(g, `hittade_${id}`));
         g.save();
         break;
@@ -1139,11 +1140,13 @@ export class SideScene implements Scene, WorldApi {
       edge(false);
       this.sfx('roar');
       this.shake(20, 2);
+      g.audio.playMusic(this.music());
       if (this.area.sealed) g.pushOverlay(new DialogOverlay(g, this.area.sealed.dialog));
     } else if (this.seal === 2 && this.enemies.every((e) => e.dead)) {
       this.seal = 0;
       edge(true);
       setFlag(this.s, `${this.area.id}_rensad`);
+      g.audio.playMusic(this.music());
       this.sfx('unlock');
       g.toast(STR.sealOpen, 3);
       g.save();

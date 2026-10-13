@@ -296,9 +296,46 @@ export class AudioEngine {
     }
   }
 
-  private playNote(t: TrackDef, midi: number, when: number, dur: number): void {
+  /**
+   * A short jingle (a find, a lesson learned) played over the music, which
+   * dips meanwhile and comes back on its own – the song never restarts.
+   */
+  jingle(id: string): void {
+    const ctx = this.ctx;
+    if (!ctx || !this.musicBus || !this.master || ctx.state !== 'running') return;
+    const song = this.parse(id);
+    if (!song) return;
+    if (!this.jingleBus) {
+      this.jingleBus = ctx.createGain();
+      this.jingleBus.connect(this.master);
+    }
+    this.jingleBus.gain.value = this.musicVol * this.musicVol * 0.6;
+    const sixteenth = 60 / song.bpm / 4;
+    const t0 = ctx.currentTime + 0.03;
+    let end = t0;
+    for (const track of song.tracks) {
+      let at = t0;
+      for (const n of track.notes) {
+        const dur = n.len * sixteenth;
+        this.playNote(track.def, n.midi, at, dur, this.jingleBus);
+        at += dur;
+      }
+      end = Math.max(end, at);
+    }
+    const g = this.musicBus.gain;
+    const full = this.musicVol * this.musicVol * 0.5;
+    g.cancelScheduledValues(t0);
+    g.setValueAtTime(g.value, t0);
+    g.linearRampToValueAtTime(full * 0.15, t0 + 0.06);
+    g.setValueAtTime(full * 0.15, end);
+    g.linearRampToValueAtTime(full, end + 0.6);
+  }
+
+  private jingleBus: GainNode | null = null;
+
+  private playNote(t: TrackDef, midi: number, when: number, dur: number, out?: AudioNode): void {
     const ctx = this.ctx!;
-    const bus = this.musicBus!;
+    const bus = out ?? this.musicBus!;
     if (midi === -1) return;
     const vol = t.vol;
     if (t.inst === 'drum' || midi < -1) {

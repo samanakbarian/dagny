@@ -88,6 +88,38 @@ export const SONGS: Record<string, SongDef> = {
     ],
   },
 
+  /**
+   * "Möte" – a fight on the road: the overworld's D minor at a gallop, with
+   * racing arpeggios. Every encounter on the map plays it.
+   */
+  mote: {
+    bpm: 164,
+    loop: true,
+    tracks: [
+      {
+        inst: 'pulse', vol: 0.9,
+        notes: `d5:2 f5:2 a5:2 f5:2 d5:2 e5:2 f5:2 e5:2 | d5:2 a4:2 d5:2 e5:2 f5:4 e5:2 c5:2 | d5:2 f5:2 bb5:4 a5:2 g5:2 f5:2 d5:2 | e5:2 g5:2 c6:4 bb5:2 a5:2 g5:2 e5:2 |
+                f5:2 a5:2 d6:2 a5:2 f5:2 a5:2 d6:2 e6:2 | f6:4 e6:2 d6:2 a5:4 f5:4 | g5:2 bb5:2 d6:2 bb5:2 g5:2 f5:2 e5:2 d5:2 | c#5:2 e5:2 a5:2 g5:2 f5:2 e5:2 c#5:2 a4:2`,
+      },
+      { inst: 'pulse2', vol: 0.5, notes: 'd4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 | d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 | bb3:1 d4:1 f4:1 d4:1 bb3:1 d4:1 f4:1 d4:1 bb3:1 d4:1 f4:1 d4:1 bb3:1 d4:1 f4:1 d4:1 | c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 | d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 | d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 d4:1 f4:1 a4:1 f4:1 | g3:1 bb3:1 d4:1 bb3:1 g3:1 bb3:1 d4:1 bb3:1 g3:1 bb3:1 d4:1 bb3:1 g3:1 bb3:1 d4:1 bb3:1 | a3:1 c#4:1 e4:1 g4:1 a3:1 c#4:1 e4:1 g4:1 a3:1 c#4:1 e4:1 g4:1 a3:1 c#4:1 e4:1 g4:1' },
+      { inst: 'bass', vol: 0.95, notes: 'd2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 | c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | g1:2 g2:2 g1:2 g2:2 g1:2 g2:2 g1:2 g2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2' },
+      { inst: 'drum', vol: 0.5, notes: 'k:2 h:1 h:1 s:2 h:1 h:1 '.repeat(16) },
+    ],
+  },
+  /**
+   * "Grottan" – caves on the road: a slow A minor line that echoes off the
+   * rock, a low drone and water dripping somewhere in the dark.
+   */
+  grotta: {
+    bpm: 92,
+    loop: true,
+    tracks: [
+      { inst: 'pulse', vol: 0.7, notes: 'e5:4 r:2 a4:2 c5:4 b4:4 | a4:8 r:8 | f5:4 r:2 c5:2 e5:4 d5:4 | c5:8 b4:4 r:4 | e5:4 r:2 a5:2 g5:4 e5:4 | f5:6 e5:2 d5:4 c5:4 | b4:4 r:2 g#4:2 b4:4 d5:4 | c5:4 b4:4 a4:8' },
+      { inst: 'pulse2', vol: 0.35, notes: 'r:3 e5:4 r:2 a4:2 c5:4 b4:4 a4:8 r:8 f5:4 r:2 c5:2 e5:4 d5:4 c5:8 b4:4 r:4 e5:4 r:2 a5:2 g5:4 e5:4 f5:6 e5:2 d5:4 c5:4 b4:4 r:2 g#4:2 b4:4 d5:4 c5:4 b4:4 a4:5' },
+      { inst: 'organ', vol: 0.4, notes: 'a2:16 | a2:16 | f2:16 | e2:16 | a2:16 | d2:16 | e2:16 | a2:16' },
+      { inst: 'bell', vol: 0.35, notes: 'r:6 e6:1 r:9 | r:12 a6:1 r:3 | r:16 | r:4 c6:1 r:7 g6:1 r:3 | r:9 e6:1 r:6 | r:16 | r:2 b5:1 r:10 e6:1 r:2 | r:16' },
+    ],
+  },
   /** "Skogsstigen" – E minor on the pulse lead, for paths, caves and encounters on the road. */
   stig: {
     bpm: 132,
@@ -144,6 +176,26 @@ export const SONGS: Record<string, SongDef> = {
     ],
   },
 
+  /** Something found – a container, a doll, a lost thing: a quick rising call. */
+  fynd: {
+    bpm: 150,
+    loop: false,
+    tracks: [
+      { inst: 'pulse', vol: 1, notes: 'g5:1 a5:1 b5:1 d6:1 g6:6' },
+      { inst: 'pulse2', vol: 0.6, notes: 'b4:1 c5:1 d5:1 f#5:1 b5:6' },
+      { inst: 'bass', vol: 0.8, notes: 'g2:4 g2:6' },
+    ],
+  },
+  /** Something learned – a reading, a skill, a level: Dagny's theme (a c e) turned major. */
+  lara: {
+    bpm: 140,
+    loop: false,
+    tracks: [
+      { inst: 'pulse', vol: 1, notes: 'a4:2 c#5:2 e5:2 a5:8' },
+      { inst: 'pulse2', vol: 0.6, notes: 'e4:2 a4:2 c#5:2 e5:8' },
+      { inst: 'bass', vol: 0.8, notes: 'a2:6 a1:8' },
+    ],
+  },
   /** Falling asleep. */
   somnar: {
     bpm: 72,
@@ -234,6 +286,29 @@ export const SONGS: Record<string, SongDef> = {
       { inst: 'bass', vol: 1, shift: 12, notes: 'e2:3 b1:1 e2:3 b1:1 f2:2 e2:4 d#2:1 e2:1 | e2:3 b1:1 e2:3 b1:1 g2:2 f2:4 e2:1 d#2:1 | e2:3 b1:1 e2:3 b1:1 f2:2 e2:4 d#2:1 e2:1 | e2:3 b1:1 e2:3 b1:1 g2:2 f2:4 e2:1 d#2:1 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 | f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 b2:2' },
       { inst: 'organ', vol: 0.45, notes: 'e2:16 | e2:16 | e2:16 | e2:16 | e2:16 | e2:16 | f2:16 | e2:16 | e2:16 | e2:16 | bb1:16 | b1:16 | a1:16 | a1:16 | f2:16 | f2:16 | e2:16 | bb1:16 | b1:16 | b1:16' },
       { inst: 'drum', vol: 0.55, notes: 'k:3 k:1 k:3 k:1 s:2 k:4 s:1 s:1 '.repeat(4) + 'k:2 h:1 h:1 s:2 h:1 h:1 k:2 h:1 h:1 s:2 k:1 k:1 '.repeat(16) },
+    ],
+  },
+  /**
+   * "Skuggan" – Dagny's shadow: the Väktarmotiv turned upside down, played
+   * against the right way up in the harmony – two Dagnys at once – with
+   * tritones and chromatic slides between.
+   */
+  skuggan: {
+    bpm: 160,
+    loop: true,
+    transpose: -2,
+    tracks: [
+      {
+        inst: 'pulse', vol: 0.95,
+        notes: `e4:3 b4:1 e4:3 b4:1 d#4:2 e4:4 f4:1 e4:1 | e4:3 b4:1 e4:3 b4:1 c#4:2 d#4:4 e4:1 f4:1 |
+                e5:2 bb4:2 e5:2 bb4:2 f5:2 b4:2 f5:2 b4:2 | e5:2 d#5:2 d5:2 c#5:2 c5:2 b4:2 bb4:2 a4:2 |
+                e4:2 bb4:2 e4:2 bb4:2 f4:2 b4:2 f4:2 b4:2 | a4:2 bb4:2 b4:2 c5:2 c#5:2 d5:2 d#5:2 e5:2 |
+                e5:3 b5:1 e5:3 b5:1 d#5:2 e5:4 f5:1 e5:1 | e5:2 f5:2 e5:2 d#5:2 e5:8`,
+      },
+      { inst: 'pulse2', vol: 0.6, notes: 'e3:3 b2:1 e3:3 b2:1 f3:2 e3:4 d#3:1 e3:1 | e3:3 b2:1 e3:3 b2:1 g3:2 f3:4 e3:1 d#3:1 | e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 | e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 | e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 | e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 | e3:3 b2:1 e3:3 b2:1 f3:2 e3:4 d#3:1 e3:1 | e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1 e3:1 g3:1 bb3:1 g3:1' },
+      { inst: 'bass', vol: 1, shift: 12, notes: 'e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 bb1:2 e1:2 bb1:2 e1:2 bb1:2 e1:2 bb1:2 | e1:2 bb1:2 e1:2 bb1:2 e1:2 bb1:2 e1:2 bb1:2 | e1:2 bb1:2 e1:2 bb1:2 e1:2 bb1:2 e1:2 bb1:2 | e1:2 bb1:2 e1:2 bb1:2 e1:2 bb1:2 e1:2 bb1:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2' },
+      { inst: 'organ', vol: 0.4, notes: 'e2:16 '.repeat(8) },
+      { inst: 'drum', vol: 0.55, notes: 'k:2 h:1 h:1 s:2 h:1 k:1 '.repeat(16) },
     ],
   },
   /**

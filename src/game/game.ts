@@ -250,11 +250,11 @@ export class Game {
       case 'learnSpell':
         if (!s.spells.includes(a.spell)) s.spells.push(a.spell);
         s.selectedSpell ??= a.spell;
-        this.audio.play('levelup');
+        this.audio.jingle('lara');
         break;
       case 'learnSkill':
         if (!s.skills.includes(a.skill)) s.skills.push(a.skill);
-        this.audio.play('levelup');
+        this.audio.jingle('lara');
         break;
       case 'rest':
         s.hp = hpMax(s);
@@ -275,7 +275,7 @@ export class Game {
         break;
       case 'giveItem':
         if (!s.items.includes(a.item)) s.items.push(a.item);
-        this.audio.play('key');
+        this.audio.jingle('fynd');
         break;
       case 'takeItem':
         s.items = s.items.filter((i) => i !== a.item);
@@ -284,7 +284,7 @@ export class Game {
         this.onScene?.(a.scene);
         break;
       case 'container':
-        if (addContainer(s, a.kind, a.id)) this.audio.play('levelup');
+        if (addContainer(s, a.kind, a.id)) this.audio.jingle('fynd');
         break;
     }
     this.onAction?.(a);

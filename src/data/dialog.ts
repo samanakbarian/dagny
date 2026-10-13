@@ -55,15 +55,32 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     actions: [{ type: 'flag', flag: 'hulda_efter_krypta' }, { type: 'rest' }],
   },
 
-  // --- Sven: the elder who teaches Läkning -------------------------------------
-  sven_lar: {
+  // --- Sven: the elder who teaches Läkning – once Dagny brings johannesört -------
+  sven_uppdrag: {
     speaker: 'Gamle Sven',
     pages: [
       'Så Hulda har skickat dig. Hmm. Du har din mors ögon, det har du.',
-      'Hör här nu. Det här är en gammal läsning mot värk. Min farmor lärde mig den vid vedspisen.',
+      'Jag kan en gammal läsning mot värk. Men den biter inte utan johannesört – och mina knän tar mig inte till skogen längre.',
+      'Den växer i Björkhagen, väster om byn, högt uppe där solen når. Akta dig för nässlorna. Hämta en kvist, så lär jag dig.',
+    ],
+    actions: [{ type: 'flag', flag: 'sven_uppdrag' }],
+  },
+  sven_vantar: {
+    speaker: 'Gamle Sven',
+    pages: ['Johannesörten växer högt uppe i Björkhagen, väster om byn. Hoppa på hyllorna – och akta nässlorna.'],
+  },
+  sven_lar: {
+    speaker: 'Gamle Sven',
+    pages: [
+      'Johannesört! Och plockad med rötterna kvar i jorden, som sig bör. Du är din mormors barnbarn.',
+      'Hör här nu. Min farmor lärde mig den här vid vedspisen.',
       '"Värk ut, värk ner, i jord och sten, läk kött och ben..." Så. Nu kan du den.',
     ],
-    actions: [{ type: 'learnSpell', spell: 'lakning' }],
+    actions: [
+      { type: 'takeItem', item: 'johannesort' },
+      { type: 'flag', flag: 'johannesort_klar' },
+      { type: 'learnSpell', spell: 'lakning' },
+    ],
     next: 'lart_lakning',
   },
   lart_lakning: {
@@ -82,7 +99,7 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   algot_lar: {
     speaker: 'Smeden Algot',
     pages: [
-      'Så det är du som bär klockans kläpp nu. Den har slagit tolv slag varje midsommar i hundra år.',
+      'Solen över Stenkyrkan i morse – det var du, va? Då har du gjort dig förtjänt av ett smedknep.',
       'Ett råd från en gammal smed: när du hoppar, håll NER och låt tyngden göra jobbet.',
     ],
     actions: [
@@ -90,6 +107,13 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
       { type: 'flag', flag: 'algot_lart' },
     ],
     next: 'lart_nedatstot',
+  },
+  algot_vantar: {
+    speaker: 'Smeden Algot',
+    pages: [
+      'Så det är du som bär klockans kläpp nu. Den har slagit tolv slag varje midsommar i hundra år.',
+      'Jag har ett knep att lära dig. Men först vill jag se att du klarar dig där nere i kryptan. Kom tillbaka när grimmen fått frid.',
+    ],
   },
   lart_nedatstot: {
     pages: ['Dagny lärde sig NEDÅTSTÖT!\nHåll NER i luften för att stöta svärdet nedåt.'],
@@ -708,6 +732,9 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   ingrid_glad: {
     speaker: 'Ingrid',
     pages: ['Jag har pressat en prästkrage åt dig. Den ligger på sidan för midsommarpsalmen.'],
+  },
+  hittade_johannesort: {
+    pages: ['Dagny hittade JOHANNESÖRT! Små gula stjärnor som lyser i solen. Gamle Sven väntar på den.'],
   },
   hittade_psalmbok: {
     pages: ['Dagny hittade en PSALMBOK. Det sticker ut torkade blommor mellan bladen. Den är nog Ingrids.'],

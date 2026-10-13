@@ -22,7 +22,9 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     sprite: 'man',
     idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 },
     talk: [
-      { if: [{ notSpell: 'lakning' }], dialog: 'sven_lar' },
+      { if: [{ notSpell: 'lakning' }, { item: 'johannesort' }], dialog: 'sven_lar' },
+      { if: [{ notSpell: 'lakning' }, { flag: 'sven_uppdrag' }], dialog: 'sven_vantar' },
+      { if: [{ notSpell: 'lakning' }], dialog: 'sven_uppdrag' },
       { if: [{ flag: 'krypta_klar' }], dialog: 'sven_efter' },
       { dialog: 'sven_igen' },
     ],
@@ -33,7 +35,8 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     idle: { frames: [0, 2, 0, 0], every: 0.9 },
     talk: [
       { if: [{ flag: 'algot_lart' }], dialog: 'algot_igen' },
-      { dialog: 'algot_lar' },
+      { if: [{ flag: 'krypta_klar' }], dialog: 'algot_lar' },
+      { dialog: 'algot_vantar' },
     ],
   },
   karin: {

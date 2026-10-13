@@ -24,6 +24,7 @@ alternates the root with the fifth below, then turns. It ties the temples togeth
 | `boss` – *Väktarstriden* | At double speed to start each guardian fight |
 | `trollberget` | Pounded out low and dark (♭2, a tone lower, organ drone) |
 | `bergakung` | Trollberget's version at full speed in the final fight |
+| `skuggan` | **Upside down** in Skuggsalen – Dagny's mirror image – played against the right way up in the harmony |
 | `seger` | In C major when a temple is restored – the guardians at peace |
 
 The second half of `tempel` also quotes Dagny's own melody from the title song
@@ -33,11 +34,14 @@ The second half of `tempel` also quotes Dagny's own melody from the title song
 
 - **Title:** `titel` (*Ny dag*, Dagny's theme)
 - **Home and villages:** `by` (Mormors polska), `gruvby`, `kyrkby`, `bruk`, `fiske`, `fabodby`, `station`
-- **Outdoors:** `karta` (*Vägen ut*, the overworld), `stig` (paths, caves, encounters)
+- **Outdoors:** `karta` (*Vägen ut*, the overworld), `stig` (paths), `mote` (fights on the map, in the overworld's D minor), `grotta` (Tjuvgrottan and Jättegrytan: echo, drone, dripping water)
 - **Temples 1–6:** `tempel`, with boss music `boss`. One theme for all six, as in Zelda II, so it becomes recognisable.
-- **Temple 7:** `trollberget`, with boss music `bergakung`
+- **Temple 7:** `trollberget`, with boss music `bergakung`. Skuggsalen plays `skuggan` while the hall is shut (`sealed.music`).
 - **Short pieces:** `seger` (temple restored), `somnar` (defeat)
+- **Jingles** play over the music, which dips meanwhile and then comes back (`AudioEngine.jingle`):
+  - `fynd` – something found (container, doll, lost thing, a gift)
+  - `lara` – something learned (a reading, a technique, a new level). It is Dagny's theme `a c e` in major.
 - **Ending:** `soluppgang`, `midsommar`
 
-Tests in `tests/data.test.ts` check this structure: every song is used,
+23 pieces in total (21 songs and 2 jingles). Tests in `tests/data.test.ts` check this structure: every song is used,
 temples 1–6 share their theme and boss music, and every track in a song is the same length.

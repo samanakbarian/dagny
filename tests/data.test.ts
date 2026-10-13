@@ -377,8 +377,8 @@ describe('music and sound', () => {
   });
 
   it('every song is used somewhere', () => {
-    const used = new Set([...Object.values(AREAS).map((a) => a.music), ...TEMPLES.flatMap((t) => [t.music, t.bossMusic])]);
-    const elsewhere = ['titel', 'karta', 'seger', 'somnar', 'soluppgang', 'midsommar'];
+    const used = new Set([...Object.values(AREAS).flatMap((a) => [a.music, a.sealed?.music]), ...TEMPLES.flatMap((t) => [t.music, t.bossMusic])]);
+    const elsewhere = ['titel', 'karta', 'seger', 'somnar', 'soluppgang', 'midsommar', 'fynd', 'lara'];
     for (const id of Object.keys(SONGS)) expect(used.has(id) || elsewhere.includes(id), id).toBe(true);
   });
 

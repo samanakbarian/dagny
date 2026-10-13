@@ -321,7 +321,7 @@ export class LevelUpOverlay implements Overlay {
             // Raising Liv / Magi fills the new capacity.
             if (st === 'liv') s.hp = hpMax(s);
             if (st === 'magi') s.mp = mpMax(s);
-            game.audio.play('levelup');
+            game.audio.jingle('lara');
             game.vibrate([20, 40, 20]);
             onChange?.();
             game.save();

@@ -55,6 +55,12 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
     description: 'Anders lyckofickur i mässing. Det tickar fortfarande.',
     sprite: 'fickur',
   },
+  johannesort: {
+    id: 'johannesort',
+    name: 'Johannesört',
+    description: 'En kvist johannesört från Björkhagen. Gamle Sven behöver den till sin läsning.',
+    sprite: 'johannesort',
+  },
   psalmbok: {
     id: 'psalmbok',
     name: 'Psalmboken',
@@ -124,4 +130,4 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
 };
 
 /** Order shown in the items menu. */
-export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'klingaHardad', 'klingaBlank', 'silverbeslag', 'malm', 'askstenen', 'murre', 'fickur', 'psalmbok', 'medaljong', 'kompass', 'skalla', 'visselpipa'];
+export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'klingaHardad', 'klingaBlank', 'silverbeslag', 'malm', 'askstenen', 'murre', 'johannesort', 'fickur', 'psalmbok', 'medaljong', 'kompass', 'skalla', 'visselpipa'];
