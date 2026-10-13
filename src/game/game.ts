@@ -61,7 +61,8 @@ export class Game {
   private fadeCb: (() => void) | null = null;
   private toasts: Toast[] = [];
   private vignettes = new Map<string, HTMLCanvasElement>();
-  private paused = false;
+  /** True while the app is in the background (audio stays silent). */
+  paused = false;
   /** Set by the main module – draws the "turn your phone" screen. */
   rotateScreen: { update(): void; render(ctx: CanvasRenderingContext2D): void } | null = null;
   /** Opens the pause menu (set by main to avoid an import cycle). */
@@ -107,6 +108,7 @@ export class Game {
       mode: this.settings.stickMode,
       scale: this.settings.controlScale,
       opacity: this.settings.controlOpacity,
+      lowButton: this.settings.lowButton,
       offsetX: off.x,
       offsetY: off.y,
     };

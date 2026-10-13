@@ -68,6 +68,18 @@ function boot(): void {
       game.resumeFromBackground();
     }
   });
+  // iOS only lets audio start (or restart after a call or the lock screen)
+  // inside a touch: try again on every touch until it runs.
+  const wake = (): void => {
+    if (!game.paused) game.audio.unlock();
+  };
+  document.addEventListener('touchend', wake, { passive: true });
+  document.addEventListener('pointerup', wake, { passive: true });
+  document.addEventListener('keydown', wake, { passive: true });
+  // Coming back from the back/forward cache counts as coming back from the background.
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) game.resumeFromBackground();
+  });
   window.addEventListener('pagehide', () => game.save());
   window.addEventListener('blur', () => game.save());
 

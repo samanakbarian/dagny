@@ -455,9 +455,14 @@ export class SideScene implements Scene, WorldApi {
 
   // --- WorldApi ---------------------------------------------------------------------------
 
+  /** Reused every call (read at once by AI, never kept). */
+  private readonly center = { x: 0, y: 0 };
+
   playerCenter(): { x: number; y: number } {
     const p = this.player;
-    return { x: p.x + p.w / 2, y: p.y + p.h / 2 };
+    this.center.x = p.x + p.w / 2;
+    this.center.y = p.y + p.h / 2;
+    return this.center;
   }
 
   playerBox(): Rect {
@@ -567,10 +572,10 @@ export class SideScene implements Scene, WorldApi {
       left: i.held(Act.Left),
       right: i.held(Act.Right),
       up: i.held(Act.Up),
-      down: i.held(Act.Down),
+      down: i.held(Act.Down) || i.held(Act.LowSword),
       jumpHeld: i.held(Act.Jump),
       jumpPressed: i.pressed(Act.Jump),
-      swordPressed: i.pressed(Act.Sword),
+      swordPressed: i.pressed(Act.Sword) || i.pressed(Act.LowSword),
     };
   }
 
@@ -682,7 +687,7 @@ export class SideScene implements Scene, WorldApi {
     // --- Enemies ---
     for (const e of this.enemies) e.update(this);
     this.combat();
-    this.enemies = this.enemies.filter((e) => !e.dead || e === this.boss);
+    compact(this.enemies, (e) => !e.dead || e === this.boss);
 
     // --- Projectiles ---
     const solidAt = (x: number, y: number): boolean => isSolidAt(this.grid, x, y);
@@ -710,7 +715,7 @@ export class SideScene implements Scene, WorldApi {
         }
       }
     }
-    this.projectiles = this.projectiles.filter((pr) => !pr.dead);
+    compact(this.projectiles, (pr) => !pr.dead);
 
     // --- Pickups ---
     for (const pk of this.pickups) {
@@ -718,7 +723,7 @@ export class SideScene implements Scene, WorldApi {
       // A bird can't carry anything: keys, treasures and food wait for Dagny.
       if (!pk.taken && p.state !== 'bird' && overlaps(pk.box, p)) this.collect(pk);
     }
-    this.pickups = this.pickups.filter((pk) => !pk.taken && pk.life > 0);
+    compact(this.pickups, (pk) => !pk.taken && pk.life > 0);
 
     // --- Checkpoints ---
     for (const cp of this.checkpoints) {
@@ -1490,12 +1495,11 @@ export class SideScene implements Scene, WorldApi {
     dc.fillStyle = `rgba(22,16,30,${this.area.darkness ?? 0.93})`;
     dc.fillRect(0, 0, VIEW_W, VIEW_H);
     dc.globalCompositeOperation = 'destination-out';
+    // One pre-rendered soft disc, scaled per light: no gradient objects per frame.
+    const disc = lightDisc();
     const light = (x: number, y: number, r: number): void => {
-      const g = dc.createRadialGradient(x, y, r * 0.2, x, y, r);
-      g.addColorStop(0, 'rgba(0,0,0,1)');
-      g.addColorStop(1, 'rgba(0,0,0,0)');
-      dc.fillStyle = g;
-      dc.fillRect(x - r, y - r, r * 2, r * 2);
+      if (r <= 0) return;
+      dc.drawImage(disc, x - r, y - r, r * 2, r * 2);
     };
     const pc = this.playerCenter();
     const flicker = Math.sin(this.frame / 7) * 2;
@@ -1591,4 +1595,30 @@ export class SideScene implements Scene, WorldApi {
     drawText(ctx, name, VIEW_W / 2, y + 4, 'W', { align: 'center' });
     ctx.globalAlpha = 1;
   }
+}
+
+/** Removes the items that fail `keep`, in place (no new array each frame). */
+function compact<T>(list: T[], keep: (item: T) => boolean): void {
+  let n = 0;
+  for (let i = 0; i < list.length; i++) if (keep(list[i])) list[n++] = list[i];
+  list.length = n;
+}
+
+let disc: HTMLCanvasElement | null = null;
+
+/** A soft light: opaque out to 20 % of the radius, fading to nothing at the edge. */
+function lightDisc(): HTMLCanvasElement {
+  if (disc) return disc;
+  const size = 128;
+  disc = document.createElement('canvas');
+  disc.width = size;
+  disc.height = size;
+  const c = disc.getContext('2d') as CanvasRenderingContext2D;
+  const r = size / 2;
+  const g = c.createRadialGradient(r, r, r * 0.2, r, r, r);
+  g.addColorStop(0, 'rgba(0,0,0,1)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  c.fillStyle = g;
+  c.fillRect(0, 0, size, size);
+  return disc;
 }

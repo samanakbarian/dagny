@@ -11,6 +11,8 @@ export interface TouchLayout {
   /** Distance from the screen edges in CSS px (placement). */
   offsetX: number;
   offsetY: number;
+  /** Show an extra "LÅGT" button for a low strike. */
+  lowButton: boolean;
 }
 
 /**
@@ -56,6 +58,7 @@ export class TouchControls {
     s.setProperty('--ctl-opacity', String(layout.opacity));
     s.setProperty('--ctl-offset-x', `${layout.offsetX}px`);
     s.setProperty('--ctl-offset-y', `${layout.offsetY}px`);
+    this.root.classList.toggle('no-low', !layout.lowButton);
     if (modeChanged) {
       this.stickEl.remove();
       this.buildStick();
@@ -68,6 +71,7 @@ export class TouchControls {
     this.button('ctl-btn ctl-jump', 'HOPPA', Act.Jump);
     this.button('ctl-btn ctl-sword', 'SVÄRD', Act.Sword);
     this.button('ctl-btn ctl-magic', 'MAGI', Act.Magic);
+    this.button('ctl-btn ctl-low', 'LÅGT', Act.LowSword);
     const pause = this.el('ctl ctl-small ctl-pause', 'II');
     pause.setAttribute('aria-label', 'Paus');
     pause.addEventListener('pointerdown', (e) => {

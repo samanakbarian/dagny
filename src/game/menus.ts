@@ -270,6 +270,7 @@ export class SettingsOverlay extends SubOverlay {
         { label: STR.controlSize, value: () => `${Math.round(st.controlScale * 100)}%`, onAdjust: (d) => { st.controlScale = step(st.controlScale, d, 0.75, 1.6, 0.15); apply(); } },
         { label: STR.controlOpacity, value: () => `${Math.round((1 - st.controlOpacity) * 100)}%`, onAdjust: (d) => { st.controlOpacity = step(st.controlOpacity, -d, 0.15, 0.9, 0.15); apply(); } },
         { label: STR.controlPlacement, value: () => STR.placementNames[st.placement], onAdjust: (d) => { st.placement = (st.placement + d + 3) % 3; apply(); } },
+        { label: STR.lowButton, value: () => onOff(st.lowButton), onAdjust: () => { st.lowButton = !st.lowButton; apply(); } },
         { label: STR.vibration, value: () => onOff(st.vibration), onAdjust: () => { st.vibration = !st.vibration; apply(); if (st.vibration) game.vibrate(30); } },
         { label: STR.showFps, value: () => onOff(st.showFps), onAdjust: () => { st.showFps = !st.showFps; apply(); } },
         { label: STR.back, onSelect: () => (this.closed = true) },
@@ -286,6 +287,7 @@ export class SettingsOverlay extends SubOverlay {
     this.menu.render(ctx, f.x + 14, f.y + 22, 200);
     const cur = this.menu.cursor;
     if (cur === 2) drawText(ctx, STR.calmHelp, f.x + 14, f.y + f.h - 14, 'G');
+    else if (cur === 7) drawText(ctx, STR.lowButtonHelp, f.x + 14, f.y + f.h - 14, 'G');
     else drawText(ctx, '< > ändrar', f.x + 14, f.y + f.h - 14, 'G');
   }
 }
