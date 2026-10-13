@@ -122,22 +122,29 @@ export class Game {
   }
 
   toggleFullscreen(): void {
-    const d = document as Document & { webkitFullscreenElement?: Element; webkitExitFullscreen?: () => void };
+    const d = document as Document & { webkitFullscreenElement?: Element; webkitExitFullscreen?: () => void; webkitFullscreenEnabled?: boolean };
     const el = document.documentElement as HTMLElement & { webkitRequestFullscreen?: () => void };
+    // Not allowed here: inside a frame that forbids it (e.g. a preview page),
+    // or a browser without fullscreen for pages (iPhone Safari). Say so.
+    const explain = (): void => this.toast(STR.noFullscreen, 4);
     try {
       if (document.fullscreenElement || d.webkitFullscreenElement) {
         if (document.exitFullscreen) void document.exitFullscreen();
         else d.webkitExitFullscreen?.();
+      } else if (!(document.fullscreenEnabled || d.webkitFullscreenEnabled)) {
+        explain();
       } else if (el.requestFullscreen) {
         void el.requestFullscreen({ navigationUI: 'hide' }).then(() => {
           const o = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
           o?.lock?.('landscape').catch(() => undefined);
-        }).catch(() => undefined);
+        }).catch(explain);
+      } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
       } else {
-        el.webkitRequestFullscreen?.();
+        explain();
       }
     } catch {
-      /* not supported (e.g. iPhone Safari) – installing as PWA gives fullscreen */
+      explain();
     }
   }
 

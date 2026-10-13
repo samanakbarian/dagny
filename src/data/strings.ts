@@ -46,6 +46,7 @@ export const STR = {
   placementNames: ['Nära kanten', 'Mitten', 'Längre in'],
   vibration: 'Vibration',
   showFps: 'Visa FPS',
+  noFullscreen: 'Helskärm går inte här – installera spelet',
   lowButton: 'Knapp för lågt hugg',
   lowButtonHelp: 'Egen knapp i stället för NER + SVÄRD',
   on: 'På',
