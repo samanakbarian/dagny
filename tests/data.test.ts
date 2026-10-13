@@ -8,6 +8,7 @@ import { NPCS } from '../src/data/npcs';
 import { OVERWORLD } from '../src/data/overworld';
 import { PALETTE, TONES } from '../src/data/palettes';
 import { SPELLS, SPELL_ORDER } from '../src/data/spells';
+import { MAX_LEVEL } from '../src/data/progression';
 import { STR } from '../src/data/strings';
 import { TEMPLES, VILLAGES } from '../src/data/temples';
 import { SPRITES } from '../src/art';
@@ -180,7 +181,7 @@ describe('creatures, temples, spells', () => {
   it('has the seven läsningar and their villages', () => {
     expect(SPELL_ORDER.length).toBe(7);
     for (const id of SPELL_ORDER) {
-      expect(SPELLS[id].cost.length).toBe(8);
+      expect(SPELLS[id].cost.length).toBe(MAX_LEVEL);
       expect(VILLAGES.some((v) => v.name === SPELLS[id].village)).toBe(true);
     }
   });

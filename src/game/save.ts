@@ -1,12 +1,12 @@
 import type { KeyValueStore } from '../engine/storage';
 import type { SkillId, SpellId, StatId } from '../data/types';
-import { MAX_LEVEL } from '../data/progression';
+import { MAX_LEVEL, convertOldLevel } from '../data/progression';
 import { SPELL_ORDER } from '../data/spells';
 import { maxHp, maxMp } from './progression';
 import { hpMax, mpMax, newGame, type GameState, type Location } from './state';
 
 /** Bump when the format changes, and add a migration below. */
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 export const SAVE_KEY = 'dagny.save';
 
 export interface SaveFile {
@@ -33,6 +33,11 @@ function loc(x: unknown, d: Location): Location {
 function migrate(file: Record<string, unknown>): Record<string, unknown> {
   const v = num(file.v, 0);
   if (v > SAVE_VERSION) throw new Error('Sparfilen kommer från en nyare version');
+  // Version 2: levels go to 12 instead of 8 – stretch them so nobody loses strength.
+  if (v < 2 && isObj(file.state) && isObj(file.state.levels)) {
+    const lv = file.state.levels;
+    for (const k of ['styrka', 'magi', 'liv']) lv[k] = convertOldLevel(num(lv[k], 1));
+  }
   return file;
 }
 

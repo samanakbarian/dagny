@@ -58,7 +58,8 @@ describe('save format', () => {
     const f = deserialize(text)!;
     expect(f).not.toBeNull();
     const s = f.state;
-    expect(s.levels).toEqual({ styrka: 8, magi: 1, liv: 1 });
+    // A version-1 save: the (clamped) old max 8 becomes the new max 12.
+    expect(s.levels).toEqual({ styrka: 12, magi: 1, liv: 1 });
     expect(s.hp).toBe(maxHp(1));
     expect(s.mp).toBe(0);
     expect(s.xp).toBe(0);
@@ -109,5 +110,14 @@ describe('storage', () => {
     } finally {
       delete g.localStorage;
     }
+  });
+
+  it('converts levels from a version-1 save to the 12-step scale', () => {
+    const old = { ...newGame(), levels: { styrka: 4, magi: 3, liv: 4 } };
+    const f = deserialize(JSON.stringify({ v: 1, savedAt: 0, state: old }))!;
+    expect(f.state.levels).toEqual({ styrka: 6, magi: 4, liv: 6 });
+    // A current save keeps its levels as they are.
+    const now = deserialize(serialize({ ...newGame(), levels: { styrka: 4, magi: 3, liv: 4 } }))!;
+    expect(now.state.levels).toEqual({ styrka: 4, magi: 3, liv: 4 });
   });
 });
