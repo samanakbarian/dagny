@@ -198,6 +198,15 @@ export function groundBelow(grid: TileGrid, b: Rect, dropThrough = false): boole
   return false;
 }
 
+/**
+ * True if both feet of a standing body have ground under them – not just a
+ * toe on the edge of a ledge. Used to pick safe respawn spots.
+ */
+export function firmlySupported(grid: TileGrid, b: Rect): boolean {
+  const foot = (x: number): boolean => groundBelow(grid, { x, y: b.y, w: 1, h: b.h });
+  return foot(b.x + 1) && foot(b.x + b.w - 2);
+}
+
 /** True if any tile overlapped by the rect is of the given kind. */
 export function touchesKind(grid: TileGrid, r: Rect, kind: TileKind): boolean {
   const x0 = Math.floor(r.x / TILE);

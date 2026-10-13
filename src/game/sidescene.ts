@@ -1,4 +1,4 @@
-import { Kind, moveBody, overlaps, touchesKind, isSolidAt, rectHitsSolid, pushX, TILE, type Rect, type TileGrid } from '../engine/collision';
+import { Kind, firmlySupported, moveBody, overlaps, touchesKind, isSolidAt, rectHitsSolid, pushX, TILE, type Rect, type TileGrid } from '../engine/collision';
 import { Act } from '../engine/input';
 import { VIEW_W, VIEW_H } from '../engine/screen';
 import { drawSprite, frameCount, spriteSize } from '../engine/sprites';
@@ -90,6 +90,8 @@ export class SideScene implements Scene, WorldApi {
   frame = 0;
   private boss: Enemy | null = null;
   private bossOutro = 0;
+  /** Steps after a hazard respawn during which hazards don't hurt again. */
+  private hazardGrace = 0;
   private nameT = 0;
   private flashT = 0;
   private lockMsgT = 0;
@@ -566,8 +568,12 @@ export class SideScene implements Scene, WorldApi {
     const safeX = p.safeX;
     const safeY = p.safeY;
     p.update(c, this.grid);
-    // Dance squares come and go – never use them as a respawn point.
-    if (p.onGround && this.beatCells.length && this.onBeatSquare()) {
+    // Respawn points must be firm ground: not the very edge of a ledge, not a
+    // dance square that comes and goes, not the floor of a nettle or spike pit.
+    if (
+      p.onGround &&
+      ((this.beatCells.length && this.onBeatSquare()) || touchesKind(this.grid, p, Kind.Hazard) || !firmlySupported(this.grid, p))
+    ) {
       p.safeX = safeX;
       p.safeY = safeY;
     }
@@ -583,12 +589,15 @@ export class SideScene implements Scene, WorldApi {
       if (this.spell.eld > 0 && !p.lowAttack) this.shootFire();
     }
 
+    if (this.hazardGrace > 0) this.hazardGrace--;
     // Hazards and falling out of the world.
     if (touchesKind(this.grid, p, Kind.Hazard) || p.y > this.grid.h * TILE + 8) {
       const water = touchesKind(this.grid, p, Kind.Hazard) && this.isWaterAt(p);
       this.sfx(water ? 'water' : 'hurt');
       if (water) this.puff(p.x + p.w / 2, p.y + p.h, 'mist');
-      this.damagePlayer(2, p.x + p.w / 2 - p.facing, true);
+      // Only one hurt per fall: a held stick can't send Dagny straight back in.
+      if (this.hazardGrace === 0) this.damagePlayer(2, p.x + p.w / 2 - p.facing, true);
+      this.hazardGrace = 50;
       if (this.s.hp > 0) {
         p.state = 'normal';
         p.place(p.safeX, p.safeY);

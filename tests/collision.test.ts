@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { Kind, groundBelow, moveBody, overlaps, pushX, touchesKind, type Body, type TileGrid } from '../src/engine/collision';
+import { Kind, firmlySupported, groundBelow, moveBody, overlaps, pushX, touchesKind, type Body, type TileGrid } from '../src/engine/collision';
 
 /** Builds a grid from rows: '#' solid, '=' one-way, '^' hazard. */
 function grid(rows: string[], walls = true): TileGrid {
@@ -122,5 +122,18 @@ describe('pushX (wind)', () => {
     expect(b.onGround).toBe(true);
     pushX(g, b, -200);
     expect(b.x).toBe(0);
+  });
+});
+
+describe('firmlySupported', () => {
+  const g = grid(['......', '......', '##....']);
+  it('is true with both feet on the ground', () => {
+    expect(firmlySupported(g, { x: 4, y: 32 - 12, w: 12, h: 12 })).toBe(true);
+  });
+  it('is false with a toe on the edge of a ledge', () => {
+    expect(firmlySupported(g, { x: 24, y: 32 - 12, w: 12, h: 12 })).toBe(false);
+  });
+  it('is false in the air', () => {
+    expect(firmlySupported(g, { x: 4, y: 0, w: 12, h: 12 })).toBe(false);
   });
 });
