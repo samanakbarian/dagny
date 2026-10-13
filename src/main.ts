@@ -47,6 +47,7 @@ function boot(): void {
   game.onScene = (scene) => (scene === 'ending' ? playEnding(game) : playCredits(game));
 
   game.setScene(new TitleScene(game));
+  audio.tryAutoplay('titel');
 
   const loop = new Loop(
     () => game.update(),

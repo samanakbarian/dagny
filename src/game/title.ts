@@ -61,7 +61,7 @@ export class TitleScene implements Scene {
   }
 
   music(): string | null {
-    return 'meny';
+    return 'titel';
   }
 
   update(): void {
@@ -71,7 +71,7 @@ export class TitleScene implements Scene {
       if (i.confirm() || i.taps.length || i.pressed(Act.Sword) || i.pressed(Act.Magic) || i.pressed(Act.Pause)) {
         this.started = true;
         this.game.audio.unlock();
-        this.game.audio.playMusic('meny');
+        this.game.audio.playMusic('titel');
         this.game.audio.play('select');
         i.consume();
       }

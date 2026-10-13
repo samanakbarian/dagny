@@ -118,6 +118,16 @@ export class AudioEngine {
     return this.ctx !== null && this.ctx.state === 'running';
   }
 
+  /**
+   * Try to start music before any gesture. Browsers usually keep the audio
+   * suspended until the first tap, but allow it e.g. for an installed app or
+   * a site the player has used a lot – then the title song starts at once.
+   */
+  tryAutoplay(song: string): void {
+    this.wanted = song;
+    this.unlock();
+  }
+
   /** Call from any user gesture. Safe to call often. */
   unlock(): void {
     try {
@@ -146,14 +156,16 @@ export class AudioEngine {
         this.noise = ctx.createBuffer(1, len, ctx.sampleRate);
         const data = this.noise.getChannelData(0);
         for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
-        // iOS: play a silent buffer inside the gesture.
-        const src = ctx.createBufferSource();
-        src.buffer = ctx.createBuffer(1, 1, 22050);
-        src.connect(ctx.destination);
-        src.start(0);
         setInterval(() => this.schedule(), 40);
       }
-      if (this.ctx.state === 'suspended' && !this.suspended) void this.ctx.resume();
+      if (this.ctx.state !== 'running' && !this.suspended) {
+        // iOS: play a silent buffer inside the gesture.
+        const src = this.ctx.createBufferSource();
+        src.buffer = this.ctx.createBuffer(1, 1, 22050);
+        src.connect(this.ctx.destination);
+        src.start(0);
+        void this.ctx.resume();
+      }
       if (this.wanted && (!this.current || this.current.id !== this.wanted)) this.startSong(this.wanted);
     } catch {
       /* audio unavailable – the game runs silently */
