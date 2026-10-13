@@ -35,12 +35,15 @@ checks that Läkning and Nedåtstöt cannot be had for free.
 ## Lives and Game Over (Zelda II style)
 
 - Dagny has **3 lives** (`START_LIVES`), at most 9. Lives show in the HUD as little doll heads.
-- **Defeat with lives left:** one life is lost. In a temple she tries again at the last lit candle, or at the temple door if none is lit. Outside temples she wakes in the last village she rested in.
+- **Defeat with lives left:** one life is lost.
+  - In a temple she tries again at the door of the **same room** she fell in. In the guardian's hall that means straight back to the guardian, at full health. (Kinder than Zelda II, which sent you back to the palace entrance – a deliberate choice for a phone game.)
+  - Outside temples she wakes in the last village she rested in.
+  - Lit candles are save points: they save the game, and "Fortsätt" from the title screen starts there.
 - **The last life lost = Game Over:** she starts over at **Mormor's** with 3 lives. Unspent XP is lost; levels, items and containers are kept.
 - **Trollberget is the exception:** Game Over there sends her back to the **foot of the mountain**, and every candle on the mountain goes out (as in the Great Palace).
 - **Näverdockor** (birch-bark dolls, tile `+`) give one extra life each and are taken once. There are eight: Björkhagen (early, on a high ledge), Tjuvgrottan, Jättegrytan, Kvarnen, the crypt and Fyren (behind radio walls), Fäbodskogen and Trollgrottan.
 
-Code: `GameOverOverlay` (`src/game/menus.ts`), `retryCheckpoint` and
+Code: `GameOverOverlay` (`src/game/menus.ts`), `retryRoom` and
 `gameOver` (`src/game/flow.ts`). Tests: `tests/lives.test.ts`.
 
 ## The world and the order of the temples

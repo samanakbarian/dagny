@@ -3,7 +3,6 @@ import { VIEW_W, VIEW_H } from '../engine/screen';
 import { drawSprite } from '../engine/sprites';
 import { drawText, measure, wrap, LINE_HEIGHT } from '../engine/text';
 import { Act } from '../engine/input';
-import { AREAS } from '../data/areas';
 import { ITEMS, ITEM_ORDER } from '../data/items';
 import { OVERWORLD } from '../data/overworld';
 import { PALETTE } from '../data/palettes';
@@ -364,7 +363,11 @@ export class GameOverOverlay implements Overlay {
   private readonly over: boolean;
   private readonly temple: string | null;
 
-  constructor(private readonly game: Game, temple: string | null) {
+  /**
+   * `room` is where a retry starts: the room Dagny fell in and the door she
+   * came in by (null = the room's default entry).
+   */
+  constructor(private readonly game: Game, temple: string | null, room?: { area: string; entry: string | null }) {
     const s = game.state!;
     this.temple = temple;
     s.lives = Math.max(0, s.lives - 1);
@@ -374,10 +377,7 @@ export class GameOverOverlay implements Overlay {
       const label = temple === flow.LAST_TEMPLE ? STR.restartMountain : STR.restartHome;
       items.push({ label, onSelect: () => flow.gameOver(game, temple) });
     } else {
-      if (temple) {
-        const canRetry = !!s.checkpoint && AREAS[s.checkpoint.area]?.temple === temple;
-        items.push({ label: canRetry ? STR.retryCheckpoint : STR.retryTempleDoor, onSelect: () => flow.retryCheckpoint(game, temple) });
-      }
+      if (temple && room) items.push({ label: STR.retryRoom, onSelect: () => flow.retryRoom(game, room.area, room.entry) });
       // Wake where Dagny last rested (the button names the village).
       const village = VILLAGES.find((v) => v.area === s.lastVillage) ?? VILLAGES[0];
       const label = village.id === 'mormors_by' ? STR.wakeHome : `${STR.wakeIn} ${village.name}`;

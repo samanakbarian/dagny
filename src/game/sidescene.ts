@@ -346,7 +346,11 @@ export class SideScene implements Scene, WorldApi {
     // --- Death ---
     if (p.state === 'dead') {
       p.update(this.controls(), this.grid);
-      if (++this.deadT === 100) g.pushOverlay(new GameOverOverlay(g, this.area.temple ?? null));
+      if (++this.deadT === 100) {
+        // A retry starts at the door she came in by (a saved spot counts as the room's default door).
+        const room = { area: this.area.id, entry: this.spawn.x === undefined ? (this.spawn.entry ?? null) : null };
+        g.pushOverlay(new GameOverOverlay(g, this.area.temple ?? null, room));
+      }
       this.particles.update();
       return;
     }

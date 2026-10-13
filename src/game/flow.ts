@@ -74,23 +74,15 @@ export function wakeAtVillage(game: Game): void {
 }
 
 /**
- * After a defeat in a temple: retry at the last lit candle in this temple,
- * or at the temple's door when no candle there is lit yet.
+ * After a defeat in a temple with lives left: try again from the door of the
+ * room Dagny fell in – in the guardian's hall, that is right at the guardian.
  */
-export function retryCheckpoint(game: Game, temple?: string | null): void {
+export function retryRoom(game: Game, areaId: string, entry: string | null): void {
   const st = game.state;
   if (!st) return;
-  const cp = st.checkpoint;
-  const inTemple = !!cp && (!temple || AREAS[cp.area]?.temple === temple);
-  const entry = temple ? templeById(temple)?.entryArea : null;
-  if (!inTemple && !entry) {
-    wakeAtVillage(game);
-    return;
-  }
   st.hp = hpMax(st);
   st.mp = Math.max(st.mp, Math.ceil(mpMax(st) / 2));
-  if (inTemple && cp) goToArea(game, cp.area, { x: cp.x, y: cp.y });
-  else goToArea(game, entry!, { entry: 'A', facing: 1 });
+  goToArea(game, areaId, { entry: entry ?? undefined });
 }
 
 /** The temple whose Game Over starts over at its own foot instead of at Mormor's. */

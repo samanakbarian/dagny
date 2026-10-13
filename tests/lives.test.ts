@@ -6,7 +6,7 @@ import { Kind, type TileGrid } from '../src/engine/collision';
 import { Enemy } from '../src/entities/enemy';
 import type { ProjectileInit, WorldApi } from '../src/entities/types';
 import type { Game } from '../src/game/game';
-import { LAST_TEMPLE, gameOver } from '../src/game/flow';
+import { LAST_TEMPLE, gameOver, retryRoom } from '../src/game/flow';
 import { GameOverOverlay } from '../src/game/menus';
 import { deserialize, serialize } from '../src/game/save';
 import { MAX_LIVES, START_LIVES, hpMax, newGame, type GameState } from '../src/game/state';
@@ -74,6 +74,32 @@ describe('lives', () => {
     expect(s.opened).toEqual(['cp:krypta_1:13,9', 'troll_1:46,3']);
     expect(s.checkpoint).toBeNull();
     expect(s.lives).toBe(START_LIVES);
+  });
+
+  it('with lives left in a temple, the retry is in the same room – at the guardian in its hall', () => {
+    const s = newGame();
+    const o = new GameOverOverlay(fakeGame(s), 'krypta', { area: 'krypta_4', entry: 'A' });
+    const labels = (o as unknown as { menu: { items: Array<{ label: string }> } }).menu.items.map((i) => i.label);
+    expect(labels[0]).toBe('Försök igen');
+    expect(labels).toHaveLength(2); // or wake in the village
+  });
+
+  it('a retry fills Dagny up again and moves her', () => {
+    const s = newGame();
+    s.hp = 0;
+    s.mp = 0;
+    let moved = false;
+    const g = { ...fakeGame(s), transition: () => (moved = true) } as unknown as Game;
+    retryRoom(g, 'krypta_4', 'A');
+    expect(moved).toBe(true);
+    expect(s.hp).toBe(hpMax(s));
+    expect(s.mp).toBeGreaterThan(0);
+  });
+
+  it('outside temples there is no retry – Dagny wakes in the village', () => {
+    const o = new GameOverOverlay(fakeGame(newGame()), null, { area: 'mote_ang', entry: null });
+    const labels = (o as unknown as { menu: { items: Array<{ label: string }> } }).menu.items.map((i) => i.label);
+    expect(labels).toEqual(['Vakna hos mormor']);
   });
 
   it('every temple has a door to retry at (entry marker A)', () => {
