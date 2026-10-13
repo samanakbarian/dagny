@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { AREAS } from '../src/data/areas';
-import { DIALOG } from '../src/data/dialog';
+import { AREAS, AREA_GROUPS } from '../src/data/areas';
+import { DIALOG, DIALOG_GROUPS } from '../src/data/dialog';
 import { BOSSES, ENEMIES } from '../src/data/enemies';
 import { ITEMS, ITEM_ORDER } from '../src/data/items';
 import { DECO, ENEMY_CHARS, FRONT, PICKUP_CHARS } from '../src/data/legend';
@@ -355,6 +355,15 @@ describe('the ending', () => {
     expect(AREAS.epilog.tiles.join('')).toContain('W');
     expect(actionsOf('hulda_epilog')).toContainEqual({ type: 'scene', scene: 'credits' });
     for (const card of [...STR.ending, ...STR.credits, ...STR.teaser]) expect(wrap(card, 236).length).toBeLessThanOrEqual(8);
+  });
+});
+
+describe('data split into files', () => {
+  it('no room or dialog is defined in two files', () => {
+    for (const [name, groups] of [['areas', AREA_GROUPS], ['dialog', DIALOG_GROUPS]] as const) {
+      const keys = groups.flatMap((g) => Object.keys(g));
+      expect(new Set(keys).size, name).toBe(keys.length);
+    }
   });
 });
 

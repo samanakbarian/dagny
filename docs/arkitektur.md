@@ -12,10 +12,14 @@ engine/            no game knowledge: loop, screen, input, collision,
                    sprites, text, audio synth, storage, haptics
 game/              the game: Game (shell), scenes, overlays, flow,
                    state, saving, progression, HUD, menus
+  side/            the side-view scene's systems: room, combat,
+                   pickups, spells, render (+ shared helpers)
 entities/          things that live in a scene: Player, Enemy, Npc,
                    Projectile, Pickup, particles
+  behaviors/       one module per way of moving and fighting
 data/              ALL content as plain data: areas, dialog, NPCs,
                    creatures, items, spells, temples, map, strings
+  areas/ dialog/   rooms and dialog, one file per region / place
 art/  audio/       sprites as character grids, songs as note strings
 ```
 
@@ -26,6 +30,17 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
 
 ## Central patterns
 
+- **The side-view scene and its systems.** `SideScene` owns the room's state
+  and runs the step (movement, exits, bosses, sealed rooms). The parts of the
+  work are systems in `game/side/`: plain functions that take the scene
+  (`build(sc)`, `combat(sc)`, `collect(sc, pk)`, `castSpell(sc)`, `renderScene(sc, ctx)`).
+  Fields the systems need are public; the rest stay private to the scene.
+- **Behaviours as modules (strategy pattern).** `Enemy` holds what every
+  creature shares: health, hits, physics and drawing. How it moves and fights
+  is a `Behavior` in `entities/behaviors/`, looked up through the
+  `BEHAVIORS` registry. A behaviour can also parry, through the optional `blocks()`.
+  The registry is typed, so a behaviour named in `data/types.ts` without a module
+  fails to compile. A new creature: an entry in `data/enemies.ts`, reusing a behaviour or adding one.
 - **Data-driven content.** New rooms, creatures, dialog, songs and items are
   added in `src/data`, `src/art` and `src/audio` without touching the engine.
   The meaning of the map characters is in `data/legend.ts`.
@@ -45,7 +60,10 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
 ## Quality
 
 - TypeScript in `strict` mode. `npm run build` runs `tsc --noEmit` first.
-- **Vitest, 279 tests** covering:
+- **ESLint** (the recommended JS and TypeScript rules, `npm run lint`).
+- **CI** (`.github/workflows/ci.yml`) runs lint, tests and a build on every push
+  and pull request. `npm run check` does the same locally.
+- **Vitest, 280 tests** covering:
   - data integrity (every exit, dialog, sprite and character in the font)
   - softlocks and pits (a coarse jump model)
   - region gating
@@ -58,26 +76,23 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
   music during development.
 - Performance: about 2 ms per frame in the heaviest room.
 
-## Known weaknesses (technical debt)
+## Technical debt
 
-Honest list of what does not yet follow best practice, ordered by benefit:
+### Fixed (October 2026)
 
-1. **`game/sidescene.ts` (~1700 lines) does too much:** building the room, physics,
-   combat, pickups, spells, bosses, sealed rooms, camera and rendering.
-   *Fix:* break out systems (`CombatSystem`, `PickupSystem`, `SpellSystem`,
-   `RoomRenderer`, `BossDirector`) that share the scene's state.
-2. **`entities/enemy.ts` (~1450 lines):** all ~20 behaviours in one class with a
-   large `switch`. *Fix:* one behaviour module per behaviour (strategy
-   pattern: `behaviors/diver.ts`, `behaviors/shadow.ts` …) behind a common interface.
-3. **`data/areas.ts` (~2500 lines) and `data/dialog.ts` (~1200 lines):** fine as
-   data, but hard to navigate. *Fix:* split per region/temple
-   (`data/areas/krypta.ts` …) and merge them in an index file.
-4. **No ESLint/Prettier.** Formatting is consistent by hand. *Fix:* add
-   ESLint (typescript-eslint) and Prettier, and run them in CI.
-5. **No CI.** Tests are run by hand before each push. *Fix:* a GitHub Actions
-   workflow running `npm ci && npm test && npm run build`.
-6. **`window.dagny`** is exposed for debugging and automated tests even in
-   production builds. *Fix:* only in dev mode.
+- ~~`sidescene.ts` did everything (1740 lines)~~ → split into systems in `game/side/`. The scene is about 840 lines.
+- ~~`enemy.ts` with all behaviours in one `switch` (1460 lines)~~ → one module per behaviour. `Enemy` is about 250 lines.
+- ~~`areas.ts` (2500 lines) and `dialog.ts` (1200 lines)~~ → one file per region or place. A test checks that no key is defined twice.
+- ~~No ESLint, no CI~~ → both are in place.
+- ~~`window.dagny` in production~~ → development only.
 
-None of these affect the player today. They make the code harder to keep
-building on. The tests make it safe to fix them step by step without changing behaviour.
+Every step was done without changing behaviour. Each was verified with the tests, with an automatic check
+that the moved data is identical, by loading all 54 rooms in the browser and by comparing screenshots.
+
+### Left, by benefit
+
+1. **The overworld scene (`game/overworld.ts`)** and **`game/game.ts`** (about 430 lines each) can be split the same way when they grow.
+2. **Behaviour state on `Enemy`** (`timer`, `mode`, `cycle` …) is shared by all behaviours. If more bosses arrive, each behaviour could keep its own typed state.
+3. **No formatter (Prettier).** The style is consistent, but a formatter would keep it so with more people.
+4. **No browser tests in the repo.** Playwright scripts are used during development but are not checked in.
+   Next step: a smoke test in CI that loads every room.

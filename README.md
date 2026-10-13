@@ -16,7 +16,9 @@ Kräver Node 20 eller senare (22 rekommenderas).
 npm install
 npm run dev        # http://localhost:5173
 npm test           # Vitest: kollision, XP-kurva, sparformat, rörelse och dataintegritet
+npm run lint       # ESLint
 npm run build      # statisk mapp i dist/ (typkontroll + Vite)
+npm run check      # allt ovan i följd – samma som CI kör vid varje push
 npm run preview    # servera dist/ lokalt (med service worker)
 ```
 
@@ -70,8 +72,12 @@ src/
                kollision, sprites, bitmappsteckensnitt, ljudsynt + sequencer, lagring
   game/        scener (titel, sidovy, överblickskarta, berättelsekort), dialog, menyer,
                HUD, sparformat, XP-logik, parallax
-  entities/    Dagny, väsen och bossar, NPC:er, projektiler, föremål, partiklar
+    side/      sidovyns system: room (bygga rummet), combat, pickups, spells, render
+  entities/    Dagny, väsen, NPC:er, projektiler, föremål, partiklar
+    behaviors/ ett beteende per fil: walker, diver, shadow … och de sju bossarna
   data/        ALL speldata – se nedan
+    areas/     rummen, en fil per region eller tempel
+    dialog/    dialogerna, en fil per plats
   art/         sprites som teckenrutnät + bitmappsteckensnittet
   audio/       låtar (noter) och ljudeffekter (syntparametrar)
 public/        manifest, ikoner (service worker genereras vid build från src/sw-template.js)
@@ -84,11 +90,11 @@ tests/         Vitest
 | Fil | Innehåll |
 |---|---|
 | `src/data/palettes.ts` | **Paletten** (~32 färger, ingen ren svart) och **tonfiltren** per område (sommarkväll, grå augusti, midnattssol, lyktsken, krypta …) |
-| `src/data/areas.ts` | Sidovyområden: tilemap + dekorlager, utgångar, NPC:er, rekvisita, mörker. Tecknen förklaras i `src/data/legend.ts` |
+| `src/data/areas/*.ts` | Sidovyområden, en fil per region eller tempel (samlas i `areas.ts`): tilemap + dekorlager, utgångar, NPC:er, rekvisita, mörker. Tecknen förklaras i `src/data/legend.ts` |
 | `src/data/overworld.ts` | Överblickskartan, platser, synliga möten, vad som kräver eka/stövlar |
 | `src/data/temples.ts` | De sju templen och byarna |
-| `src/data/enemies.ts` | Väsen (beteende, liv, skada, XP, drops) och bossar med två faser |
-| `src/data/dialog.ts` | All dialog. Dagny säger aldrig något – val beskriver vad hon gör |
+| `src/data/enemies.ts` | Väsen (beteende, liv, skada, XP, drops) och bossar med två faser. Beteendena finns i `src/entities/behaviors/` |
+| `src/data/dialog/*.ts` | All dialog, en fil per plats (samlas i `dialog.ts`). Dagny säger aldrig något – val beskriver vad hon gör |
 | `src/data/npcs.ts` | Bybor och vilken dialog de väljer beroende på flaggor |
 | `src/data/spells.ts` | De sju läsningarna och teknikerna (nedåtstöt, uppåtstöt) |
 | `src/data/items.ts` | Föremål och nyckelskatter |
