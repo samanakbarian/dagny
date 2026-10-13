@@ -209,6 +209,7 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: [
       'Dagny fick EKAN!\nNu kan hon ro över vatten på kartan.',
       'Ett varmt ljus sprider sig genom kryptan. En bit av sommarljuset har kommit tillbaka till bygden.',
+      'Med ekan kan Dagny ro över den stora sjön öster om byn. På norra stranden ligger gruvsamhället, och bortom det den gamla gruvan.',
     ],
     actions: [{ type: 'flag', flag: 'krypta_klar' }],
   },
@@ -239,6 +240,7 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: [
       'Dagny fick KARBIDLAMPAN!\nNu ser hon dubbelt så långt i mörka gruvor och grottor.',
       'Lyktorna längs orten tänds en efter en. En bit till av sommarljuset har kommit tillbaka.',
+      'Med lampan går det att ta sig genom den gamla gruvgången i berget öster om gruvan. På andra sidan ligger kvarnen vid forsen.',
     ],
     actions: [{ type: 'flag', flag: 'gruvan_klar' }],
   },
@@ -278,6 +280,7 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: [
       'Dagny fick GUMMISTÖVLARNA!\nNu kan hon gå över myren på kartan.',
       'Regnet tunnas ut över forsen. Kvarnhjulet börjar snurra igen, och en bit till av sommarljuset kommer tillbaka.',
+      'Med stövlarna går det att vada över tidvattenkärret söder om Bruksorten, ner till kusten där fyren står.',
     ],
     actions: [{ type: 'flag', flag: 'kvarnen_klar' }],
   },
@@ -314,6 +317,7 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: [
       'Dagny fick FICKLAMPAN!\nI mörker lyser den upp vägen framför henne.',
       'Fyren tänds igen och sveper över skären. En bit till av sommarljuset har kommit tillbaka.',
+      'Väster om Fiskeläget står Nattskogen, så tät att det är mörkt mitt på dagen. Med ficklampan hittar Dagny igenom, till slätten med folkparken.',
     ],
     actions: [{ type: 'flag', flag: 'fyren_klar' }],
   },
@@ -350,6 +354,7 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: [
       'Dagny fick TRANSISTORRADION!\nVäggar som surrar i bruset går nu att gå igenom.',
       'Ljusslingorna tänds över dansbanan, en efter en. En bit till av sommarljuset har kommit tillbaka.',
+      'I berget norr om Mormors by finns ett pass som inte syns. Men radion brusar när man kommer nära. Där uppe ligger fäbodarna.',
     ],
     actions: [{ type: 'flag', flag: 'folkparken_klar' }],
   },
@@ -393,6 +398,7 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: [
       'Dagny fick NÄVERLUREN!\nHåll NER och tryck MAGI, så kommer en vätte och hjälper dig en stund.',
       'Någon kular långt borta på vallen, och dimman lättar. En bit till av sommarljuset har kommit tillbaka.',
+      'Från fäbodvallen går en gammal stig österut, upp mot Trollberget. Men berget öppnar sig först när alla sex platser har vaknat.',
     ],
     actions: [{ type: 'flag', flag: 'fabodskogen_klar' }],
   },
@@ -527,7 +533,7 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   },
   mote_vandrare_vag: {
     speaker: 'Vandraren',
-    pages: ['En skogsarbetare vilar på en stubbe. "Ska du till fäboden? Då behöver du stövlar, myren tar annars den som går dit. Kvarnen vid forsen säljer inga, men något säger mig att du hittar ett par där."'],
+    pages: ['En skogsarbetare vilar på en stubbe. "Ska du ner till kusten? Då behöver du stövlar, tidvattenkärret tar annars den som går dit. Kvarnen vid forsen säljer inga, men något säger mig att du hittar ett par där."'],
   },
   mote_vandrare_fyr: {
     speaker: 'Vandraren',
@@ -1147,6 +1153,15 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   },
   behover_eka: {
     pages: ['Vattnet är för djupt att vada i. Med en båt skulle det gå.'],
+  },
+  behover_karbidlampa: {
+    pages: ['En gammal gruvgång leder rakt in i berget. Det är beckmörkt där inne. Utan en riktig lampa skulle man gå vilse direkt.'],
+  },
+  behover_ficklampa: {
+    pages: ['Granarna står så tätt att det är natt här mitt på dagen. Man ser inte handen framför sig. Med en stark lampa kanske man hittar stigen.'],
+  },
+  behover_radio: {
+    pages: ['Berget ser ut att vara massivt här. Men det susar konstigt i vinden, som brus mellan två radiostationer.'],
   },
   behover_stovlar: {
     pages: ['Myren suger tag i skorna. Utan stövlar kommer man inte långt.'],

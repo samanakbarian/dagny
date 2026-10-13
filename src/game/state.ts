@@ -2,6 +2,7 @@ import type { SkillId, SpellId } from '../data/types';
 import type { Levels } from './progression';
 import { maxHp, maxMp } from './progression';
 import { CONTAINER_HP, CONTAINER_MP } from '../data/progression';
+import { OVERWORLD } from '../data/overworld';
 
 /** Where Dagny is: a side-view area or the overworld. */
 export interface Location {
@@ -54,7 +55,7 @@ export function newGame(): GameState {
     flags: [],
     opened: [],
     loc: { area: 'mormors_by', x: 9 * 16 - 8, y: 10 * 16 - 24 },
-    ow: { x: 10, y: 22 },
+    ow: { ...OVERWORLD.start },
     lastVillage: 'mormors_by',
     checkpoint: null,
     playTime: 0,

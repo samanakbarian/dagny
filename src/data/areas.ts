@@ -17,8 +17,8 @@ export const AREAS: Record<string, AreaDef> = {
     showName: true,
     ambience: ['mosquitoes', 'fireflies'],
     npcs: { '1': 'hulda', '2': 'sven', '3': 'karin', '4': 'handlarn', '5': 'olle', '6': 'algot', '7': 'murre', '8': 'greta' },
-    left: { to: 'overworld', ow: { x: 9, y: 21 } },
-    right: { to: 'overworld', ow: { x: 11, y: 21 } },
+    left: { to: 'overworld', ow: { x: 11, y: 44 } },
+    right: { to: 'overworld', ow: { x: 13, y: 44 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -6 },
       { sprite: 'laundry', tx: 13, ty: 9, dy: -2, anim: 0.6 },
@@ -77,8 +77,8 @@ export const AREAS: Record<string, AreaDef> = {
     theme: 'meadow',
     showName: true,
     ambience: ['mosquitoes', 'leaves'],
-    left: { to: 'overworld', ow: { x: 4, y: 17 } },
-    right: { to: 'overworld', ow: { x: 4, y: 17 } },
+    left: { to: 'overworld', ow: { x: 23, y: 50 } },
+    right: { to: 'overworld', ow: { x: 25, y: 50 } },
     signs: { I: 'bjorkhagen_nasslor' },
     props: [
       { sprite: 'skylt', tx: 21, ty: 9 },
@@ -444,7 +444,7 @@ export const AREAS: Record<string, AreaDef> = {
     theme: 'crypt',
     showName: true,
     ambience: ['dust'],
-    left: { to: 'overworld', ow: { x: 20, y: 5 } },
+    left: { to: 'overworld', ow: { x: 7, y: 33 } },
     right: { to: 'krypta_2', entry: 'A' },
     signs: { I: 'krypta_skylt1' },
   tiles: [
@@ -578,7 +578,7 @@ export const AREAS: Record<string, AreaDef> = {
     treasure: 'eka',
     ambience: ['dust'],
     left: { to: 'krypta_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 20, y: 5 }, requires: { flag: 'krypta_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 8, y: 34 }, requires: { flag: 'krypta_klar', dialog: 'dorr_last' } } },
   tiles: [
     "######################",
     "######################",
@@ -620,8 +620,8 @@ export const AREAS: Record<string, AreaDef> = {
     showName: true,
     ambience: ['mosquitoes', 'leaves'],
     npcs: { '1': 'maj', '2': 'elin', '3': 'lisa', '4': 'nils', '5': 'anders' },
-    left: { to: 'overworld', ow: { x: 39, y: 9 } },
-    right: { to: 'overworld', ow: { x: 41, y: 9 } },
+    left: { to: 'overworld', ow: { x: 43, y: 10 } },
+    right: { to: 'overworld', ow: { x: 45, y: 10 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -8 },
       { sprite: 'mjolkpall', tx: 16, ty: 9, dx: 4 },
@@ -676,7 +676,7 @@ export const AREAS: Record<string, AreaDef> = {
     darkness: 0.9,
     showName: true,
     ambience: ['dust'],
-    left: { to: 'overworld', ow: { x: 25, y: 29 } },
+    left: { to: 'overworld', ow: { x: 68, y: 29 } },
     signs: { I: 'tjuvgrottan_skylt' },
     lampSecrets: [
       { item: 'karbidlampa', tx: 34, ty: 4, container: 'magi' },
@@ -723,7 +723,7 @@ export const AREAS: Record<string, AreaDef> = {
     darkness: 0.95,
     showName: true,
     ambience: ['spray'],
-    left: { to: 'overworld', ow: { x: 31, y: 12 } },
+    left: { to: 'overworld', ow: { x: 40, y: 30 } },
     signs: { I: 'jattegrytan_skylt' },
     lampSecrets: [
       { item: 'ficklampa', tx: 21, ty: 9, dialog: 'jattegrytan_ristning' },
@@ -772,8 +772,8 @@ export const AREAS: Record<string, AreaDef> = {
     ambience: ['fireflies', 'leaves'],
     npcs: { '1': 'signe', '2': 'prosten', '3': 'ingrid', '4': 'bosse', '5': 'tyra' },
     signs: { I: 'kyrkby_klockstapel' },
-    left: { to: 'overworld', ow: { x: 16, y: 5 } },
-    right: { to: 'overworld', ow: { x: 18, y: 5 } },
+    left: { to: 'overworld', ow: { x: 19, y: 34 } },
+    right: { to: 'overworld', ow: { x: 21, y: 34 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -6 },
       { sprite: 'klockstapel', tx: 29, ty: 9, dx: 4 },
@@ -823,8 +823,8 @@ export const AREAS: Record<string, AreaDef> = {
     showName: true,
     ambience: ['dust', 'leaves'],
     npcs: { '1': 'rut', '2': 'holm', '3': 'karlsson', '4': 'rosa', '5': 'sigge' },
-    left: { to: 'overworld', ow: { x: 38, y: 11 } },
-    right: { to: 'overworld', ow: { x: 40, y: 11 } },
+    left: { to: 'overworld', ow: { x: 69, y: 18 } },
+    right: { to: 'overworld', ow: { x: 71, y: 18 } },
     props: [
       { sprite: 'skorsten', tx: 18, ty: 9, dx: 2 },
       { tx: 18, ty: 5, dx: 10, smoke: true },
@@ -875,7 +875,7 @@ export const AREAS: Record<string, AreaDef> = {
     ambience: ['spray'],
     npcs: { '1': 'hilma', '2': 'viola', '3': 'johan', '4': 'stina', '5': 'ture' },
     signs: { I: 'fiske_skylt' },
-    left: { to: 'overworld', ow: { x: 36, y: 20 } },
+    left: { to: 'overworld', ow: { x: 59, y: 41 } },
     props: [
       { sprite: 'fiskebat', tx: 58, ty: 10, dy: 5 },
       { sprite: 'kaffepanna', tx: 9, ty: 9, dx: 2, front: true },
@@ -922,8 +922,8 @@ export const AREAS: Record<string, AreaDef> = {
     showName: true,
     ambience: ['mosquitoes', 'fireflies'],
     npcs: { '1': 'anna', '2': 'karna', '3': 'lillper', '4': 'stjarna', '5': 'britta', '6': 'rosen' },
-    left: { to: 'overworld', ow: { x: 23, y: 24 } },
-    right: { to: 'overworld', ow: { x: 25, y: 24 } },
+    left: { to: 'overworld', ow: { x: 18, y: 17 } },
+    right: { to: 'overworld', ow: { x: 20, y: 17 } },
     props: [
       { sprite: 'spruce', tx: 0, ty: 9, dx: -4 },
       { sprite: 'birch', tx: 11, ty: 9 },
@@ -973,8 +973,8 @@ export const AREAS: Record<string, AreaDef> = {
     showName: true,
     ambience: ['leaves'],
     npcs: { '1': 'lind', '2': 'oskar', '3': 'berg', '4': 'resenaren', '5': 'kalle' },
-    left: { to: 'overworld', ow: { x: 39, y: 26 } },
-    right: { to: 'overworld', ow: { x: 41, y: 26 } },
+    left: { to: 'overworld', ow: { x: 48, y: 48 } },
+    right: { to: 'overworld', ow: { x: 50, y: 48 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -6 },
       { sprite: 'stationsur', tx: 29, ty: 9, dx: 2 },
@@ -1026,7 +1026,7 @@ export const AREAS: Record<string, AreaDef> = {
     theme: 'mine',
     ambience: ['dust'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 39, y: 7 } },
+    left: { to: 'overworld', ow: { x: 52, y: 5 } },
     right: { to: 'gruvan_2', entry: 'A' },
     signs: { I: 'gruvan_skylt1' },
     platforms: [
@@ -1205,7 +1205,7 @@ export const AREAS: Record<string, AreaDef> = {
     dark: true,
     treasure: 'karbidlampa',
     left: { to: 'gruvan_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 39, y: 7 }, requires: { flag: 'gruvan_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 53, y: 6 }, requires: { flag: 'gruvan_klar', dialog: 'dorr_last' } } },
     tiles: [
       "######################",
       "######################",
@@ -1247,7 +1247,7 @@ export const AREAS: Record<string, AreaDef> = {
     theme: 'meadow',
     ambience: ['rain', 'leaves'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 24, y: 11 } },
+    left: { to: 'overworld', ow: { x: 71, y: 6 } },
     right: { to: 'kvarnen_2', entry: 'A' },
     signs: { I: 'kvarnen_skylt1' },
     props: [{ sprite: 'spruce', tx: 7, ty: 9 }, { sprite: 'birch', tx: 20, ty: 9 }, { sprite: 'spruce', tx: 40, ty: 9, dx: 6 }],
@@ -1427,7 +1427,7 @@ export const AREAS: Record<string, AreaDef> = {
     ambience: ['rain', 'mist'],
     treasure: 'stovlar',
     left: { to: 'kvarnen_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 24, y: 11 }, requires: { flag: 'kvarnen_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 72, y: 7 }, requires: { flag: 'kvarnen_klar', dialog: 'dorr_last' } } },
     tiles: [
       "#....................#",
       "#....................#",
@@ -1455,7 +1455,7 @@ export const AREAS: Record<string, AreaDef> = {
     theme: 'skar',
     ambience: ['rain', 'spray'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 30, y: 15 } },
+    left: { to: 'overworld', ow: { x: 71, y: 50 } },
     right: { to: 'fyren_2', entry: 'A' },
     signs: { I: 'fyren_skylt1' },
     wind: [
@@ -1647,7 +1647,7 @@ export const AREAS: Record<string, AreaDef> = {
     ambience: ['rain', 'spray'],
     treasure: 'ficklampa',
     left: { to: 'fyren_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 30, y: 15 }, requires: { flag: 'fyren_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 72, y: 51 }, requires: { flag: 'fyren_klar', dialog: 'dorr_last' } } },
     tiles: [
       "#.......................",
       "#.......................",
@@ -1692,7 +1692,7 @@ export const AREAS: Record<string, AreaDef> = {
     darkness: 0.72,
     ambience: ['fireflies'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 38, y: 14 } },
+    left: { to: 'overworld', ow: { x: 39, y: 49 } },
     right: { to: 'folkparken_2', entry: 'A' },
     signs: { I: 'park_skylt1' },
     tiles: [
@@ -1831,7 +1831,7 @@ export const AREAS: Record<string, AreaDef> = {
     beat: { period: 90 },
     treasure: 'radio',
     left: { to: 'folkparken_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 38, y: 14 }, requires: { flag: 'folkparken_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 40, y: 50 }, requires: { flag: 'folkparken_klar', dialog: 'dorr_last' } } },
     tiles: [
       "#......................#",
       "#......................#",
@@ -1873,7 +1873,7 @@ export const AREAS: Record<string, AreaDef> = {
     theme: 'skog',
     ambience: ['mosquitoes', 'mist'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 22, y: 26 } },
+    left: { to: 'overworld', ow: { x: 8, y: 11 } },
     right: { to: 'fabod_2', entry: 'A' },
     signs: { I: 'fabod_skylt1' },
     platforms: [
@@ -2068,7 +2068,7 @@ export const AREAS: Record<string, AreaDef> = {
     ambience: ['mist', 'leaves'],
     treasure: 'naverlur',
     left: { to: 'fabod_3', entry: 'A' },
-    doors: { U: { to: 'overworld', ow: { x: 22, y: 26 }, requires: { flag: 'fabodskogen_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 9, y: 12 }, requires: { flag: 'fabodskogen_klar', dialog: 'dorr_last' } } },
     tiles: [
       "#......................#",
       "#......................#",
@@ -2125,7 +2125,7 @@ export const AREAS: Record<string, AreaDef> = {
     theme: 'berg',
     ambience: ['leaves'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 36, y: 4 } },
+    left: { to: 'overworld', ow: { x: 31, y: 4 } },
     right: { to: 'troll_2', entry: 'A' },
     signs: { I: 'troll_skylt1' },
     props: [{ sprite: 'spruce', tx: 7, ty: 9 }, { sprite: 'spruce', tx: 15, ty: 9, dx: 6 }, { sprite: 'birch', tx: 48, ty: 9 }],
@@ -2339,8 +2339,8 @@ export const AREAS: Record<string, AreaDef> = {
     showName: true,
     ambience: ['leaves'],
     npcs: { '1': 'hulda_ep', '2': 'sven_ep', '3': 'karin_ep', '4': 'maj_ep', '5': 'olle_ep', '6': 'anders_ep', '7': 'murre_ep', '8': 'greta_ep', '9': 'vatte_ep' },
-    left: { to: 'overworld', ow: { x: 9, y: 21 } },
-    right: { to: 'overworld', ow: { x: 11, y: 21 } },
+    left: { to: 'overworld', ow: { x: 11, y: 44 } },
+    right: { to: 'overworld', ow: { x: 13, y: 44 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -6 },
       { sprite: 'laundry', tx: 13, ty: 9, dy: -2, anim: 0.6 },

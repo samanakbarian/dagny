@@ -1,12 +1,13 @@
 import type { KeyValueStore } from '../engine/storage';
 import type { SkillId, SpellId, StatId } from '../data/types';
 import { MAX_LEVEL, convertOldLevel } from '../data/progression';
+import { OVERWORLD } from '../data/overworld';
 import { SPELL_ORDER } from '../data/spells';
 import { maxHp, maxMp } from './progression';
 import { hpMax, mpMax, newGame, type GameState, type Location } from './state';
 
 /** Bump when the format changes, and add a migration below. */
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 export const SAVE_KEY = 'dagny.save';
 
 export interface SaveFile {
@@ -37,6 +38,16 @@ function migrate(file: Record<string, unknown>): Record<string, unknown> {
   if (v < 2 && isObj(file.state) && isObj(file.state.levels)) {
     const lv = file.state.levels;
     for (const k of ['styrka', 'magi', 'liv']) lv[k] = convertOldLevel(num(lv[k], 1));
+  }
+  // Version 3: a new, larger overworld. Old map positions don't fit it, so
+  // Dagny is put beside the village she last rested in (or Mormors by).
+  if (v < 3 && isObj(file.state)) {
+    const st = file.state;
+    const villageArea = typeof st.lastVillage === 'string' ? st.lastVillage : 'mormors_by';
+    const place = OVERWORLD.places.find((p) => p.area === villageArea) ?? OVERWORLD.places.find((p) => p.area === 'mormors_by')!;
+    const spot = { x: place.x, y: place.y + 1 };
+    st.ow = spot;
+    if (isObj(st.loc) && st.loc.area === 'overworld') st.loc = { area: 'overworld', x: spot.x, y: spot.y };
   }
   return file;
 }

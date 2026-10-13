@@ -121,3 +121,14 @@ describe('storage', () => {
     expect(now.state.levels).toEqual({ styrka: 4, magi: 3, liv: 4 });
   });
 });
+
+describe('version 3 (the larger overworld)', () => {
+  it('puts Dagny beside her last village instead of at old map coordinates', async () => {
+    const { OVERWORLD } = await import('../src/data/overworld');
+    const old = { ...newGame(), lastVillage: 'gruvsamhallet', ow: { x: 40, y: 9 }, loc: { area: 'overworld', x: 40, y: 9 } };
+    const f = deserialize(JSON.stringify({ v: 2, savedAt: 0, state: old }))!;
+    const p = OVERWORLD.places.find((x) => x.area === 'gruvsamhallet')!;
+    expect(f.state.ow).toEqual({ x: p.x, y: p.y + 1 });
+    expect(f.state.loc).toEqual({ area: 'overworld', x: p.x, y: p.y + 1 });
+  });
+});

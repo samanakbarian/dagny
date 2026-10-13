@@ -16,6 +16,10 @@ export const TERRAIN_TYPE: Readonly<Record<string, TerrainType>> = {
   f: 'skog',
   s: 'myr',
   _: 'strand',
+  '=': 'ang',
+  D: 'skog',
+  N: 'skog',
+  H: 'ang',
 };
 
 export type EncounterOption =

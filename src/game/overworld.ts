@@ -40,6 +40,10 @@ const TILE_SPRITE: Record<string, string> = {
   P: 'owPark',
   T: 'owTroll',
   C: 'owCave',
+  D: 'owTunnel',
+  N: 'owNightForest',
+  // The hidden pass looks like the rest of the mountain until the radio finds it.
+  H: 'owMountain',
   Z: 'owFabod',
 };
 
@@ -97,6 +101,7 @@ export class OverworldScene implements Scene {
   private camY = 0;
   private leaving = false;
   private water: Array<{ x: number; y: number }> = [];
+  private passes: Array<{ x: number; y: number }> = [];
 
   constructor(private readonly game: Game) {
     const s = this.s;
@@ -111,7 +116,12 @@ export class OverworldScene implements Scene {
       this.encounters.push(e);
     });
     const tiles = OVERWORLD.tiles;
-    for (let y = 0; y < tiles.length; y++) for (let x = 0; x < tiles[y].length; x++) if (tiles[y][x] === '~') this.water.push({ x, y });
+    for (let y = 0; y < tiles.length; y++) {
+      for (let x = 0; x < tiles[y].length; x++) {
+        if (tiles[y][x] === '~') this.water.push({ x, y });
+        else if (tiles[y][x] === 'H') this.passes.push({ x, y });
+      }
+    }
     this.updateCamera(true);
   }
 
@@ -190,7 +200,7 @@ export class OverworldScene implements Scene {
           if (this.tile(nx, ny) === '~' && this.tile(me.fx, me.fy) !== '~') this.game.audio.play('water');
         } else if (typeof ok === 'string' && this.blockedMsgT === 0) {
           this.blockedMsgT = 90;
-          this.game.pushOverlay(new DialogOverlay(this.game, ok === 'eka' ? 'behover_eka' : 'behover_stovlar'));
+          this.game.pushOverlay(new DialogOverlay(this.game, `behover_${ok}`));
         }
       }
     }
@@ -309,8 +319,17 @@ export class OverworldScene implements Scene {
       if (x < -T || y < -T || x > VIEW_W || y > VIEW_H) continue;
       drawSprite(ctx, 'owWater', wf + w.x, x, y);
     }
-    // Encounters.
+    // With the radio, the hidden pass shows as a crack in the mountain.
     const s = this.s;
+    if (hasItem(s, 'radio')) {
+      for (const hp of this.passes) {
+        const x = hp.x * T - camX;
+        const y = hp.y * T - camY;
+        if (x < -T || y < -T || x > VIEW_W || y > VIEW_H) continue;
+        drawSprite(ctx, 'owPass', 0, x, y);
+      }
+    }
+    // Encounters.
     for (const e of this.encounters) {
       if (s.playTime < e.respawnAt) continue;
       if (e.def.goneFlag && s.flags.includes(e.def.goneFlag)) continue;

@@ -137,4 +137,6 @@ Motorn har nu bossar som kallar på väsen (`spawnEnemy`), projektiler som sköl
 
 Fem nya sidouppdrag, ett per by, där föremålen ligger i templen: Ingrids psalmbok (kryptan), Rosas medaljong (kvarnen), fiskaren Johans kompass (fyren), Lill-Pers koskälla (Fäbodskogen) och stinsens visselpipa (folkparken).
 
+**Världen (version 1.1):** överblickskartan är 80 × 56 rutor, mot 44 × 32 förut. Den är delad i sju regioner, och varje tempels skatt öppnar vägen till nästa, som i Zelda II: ekan (sjön), karbidlampan (den mörka gruvgången), stövlarna (tidvattenkärret), ficklampan (Nattskogen), radion (det dolda passet) och sist vägen till Trollberget. Varje skatt säger vart den leder.
+
 Nästa steg: polering. Sedan Dagnys äventyr 2.
