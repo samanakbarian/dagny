@@ -138,15 +138,15 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
   },
   spelmannen: {
     id: 'spelmannen', name: 'Spelmannen', title: 'Spelmannen vid dansbanan',
-    sprite: 'grim', behavior: 'boss_placeholder',
-    hp: 90, damage: 5, xp: 650, speed: 1.6,
-    box: { x: 4, y: 12, w: 26, h: 20 }, puff: 'mist', heavy: true,
+    sprite: 'spelman', behavior: 'boss_spelman',
+    hp: 84, damage: 3, xp: 650, speed: 2,
+    box: { x: 3, y: 6, w: 12, h: 26 }, puff: 'mist', heavy: true,
     phases: [
-      { atHpFraction: 1, sprite: 'grim', speed: 1.6, attackEvery: 1.6 },
-      { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.5, attackEvery: 1 },
+      { atHpFraction: 1, sprite: 'spelman', speed: 2, attackEvery: 1.5 },
+      { atHpFraction: 0.5, sprite: 'spelmanNack', speed: 2.6, attackEvery: 1.05 },
     ],
-    introDialog: 'boss_vaknar',
-    defeatDialog: 'boss_forlikad',
+    introDialog: 'spelman_vaknar',
+    defeatDialog: 'spelman_forlikad',
   },
   skogsraet: {
     id: 'skogsraet', name: 'Skogsrået', title: 'Skogsrået – hon med ihålig rygg',

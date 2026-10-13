@@ -7,6 +7,7 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     sprite: 'hulda',
     idle: { frames: [0, 0, 0, 2, 0, 1, 1, 0], every: 0.7 },
     talk: [
+      { if: [{ flag: 'folkparken_klar' }, { notFlag: 'hulda_efter_folkparken' }], dialog: 'hulda_efter_folkparken' },
       { if: [{ flag: 'fyren_klar' }, { notFlag: 'hulda_efter_fyren' }], dialog: 'hulda_efter_fyren' },
       { if: [{ flag: 'kvarnen_klar' }, { notFlag: 'hulda_efter_kvarnen' }], dialog: 'hulda_efter_kvarnen' },
       { if: [{ flag: 'gruvan_klar' }, { notFlag: 'hulda_efter_gruvan' }], dialog: 'hulda_efter_gruvan' },
@@ -66,6 +67,7 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     sprite: 'kid',
     idle: { frames: [0, 0, 1, 0, 1, 0, 0, 0], every: 0.35 },
     talk: [
+      { if: [{ item: 'radio' }], dialog: 'olle_radio' },
       { if: [{ flag: 'krypta_klar' }], dialog: 'olle_efter' },
       { dialog: 'olle' },
     ],

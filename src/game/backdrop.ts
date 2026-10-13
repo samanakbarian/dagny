@@ -68,6 +68,42 @@ function build(kind: Backdrop, toneId: string): { sky: HTMLCanvasElement; layers
   const layers: Layer[] = [];
   const r = rng(kind.length * 97 + toneId.length * 13);
 
+  if (kind === 'park') {
+    // Stars, a dark tree line, and the park's pavilion and wheel far away.
+    for (let i = 0; i < 70; i++) {
+      s.fillStyle = r() < 0.2 ? '#f0d27a' : '#d7e4dc';
+      s.fillRect(Math.floor(r() * VIEW_W), Math.floor(r() * 90), 1, 1);
+    }
+    const [far, f] = canvas(LAYER_W, VIEW_H);
+    for (let x = 0; x < LAYER_W; x += 9) spruce(f, Math.round(x + r() * 5), 128, Math.round(18 + r() * 22), tone.hills[0]);
+    f.fillStyle = tone.hills[0];
+    f.fillRect(0, 128, LAYER_W, VIEW_H - 128);
+    layers.push({ canvas: far, factor: 0.08, yf: 0.05 });
+    const [mid, m] = canvas(LAYER_W, VIEW_H);
+    m.fillStyle = tone.hills[1];
+    for (let x = 60; x < LAYER_W; x += 320) {
+      // Pavilion roof and posts.
+      for (let row = 0; row < 18; row++) m.fillRect(x - row * 2, 92 + row, 40 + row * 4, 1);
+      m.fillRect(x - 30, 110, 4, 30);
+      m.fillRect(x + 66, 110, 4, 30);
+      // Big wheel outline.
+      for (let a = 0; a < 64; a++) {
+        const ang = (a / 64) * Math.PI * 2;
+        m.fillRect(Math.round(x + 180 + Math.cos(ang) * 30), Math.round(100 + Math.sin(ang) * 30), 2, 2);
+      }
+      m.fillRect(x + 179, 100, 2, 40);
+    }
+    // Bulb strings far away.
+    for (let x = 0; x < LAYER_W; x += 6) {
+      m.fillStyle = ['#cf6a4c', '#f0d27a', '#6f93ad', '#e0a0a0'][(x / 6) % 4];
+      m.fillRect(x, Math.round(84 + Math.sin(x / 30) * 6), 1, 1);
+    }
+    m.fillStyle = tone.hills[1];
+    m.fillRect(0, 140, LAYER_W, VIEW_H - 140);
+    layers.push({ canvas: mid, factor: 0.22, yf: 0.12 });
+    return { sky, layers };
+  }
+
   if (kind === 'sea') {
     // Storm clouds, far skerries and rolling sea bands.
     s.fillStyle = 'rgba(43,34,51,0.25)';

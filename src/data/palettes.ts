@@ -124,6 +124,12 @@ export const TONES: Readonly<Record<string, ToneFilter>> = {
     sky: ['#c9cfd0', '#d7dcd8', '#e4e2d8'],
     hills: ['#b8bcbc', '#a8aeb0', '#9aa0a4'],
   },
+  /** The folk park at night – deep blue with warm bulbs. */
+  folkpark: {
+    tint: '#7a6aa0', alpha: 0.16, mode: 'soft-light', fade: 0.04, vignette: 0.35,
+    sky: ['#2b3560', '#3f4a7a', '#6a5a8a'],
+    hills: ['#4a5276', '#3c4466', '#323a58'],
+  },
   /** Overworld map – soft daylight. */
   karta: {
     tint: '#f0c890', alpha: 0.1, mode: 'soft-light', fade: 0.05, vignette: 0.25,

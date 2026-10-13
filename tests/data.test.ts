@@ -18,7 +18,7 @@ import { parseNotes } from '../src/engine/audio';
 import { wrap } from '../src/engine/text';
 import type { DialogAction } from '../src/data/types';
 
-const KNOWN_TILE = new Set(['.', '#', '=', '^', '~', 'n', 'L', 'k', 'c', 'X', '@', 'q', ...Object.keys(ENEMY_CHARS), ...Object.keys(PICKUP_CHARS), 'B', 'M']);
+const KNOWN_TILE = new Set(['.', '#', '=', '^', '~', 'n', 'L', 'k', 'c', 'X', '@', 'q', '%', '&', '?', ...Object.keys(ENEMY_CHARS), ...Object.keys(PICKUP_CHARS), 'B', 'M']);
 
 describe('palette', () => {
   it('has about 32 colours and no pure black', () => {
@@ -120,6 +120,7 @@ describe('areas', () => {
           expect(chars).toContain('X');
         }
         if (a.onEnter) expect(DIALOG[a.onEnter.dialog]).toBeDefined();
+        if (chars.includes('%') || chars.includes('&')) expect(a.beat, 'dance squares need beat').toBeDefined();
         if (chars.includes('q')) {
           expect(a.questItem, 'q needs questItem').toBeDefined();
           expect(ITEMS[a.questItem!]).toBeDefined();
@@ -244,7 +245,7 @@ describe('overworld', () => {
     for (const r of OVERWORLD.tiles) expect(r.length).toBe(w);
     for (const p of OVERWORLD.places) {
       const ch = OVERWORLD.tiles[p.y]?.[p.x];
-      expect('VKGBOMQY').toContain(ch);
+      expect('VKGBOMQYP').toContain(ch);
       if (p.area) {
         expect(AREAS[p.area], p.area).toBeDefined();
         if (p.entry) expect(AREAS[p.area].tiles.join('')).toContain(p.entry);

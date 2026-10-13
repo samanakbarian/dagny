@@ -223,7 +223,7 @@ export class MapOverlay extends SubOverlay {
     const oy = f.y + 22;
     const col: Record<string, string> = {
       '.': P.M, f: P.m, '~': P.v, s: P.p, '^': P.G, '|': P.t, '-': P.t, '+': P.t, ':': P.y, _: P.t,
-      V: P.r, K: P.W, G: P.l, B: P.R, O: P.Y, M: P.y, Q: P.r, Y: P.W,
+      V: P.r, K: P.W, G: P.l, B: P.R, O: P.Y, M: P.y, Q: P.r, Y: P.W, P: P.i,
     };
     for (let y = 0; y < tiles.length; y++) {
       for (let x = 0; x < tiles[y].length; x++) {

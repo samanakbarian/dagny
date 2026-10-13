@@ -114,6 +114,10 @@ Motorn har nu vattenhjul, flytande stockar, regn och ett kvarninteriör-tema.
 
 Motorn har nu vindzoner (`wind` i områdesdata: sidvind, växlande byar och uppvind), fördröjda projektiler med varning och ett havsbakgrundstema.
 
-Nästa steg: tempel 5–7 ett i taget, sedan resten av byarna och polering.
+**Tempel 5 – Folkparken om natten:** på ängarna öster om sjön, nås med ekan. Parkentrén (ljusslingor, en flock skuggvargar och ett biljettkiosktak med nyckeln), Karusellen (rida karusellhästar över en avgrund), Dansbanan (rutor som tänds och släcks i takt med musiken – stå på skarven mellan två rutor) och Scenen med Spelmannen. Han spelar på scenen och skickar noter längs golvet (ducka, hoppa eller blockera) och i bågar, och hoppar sedan ner och dansar över golvet. I fas två visar han sig vara Näcken. Nyckelskatten Transistorradion öppnar dolda gångar (`?` i kartdata) – en finns redan i Björkhagen. Egen musik: "Lördagsfoxen" och bossmusiken "Näckens polska".
+
+Motorn har nu rytmrutor (`%`/`&` + `beat`), karuseller (elliptiska banor), dolda väggar och ljusslingor som ljuskällor. Mörka rum har en justerbar mörkergrad (`darkness`).
+
+Nästa steg: tempel 6–7, sedan resten av byarna och polering.
 
 Öppna frågor från specen, t.ex. den sista Väktarens öde och upplösningen på Trollberget, är medvetet obesvarade. Fynden i kryptan antyder bara.

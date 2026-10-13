@@ -36,8 +36,8 @@ export const TEMPLES: readonly TempleDef[] = [
   {
     id: 'folkparken', number: 5, name: 'Folkparken om natten',
     mechanic: 'Karusell, dansbana, ljusslingor.',
-    tone: 'lyktsken', music: 'folkparken', bossMusic: 'boss',
-    treasure: 'radio', boss: 'spelmannen', entryArea: null,
+    tone: 'folkpark', music: 'folkparken', bossMusic: 'spelman',
+    treasure: 'radio', boss: 'spelmannen', entryArea: 'folkparken_1',
     lore: 'Ett gammalt fotografi: en kvinna med kopparfärgat hår dansar med ett irrbloss.',
   },
   {

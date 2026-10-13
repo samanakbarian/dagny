@@ -14,6 +14,8 @@ import { Kind, type TileKind } from '../engine/collision';
  *  s stenknekt  j sjörå-skott  w skuggvarg  f fladdermus  u gruvvätte  z kvarnnisse  e mås  B boss
  *  b bulle  T termos  g lingon  M Murre the cat (side quest)
  *  q the area's quest item (AreaDef.questItem)
+ *  %  &  dance-floor squares that come and go with the beat (AreaDef.beat)
+ *  ?  hidden passage: looks solid until Dagny carries the transistor radio
  */
 export const ENEMY_CHARS: Readonly<Record<string, string>> = {
   v: 'vatte',
@@ -51,6 +53,7 @@ export const THEMES: Readonly<Record<string, Theme>> = {
   mill: { top: 'millTop', fill: 'millStone', platform: 'plank' },
   skar: { top: 'graniteTop', fill: 'granite', platform: 'plank' },
   fyr: { top: 'fyrFloor', fill: 'whiteStone', platform: 'plank' },
+  park: { top: 'boardwalk', fill: 'dirt', platform: 'plank' },
 };
 
 /** Collision kind for a tile-layer character. */
@@ -58,7 +61,11 @@ export function kindOf(ch: string): TileKind {
   switch (ch) {
     case '#':
     case 'L':
+    case '?':
       return Kind.Solid;
+    case '%':
+    case '&':
+      return Kind.OneWay;
     case '=':
       return Kind.OneWay;
     case '^':
@@ -114,4 +121,8 @@ export const DECO: Readonly<Record<string, string>> = {
   R: 'railing',
   L: 'lens',
   N: 'net',
+  u: 'bulbs',
+  U: 'parkFence',
+  K: 'booth',
+  S: 'stage',
 };

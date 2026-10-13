@@ -273,7 +273,42 @@ export const SONGS: Record<string, SongDef> = {
       },
     ],
   },
-  folkparken: { base: 'by', bpm: 116, loop: true, tracks: [], transpose: 5 },
+  /** "Lördagsfoxen" – a dance-band foxtrot in F for the folk park at night. */
+  folkparken: {
+    bpm: 126,
+    loop: true,
+    tracks: [
+      {
+        inst: 'accordion', vol: 0.55,
+        notes: `c5:4 a4:2 c5:2 f5:4 e5:4 | d5:4 bb4:2 d5:2 g5:8 | e5:4 c5:2 e5:2 a5:4 g5:4 | f5:12 r:4 |
+                a5:4 g5:2 f5:2 e5:4 d5:4 | g5:4 f5:2 e5:2 d5:4 c5:4 | bb4:4 a4:4 g4:4 e5:4 | f5:12 r:4`,
+      },
+      { inst: 'flute', vol: 0.35, notes: 'r:16 | r:8 d6:4 bb5:4 | r:16 | a5:4 c6:4 f6:8 | r:16 | r:8 bb5:4 g5:4 | r:16 | a5:16' },
+      {
+        inst: 'bass', vol: 0.8,
+        notes: `f2:4 c3:4 f2:4 c3:4 | bb2:4 f2:4 bb2:4 f2:4 | c3:4 g2:4 c3:4 g2:4 | f2:4 c3:4 f2:4 c3:4 |
+                d3:4 a2:4 d3:4 a2:4 | g2:4 d3:4 c3:4 g2:4 | c3:4 g2:4 c3:4 c2:4 | f2:4 c3:4 f2:8`,
+      },
+      { inst: 'drum', vol: 0.4, notes: 'k:4 h:2 h:2 s:4 h:2 h:2 '.repeat(8) },
+    ],
+  },
+  /** "Näckens polska" – Spelmannen's fast D minor polska. */
+  spelman: {
+    bpm: 160,
+    loop: true,
+    tracks: [
+      {
+        inst: 'harp', vol: 0.95,
+        notes: `d5:2 e5:1 f5:1 a5:2 f5:2 e5:2 d5:2 | c#5:2 d5:1 e5:1 g5:2 e5:2 c#5:2 a4:2 |
+                d5:2 f5:2 a5:2 d6:2 c6:2 a5:2 | bb5:3 a5:1 g5:4 f5:4 |
+                e5:2 g5:2 bb5:2 a5:2 g5:2 e5:2 | f5:2 a5:2 d6:2 c6:2 a5:2 f5:2 |
+                e5:2 c#5:2 a4:2 b4:2 c#5:2 e5:2 | d5:8 r:4`,
+      },
+      { inst: 'accordion', vol: 0.45, notes: 'd4:4 f4:4 a4:4 | e4:4 g4:4 a4:4 | d4:4 f4:4 a4:4 | g4:4 bb4:4 d5:4 | e4:4 g4:4 bb4:4 | f4:4 a4:4 d5:4 | e4:4 g4:4 c#5:4 | d4:4 f4:4 a4:4' },
+      { inst: 'bass', vol: 0.9, notes: 'd2:4 a2:4 d3:4 | a2:4 e3:4 a2:4 | d2:4 a2:4 d3:4 | g2:4 d3:4 g2:4 | c3:4 g2:4 c3:4 | d3:4 a2:4 d3:4 | a2:4 e3:4 a2:4 | d2:4 a2:4 d2:4' },
+      { inst: 'drum', vol: 0.55, notes: 'k:4 h:2 h:2 s:4 '.repeat(8) },
+    ],
+  },
   fabodskogen: { base: 'stig', bpm: 104, loop: true, tracks: [], transpose: -3 },
   trollberget: { base: 'boss', bpm: 132, loop: true, tracks: [], transpose: -2 },
 };

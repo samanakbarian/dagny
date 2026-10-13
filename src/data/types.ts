@@ -51,6 +51,7 @@ export type Behavior =
   | 'boss_gruvra'
   | 'boss_backahast'
   | 'boss_havsfru'
+  | 'boss_spelman'
   | 'boss_placeholder';
 
 export type PuffKind = 'moss' | 'leaf' | 'mist';
@@ -209,7 +210,7 @@ export interface Prop {
 }
 
 export type AreaKind = 'village' | 'path' | 'temple' | 'encounter';
-export type Backdrop = 'outdoor' | 'forest' | 'crypt' | 'mine' | 'mill' | 'sea' | 'none';
+export type Backdrop = 'outdoor' | 'forest' | 'crypt' | 'mine' | 'mill' | 'sea' | 'park' | 'none';
 
 /**
  * Wind in part of an area (tile rectangle, inclusive). Gusts blow for `on`
@@ -235,12 +236,14 @@ export interface WindZone {
  * Logs float with their top at the bottom edge of row `ty` (level with the bank).
  * A wheel is a water wheel centred on (tx, ty) with `count` paddles at
  * `radius` tiles that turn by `speed` radians per step (toTx/toTy unused).
+ * A carousel is the same, but its horses run on a flat ellipse (`radiusY` tiles).
  * 'loop' moves back and forth by itself; 'ride' moves only while Dagny stands
  * on it, towards the end it is not resting at.
  */
 export interface PlatformDef {
-  kind: 'lift' | 'cart' | 'log' | 'wheel';
+  kind: 'lift' | 'cart' | 'log' | 'wheel' | 'carousel';
   radius?: number;
+  radiusY?: number;
   count?: number;
   tx: number;
   ty: number;
@@ -259,7 +262,7 @@ export interface AreaDef {
   music: string;
   backdrop: Backdrop;
   /** Theme for '#' and '=' tiles. */
-  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill' | 'skar' | 'fyr';
+  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill' | 'skar' | 'fyr' | 'park';
   /** Collision + entity layer. See data/legend.ts. */
   tiles: string[];
   /** Optional non-colliding background decor layer (same size). */
@@ -276,8 +279,12 @@ export interface AreaDef {
   props?: Prop[];
   platforms?: PlatformDef[];
   wind?: WindZone[];
+  /** Dance-floor squares ('%' and '&') swap every `period` steps. */
+  beat?: { period: number };
   /** Dark area – only lit around Dagny, candles and spells. */
   dark?: boolean;
+  /** How dark a dark area is, 0–1 (default 0.93). */
+  darkness?: number;
   /** Temple this area belongs to (for keys and checkpoints). */
   temple?: string;
   /** Side-quest item lying at 'q' (picked up once; dialog `hittade_<item>`). */

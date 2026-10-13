@@ -324,6 +324,46 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     actions: [{ type: 'flag', flag: 'hulda_efter_fyren' }, { type: 'rest' }],
   },
 
+  // --- Temple 5: Folkparken om natten -----------------------------------------------
+  park_skylt1: {
+    pages: ['En affisch på planket, blekt av sol:\n"DANS I FOLKPARKEN VARJE LÖRDAG. ORKESTERN SPELAR TILL GRYNINGEN."'],
+  },
+  park_skylt2: {
+    pages: ['Ett gammalt fotografi är fastnubbat vid dansbanan. En kvinna med kopparfärgat hår dansar med ett irrbloss. Hon skrattar.'],
+  },
+  spelman_vaknar: {
+    speaker: 'Spelmannen',
+    pages: ['Förr dansade de till min fiol tills solen gick upp. Nu sitter de hemma framför sina apparater. Kom, lilla vän. Dansa!'],
+  },
+  spelman_forlikad: {
+    speaker: 'Spelmannen',
+    pages: [
+      'Du dansade inte när jag spelade... men du gick i takt ändå. Hon gjorde också så.',
+      'Hon brukade lyssna efter mig mellan stationerna på sin radio. När ingen annan hörde, så hörde hon.',
+      'Ta den. Där bruset är som starkast finns det vägar som andra har glömt.',
+    ],
+  },
+  fick_radio: {
+    pages: [
+      'Dagny fick TRANSISTORRADION!\nVäggar som surrar i bruset går nu att gå igenom.',
+      'Ljusslingorna tänds över dansbanan, en efter en. En bit till av sommarljuset har kommit tillbaka.',
+    ],
+    actions: [{ type: 'flag', flag: 'folkparken_klar' }],
+  },
+  hulda_efter_folkparken: {
+    speaker: 'Mormor Hulda',
+    pages: [
+      'Fotografiet från dansbanan... Jag tog det själv, midsommar 1945. Det var sista gången jag såg henne skratta.',
+      'Hon hette Dagmar. Mer säger jag inte än. Två platser kvar, och sedan Trollberget.',
+      'Vila nu, vännen.',
+    ],
+    actions: [{ type: 'flag', flag: 'hulda_efter_folkparken' }, { type: 'rest' }],
+  },
+  olle_radio: {
+    speaker: 'Olle',
+    pages: ['Har du också fått en radio! Lyssna... det brusar annorlunda nära Björkhagen. Som om berget hade en dörr.'],
+  },
+
   // --- Gruvsamhället ----------------------------------------------------------------
   maj_vila: {
     speaker: 'Maj på pensionatet',

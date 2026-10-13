@@ -278,6 +278,9 @@ export class Enemy implements Body {
         this.fall(world);
         break;
       }
+      case 'boss_spelman':
+        this.updateSpelman(world, dx, p);
+        break;
       case 'boss_havsfru':
         this.updateHavsfru(world, dx, p);
         break;
@@ -608,6 +611,115 @@ export class Enemy implements Body {
           this.timer = 24;
         }
         break;
+    }
+  }
+
+  // --- Spelmannen ----------------------------------------------------------------------
+  // Plays on the stage and sends notes across the floor (duck, jump or block them),
+  // then leaps down and dances across the floor – the moment to strike.
+  // Phase two: he is Näcken; faster tunes, notes that rain down, hopping dances.
+
+  private updateSpelman(world: WorldApi, dx: number, p: { x: number; y: number }): void {
+    const b = this.boss!;
+    if (!this.awake) {
+      this.homeY = this.y;
+      this.baseY = this.x;
+      this.frame = 0;
+      return;
+    }
+    if (this.phase === 0 && this.hp <= this.maxHp * b.phases[1].atHpFraction) {
+      this.phase = 1;
+      this.sprite = b.phases[1].sprite;
+      world.sfx('roar');
+      world.shake(24, 2);
+    }
+    const ph = b.phases[this.phase];
+    const gw = world.grid.w * 16;
+    const floorY = (world.grid.h - 2) * 16;
+    const stageX = this.baseY;
+    const note = (x: number, y: number, vx: number, vy: number, gravity = 0): void =>
+      world.spawnProjectile({ x, y, vx, vy, w: 8, h: 8, sprite: 'noteShot', damage: 2, fromPlayer: false, life: 220, gravity, ghost: true });
+    switch (this.mode) {
+      case 0: { // play on the stage
+        this.facing = -1;
+        this.frame = Math.floor(this.t / 12) % 2;
+        if (--this.timer <= 0) {
+          this.cycle++;
+          const lo = floorY - 7;
+          const hi = floorY - 21;
+          const sx = this.x - 6;
+          if (this.cycle % 3 === 1) {
+            // A phrase along the floor, alternating high and low.
+            for (let i = 0; i < (this.phase === 1 ? 6 : 4); i++) {
+              const high = i % 2 === 0;
+              world.spawnProjectile({
+                x: sx + i * 18, y: high ? hi : lo, vx: -1.7, vy: 0, w: 8, h: 8,
+                sprite: 'noteShot', damage: 2, fromPlayer: false, life: 260, ghost: true, delay: i * 14,
+              });
+            }
+          } else if (this.cycle % 3 === 2) {
+            // Notes tossed in arcs that fall where Dagny stands.
+            const n = this.phase === 1 ? 5 : 3;
+            for (let i = 0; i < n; i++) {
+              const tx = p.x + (i - (n - 1) / 2) * 26;
+              const flight = 60;
+              note(this.x, this.y + 6, (tx - this.x) / flight, -3.6 - i * 0.2, 0.12);
+            }
+          } else {
+            // Leap down and dance.
+            this.mode = 1;
+            this.vx = (Math.max(32, Math.min(gw - 64, p.x)) - this.x) / 40;
+            this.vy = -6;
+            world.sfx('roar');
+            break;
+          }
+          world.sfx('magic');
+          this.timer = Math.round(ph.attackEvery * 60);
+        }
+        break;
+      }
+      case 1: // leap to the floor
+      case 3: // leap back to the stage
+        this.frame = 2;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.3;
+        if (this.vy > 0) {
+          const target = this.mode === 1 ? floorY - this.h : this.homeY;
+          if (this.y >= target) {
+            this.y = target;
+            if (this.mode === 1) {
+              this.mode = 2;
+              this.timer = this.phase === 1 ? 170 : 140;
+              this.facing = dx > 0 ? 1 : -1;
+              world.shake(6, 1);
+            } else {
+              this.mode = 0;
+              this.x = stageX;
+              this.timer = 40;
+            }
+          }
+        }
+        break;
+      case 2: { // dance across the floor
+        this.frame = Math.floor(this.t / 8) % 2 === 0 ? 2 : 0;
+        this.x += this.facing * ph.speed;
+        if (this.x < 20) { this.x = 20; this.facing = 1; }
+        if (this.x > stageX - 30) { this.x = stageX - 30; this.facing = -1; }
+        if (this.phase === 1 && this.t % 50 === 0 && this.y >= floorY - this.h) this.vy = -3.6;
+        if (this.vy !== 0 || this.y < floorY - this.h) {
+          this.y += this.vy;
+          this.vy += 0.3;
+          if (this.y >= floorY - this.h) { this.y = floorY - this.h; this.vy = 0; }
+        }
+        if (this.t % 30 === 0) world.sfx('step');
+        if (--this.timer <= 0) {
+          this.mode = 3;
+          this.vx = (stageX - this.x) / 40;
+          this.vy = -6.5;
+        }
+        break;
+      }
     }
   }
 

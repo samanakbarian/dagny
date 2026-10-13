@@ -10,7 +10,8 @@ import type { OverworldDef } from './types';
  *  V  Mormors by   K  the stone church (temple 1)   G  Björkhagen
  *  M  the old mine (temple 2)       Q  the mill by the rapids (temple 3)
  *  Y  the lighthouse on the skerry (temple 4)
- *  B  other villages   O  standing stones (temples 5–7)
+ *  P  the folk park (temple 5)
+ *  B  other villages   O  standing stones (temples 6–7)
  */
 export const OVERWORLD: OverworldDef = {
   tiles: [
@@ -28,7 +29,7 @@ export const OVERWORLD: OverworldDef = {
     '^^ffffffffffffffff..|.fffff~~~~~~~~~...B..^^',
     '^^ffffffffffffffff..|.fffff~~~~~~~~~.:::::^^',
     '^^ffffffffffffffff..|.fffff~~~~~~~~~.:::::^^',
-    '^^ffffffffffffffff..|......~~~___~~~.::O::^^',
+    '^^ffffffffffffffff..|......~~~___~~~.::P::^^',
     '^^ffffff............|......~~~_Y_~~~.:::::^^',
     '^^ffGfff............|......~~~___~~~.:::::^^',
     '^^fff----|..........|......~~~~~~~~~......^^',
@@ -61,7 +62,7 @@ export const OVERWORLD: OverworldDef = {
     { x: 39, y: 6, name: 'Den gamla gruvan', area: 'gruvan_1', entry: 'A' },
     { x: 24, y: 10, name: 'Kvarnen vid forsen', area: 'kvarnen_1', entry: 'A' },
     { x: 31, y: 15, name: 'Fyren i skären', area: 'fyren_1', entry: 'A' },
-    { x: 39, y: 14, name: 'Folkparken', dialog: 'tempel_sover' },
+    { x: 39, y: 14, name: 'Folkparken', area: 'folkparken_1', entry: 'A' },
     { x: 22, y: 27, name: 'Fäbodskogen', dialog: 'tempel_sover' },
     { x: 36, y: 3, name: 'Trollberget', dialog: 'trollberget_sover' },
     // Villages still to be built.

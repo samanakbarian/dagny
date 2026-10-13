@@ -38,7 +38,7 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
   radio: {
     id: 'radio',
     name: 'Transistorradion',
-    description: 'Brus mellan stationerna avslöjar dolda gångar.',
+    description: 'Bruset mellan stationerna avslöjar dolda gångar. Väggar som surrar går att gå igenom.',
     sprite: 'radio',
     treasure: true,
   },

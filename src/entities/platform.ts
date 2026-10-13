@@ -31,26 +31,29 @@ export class MovingPlatform {
   private readonly cx: number;
   private readonly cy: number;
   private readonly radius: number;
+  private readonly radiusY: number;
   private angle: number;
   /** The first paddle of a wheel draws the hub. */
   readonly hub: boolean;
 
   constructor(readonly def: PlatformDef, nearX: number, index = 0) {
     const k = def.kind;
-    this.w = k === 'cart' || k === 'wheel' ? 24 : 32;
-    this.h = k === 'cart' ? 10 : k === 'wheel' ? 6 : 8;
+    const round = k === 'wheel' || k === 'carousel';
+    this.w = k === 'cart' || round ? 24 : 32;
+    this.h = k === 'cart' ? 10 : round ? 6 : 8;
     const off = k === 'cart' ? 2 : k === 'log' ? T : 0;
     this.ax = def.tx * T;
     this.ay = def.ty * T + off;
     this.bx = def.toTx * T;
     this.by = def.toTy * T + off;
-    this.speed = def.speed ?? (k === 'cart' ? 1.1 : k === 'wheel' ? 0.012 : 0.6);
+    this.speed = def.speed ?? (k === 'cart' ? 1.1 : round ? 0.012 : 0.6);
     this.cx = def.tx * T + T / 2;
     this.cy = def.ty * T + T / 2;
     this.radius = (def.radius ?? 3) * T;
+    this.radiusY = (def.radiusY ?? (k === 'carousel' ? 0.5 : def.radius ?? 3)) * T;
     const count = def.count ?? 4;
     this.angle = (index / count) * Math.PI * 2;
-    this.hub = k === 'wheel' && index === 0;
+    this.hub = round && index === 0;
     // Ride platforms start at the end nearest to Dagny, so she is never stranded.
     const nearB = def.mode === 'ride' && Math.abs(nearX - this.bx) < Math.abs(nearX - this.ax);
     if (nearB) {
@@ -64,14 +67,14 @@ export class MovingPlatform {
 
   /** All platforms described by one definition (a wheel has several paddles). */
   static create(def: PlatformDef, nearX: number): MovingPlatform[] {
-    if (def.kind !== 'wheel') return [new MovingPlatform(def, nearX)];
+    if (def.kind !== 'wheel' && def.kind !== 'carousel') return [new MovingPlatform(def, nearX)];
     return Array.from({ length: def.count ?? 4 }, (_, i) => new MovingPlatform(def, nearX, i));
   }
 
   private place(): void {
-    if (this.def.kind === 'wheel') {
+    if (this.def.kind === 'wheel' || this.def.kind === 'carousel') {
       this.x = this.cx + Math.cos(this.angle) * this.radius - this.w / 2;
-      this.y = this.cy + Math.sin(this.angle) * this.radius - this.h / 2;
+      this.y = this.cy + Math.sin(this.angle) * this.radiusY - this.h / 2;
     } else {
       this.x = this.ax + (this.bx - this.ax) * this.pos;
       this.y = this.ay + (this.by - this.ay) * this.pos;
@@ -85,7 +88,7 @@ export class MovingPlatform {
   update(ridden: boolean): void {
     const ox = this.x;
     const oy = this.y;
-    if (this.def.kind === 'wheel') {
+    if (this.def.kind === 'wheel' || this.def.kind === 'carousel') {
       this.angle += this.speed;
     } else {
       const stepFrac = this.speed / this.length;
@@ -136,6 +139,14 @@ export class MovingPlatform {
         drawSprite(ctx, 'log', 0, x, y + bob);
         break;
       }
+      case 'carousel': {
+        // Brass pole up to the canopy, then the horse.
+        const top = Math.round(this.cy - this.radiusY - 34 - camY);
+        ctx.fillStyle = PALETTE.y;
+        ctx.fillRect(x + 11, top, 2, Math.max(0, y - top));
+        drawSprite(ctx, 'carouselHorse', 0, x, y - 2, Math.sin(this.angle) < 0);
+        break;
+      }
       case 'wheel': {
         // Spoke from the hub to this paddle.
         const hx = this.cx - camX;
@@ -157,6 +168,26 @@ export class MovingPlatform {
   }
 
   renderHub(ctx: CanvasRenderingContext2D, camX: number, camY: number): void {
-    if (this.hub) drawSprite(ctx, 'hub', 0, this.cx - 6 - camX, this.cy - 6 - camY);
+    if (!this.hub) return;
+    if (this.def.kind === 'wheel') {
+      drawSprite(ctx, 'hub', 0, this.cx - 6 - camX, this.cy - 6 - camY);
+      return;
+    }
+    // Carousel canopy: a striped tent roof with a pennant.
+    const cx = Math.round(this.cx - camX);
+    const top = Math.round(this.cy - this.radiusY - 34 - camY);
+    const half = this.radius + 18;
+    for (let row = 0; row < 14; row++) {
+      const w = Math.round(half * (0.35 + 0.65 * (row / 13)));
+      for (let x = -w; x < w; x += 8) {
+        ctx.fillStyle = Math.floor((x + 400) / 8) % 2 === 0 ? PALETTE.R : PALETTE.W;
+        ctx.fillRect(cx + x, top - 14 + row, Math.min(8, w - x), 1);
+      }
+    }
+    ctx.fillStyle = PALETTE.y;
+    ctx.fillRect(cx - half, top, half * 2, 2);
+    ctx.fillRect(cx, top - 22, 1, 8);
+    ctx.fillStyle = PALETTE.U;
+    ctx.fillRect(cx + 1, top - 22, 5, 3);
   }
 }

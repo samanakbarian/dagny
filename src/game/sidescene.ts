@@ -26,6 +26,7 @@ import { drawHud } from './hud';
 import { canLevelUp, damageTaken, maxHp, maxMp, swordDamage } from './progression';
 import { hasFlag, hasItem, setFlag, type GameState } from './state';
 import * as flow from './flow';
+import { beatIndex, squareActive, stepsToSwap } from './beat';
 import { LevelUpOverlay, GameOverOverlay } from './menus';
 
 export interface Spawn {
@@ -68,6 +69,8 @@ export class SideScene implements Scene, WorldApi {
   private pickups: Pickup[] = [];
   private projectiles: Projectile[] = [];
   private platforms: MovingPlatform[] = [];
+  private beatCells: Array<{ i: number; tx: number; ty: number; group: '%' | '&' }> = [];
+  private lastBeat = -1;
   private riding: MovingPlatform | null = null;
   /** A boss gust pushing Dagny: dx per step and steps left. */
   private gustDx = 0;
@@ -143,9 +146,25 @@ export class SideScene implements Scene, WorldApi {
         switch (ch) {
           case '#': {
             const above = at(tx, ty - 1);
-            this.tileSprite[i] = above === '#' || above === 'L' ? theme.fill : theme.top;
+            this.tileSprite[i] = above === '#' || above === 'L' || above === '?' ? theme.fill : theme.top;
             break;
           }
+          case '?': {
+            // Hidden passage: the transistor radio's static gives it away.
+            if (hasItem(s, 'radio')) {
+              kind = Kind.Empty;
+              this.tileSprite[i] = 'secretOpen';
+            } else {
+              const above = at(tx, ty - 1);
+              this.tileSprite[i] = above === '#' || above === 'L' || above === '?' ? theme.fill : theme.top;
+            }
+            break;
+          }
+          case '%':
+          case '&':
+            this.beatCells.push({ i, tx, ty, group: ch });
+            kind = ch === '%' ? Kind.OneWay : Kind.Empty;
+            break;
           case '=':
             this.tileSprite[i] = theme.platform;
             break;
@@ -458,6 +477,19 @@ export class SideScene implements Scene, WorldApi {
       return;
     }
 
+    // --- Dance floor ---
+    if (this.area.beat && this.beatCells.length) {
+      const period = this.area.beat.period;
+      const bi = beatIndex(this.frame, period);
+      if (bi !== this.lastBeat) {
+        this.lastBeat = bi;
+        for (const c of this.beatCells) {
+          this.grid.kinds[c.i] = squareActive(c.group, this.frame, period) ? Kind.OneWay : Kind.Empty;
+        }
+        if (this.frame > 1) this.sfx('step');
+      }
+    }
+
     // --- Spells ---
     this.tickSpells();
     if (g.input.pressed(Act.Magic)) this.castSpell();
@@ -476,7 +508,14 @@ export class SideScene implements Scene, WorldApi {
       p.y += rider.dy;
     }
     this.riding = null;
+    const safeX = p.safeX;
+    const safeY = p.safeY;
     p.update(c, this.grid);
+    // Dance squares come and go – never use them as a respawn point.
+    if (p.onGround && this.beatCells.length && this.onBeatSquare()) {
+      p.safeX = safeX;
+      p.safeY = safeY;
+    }
     this.applyWind();
     if (p.jumped) this.sfx('jump');
     if (p.landed && !wasGround) {
@@ -587,6 +626,16 @@ export class SideScene implements Scene, WorldApi {
   }
 
   private levelUpShown = false;
+
+  private onBeatSquare(): boolean {
+    const p = this.player;
+    const ty = Math.floor((p.y + p.h + 1) / TILE);
+    for (let tx = Math.floor(p.x / TILE); tx <= Math.floor((p.x + p.w - 1) / TILE); tx++) {
+      const ch = this.area.tiles[ty]?.[tx];
+      if (ch === '%' || ch === '&') return true;
+    }
+    return false;
+  }
 
   private landOnPlatform(p: Player, prevBottom: number): boolean {
     const bottom = p.y + p.h;
@@ -1097,6 +1146,19 @@ export class SideScene implements Scene, WorldApi {
       if (a.x + TILE < camX || a.x > camX + VIEW_W || a.y + TILE < camY || a.y > camY + VIEW_H) continue;
       drawSprite(ctx, a.sprite, Math.floor((f + a.offset * 7) / 20), a.x - camX, a.y - camY);
     }
+    // Dance-floor squares.
+    if (this.beatCells.length && this.area.beat) {
+      const period = this.area.beat.period;
+      const warn = stepsToSwap(this.frame, period) < 24;
+      for (const c of this.beatCells) {
+        const x = c.tx * TILE - camX;
+        const y = c.ty * TILE - camY;
+        if (x < -TILE || x > VIEW_W || y < -TILE || y > VIEW_H) continue;
+        const on = squareActive(c.group, this.frame, period);
+        const id = !on ? 'beatOff' : warn && Math.floor(f / 4) % 2 === 0 ? 'beatWarn' : 'beatOn';
+        drawSprite(ctx, id, (c.tx + c.ty) % 2, x, y);
+      }
+    }
     // Checkpoint candles.
     for (const cp of this.checkpoints) {
       drawSprite(ctx, cp.lit ? 'candle' : 'candleOff', Math.floor((f + cp.tx * 5) / 18), cp.tx * TILE - camX, cp.ty * TILE - camY);
@@ -1216,7 +1278,8 @@ export class SideScene implements Scene, WorldApi {
     const d = this.dark as HTMLCanvasElement;
     const dc = d.getContext('2d') as CanvasRenderingContext2D;
     dc.globalCompositeOperation = 'source-over';
-    dc.fillStyle = 'rgba(22,16,30,0.93)';
+    dc.clearRect(0, 0, VIEW_W, VIEW_H);
+    dc.fillStyle = `rgba(22,16,30,${this.area.darkness ?? 0.93})`;
     dc.fillRect(0, 0, VIEW_W, VIEW_H);
     dc.globalCompositeOperation = 'destination-out';
     const light = (x: number, y: number, r: number): void => {
@@ -1235,7 +1298,9 @@ export class SideScene implements Scene, WorldApi {
     for (const pr of this.projectiles) if (pr.sprite === 'bolt' && pr.delay === 0) light(pr.x + 4 - camX, pr.y + pr.h - 10 - camY, 70);
     for (const cp of this.checkpoints) if (cp.lit) light(cp.tx * TILE + 8 - camX, cp.ty * TILE + 4 - camY, 40 + flicker);
     for (const a of this.anim) {
-      if (a.sprite === 'candle') light(a.x + 8 - camX, a.y + 4 - camY, 34 + flicker);
+      if (a.x + TILE + 80 < camX || a.x - 80 > camX + VIEW_W || a.y + TILE + 80 < camY || a.y - 80 > camY + VIEW_H) continue;
+      if (a.sprite === 'bulbs') light(a.x + 8 - camX, a.y + 5 - camY, 36);
+      else if (a.sprite === 'candle') light(a.x + 8 - camX, a.y + 4 - camY, 34 + flicker);
       else if (a.sprite === 'lantern') light(a.x + 8 - camX, a.y + 6 - camY, 44 + flicker);
       else if (a.sprite === 'lens') light(a.x + 8 - camX, a.y + 8 - camY, 64 + flicker * 2);
     }
@@ -1243,8 +1308,20 @@ export class SideScene implements Scene, WorldApi {
       if (e.dead) continue;
       if (e.def.id === 'lyktgubbe') light(e.x + e.w / 2 - camX, e.y + e.h / 2 - camY, 26);
       // Gruvrået carries her own carbide lantern.
+      else if (e.def.behavior === 'boss_spelman') light(e.x + e.w / 2 - camX, e.y + 10 - camY, 60);
       else if (e.def.behavior === 'boss_gruvra' && e.alpha > 0.05) light(e.x + e.w / 2 - camX, e.y + 6 - camY, 56 * e.alpha);
     }
+    // Lit dance-floor squares glow.
+    if (this.area.beat) {
+      const period = this.area.beat.period;
+      for (const c of this.beatCells) {
+        if ((c.tx & 1) === 0 || !squareActive(c.group, this.frame, period)) continue;
+        const x = c.tx * TILE - camX;
+        if (x < -30 || x > VIEW_W + 30) continue;
+        light(x, c.ty * TILE + 2 - camY, 22);
+      }
+    }
+    for (const pr of this.projectiles) if (pr.sprite === 'noteShot') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
     for (const pr of this.projectiles) if (pr.sprite === 'stone') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
     for (const pr of this.projectiles) if (pr.sprite === 'fireball') light(pr.x + 4 - camX, pr.y + 4 - camY, 24);
     dc.globalCompositeOperation = 'source-over';
