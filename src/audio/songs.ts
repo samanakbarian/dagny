@@ -309,6 +309,21 @@ export const SONGS: Record<string, SongDef> = {
       { inst: 'drum', vol: 0.55, notes: 'k:4 h:2 h:2 s:4 '.repeat(8) },
     ],
   },
-  fabodskogen: { base: 'stig', bpm: 104, loop: true, tracks: [], transpose: -3 },
+  /** "Vallåt" – a herding call over a drone, for Fäbodskogen. */
+  fabodskogen: {
+    bpm: 76,
+    loop: true,
+    tracks: [
+      {
+        inst: 'flute', vol: 0.85,
+        notes: `a5:8 g5:2 e5:2 d5:4 | e5:12 r:4 | g5:6 a5:2 g5:4 e5:4 | d5:16 |
+                c5:4 d5:4 e5:4 g5:4 | a5:12 g5:4 | e5:4 d5:2 c5:2 a4:8 | a4:16`,
+      },
+      { inst: 'organ', vol: 0.4, notes: 'a2:32 d3:32 c3:32 a2:32' },
+      { inst: 'harp', vol: 0.25, notes: 'r:8 e4:4 a4:4 '.repeat(8) },
+    ],
+  },
+  /** Skogsrået's dance – the boss polska, lower and darker. */
+  skogsraboss: { base: 'boss', bpm: 140, loop: true, tracks: [], transpose: -3 },
   trollberget: { base: 'boss', bpm: 132, loop: true, tracks: [], transpose: -2 },
 };

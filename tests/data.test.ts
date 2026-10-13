@@ -3,7 +3,7 @@ import { AREAS } from '../src/data/areas';
 import { DIALOG } from '../src/data/dialog';
 import { BOSSES, ENEMIES } from '../src/data/enemies';
 import { ITEMS, ITEM_ORDER } from '../src/data/items';
-import { DECO, ENEMY_CHARS, PICKUP_CHARS } from '../src/data/legend';
+import { DECO, ENEMY_CHARS, FRONT, PICKUP_CHARS } from '../src/data/legend';
 import { NPCS } from '../src/data/npcs';
 import { OVERWORLD } from '../src/data/overworld';
 import { PALETTE, TONES } from '../src/data/palettes';
@@ -79,6 +79,13 @@ describe('areas', () => {
             expect(ok, `unknown tile '${ch}' in ${id}`).toBe(true);
           }
         }
+        if (a.front) {
+          expect(a.front.length).toBe(a.tiles.length);
+          for (const row of a.front) {
+            expect(row.length).toBe(w);
+            for (const ch of row) if (ch !== '.') expect(FRONT[ch], `front '${ch}' in ${id}`).toBeDefined();
+          }
+        }
         if (a.deco) {
           expect(a.deco.length).toBe(a.tiles.length);
           for (const row of a.deco) {
@@ -100,6 +107,7 @@ describe('areas', () => {
             if (exit.entry) expect(target.tiles.join(''), `entry ${exit.entry} in ${exit.to}`).toContain(exit.entry);
           }
           if (exit.requires) expect(DIALOG[exit.requires.dialog]).toBeDefined();
+          if (exit.dialog) expect(DIALOG[exit.dialog], exit.dialog).toBeDefined();
         }
         for (const [ch, npc] of Object.entries(a.npcs ?? {})) {
           expect(NPCS[npc], npc).toBeDefined();
@@ -245,7 +253,7 @@ describe('overworld', () => {
     for (const r of OVERWORLD.tiles) expect(r.length).toBe(w);
     for (const p of OVERWORLD.places) {
       const ch = OVERWORLD.tiles[p.y]?.[p.x];
-      expect('VKGBOMQYP').toContain(ch);
+      expect('VKGBOMQYPZ').toContain(ch);
       if (p.area) {
         expect(AREAS[p.area], p.area).toBeDefined();
         if (p.entry) expect(AREAS[p.area].tiles.join('')).toContain(p.entry);

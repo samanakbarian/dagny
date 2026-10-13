@@ -7,6 +7,7 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     sprite: 'hulda',
     idle: { frames: [0, 0, 0, 2, 0, 1, 1, 0], every: 0.7 },
     talk: [
+      { if: [{ flag: 'fabodskogen_klar' }, { notFlag: 'hulda_efter_fabodskogen' }], dialog: 'hulda_efter_fabodskogen' },
       { if: [{ flag: 'folkparken_klar' }, { notFlag: 'hulda_efter_folkparken' }], dialog: 'hulda_efter_folkparken' },
       { if: [{ flag: 'fyren_klar' }, { notFlag: 'hulda_efter_fyren' }], dialog: 'hulda_efter_fyren' },
       { if: [{ flag: 'kvarnen_klar' }, { notFlag: 'hulda_efter_kvarnen' }], dialog: 'hulda_efter_kvarnen' },

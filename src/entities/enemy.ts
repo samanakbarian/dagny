@@ -83,6 +83,16 @@ export class Enemy implements Body {
     if (this.dead || this.iframes > 0) return 'none';
     if (this.boss && !this.awake) return 'none';
     if (this.untouchable) return 'none';
+    // Skogsrået: lovely from the front – only her hollow back can be hurt.
+    if (this.def.backOnly && height !== 'magic') {
+      const fromRight = fromX > this.x + this.w / 2;
+      if (fromRight === (this.facing === 1)) {
+        world.sparks(this.x + (fromRight ? this.w : 0), this.y + 10);
+        world.sfx('block');
+        this.iframes = 8;
+        return 'blocked';
+      }
+    }
     // Tomtenisse-krigare parries strikes at the height he guards.
     if (this.def.behavior === 'parrier' && this.mode !== 2 && (height === 'high' || height === 'low') && height === this.guard) {
       world.sparks(this.x + (fromX < this.x ? 0 : this.w), this.guard === 'high' ? this.y + 8 : this.y + 18);
@@ -278,6 +288,9 @@ export class Enemy implements Body {
         this.fall(world);
         break;
       }
+      case 'boss_skogsra':
+        this.updateSkogsra(world, dx, p);
+        break;
       case 'boss_spelman':
         this.updateSpelman(world, dx, p);
         break;
@@ -609,6 +622,108 @@ export class Enemy implements Body {
           world.sfx('door');
           this.mode = 3;
           this.timer = 24;
+        }
+        break;
+    }
+  }
+
+  // --- Skogsrået ------------------------------------------------------------------------
+  // Walks towards Dagny with her lovely face turned to her. Dashes past and stands
+  // with her hollow back turned for a moment – the only time she can be hurt.
+  // Calls roots up from the ground (dirt sprays first) and throws pine cones.
+
+  private updateSkogsra(world: WorldApi, dx: number, p: { x: number; y: number }): void {
+    const b = this.boss!;
+    if (!this.awake) {
+      this.homeY = this.y;
+      this.frame = 0;
+      return;
+    }
+    if (this.phase === 0 && this.hp <= this.maxHp * b.phases[1].atHpFraction) {
+      this.phase = 1;
+      this.sprite = b.phases[1].sprite;
+      world.sfx('roar');
+      world.shake(24, 2);
+    }
+    const ph = b.phases[this.phase];
+    const gw = world.grid.w * 16;
+    const minX = 18;
+    const maxX = gw - 18 - this.w;
+    const floorY = this.homeY + this.h;
+    switch (this.mode) {
+      case 0: // stroll towards Dagny, face first
+        this.facing = dx > 0 ? 1 : -1;
+        this.frame = 0;
+        if (Math.abs(dx) > 30) this.x = Math.max(minX, Math.min(maxX, this.x + this.facing * ph.speed * 0.35));
+        if (--this.timer <= 0) {
+          const c = this.cycle++ % 3;
+          this.mode = c === 0 ? 1 : c === 1 ? 3 : 4;
+          this.timer = c === 0 ? 24 : 40;
+        }
+        break;
+      case 1: // wind up, then dash past Dagny
+        this.frame = 1;
+        if (--this.timer <= 0) {
+          this.mode = 5;
+          this.vx = this.facing * ph.speed * 2.2;
+          world.sfx('roar');
+        }
+        break;
+      case 5: // dashing
+        this.frame = 2;
+        this.x += this.vx;
+        if (this.x <= minX || this.x >= maxX) {
+          this.x = Math.max(minX, Math.min(maxX, this.x));
+          // Stop with her back to the room.
+          this.facing = this.x <= minX ? -1 : 1;
+          this.mode = 2;
+          this.timer = this.phase === 1 ? 55 : 75;
+          world.shake(6, 1);
+        }
+        break;
+      case 2: // recovering, back turned – strike now
+        this.frame = 0;
+        if (--this.timer <= 0) {
+          this.mode = 0;
+          this.timer = Math.round(ph.attackEvery * 60);
+        }
+        break;
+      case 3: // roots burst up where the dirt sprays
+        this.facing = dx > 0 ? 1 : -1;
+        this.frame = 1;
+        if (this.timer === 30) {
+          const n = this.phase === 1 ? 5 : 3;
+          for (let i = 0; i < n; i++) {
+            const x = Math.max(8, Math.min(gw - 18, p.x - 5 + (i - (n - 1) / 2) * 30));
+            world.spawnProjectile({
+              x, y: floorY - 24, vx: 0, vy: 0, w: 10, h: 24, sprite: 'root',
+              damage: 2, fromPlayer: false, life: 36, ghost: true, delay: 40 + i * 8,
+            });
+          }
+          world.sfx('magic');
+        }
+        if (--this.timer <= 0) {
+          this.mode = 0;
+          this.timer = Math.round(ph.attackEvery * 60);
+        }
+        break;
+      case 4: // pine cones in arcs
+        this.facing = dx > 0 ? 1 : -1;
+        this.frame = 1;
+        if (this.timer === 20) {
+          for (let i = 0; i < 3; i++) {
+            const tx = p.x + (i - 1) * 20;
+            const flight = 50;
+            world.spawnProjectile({
+              x: this.x + this.w / 2, y: this.y + 6, vx: (tx - this.x - this.w / 2) / flight, vy: -3.6 - i * 0.3,
+              w: 6, h: 8, sprite: 'kotte', damage: 2, fromPlayer: false, life: 150, gravity: 0.14,
+            });
+          }
+          world.sfx('sword');
+        }
+        if (--this.timer <= 0) {
+          this.mode = 0;
+          this.timer = Math.round(ph.attackEvery * 60);
         }
         break;
     }

@@ -364,6 +364,51 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
     pages: ['Har du också fått en radio! Lyssna... det brusar annorlunda nära Björkhagen. Som om berget hade en dörr.'],
   },
 
+  // --- Temple 6: Fäbodskogen --------------------------------------------------------
+  fabod_skylt1: {
+    pages: ['En handmålad skylt på en gärdesgård:\n"TILL FÄBODEN. FÖLJ DET RÖDA BANDET. LITA INTE PÅ LJUSEN."'],
+  },
+  villse: {
+    pages: ['Stigen slingrar sig ... och leder rakt tillbaka till där du började. Skogen fnissar mellan granarna.'],
+  },
+  villse2: {
+    pages: ['Irrblosset slocknar så fort du kommer fram. Du står vid ljusstaken igen.'],
+  },
+  skogsra_vaknar: {
+    speaker: 'Skogsrået',
+    pages: ['Ingen vallar korna här längre. Ingen sjunger på vallen. Fäbodarna står och ruttnar... som min rygg. Kom närmare, lilla vän.'],
+  },
+  skogsra_forlikad: {
+    speaker: 'Skogsrået',
+    pages: [
+      'Du såg min rygg och vände inte om. Det är det som skiljer en Väktare från en jägare.',
+      'Hon satt här på vallen och vävde en näverfilt den sista sommaren. Den blev aldrig klar... Den låg i en korg under klockstapeln.',
+      'Ta luren. Blås, så kommer de du förlikat. Du är inte ensam längre.',
+    ],
+  },
+  fick_naverlur: {
+    pages: [
+      'Dagny fick NÄVERLUREN!\nHåll NER och tryck MAGI, så kommer en vätte och hjälper dig en stund.',
+      'Någon kular långt borta på vallen, och dimman lättar. En bit till av sommarljuset har kommit tillbaka.',
+    ],
+    actions: [{ type: 'flag', flag: 'fabodskogen_klar' }],
+  },
+  hulda_efter_fabodskogen: {
+    speaker: 'Mormor Hulda',
+    pages: [
+      'Näverfilten... den du låg i när jag hittade dig. Dagmar vävde den åt dig, fast hon aldrig hann bli klar.',
+      'Sex platser har vaknat i godo. Nu återstår bara Trollberget. Där får du hela sanningen, det lovar jag.',
+      'Men först vilar du. Kom hit.',
+    ],
+    actions: [{ type: 'flag', flag: 'hulda_efter_fabodskogen' }, { type: 'rest' }],
+  },
+  lur_blast: {
+    pages: ['Näverluren ljuder över skogen! En vätte kommer springande för att hjälpa.'],
+  },
+  lur_vila: {
+    pages: ['Vättarna vilar. Vänta en stund innan du blåser igen.'],
+  },
+
   // --- Gruvsamhället ----------------------------------------------------------------
   maj_vila: {
     speaker: 'Maj på pensionatet',

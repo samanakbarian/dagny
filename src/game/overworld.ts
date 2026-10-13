@@ -36,6 +36,7 @@ const TILE_SPRITE: Record<string, string> = {
   Q: 'owMill',
   Y: 'owLighthouse',
   P: 'owPark',
+  Z: 'owFabod',
 };
 
 interface Walker {
@@ -70,7 +71,7 @@ function buildStatic(): HTMLCanvasElement {
       const ch = tiles[y][x];
       if (ch === '~') continue;
       // Places sit on grass.
-      if ('VKGBOMQYP'.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
+      if ('VKGBOMQYPZ'.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
       drawSprite(ctx, TILE_SPRITE[ch] ?? 'owGrass', 0, x * T, y * T);
     }
   }

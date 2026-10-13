@@ -52,6 +52,7 @@ export type Behavior =
   | 'boss_backahast'
   | 'boss_havsfru'
   | 'boss_spelman'
+  | 'boss_skogsra'
   | 'boss_placeholder';
 
 export type PuffKind = 'moss' | 'leaf' | 'mist';
@@ -75,6 +76,8 @@ export interface EnemyDef {
   heavy?: boolean;
   /** Ignores gravity. */
   flying?: boolean;
+  /** Can only be hurt from behind (strikes from the front are blocked). */
+  backOnly?: boolean;
   /** Becomes friendly after being defeated (flavour text shown). */
   befriend?: string;
 }
@@ -189,6 +192,8 @@ export interface Exit {
   entry?: string;
   /** Overworld tile to appear on when going to the overworld. */
   ow?: { x: number; y: number };
+  /** Dialog shown after arriving (e.g. "the path led in a circle"). */
+  dialog?: string;
   /** Flag required to use this exit, and the dialog shown when missing. */
   requires?: { flag?: string; item?: string; dialog: string };
 }
@@ -262,11 +267,13 @@ export interface AreaDef {
   music: string;
   backdrop: Backdrop;
   /** Theme for '#' and '=' tiles. */
-  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill' | 'skar' | 'fyr' | 'park';
+  theme: 'meadow' | 'village' | 'crypt' | 'mine' | 'mill' | 'skar' | 'fyr' | 'park' | 'skog';
   /** Collision + entity layer. See data/legend.ts. */
   tiles: string[];
   /** Optional non-colliding background decor layer (same size). */
   deco?: string[];
+  /** Optional foreground layer drawn over Dagny (dense leaves, ferns). */
+  front?: string[];
   /** NPCs placed with digits '1'–'9' in the tile layer. */
   npcs?: Record<string, string>;
   /** Doors used with Up, placed with capital letters in the tile layer. */

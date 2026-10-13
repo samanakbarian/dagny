@@ -43,8 +43,8 @@ export const TEMPLES: readonly TempleDef[] = [
   {
     id: 'fabodskogen', number: 6, name: 'Fäbodskogen',
     mechanic: 'Täta träd, irrbloss, vilseledande stigar.',
-    tone: 'gra_augusti', music: 'fabodskogen', bossMusic: 'boss',
-    treasure: 'naverlur', boss: 'skogsraet', entryArea: null,
+    tone: 'skog', music: 'fabodskogen', bossMusic: 'skogsraboss',
+    treasure: 'naverlur', boss: 'skogsraet', entryArea: 'fabod_1',
     lore: 'En vävd näverfilt, hälften färdig, ligger kvar i fäbodstugan.',
   },
   {

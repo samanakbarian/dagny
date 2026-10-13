@@ -130,6 +130,12 @@ export const TONES: Readonly<Record<string, ToneFilter>> = {
     sky: ['#2b3560', '#3f4a7a', '#6a5a8a'],
     hills: ['#4a5276', '#3c4466', '#323a58'],
   },
+  /** Deep in Fäbodskogen – green mist under the spruces. */
+  skog: {
+    tint: '#6a8a6a', alpha: 0.22, mode: 'multiply', fade: 0.05, vignette: 0.5,
+    sky: ['#6f7f72', '#8a9a88', '#a9b5a0'],
+    hills: ['#5a6e5a', '#465a46', '#33473a'],
+  },
   /** Overworld map – soft daylight. */
   karta: {
     tint: '#f0c890', alpha: 0.1, mode: 'soft-light', fade: 0.05, vignette: 0.25,

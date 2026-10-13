@@ -118,6 +118,10 @@ Motorn har nu vindzoner (`wind` i områdesdata: sidvind, växlande byar och uppv
 
 Motorn har nu rytmrutor (`%`/`&` + `beat`), karuseller (elliptiska banor), dolda väggar och ljusslingor som ljuskällor. Mörka rum har en justerbar mörkergrad (`darkness`).
 
-Nästa steg: tempel 6–7, sedan resten av byarna och polering.
+**Tempel 6 – Fäbodskogen:** på myren söder om byn, kräver gummistövlarna. Myrkanten (flytande stockar, tät granskog i förgrunden), Villvägarna och Djupskogen (tre stigar där bara en leder vidare – följ det röda bandet på björken, inte irrblossen; fel stig leder tillbaka till början) och Fäbodvallen med Skogsrået. Hon är vacker framifrån men har en ihålig trästam till rygg, och bara ryggen går att skada. Hon rusar förbi Dagny och står en stund med ryggen vänd, kallar upp rötter ur marken (jorden sprätter först) och kastar kottar. Nyckelskatten Näverluren: håll NER och tryck MAGI, så kommer en förlikad vätte och slåss vid Dagnys sida en stund. Egen musik: "Vallåt".
+
+Motorn har nu ett förgrundslager (`front`), dörrar som visar en dialog efter ankomst (`dialog` på utgångar) och väsen som bara kan skadas bakifrån (`backOnly`).
+
+Nästa steg: Trollberget (tempel 7) med finalen, sedan resten av byarna och polering.
 
 Öppna frågor från specen, t.ex. den sista Väktarens öde och upplösningen på Trollberget, är medvetet obesvarade. Fynden i kryptan antyder bara.

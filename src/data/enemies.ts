@@ -150,15 +150,15 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
   },
   skogsraet: {
     id: 'skogsraet', name: 'Skogsrået', title: 'Skogsrået – hon med ihålig rygg',
-    sprite: 'grim', behavior: 'boss_placeholder',
-    hp: 100, damage: 5, xp: 800, speed: 1.7,
-    box: { x: 4, y: 12, w: 26, h: 20 }, puff: 'leaf', heavy: true,
+    sprite: 'skogsra', behavior: 'boss_skogsra',
+    hp: 90, damage: 3, xp: 800, speed: 2.4,
+    box: { x: 2, y: 8, w: 14, h: 24 }, puff: 'leaf', heavy: true, backOnly: true,
     phases: [
-      { atHpFraction: 1, sprite: 'grim', speed: 1.7, attackEvery: 1.5 },
-      { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.6, attackEvery: 1 },
+      { atHpFraction: 1, sprite: 'skogsra', speed: 2.4, attackEvery: 1.6 },
+      { atHpFraction: 0.5, sprite: 'skogsraBark', speed: 3, attackEvery: 1.15 },
     ],
-    introDialog: 'boss_vaknar',
-    defeatDialog: 'boss_forlikad',
+    introDialog: 'skogsra_vaknar',
+    defeatDialog: 'skogsra_forlikad',
   },
   bergakungen: {
     id: 'bergakungen', name: 'Bergakungen', title: 'Bergakungen – han under Trollberget',

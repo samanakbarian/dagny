@@ -10,6 +10,7 @@ import { gruvbySprites } from './gruvby';
 import { millSprites } from './mill';
 import { lighthouseSprites } from './lighthouse';
 import { parkSprites } from './park';
+import { forestSprites } from './forest';
 
 /** Every sprite in the game, keyed by id. */
 export const SPRITES: Record<string, SpriteDef> = {
@@ -24,4 +25,5 @@ export const SPRITES: Record<string, SpriteDef> = {
   ...millSprites,
   ...lighthouseSprites,
   ...parkSprites,
+  ...forestSprites,
 };

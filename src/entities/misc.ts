@@ -177,7 +177,15 @@ export class Projectile {
       }
       return;
     }
-    if (this.delay > 0) return;
+    if (this.delay > 0) {
+      // Dirt sprays where a root is about to burst up.
+      if (this.sprite === 'root' && Math.floor(this.delay / 3) % 2 === 0) {
+        ctx.fillStyle = PALETTE.B;
+        ctx.fillRect(x + 1 + (this.delay % 4), y + this.h - 3, 2, 2);
+        ctx.fillRect(x + 6 - (this.delay % 3), y + this.h - 5, 2, 2);
+      }
+      return;
+    }
     drawSprite(ctx, this.sprite, Math.floor(this.t / 6) % 2, x, y, this.vx < 0);
   }
 }

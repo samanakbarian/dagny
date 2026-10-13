@@ -1,4 +1,4 @@
-import { Kind, overlaps, touchesKind, isSolidAt, rectHitsSolid, pushX, TILE, type Rect, type TileGrid } from '../engine/collision';
+import { Kind, moveBody, overlaps, touchesKind, isSolidAt, rectHitsSolid, pushX, TILE, type Rect, type TileGrid } from '../engine/collision';
 import { Act } from '../engine/input';
 import { VIEW_W, VIEW_H } from '../engine/screen';
 import { drawSprite, frameCount, spriteSize } from '../engine/sprites';
@@ -6,7 +6,7 @@ import { ring } from '../engine/draw';
 import { drawText, measure } from '../engine/text';
 import { AREAS } from '../data/areas';
 import { BOSSES, ENEMIES } from '../data/enemies';
-import { ENEMY_CHARS, PICKUP_CHARS, THEMES, DECO, kindOf } from '../data/legend';
+import { ENEMY_CHARS, PICKUP_CHARS, THEMES, DECO, FRONT, kindOf } from '../data/legend';
 import { NPCS } from '../data/npcs';
 import { PALETTE } from '../data/palettes';
 import { SPELLS } from '../data/spells';
@@ -31,6 +31,8 @@ import { LevelUpOverlay, GameOverOverlay } from './menus';
 
 export interface Spawn {
   entry?: string;
+  /** Dialog shown right after arriving. */
+  dialog?: string;
   x?: number;
   y?: number;
   facing?: 1 | -1;
@@ -69,6 +71,10 @@ export class SideScene implements Scene, WorldApi {
   private pickups: Pickup[] = [];
   private projectiles: Projectile[] = [];
   private platforms: MovingPlatform[] = [];
+  private frontLayer: HTMLCanvasElement | null = null;
+  /** Näverluren: a befriended vätte that fights alongside Dagny. */
+  private helpers: Array<{ x: number; y: number; vx: number; vy: number; onGround: boolean; w: number; h: number; life: number; cd: number; facing: 1 | -1 }> = [];
+  private lurCooldown = 0;
   private beatCells: Array<{ i: number; tx: number; ty: number; group: '%' | '&' }> = [];
   private lastBeat = -1;
   private riding: MovingPlatform | null = null;
@@ -108,6 +114,7 @@ export class SideScene implements Scene, WorldApi {
     };
     this.build();
     this.staticLayer = this.renderStatic();
+    this.frontLayer = this.renderFront();
     this.placePlayer();
     const px = this.player.x;
     this.platforms = (area.platforms ?? []).flatMap((d) => MovingPlatform.create(d, px));
@@ -297,6 +304,23 @@ export class SideScene implements Scene, WorldApi {
     return c;
   }
 
+  private renderFront(): HTMLCanvasElement | null {
+    const front = this.area.front;
+    if (!front) return null;
+    const { w, h } = this.grid;
+    const c = document.createElement('canvas');
+    c.width = w * TILE;
+    c.height = h * TILE;
+    const ctx = c.getContext('2d') as CanvasRenderingContext2D;
+    for (let ty = 0; ty < h; ty++) {
+      for (let tx = 0; tx < w; tx++) {
+        const id = FRONT[front[ty]?.[tx] ?? '.'];
+        if (id) drawSprite(ctx, id, 0, tx * TILE, ty * TILE);
+      }
+    }
+    return c;
+  }
+
   private placePlayer(): void {
     const sp = this.spawn;
     const p = this.player;
@@ -333,6 +357,7 @@ export class SideScene implements Scene, WorldApi {
     if (a.kind === 'village') this.s.lastVillage = a.id;
     // Autosave on every area change (encounters save the overworld spot instead).
     this.game.save();
+    if (this.spawn.dialog) this.game.pushOverlay(new DialogOverlay(this.game, this.spawn.dialog));
     if (a.onEnter && !hasFlag(this.s, a.onEnter.unlessFlag)) {
       setFlag(this.s, a.onEnter.setFlag);
       this.game.pushOverlay(new DialogOverlay(this.game, a.onEnter.dialog));
@@ -492,7 +517,12 @@ export class SideScene implements Scene, WorldApi {
 
     // --- Spells ---
     this.tickSpells();
-    if (g.input.pressed(Act.Magic)) this.castSpell();
+    if (this.lurCooldown > 0) this.lurCooldown--;
+    if (g.input.pressed(Act.Magic)) {
+      if (g.input.held(Act.Down) && hasItem(s, 'naverlur')) this.blowLur();
+      else this.castSpell();
+    }
+    this.updateHelpers();
 
     // --- Player ---
     const c = this.controls();
@@ -917,7 +947,7 @@ export class SideScene implements Scene, WorldApi {
       if (exit.ow) this.s.ow = { ...exit.ow };
       flow.goToOverworld(g);
     } else {
-      flow.goToArea(g, exit.to, { entry: exit.entry });
+      flow.goToArea(g, exit.to, { entry: exit.entry, dialog: exit.dialog });
     }
   }
 
@@ -1031,6 +1061,50 @@ export class SideScene implements Scene, WorldApi {
         break;
       }
     }
+  }
+
+  /** Näverluren calls a befriended vätte to help for a while. */
+  private blowLur(): void {
+    const g = this.game;
+    if (this.lurCooldown > 0) {
+      g.toast(DialogOverlay.get('lur_vila').pages[0]);
+      return;
+    }
+    this.lurCooldown = 30 * 60;
+    this.sfx('horn');
+    const p = this.player;
+    this.helpers.push({ x: p.x - p.facing * 20, y: p.y + p.h - 12, vx: 0, vy: -2, onGround: false, w: 10, h: 12, life: 12 * 60, cd: 0, facing: p.facing });
+    this.puff(p.x - p.facing * 16, p.y + p.h - 6, 'moss');
+    g.toast(DialogOverlay.get('lur_blast').pages[0], 2.5);
+  }
+
+  private updateHelpers(): void {
+    for (const h of this.helpers) {
+      h.life--;
+      if (h.cd > 0) h.cd--;
+      // Run to the nearest väsen and strike it.
+      let target: Enemy | null = null;
+      let best = 1e9;
+      for (const e of this.enemies) {
+        if (e.dead || e.untouchable || (e.boss && !e.awake)) continue;
+        const d = Math.abs(e.x + e.w / 2 - (h.x + h.w / 2));
+        if (d < best) { best = d; target = e; }
+      }
+      const goal = target ? target.x + target.w / 2 : this.player.x - this.player.facing * 18;
+      const dx = goal - (h.x + h.w / 2);
+      h.facing = dx >= 0 ? 1 : -1;
+      h.vx = Math.abs(dx) > 6 ? h.facing * 1.4 : 0;
+      h.vy = Math.min(5, h.vy + 0.35);
+      moveBody(this.grid, h);
+      if (target && h.cd === 0 && overlaps(h, target.box(tmpA))) {
+        h.cd = 40;
+        const r = target.takeHit(2, h.x + h.w / 2, 'magic', this);
+        if (r === 'dead') this.killEnemy(target);
+        if (r !== 'none') this.sparks(h.x + h.w / 2, h.y + 4);
+      }
+      if (h.life === 0) this.puff(h.x + h.w / 2, h.y + h.h / 2, 'moss');
+    }
+    this.helpers = this.helpers.filter((h) => h.life > 0);
   }
 
   private shootFire(): void {
@@ -1171,10 +1245,18 @@ export class SideScene implements Scene, WorldApi {
     for (const n of this.npcs) n.render(ctx, camX, camY);
     for (const e of this.enemies) e.render(ctx, camX, camY);
     this.renderPlayerAura(ctx, camX, camY);
+    for (const h of this.helpers) {
+      if (h.life > 90 || Math.floor(h.life / 4) % 2 === 0) drawSprite(ctx, 'vatte', Math.floor(f / 10) % 2, h.x - 3 - camX, h.y - 4 - camY, h.facing === -1);
+    }
     this.player.render(ctx, camX, camY, f);
     for (const pr of this.projectiles) pr.render(ctx, camX, camY);
     this.renderParticles(ctx, this.particles, camX, camY);
     this.renderProps(ctx, camX, camY, true);
+    if (this.frontLayer) {
+      ctx.globalAlpha = 0.9;
+      ctx.drawImage(this.frontLayer, camX, camY, VIEW_W, VIEW_H, 0, 0, VIEW_W, VIEW_H);
+      ctx.globalAlpha = 1;
+    }
 
     if (this.dark) this.renderDarkness(ctx, camX, camY);
     this.renderParticles(ctx, this.ambient, camX, camY);
@@ -1321,6 +1403,7 @@ export class SideScene implements Scene, WorldApi {
         light(x, c.ty * TILE + 2 - camY, 22);
       }
     }
+    for (const pr of this.area.props ?? []) if (pr.sprite === 'irrbloss') light(pr.tx * TILE + 4 + (pr.dx ?? 0) - camX, (pr.ty + 1) * TILE - 4 + (pr.dy ?? 0) - camY, 34 + flicker);
     for (const pr of this.projectiles) if (pr.sprite === 'noteShot') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
     for (const pr of this.projectiles) if (pr.sprite === 'stone') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
     for (const pr of this.projectiles) if (pr.sprite === 'fireball') light(pr.x + 4 - camX, pr.y + 4 - camY, 24);

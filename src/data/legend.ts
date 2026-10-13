@@ -54,6 +54,7 @@ export const THEMES: Readonly<Record<string, Theme>> = {
   skar: { top: 'graniteTop', fill: 'granite', platform: 'plank' },
   fyr: { top: 'fyrFloor', fill: 'whiteStone', platform: 'plank' },
   park: { top: 'boardwalk', fill: 'dirt', platform: 'plank' },
+  skog: { top: 'mossTop', fill: 'peat', platform: 'log' },
 };
 
 /** Collision kind for a tile-layer character. */
@@ -125,4 +126,15 @@ export const DECO: Readonly<Record<string, string>> = {
   U: 'parkFence',
   K: 'booth',
   S: 'stage',
+  t: 'trunk',
+  B: 'boughs',
+  A: 'pathArch',
+  G: 'timber',
+  Z: 'turfRoof',
+};
+
+/** Foreground layer characters (AreaDef.front) → sprite id. */
+export const FRONT: Readonly<Record<string, string>> = {
+  f: 'foliage',
+  F: 'fern',
 };
