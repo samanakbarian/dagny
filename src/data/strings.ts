@@ -70,8 +70,17 @@ export const STR = {
 
   // Game over
   gameOverTitle: 'Dagny somnar...',
-  gameOverText: 'Men XP och minnen finns kvar.',
+  livesLeft: 'Liv kvar:',
+  lastLife: 'Sista livet!',
   retryCheckpoint: 'Försök igen vid ljusstaken',
+  retryTempleDoor: 'Försök igen vid porten',
+  gameOverEnd: 'Allt blev mörkt',
+  gameOverEndText: 'Alla liv är slut. Oanvänd XP gick förlorad.',
+  gameOverMountain: 'Berget släpper dig inte så lätt.',
+  restartHome: 'Börja om hos mormor',
+  restartMountain: 'Börja om vid bergets fot',
+  extraLife: 'Ett extra liv!',
+  sealOpen: 'Vägen är fri',
   wakeHome: 'Vakna hos mormor',
   wakeIn: 'Vakna i',
 

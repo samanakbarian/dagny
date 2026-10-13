@@ -33,8 +33,11 @@ export function drawHud(ctx: CanvasRenderingContext2D, s: GameState, opts: { key
   const target = nextTarget(s.levels);
   const xpText = target === null ? `${STR.xp} ${s.xp}` : `${STR.xp} ${s.xp}/${target}`;
   drawText(ctx, xpText, x, 4, target !== null && s.xp >= target ? 'Y' : 'W', { shadow: 'k' });
+  // Lives (näverdockor), then keys beside them.
+  drawSprite(ctx, 'hudLife', 0, lx, 16);
+  drawText(ctx, `×${s.lives}`, lx + 9, 15, s.lives <= 1 ? 'Y' : 'W', { shadow: 'k' });
   if (opts.keys !== undefined && opts.keys > 0) {
-    drawSprite(ctx, 'key', 0, lx, 16);
-    drawText(ctx, `×${opts.keys}`, lx + 10, 15, 'W', { shadow: 'k' });
+    drawSprite(ctx, 'key', 0, lx + 26, 16);
+    drawText(ctx, `×${opts.keys}`, lx + 36, 15, 'W', { shadow: 'k' });
   }
 }

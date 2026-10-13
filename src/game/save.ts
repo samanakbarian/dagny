@@ -4,7 +4,7 @@ import { MAX_LEVEL, convertOldLevel } from '../data/progression';
 import { OVERWORLD } from '../data/overworld';
 import { SPELL_ORDER } from '../data/spells';
 import { maxHp, maxMp } from './progression';
-import { hpMax, mpMax, newGame, type GameState, type Location } from './state';
+import { MAX_LIVES, START_LIVES, hpMax, mpMax, newGame, type GameState, type Location } from './state';
 import { repairReach } from './reach';
 
 /** Bump when the format changes, and add a migration below. */
@@ -104,6 +104,8 @@ export function deserialize(text: string | null): SaveFile | null {
     checkpoint: s.checkpoint === null || s.checkpoint === undefined ? null : loc(s.checkpoint, d.loc),
     playTime: Math.max(0, num(s.playTime, 0)),
     containers: [...new Set(strArr(s.containers).filter((c) => /^(liv|magi):./.test(c)))],
+    // Saves from before lives existed start with a full set.
+    lives: Math.max(1, Math.min(MAX_LIVES, Math.floor(num(s.lives, START_LIVES)))),
   };
   state.hp = Math.max(1, Math.min(hpMax(state), num(s.hp, d.hp)));
   state.mp = Math.max(0, Math.min(mpMax(state), num(s.mp, d.mp)));

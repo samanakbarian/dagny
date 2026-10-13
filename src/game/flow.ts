@@ -1,8 +1,8 @@
 import { AREAS } from '../data/areas';
 import { STR } from '../data/strings';
-import { VILLAGES } from '../data/temples';
+import { VILLAGES, templeById } from '../data/temples';
 import type { Game } from './game';
-import { hpMax, mpMax, newGame, setFlag } from './state';
+import { START_LIVES, hpMax, mpMax, newGame, setFlag } from './state';
 import { SideScene, type Spawn } from './sidescene';
 import { OverworldScene } from './overworld';
 import { TitleScene } from './title';
@@ -73,16 +73,52 @@ export function wakeAtVillage(game: Game): void {
   goToArea(game, v.area ?? 'mormors_by', { entry: v.wakeEntry });
 }
 
-/** After a defeat in a temple: retry at the last lit candle. */
-export function retryCheckpoint(game: Game): void {
+/**
+ * After a defeat in a temple: retry at the last lit candle in this temple,
+ * or at the temple's door when no candle there is lit yet.
+ */
+export function retryCheckpoint(game: Game, temple?: string | null): void {
   const st = game.state;
-  if (!st || !st.checkpoint) {
+  if (!st) return;
+  const cp = st.checkpoint;
+  const inTemple = !!cp && (!temple || AREAS[cp.area]?.temple === temple);
+  const entry = temple ? templeById(temple)?.entryArea : null;
+  if (!inTemple && !entry) {
     wakeAtVillage(game);
     return;
   }
   st.hp = hpMax(st);
   st.mp = Math.max(st.mp, Math.ceil(mpMax(st) / 2));
-  goToArea(game, st.checkpoint.area, { x: st.checkpoint.x, y: st.checkpoint.y });
+  if (inTemple && cp) goToArea(game, cp.area, { x: cp.x, y: cp.y });
+  else goToArea(game, entry!, { entry: 'A', facing: 1 });
+}
+
+/** The temple whose Game Over starts over at its own foot instead of at Mormor's. */
+export const LAST_TEMPLE = 'trollberget';
+
+/**
+ * Game Over: every life is spent. Dagny starts over at Mormor's with a full
+ * set of lives – and, as in the old games, the XP not yet spent on a level is
+ * lost. In Trollberget she starts over at the foot of the mountain instead,
+ * with every candle on the mountain put out.
+ */
+export function gameOver(game: Game, temple: string | null): void {
+  const st = game.state;
+  if (!st) return;
+  st.lives = START_LIVES;
+  st.xp = 0;
+  st.hp = hpMax(st);
+  st.mp = mpMax(st);
+  if (temple === LAST_TEMPLE) {
+    const entry = templeById(LAST_TEMPLE)?.entryArea ?? 'troll_1';
+    st.opened = st.opened.filter((o) => !(o.startsWith('cp:') && AREAS[o.slice(3).split(':')[0]]?.temple === LAST_TEMPLE));
+    if (st.checkpoint && AREAS[st.checkpoint.area]?.temple === LAST_TEMPLE) st.checkpoint = null;
+    goToArea(game, entry, { entry: 'A', facing: 1 });
+  } else {
+    st.checkpoint = null;
+    goToArea(game, 'mormors_by', { entry: VILLAGES[0].wakeEntry });
+  }
+  game.save();
 }
 
 /** End of the vertical slice: sunrise cards, then back to the village. */

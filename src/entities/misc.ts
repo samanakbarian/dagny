@@ -40,7 +40,7 @@ export class Npc {
   }
 }
 
-export type PickupKind = 'bulle' | 'termos' | 'lingon' | 'key' | 'treasure' | 'cat' | 'quest' | 'container';
+export type PickupKind = 'bulle' | 'termos' | 'lingon' | 'key' | 'treasure' | 'cat' | 'quest' | 'container' | 'life';
 
 export class Pickup {
   vy = 0;

@@ -593,6 +593,30 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   fick_livbehallare: {
     pages: ['Dagny hittade en LIVBEHÅLLARE!\nHennes liv räcker lite längre nu.'],
   },
+  troll_gangar_skylt1: {
+    pages: ['Någon har ristat i berget, djupt och länge sedan:\n"TRE GÅNGAR. TVÅ GÅR I RING.\nDEN MITTERSTA BÄR."'],
+  },
+  troll_gangar_skylt2: {
+    pages: ['Samma hand har ristat igen:\n"SOLEN GÅR NER I VÄSTER.\nGÅ DIT HON GÅR."'],
+  },
+  troll_villse: {
+    pages: ['Gången slingrade sig i mörkret...\n...och Dagny kom ut där hon började.'],
+  },
+  troll_villse2: {
+    pages: ['Gången vred sig om och om igen.\nNär den tog slut stod Dagny vid ingången till Trollgångarna igen.'],
+  },
+  skuggan_moter: {
+    pages: [
+      'Ur mörkret kliver en gestalt. Den har Dagnys flätor, Dagnys sjal – och röda, glödande ögon.',
+      'Den lyfter sitt svärd precis som hon. Den parerar där hon parerar.\nVägen ut stängs bakom dem.',
+    ],
+  },
+  fick_naverdocka: {
+    pages: [
+      'Dagny hittade en NÄVERDOCKA!\nNågon har flätat den av björknäver och knutit en röd snibb om den.',
+      'Mormor sa alltid att en näverdocka håller ett liv åt den som bär den.\n(+1 liv. Fler dockor finns gömda här och där.)',
+    ],
+  },
   fick_magibehallare: {
     pages: ['Dagny hittade en MAGIBEHÅLLARE!\nHon orkar läsa lite fler läsningar nu.'],
   },

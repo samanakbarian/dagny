@@ -24,7 +24,7 @@ import { DialogOverlay } from './dialog';
 import type { Game, Scene } from './game';
 import { drawHud } from './hud';
 import { canLevelUp, damageTaken, swordDamage } from './progression';
-import { addContainer, hasFlag, hasItem, hpMax, mpMax, setFlag, type GameState } from './state';
+import { MAX_LIVES, addContainer, hasFlag, hasItem, hpMax, mpMax, setFlag, type GameState } from './state';
 import * as flow from './flow';
 import { beatIndex, squareActive, stepsToSwap } from './beat';
 import { LevelUpOverlay, GameOverOverlay } from './menus';
@@ -94,6 +94,8 @@ export class SideScene implements Scene, WorldApi {
   private bossOutro = 0;
   /** Steps after a hazard respawn during which hazards don't hurt again. */
   private hazardGrace = 0;
+  /** Sealed room: 0 not sealed / cleared, 1 waiting for Dagny, 2 shut until the room is cleared. */
+  private seal = 0;
   private nameT = 0;
   private flashT = 0;
   private lockMsgT = 0;
@@ -226,6 +228,12 @@ export class SideScene implements Scene, WorldApi {
             }
             break;
           }
+          case '+': {
+            // Näverdocka: an extra life, each doll found once.
+            const pid = `liv1:${this.pid(tx, ty)}`;
+            if (!s.opened.includes(pid)) this.pickups.push(new Pickup('life', px - 5, py - 15, 'naverdocka', false, pid));
+            break;
+          }
           case 'M':
             if (!hasItem(s, 'murre') && !hasFlag(s, 'murre_hemma')) {
               this.pickups.push(new Pickup('cat', px - 7, py - 10, 'cat', false));
@@ -246,7 +254,13 @@ export class SideScene implements Scene, WorldApi {
           default: {
             if (ENEMY_CHARS[ch]) {
               const def = ENEMIES[ENEMY_CHARS[ch]];
-              if (def) this.enemies.push(new Enemy(def, px, py));
+              // A cleared sealed room stays empty.
+              if (def && !(a.sealed && hasFlag(s, `${a.id}_rensad`))) {
+                const e = new Enemy(def, px, py);
+                if (a.hard) e.harden();
+                this.enemies.push(e);
+                if (a.sealed) this.seal = 1;
+              }
             } else if (PICKUP_CHARS[ch]) {
               const k = PICKUP_CHARS[ch];
               const sz = spriteSize(k);
@@ -689,8 +703,11 @@ export class SideScene implements Scene, WorldApi {
     // Locked doors: push against them with a key.
     this.tryDoors();
 
+    // --- Sealed room ---
+    if (this.seal) this.updateSeal();
+
     // --- Exits ---
-    if (!this.exiting) {
+    if (!this.exiting && this.seal !== 2) {
       if (p.x + p.w < 2 && this.area.left) this.leave(this.area.left);
       else if (p.x > this.grid.w * TILE - 2 && this.area.right) this.leave(this.area.right);
     }
@@ -957,6 +974,19 @@ export class SideScene implements Scene, WorldApi {
         }
         break;
       }
+      case 'life': {
+        if (pk.pid && !s.opened.includes(pk.pid)) s.opened.push(pk.pid);
+        s.lives = Math.min(MAX_LIVES, s.lives + 1);
+        g.audio.play('levelup');
+        this.particles.spawn({ x: pk.x - 4, y: pk.y - 6, vy: -0.5, life: 60, text: '+1', color: PALETTE.Y });
+        // The first doll explains itself; later ones just count.
+        if (!hasFlag(s, 'naverdocka_sedd')) {
+          setFlag(s, 'naverdocka_sedd');
+          g.pushOverlay(new DialogOverlay(g, 'fick_naverdocka'));
+        } else g.toast(STR.extraLife, 2.5);
+        g.save();
+        break;
+      }
       case 'quest': {
         const id = pk.pid ?? '';
         if (id && !s.items.includes(id)) s.items.push(id);
@@ -1086,6 +1116,37 @@ export class SideScene implements Scene, WorldApi {
       setFlag(s, 'slice_end_seen');
       this.game.save();
       flow.showSliceEnd(this.game);
+    }
+  }
+
+  /** Shuts both ways out once Dagny is inside; opens them when the room is cleared. */
+  private updateSeal(): void {
+    const g = this.game;
+    const grid = this.grid;
+    const edge = (open: boolean): void => {
+      for (const x of [0, grid.w - 1]) {
+        for (let y = 0; y < grid.h; y++) {
+          if (this.area.tiles[y][x] === '#') continue;
+          grid.kinds[y * grid.w + x] = open ? kindOf(this.area.tiles[y][x]) : Kind.Solid;
+        }
+      }
+      grid.wallLeft = open ? !this.area.left : true;
+      grid.wallRight = open ? !this.area.right : true;
+    };
+    const p = this.player;
+    if (this.seal === 1 && p.x > 3 * TILE && p.x < (grid.w - 4) * TILE && p.state !== 'dead') {
+      this.seal = 2;
+      edge(false);
+      this.sfx('roar');
+      this.shake(20, 2);
+      if (this.area.sealed) g.pushOverlay(new DialogOverlay(g, this.area.sealed.dialog));
+    } else if (this.seal === 2 && this.enemies.every((e) => e.dead)) {
+      this.seal = 0;
+      edge(true);
+      setFlag(this.s, `${this.area.id}_rensad`);
+      this.sfx('unlock');
+      g.toast(STR.sealOpen, 3);
+      g.save();
     }
   }
 

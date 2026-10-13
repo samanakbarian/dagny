@@ -325,6 +325,33 @@ export const itemSprites: Record<string, SpriteDef> = {
       '.........bbbbb..........',
     ]],
   },
+  /** Näverdocka – a little birch-bark doll in a red scarf: one extra life. 10×14 */
+  naverdocka: {
+    w: 10,
+    h: 14,
+    outline: 'k',
+    frames: [[
+      '...tttt...',
+      '..tsssst..',
+      '..sksskS..',
+      '..ssssss..',
+      '...rrrr...',
+      '..rRRRRr..',
+      '.WWWkWWWW.',
+      '.WgWWWWkW.',
+      '..WWkWWW..',
+      '..WWWWgW..',
+      '..WkWWWW..',
+      '..WWWkWW..',
+      '..WW..WW..',
+      '..bb..bb..',
+    ]],
+  },
+  /** HUD: the doll's head, counting lives. */
+  hudLife: {
+    w: 7, h: 6, outline: 'k',
+    frames: [['.ttt..', 'tssst.', 'sksks.', '.sss..', 'rRRRr.', '......']],
+  },
   /** A life container: a little clay jar with a heart. 12×12 */
   livbehallare: {
     w: 12,

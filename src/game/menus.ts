@@ -360,16 +360,29 @@ export class GameOverOverlay implements Overlay {
   hideHud = true;
   private menu: ListMenu;
   private t = 0;
+  /** True when this defeat used up the last life. */
+  private readonly over: boolean;
+  private readonly temple: string | null;
 
   constructor(private readonly game: Game, temple: string | null) {
     const s = game.state!;
-    const canRetry = !!s.checkpoint && temple !== null && AREAS[s.checkpoint.area]?.temple === temple;
+    this.temple = temple;
+    s.lives = Math.max(0, s.lives - 1);
+    this.over = s.lives === 0;
     const items = [];
-    if (canRetry) items.push({ label: STR.retryCheckpoint, onSelect: () => flow.retryCheckpoint(game) });
-    // Wake where Dagny last rested (the button names the village).
-    const village = VILLAGES.find((v) => v.area === s.lastVillage) ?? VILLAGES[0];
-    const label = village.id === 'mormors_by' ? STR.wakeHome : `${STR.wakeIn} ${village.name}`;
-    items.push({ label, onSelect: () => flow.wakeAtVillage(game) });
+    if (this.over) {
+      const label = temple === flow.LAST_TEMPLE ? STR.restartMountain : STR.restartHome;
+      items.push({ label, onSelect: () => flow.gameOver(game, temple) });
+    } else {
+      if (temple) {
+        const canRetry = !!s.checkpoint && AREAS[s.checkpoint.area]?.temple === temple;
+        items.push({ label: canRetry ? STR.retryCheckpoint : STR.retryTempleDoor, onSelect: () => flow.retryCheckpoint(game, temple) });
+      }
+      // Wake where Dagny last rested (the button names the village).
+      const village = VILLAGES.find((v) => v.area === s.lastVillage) ?? VILLAGES[0];
+      const label = village.id === 'mormors_by' ? STR.wakeHome : `${STR.wakeIn} ${village.name}`;
+      items.push({ label, onSelect: () => flow.wakeAtVillage(game) });
+    }
     this.menu = new ListMenu(items, game.audio);
   }
 
@@ -383,10 +396,23 @@ export class GameOverOverlay implements Overlay {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    dim(ctx, Math.min(0.85, this.t / 40));
+    dim(ctx, Math.min(this.over ? 0.95 : 0.85, this.t / 40));
     if (this.t < 30) return;
-    drawText(ctx, STR.gameOverTitle, VIEW_W / 2, 50, 'W', { align: 'center' });
-    drawText(ctx, STR.gameOverText, VIEW_W / 2, 66, 'G', { align: 'center' });
+    const s = this.game.state!;
+    if (this.over) {
+      drawText(ctx, STR.gameOverEnd, VIEW_W / 2, 44, 'R', { align: 'center' });
+      if (this.temple === flow.LAST_TEMPLE) drawText(ctx, STR.gameOverMountain, VIEW_W / 2, 58, 'W', { align: 'center' });
+      drawText(ctx, STR.gameOverEndText, VIEW_W / 2, this.temple === flow.LAST_TEMPLE ? 72 : 62, 'G', { align: 'center' });
+    } else {
+      drawText(ctx, STR.gameOverTitle, VIEW_W / 2, 44, 'W', { align: 'center' });
+      // The lives still left, as little doll heads.
+      const label = s.lives === 1 ? STR.lastLife : STR.livesLeft;
+      const lw = measure(label);
+      const total = lw + (s.lives === 1 ? 0 : 4 + s.lives * 9);
+      const x0 = Math.round((VIEW_W - total) / 2);
+      drawText(ctx, label, x0, 62, s.lives === 1 ? 'Y' : 'G');
+      if (s.lives > 1) for (let i = 0; i < s.lives; i++) drawSprite(ctx, 'hudLife', 0, x0 + lw + 4 + i * 9, 62);
+    }
     const w = this.menu.width() + 10;
     this.menu.render(ctx, Math.round((VIEW_W - w) / 2), 96, w);
   }

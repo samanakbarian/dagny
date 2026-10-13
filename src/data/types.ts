@@ -49,6 +49,7 @@ export type Behavior =
   | 'wolf'
   | 'waltzer'
   | 'blinker'
+  | 'shadow'
   | 'boss_grim'
   | 'boss_gruvra'
   | 'boss_backahast'
@@ -322,6 +323,13 @@ export interface AreaDef {
   finds?: Array<{ item: string; tx: number; ty: number }>;
   /** NPC that appears where the boss stood once it is reconciled. */
   afterBoss?: { npc: string; tx: number; ty: number };
+  /**
+   * The way on stays shut until every creature here is beaten (Skuggan's hall).
+   * Once cleared, flag `<area id>_rensad` keeps the room empty for good.
+   */
+  sealed?: { dialog: string };
+  /** Tougher creatures (the last temple): more health and harder blows. */
+  hard?: boolean;
   /** Dialog started automatically the first time (needs flag to not repeat). */
   onEnter?: { dialog: string; unlessFlag: string; setFlag: string };
 }

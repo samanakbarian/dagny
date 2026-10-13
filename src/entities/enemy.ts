@@ -53,6 +53,8 @@ export class Enemy implements Body {
   private ang = 0;
   sprite: string;
   frame = 0;
+  /** Extra damage per blow (tougher creatures in the last temple). */
+  bonusDamage = 0;
   readonly boss: BossDef | null;
 
   constructor(readonly def: EnemyDef, px: number, py: number) {
@@ -74,7 +76,18 @@ export class Enemy implements Body {
   }
 
   get damage(): number {
-    return this.def.damage;
+    return this.def.damage + this.bonusDamage;
+  }
+
+  /** Makes this creature tougher (the last temple). */
+  harden(): void {
+    this.hp = this.maxHp = Math.ceil(this.def.hp * 1.5);
+    this.bonusDamage = 1;
+  }
+
+  /** Skuggan has her guard up (not while lunging or catching her breath). */
+  private get shadowGuarding(): boolean {
+    return this.def.behavior === 'shadow' && (this.mode === 0 || this.mode === 1);
   }
 
   /** Whether touching the player hurts right now. */
@@ -104,6 +117,15 @@ export class Enemy implements Body {
       world.sfx('block');
       this.vx = fromX < this.x + this.w / 2 ? 1.2 : -1.2;
       this.iframes = 10;
+      return 'blocked';
+    }
+    // Skuggan guards where Dagny guards – only a thrust from above or below,
+    // or a strike while she is open, gets through.
+    if (this.shadowGuarding && (height === 'high' || height === 'low') && height === this.guard) {
+      world.sparks(this.x + (fromX < this.x ? 0 : this.w), this.guard === 'high' ? this.y + 8 : this.y + 18);
+      world.sfx('block');
+      this.vx = fromX < this.x + this.w / 2 ? 1.6 : -1.6;
+      this.iframes = 8;
       return 'blocked';
     }
     let d = dmg;
@@ -201,6 +223,9 @@ export class Enemy implements Body {
         this.fall(world);
         break;
       }
+      case 'shadow':
+        this.updateShadow(world, dx, dist);
+        break;
       case 'hopper': {
         if (this.onGround) {
           this.vx *= 0.8;
@@ -1273,6 +1298,92 @@ export class Enemy implements Body {
     }
   }
 
+  /**
+   * Skuggan: keeps a sword's length away and copies Dagny's guard. She winds
+   * up (raised blade = a cut at the head, crouch = a cut along the floor),
+   * lunges when Dagny is close, jumps when Dagny jumps, and after each attack
+   * stands open for a moment.
+   * Modes: 0 stalk, 1 wind-up, 2 lunge, 3 open.
+   */
+  private updateShadow(world: WorldApi, dx: number, dist: number): void {
+    const sp = this.def.speed;
+    const dir = dx > 0 ? 1 : -1;
+    if (this.mode !== 2) this.facing = dir;
+    const want: 'high' | 'low' = world.playerDucking() ? 'low' : 'high';
+    if (want !== this.guard) {
+      if (++this.guardDelay > 9) {
+        this.guard = want;
+        this.guardDelay = 0;
+      }
+    } else this.guardDelay = 0;
+    const pb = world.playerBox();
+    const dagnyUp = pb.y + pb.h < this.y + this.h - 10;
+    switch (this.mode) {
+      case 0: {
+        if (this.onGround) {
+          if (dagnyUp && dist < 70 && this.t % 4 === 0) this.vy = -4.4;
+          else if (dist > 40) this.vx = dir * sp;
+          else if (dist < 24) this.vx = -dir * sp * 0.8;
+          else this.vx *= 0.8;
+        }
+        this.frame = !this.onGround ? 5 : this.guard === 'high' ? 0 : 6;
+        if (--this.timer <= 0 && this.onGround && dist < 140) {
+          this.mode = 1;
+          this.timer = 18;
+          // Mostly along the floor, sometimes at the head – the stance shows which.
+          this.shotHigh = (this.t * 7) % 5 < 2;
+        }
+        break;
+      }
+      case 1: {
+        this.vx *= 0.7;
+        this.frame = this.shotHigh ? 9 : 6;
+        if (--this.timer <= 0) {
+          if (dist < 36) {
+            this.mode = 2;
+            this.timer = 22;
+            this.vx = dir * 2.8;
+          } else {
+            world.spawnProjectile({
+              x: this.facing === 1 ? this.x + this.w : this.x - 10,
+              y: this.shotHigh ? this.y + 2 : this.y + this.h - 7,
+              vx: this.facing * 2.3,
+              vy: 0,
+              w: 10,
+              h: 6,
+              sprite: 'skuggslag',
+              damage: this.damage,
+              fromPlayer: false,
+              life: 90,
+            });
+            world.sfx('sword');
+            this.mode = 3;
+            this.timer = 34;
+          }
+        }
+        break;
+      }
+      case 2: {
+        this.frame = this.shotHigh ? 7 : 8;
+        if (--this.timer <= 0) {
+          this.mode = 3;
+          this.timer = 30;
+        }
+        break;
+      }
+      default: {
+        // Open: blade lowered, catching her breath.
+        this.vx *= 0.85;
+        this.frame = 1;
+        if (--this.timer <= 0) {
+          this.mode = 0;
+          this.timer = 45 + ((this.t * 17) % 40);
+        }
+      }
+    }
+    this.fall(world);
+  }
+
   /** True while a bird is diving (the shield can turn it away). */
   get diving(): boolean {
     return this.def.behavior === 'diver' && this.mode === 1;
@@ -1317,6 +1428,11 @@ export class Enemy implements Body {
       return;
     }
     drawSprite(ctx, this.sprite, this.frame, sx, sy, flip);
+    if (this.def.behavior === 'shadow' && (this.frame === 7 || this.frame === 8 || this.frame === 9)) {
+      // Her blade: held out in a lunge, raised over the head while winding up.
+      if (this.frame === 9) drawSprite(ctx, 'skuggsvardUp', 0, sx + (flip ? 3 : 8), sy - 9, false);
+      else drawSprite(ctx, 'skuggsvard', 0, flip ? sx - 11 : sx + 13, sy + (this.frame === 8 ? 17 : 11), flip);
+    }
     ctx.globalAlpha = 1;
     if (this.warn && Math.floor(this.t / 4) % 2 === 0) {
       // "!" over a bird about to dive.

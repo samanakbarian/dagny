@@ -19,7 +19,7 @@ import { parseNotes } from '../src/engine/audio';
 import { wrap } from '../src/engine/text';
 import type { DialogAction } from '../src/data/types';
 
-const KNOWN_TILE = new Set(['.', '#', '=', '^', '~', 'n', 'L', 'k', 'c', 'X', '@', 'q', '%', '&', '?', ...Object.keys(ENEMY_CHARS), ...Object.keys(PICKUP_CHARS), 'B', 'M', 'h', 'p']);
+const KNOWN_TILE = new Set(['.', '#', '=', '^', '~', 'n', 'L', 'k', 'c', 'X', '@', 'q', '%', '&', '?', ...Object.keys(ENEMY_CHARS), ...Object.keys(PICKUP_CHARS), 'B', 'M', 'h', 'p', '+']);
 
 describe('palette', () => {
   it('has about 32 colours and no pure black', () => {

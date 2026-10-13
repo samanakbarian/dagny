@@ -36,7 +36,14 @@ export interface GameState {
   playTime: number;
   /** Life and magic containers found, as "liv:<id>" / "magi:<id>" (each counts once). */
   containers: string[];
+  /** Tries left before Game Over (Zelda II style). */
+  lives: number;
 }
+
+/** Lives at the start and after a Game Over. */
+export const START_LIVES = 3;
+/** No more than this many lives can be held at once. */
+export const MAX_LIVES = 9;
 
 export type ContainerKind = 'liv' | 'magi';
 
@@ -60,6 +67,7 @@ export function newGame(): GameState {
     checkpoint: null,
     playTime: 0,
     containers: [],
+    lives: START_LIVES,
   };
 }
 
