@@ -7,6 +7,23 @@ import type { SongDef } from '../engine/audio';
  */
 export const SONGS: Record<string, SongDef> = {
   /** "Ny dag" – a slow visa in A minor for the title screen. */
+  /** "Sommarkvällsvals" – the cosy title waltz in F major. */
+  meny: {
+    bpm: 92,
+    loop: true,
+    tracks: [
+      {
+        inst: 'harp', vol: 0.9,
+        notes: `c5:4 f5:4 a5:4 | g5:6 f5:2 e5:4 | f5:4 a5:4 c6:4 | bb5:12 |
+                a5:4 g5:4 f5:4 | e5:6 f5:2 g5:4 | a5:4 g5:4 e5:4 | f5:12 |
+                a5:4 bb5:4 c6:4 | d6:6 c6:2 bb5:4 | a5:4 g5:4 f5:4 | g5:12 |
+                c5:4 f5:4 a5:4 | g5:4 bb5:4 e5:4 | f5:4 g5:2 a5:2 g5:4 | f5:12`,
+      },
+      { inst: 'flute', vol: 0.3, notes: 'r:96 f5:12 f5:12 f5:12 e5:12 a4:12 bb4:12 bb4:12 a4:12' },
+      { inst: 'accordion', vol: 0.4, notes: 'r:4 a3:4 c4:4 | r:4 e3:4 g3:4 | r:4 a3:4 c4:4 | r:4 bb3:4 d4:4 | r:4 a3:4 c4:4 | r:4 e3:4 g3:4 | r:4 e3:4 g3:4 | r:4 a3:4 c4:4 | r:4 a3:4 c4:4 | r:4 bb3:4 d4:4 | r:4 a3:4 c4:4 | r:4 e3:4 g3:4 | r:4 a3:4 c4:4 | r:4 e3:4 bb3:4 | r:4 e3:4 g3:4 | r:4 a3:4 c4:4' },
+      { inst: 'bass', vol: 0.75, notes: 'f2:12 | c2:12 | f2:12 | bb1:12 | f2:12 | c2:12 | c2:12 | f2:12 | f2:12 | bb1:12 | f2:12 | c2:12 | f2:12 | c2:12 | c2:12 | f2:12' },
+    ],
+  },
   titel: {
     bpm: 84,
     loop: true,

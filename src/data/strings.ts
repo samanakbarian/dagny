@@ -1,8 +1,8 @@
 /** All user-interface text, kept in data so the game can be translated later. */
 export const STR = {
   title: 'Dagnys äventyr',
-  studio: 'Kindred Code',
-  presents: 'Kindred Code presenterar',
+  studio: 'Co-Dawn Studio',
+  presents: 'Co-Dawn Studio presenterar',
   subtitle: 'Sommaren 1964',
   newGame: 'Nytt spel',
   continue: 'Fortsätt',
@@ -100,7 +100,7 @@ export const STR = {
   ],
   // The credits after the epilogue.
   credits: [
-    'Kindred Code presenterar\n\nDagnys äventyr\nEtt spel om att minnas.',
+    'Co-Dawn Studio presenterar\n\nDagnys äventyr\nEtt spel om att minnas.',
     'Idé och manus\nSaman Akbarian och Claude\n\nProgrammering, grafik och musik\nSaman Akbarian och Claude',
     'Tack till alla väsen som lät sig förlikas, och till alla som spelade ända hit.',
   ],
