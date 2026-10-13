@@ -413,6 +413,9 @@ export class SideScene implements Scene, WorldApi {
     const p = this.player;
     if (sp.x !== undefined && sp.y !== undefined) {
       p.place(sp.x, sp.y);
+      // A saved spot can end up inside rock when a map changes: step out of it.
+      const free = nearestFreeSpot(this.grid, p.x, p.y, p.w, p.h);
+      if (free) p.place(free.x, free.y);
     } else {
       const m = (sp.entry && this.entries.get(sp.entry)) || this.entries.get('@') || this.entries.get('A') || this.entries.get('W') || { tx: 2, ty: this.grid.h - 3 };
       p.place(m.tx * TILE + TILE / 2 - p.w / 2, (m.ty + 1) * TILE - STAND_H);
@@ -1632,4 +1635,27 @@ function lightDisc(): HTMLCanvasElement {
   c.fillStyle = g;
   c.fillRect(0, 0, size, size);
   return disc;
+}
+
+/**
+ * Nearest position for a w×h body that is not inside a solid tile, standing
+ * on ground if possible: tries straight up first, then outward to the sides.
+ * Null when the given spot is already free.
+ */
+export function nearestFreeSpot(grid: TileGrid, x: number, y: number, w: number, h: number): { x: number; y: number } | null {
+  if (!rectHitsSolid(grid, { x, y, w, h })) return null;
+  const bottom = y + h;
+  for (let r = 0; r <= Math.max(grid.w, grid.h); r++) {
+    for (const dx of r === 0 ? [0] : [0, -r, r]) {
+      for (let dy = 0; dy <= r + 2; dy++) {
+        const tx = Math.floor((x + w / 2) / TILE) + dx;
+        const tyFeet = Math.floor((bottom - 1) / TILE) - dy;
+        if (tx < 0 || tx >= grid.w || tyFeet < 0) continue;
+        const nx = tx * TILE + TILE / 2 - w / 2;
+        const ny = (tyFeet + 1) * TILE - h;
+        if (!rectHitsSolid(grid, { x: nx, y: ny, w, h })) return { x: nx, y: ny };
+      }
+    }
+  }
+  return null;
 }
