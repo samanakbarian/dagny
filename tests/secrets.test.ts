@@ -164,3 +164,32 @@ describe('containers', () => {
     expect(deserialize(JSON.stringify(raw))!.state.containers).toEqual([]);
   });
 });
+
+describe('sword upgrades', () => {
+  it('each upgrade adds one point of damage', async () => {
+    const { swordDamage, SWORD_UPGRADES } = await import('../src/game/progression');
+    expect(swordDamage(1)).toBe(2);
+    expect(swordDamage(1, ['klingaHardad'])).toBe(3);
+    expect(swordDamage(1, [...SWORD_UPGRADES])).toBe(5);
+    for (const u of SWORD_UPGRADES) expect(ITEMS[u], u).toBeDefined();
+  });
+
+  it('the materials lie in reachable spots and the smith turns them into upgrades', () => {
+    const places = Object.values(AREAS).flatMap((a) => [
+      ...(a.finds ?? []).map((f) => ({ a, item: f.item, tx: f.tx, ty: f.ty })),
+      ...(a.lampSecrets ?? []).filter((l) => l.gives).map((l) => ({ a, item: l.gives!, tx: l.tx, ty: l.ty })),
+    ]);
+    for (const item of ['malm', 'askstenen', 'silverbeslag']) {
+      const at = places.filter((p) => p.item === item);
+      expect(at, item).toHaveLength(1);
+      const p = at[0];
+      expect(reachable(p.a, true).has(`${p.tx},${p.ty}`), `${item} in ${p.a.id}`).toBe(true);
+      expect(DIALOG[`hittade_${item}`], item).toBeDefined();
+    }
+    for (const [mat, up] of [['malm', 'klingaHardad'], ['askstenen', 'klingaBlank']]) {
+      expect(allActions).toContainEqual({ type: 'takeItem', item: mat });
+      expect(allActions).toContainEqual({ type: 'flag', flag: `${mat}_klar` });
+      expect(allActions).toContainEqual({ type: 'giveItem', item: up });
+    }
+  });
+});

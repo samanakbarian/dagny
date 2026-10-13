@@ -270,6 +270,7 @@ export class SideScene implements Scene, WorldApi {
     // The treasure appears on the altar once the guardian is reconciled.
     if (this.altar && a.treasure && !hasItem(s, a.treasure) && (!this.boss)) this.spawnTreasure();
     if (a.afterBoss && a.temple && hasFlag(s, `${a.temple}_boss`)) this.spawnAfterBoss();
+    for (const fd of a.finds ?? []) this.placeFind(fd.item, fd.tx, fd.ty);
     // Secrets only the lamps reveal.
     for (const ls of a.lampSecrets ?? []) {
       if (!hasItem(s, ls.item)) continue;
@@ -282,6 +283,7 @@ export class SideScene implements Scene, WorldApi {
         }
       }
       if (ls.dialog) this.signs.push({ tx: ls.tx, ty: ls.ty, dialog: ls.dialog });
+      if (ls.gives) this.placeFind(ls.gives, ls.tx, ls.ty);
       this.lampGlints.push({ x: px, y: py - 8 });
     }
     // Animated decor (candles).
@@ -326,6 +328,15 @@ export class SideScene implements Scene, WorldApi {
       const y = Math.floor(i / w) * TILE;
       this.pickups = this.pickups.filter((pk) => !(pk.x + pk.w / 2 >= x && pk.x + pk.w / 2 < x + TILE && pk.y + pk.h / 2 >= y && pk.y + pk.h / 2 < y + TILE));
     }
+  }
+
+  /** An item lying on the floor, taken once (like the side-quest items). */
+  private placeFind(item: string, tx: number, ty: number): void {
+    const s = this.s;
+    const def = ITEMS[item];
+    if (!def || hasItem(s, item) || hasFlag(s, `${item}_klar`)) return;
+    const sz = spriteSize(def.sprite);
+    this.pickups.push(new Pickup('quest', tx * TILE + TILE / 2 - sz.w / 2, (ty + 1) * TILE - sz.h - 2, def.sprite, false, item));
   }
 
   /** Someone who was waiting behind the guardian (Dagmar in Trollberget). */
@@ -826,7 +837,7 @@ export class SideScene implements Scene, WorldApi {
   private combat(): void {
     const p = this.player;
     const sword = p.swordActive ? p.swordBox(tmpB) : null;
-    const dmg = swordDamage(this.s.levels.styrka);
+    const dmg = swordDamage(this.s.levels.styrka, this.s.items);
     for (const e of this.enemies) {
       if (e.dead) continue;
       const eb = e.box(tmpA);
@@ -1240,7 +1251,7 @@ export class SideScene implements Scene, WorldApi {
       w: 8,
       h: 8,
       sprite: 'fireball',
-      damage: swordDamage(this.s.levels.styrka),
+      damage: swordDamage(this.s.levels.styrka, this.s.items),
       fromPlayer: true,
       life: 70,
     });

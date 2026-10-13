@@ -44,8 +44,11 @@ export function nextTarget(levels: Levels): number | null {
 
 const clampLevel = (l: number): number => Math.max(1, Math.min(MAX_LEVEL, Math.floor(l)));
 
-export function swordDamage(styrka: number): number {
-  return SWORD_DAMAGE[clampLevel(styrka) - 1];
+/** The smith's work and the silver fitting each add one point to the sword. */
+export const SWORD_UPGRADES = ['klingaHardad', 'klingaBlank', 'silverbeslag'] as const;
+
+export function swordDamage(styrka: number, items: readonly string[] = []): number {
+  return SWORD_DAMAGE[clampLevel(styrka) - 1] + SWORD_UPGRADES.filter((u) => items.includes(u)).length;
 }
 export function maxHp(liv: number): number {
   return MAX_HP[clampLevel(liv) - 1];

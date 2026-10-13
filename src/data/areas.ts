@@ -678,7 +678,10 @@ export const AREAS: Record<string, AreaDef> = {
     ambience: ['dust'],
     left: { to: 'overworld', ow: { x: 25, y: 29 } },
     signs: { I: 'tjuvgrottan_skylt' },
-    lampSecrets: [{ item: 'karbidlampa', tx: 34, ty: 4, container: 'magi' }],
+    lampSecrets: [
+      { item: 'karbidlampa', tx: 34, ty: 4, container: 'magi' },
+      { item: 'karbidlampa', tx: 37, ty: 9, gives: 'silverbeslag' },
+    ],
     tiles: [
       "########################################",
       "########################################",
@@ -1062,6 +1065,7 @@ export const AREAS: Record<string, AreaDef> = {
     name: 'Hisschaktet',
     kind: 'temple',
     temple: 'gruvan',
+    finds: [{ item: 'malm', tx: 14, ty: 13 }],
     tone: 'gruva',
     music: 'gruvan',
     backdrop: 'mine',
@@ -1491,6 +1495,7 @@ export const AREAS: Record<string, AreaDef> = {
     name: 'Fyrtornet',
     kind: 'temple',
     temple: 'fyren',
+    finds: [{ item: 'askstenen', tx: 5, ty: 9 }],
     tone: 'fyr',
     music: 'fyren',
     backdrop: 'none',

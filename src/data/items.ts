@@ -85,6 +85,36 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
     description: 'Stinsens visselpipa i nysilver. Utan den går inga tåg.',
     sprite: 'visselpipa',
   },
+  malm: {
+    id: 'malm',
+    name: 'Järnmalm',
+    description: 'En tung klump malm från gamla gruvan. Smeden Holm i Bruksorten kan härda klingan med den.',
+    sprite: 'malm',
+  },
+  askstenen: {
+    id: 'askstenen',
+    name: 'Åskstenen',
+    description: 'En glaserad sten där blixten slog ner vid fyren. Den är fortfarande varm.',
+    sprite: 'askstenen',
+  },
+  klingaHardad: {
+    id: 'klingaHardad',
+    name: 'Härdad klinga',
+    description: 'Smeden Holm har härdat klingan med gruvans malm. Den biter hårdare. (+1 skada)',
+    sprite: 'klingaHardad',
+  },
+  klingaBlank: {
+    id: 'klingaBlank',
+    name: 'Åskslipad klinga',
+    description: 'Slipad med åskstenen. Det knastrar om eggen när den svingas. (+1 skada)',
+    sprite: 'klingaBlank',
+  },
+  silverbeslag: {
+    id: 'silverbeslag',
+    name: 'Silverbeslaget',
+    description: 'Grå-Pelles gömda silver, nu ett beslag runt kläppen. Väsen ryggar för silver. (+1 skada)',
+    sprite: 'silverbeslag',
+  },
   murre: {
     id: 'murre',
     name: 'Murre',
@@ -94,4 +124,4 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
 };
 
 /** Order shown in the items menu. */
-export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'murre', 'fickur', 'psalmbok', 'medaljong', 'kompass', 'skalla', 'visselpipa'];
+export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'klingaHardad', 'klingaBlank', 'silverbeslag', 'malm', 'askstenen', 'murre', 'fickur', 'psalmbok', 'medaljong', 'kompass', 'skalla', 'visselpipa'];

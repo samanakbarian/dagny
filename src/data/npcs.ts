@@ -133,7 +133,19 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
   tyra: { id: 'tyra', sprite: 'tyra', idle: { frames: [0, 0, 0, 2, 0, 1, 1, 0], every: 0.7 }, talk: [{ if: [{ flag: 'trollberget_klar' }], dialog: 'tyra_efter' }, { dialog: 'tyra' }] },
   // --- Bruksorten ---
   rut: { id: 'rut', sprite: 'woman', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'rut_vila' }] },
-  holm: { id: 'holm', sprite: 'smed', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notSpell: 'skydd' }], dialog: 'holm_lar' }, { dialog: 'holm_igen' }] },
+  holm: {
+    id: 'holm',
+    sprite: 'smed',
+    idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 },
+    talk: [
+      { if: [{ notSpell: 'skydd' }], dialog: 'holm_lar' },
+      { if: [{ item: 'malm' }, { notItem: 'klingaHardad' }], dialog: 'holm_hardar' },
+      { if: [{ item: 'askstenen' }, { item: 'klingaHardad' }, { notItem: 'klingaBlank' }], dialog: 'holm_slipar' },
+      { if: [{ notItem: 'klingaHardad' }], dialog: 'holm_tips_malm' },
+      { if: [{ notItem: 'klingaBlank' }], dialog: 'holm_tips_askstenen' },
+      { dialog: 'holm_igen' },
+    ],
+  },
   karlsson: { id: 'karlsson', sprite: 'forman', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notFlag: 'karlsson_lart' }], dialog: 'karlsson_lar' }, { dialog: 'karlsson_igen' }] },
   rosa: { id: 'rosa', sprite: 'resenar', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'medaljong' }, { notFlag: 'medaljong_klar' }], dialog: 'rosa_tack' }, { if: [{ flag: 'medaljong_klar' }], dialog: 'rosa_glad' }, { if: [{ flag: 'medaljong_uppdrag' }], dialog: 'rosa_vantar' }, { dialog: 'rosa_uppdrag' }] },
   sigge: { id: 'sigge', sprite: 'kid4', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'kvarnen_klar' }], dialog: 'sigge_efter' }, { dialog: 'sigge' }] },

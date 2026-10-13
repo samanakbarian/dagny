@@ -365,4 +365,12 @@ export const itemSprites: Record<string, SpriteDef> = {
       '...cccccc...',
     ]],
   },
+  /** Iron ore (8×8). */
+  malm: { w: 8, h: 8, outline: 'k', frames: [['..gggg..', '.gGGrGg.', 'gGrGGGGg', 'gGGGGrGg', 'gGGrGGGg', 'gGGGGGGg', '.gGGrGg.', '..gggg..']] },
+  /** The thunderstone: glassy, still glowing (8×8). */
+  askstenen: { w: 8, h: 8, outline: 'k', frames: [['...ccc..', '..cWCcc.', '.cCWcCc.', 'cCcWWcCc', 'cCCcWCcc', '.cCCcWc.', '..cCCc..', '...cc...']] },
+  /** Blade icons for the upgrades (16×10): tempered, thunder-honed, silver-fitted. */
+  klingaHardad: { w: 16, h: 10, outline: 'k', frames: [['................', '................', '..yy............', '.yBBy...........', 'yyBByGGGGGGGGGw.', '.yBBy...........', '..yy............', '................', '................', '................']] },
+  klingaBlank: { w: 16, h: 10, outline: 'k', frames: [['................', '..........c.....', '..yy.....c......', '.yBBy...........', 'yyBByWWWWWWWWWC.', '.yBBy.....c.....', '..yy.......c....', '................', '................', '................']] },
+  silverbeslag: { w: 16, h: 10, outline: 'k', frames: [['................', '................', '..WW............', '.WCCW...........', 'WWCCWGGGGGGGGGw.', '.WCCW...........', '..WW............', '................', '................', '................']] },
 };

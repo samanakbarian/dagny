@@ -313,7 +313,9 @@ export interface AreaDef {
    * Things only seen in the light of a lamp Dagny carries (karbidlampan,
    * ficklampan): a container lying there, or words to read (Up).
    */
-  lampSecrets?: Array<{ item: 'karbidlampa' | 'ficklampa'; tx: number; ty: number; container?: 'liv' | 'magi'; dialog?: string }>;
+  lampSecrets?: Array<{ item: 'karbidlampa' | 'ficklampa'; tx: number; ty: number; container?: 'liv' | 'magi'; dialog?: string; gives?: string }>;
+  /** Items lying in the room, picked up once (dialog `hittade_<item>`; gone for good once `<item>_klar`). */
+  finds?: Array<{ item: string; tx: number; ty: number }>;
   /** NPC that appears where the boss stood once it is reconciled. */
   afterBoss?: { npc: string; tx: number; ty: number };
   /** Dialog started automatically the first time (needs flag to not repeat). */
