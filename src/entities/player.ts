@@ -307,6 +307,11 @@ export class Player implements Body {
     this.vx += (mx * sp - this.vx) * 0.2;
     this.vy += (my * sp + 0.15 - this.vy) * 0.2;
     moveBody(grid, this);
+    // The sky above a room is not a way round its walls and locked doors.
+    if (this.y < 0) {
+      this.y = 0;
+      if (this.vy < 0) this.vy = 0;
+    }
   }
 
   render(ctx: CanvasRenderingContext2D, camX: number, camY: number, frame: number): void {

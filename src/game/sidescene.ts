@@ -715,13 +715,15 @@ export class SideScene implements Scene, WorldApi {
     // --- Pickups ---
     for (const pk of this.pickups) {
       pk.update(this.grid);
-      if (!pk.taken && overlaps(pk.box, p)) this.collect(pk);
+      // A bird can't carry anything: keys, treasures and food wait for Dagny.
+      if (!pk.taken && p.state !== 'bird' && overlaps(pk.box, p)) this.collect(pk);
     }
     this.pickups = this.pickups.filter((pk) => !pk.taken && pk.life > 0);
 
     // --- Checkpoints ---
     for (const cp of this.checkpoints) {
-      if (cp.lit) continue;
+      // Only Dagny can light a candle, not the bird.
+      if (cp.lit || p.state === 'bird') continue;
       tmpA.x = cp.tx * TILE;
       tmpA.y = cp.ty * TILE;
       tmpA.w = TILE;

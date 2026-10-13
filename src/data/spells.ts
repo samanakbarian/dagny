@@ -46,7 +46,9 @@ export const SPELLS: Readonly<Record<SpellId, SpellDef>> = {
     id: 'hamn',
     name: 'Hamn',
     description: 'Byt hamn. Bli en liten fågel som tar sig genom trånga passager.',
-    cost: [4, 4, 4, 3, 3, 3, 3, 3],
+    // As dear as Åska: changing shape lets Dagny round walls and gates, so one
+    // flight should empty the bar at mid levels and need a termos to repeat.
+    cost: [6, 6, 6, 5, 5, 5, 5, 4],
     duration: 15,
     village: 'Fäboden',
   },
