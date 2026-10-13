@@ -11,6 +11,8 @@ import type { Game, Scene } from './game';
 import { drawHud } from './hud';
 import { hasFlag, hasItem, type GameState } from './state';
 import * as flow from './flow';
+import { ENCOUNTER_TABLES, TERRAIN_TYPE } from '../data/encounters';
+import { pickEncounter } from './encounters';
 
 const T = 16;
 const STEP_FRAMES = 9;
@@ -56,6 +58,9 @@ interface EncounterRuntime extends Walker {
   respawnAt: number;
   wait: number;
 }
+
+/** The last meeting, so the same one never comes twice in a row. */
+let lastEncounter: string | null = null;
 
 /** Wandering creatures keep their positions between visits (per session). */
 const encounterMemory = new Map<number, EncounterRuntime>();
@@ -258,12 +263,21 @@ export class OverworldScene implements Scene {
         e.y = e.fy = e.def.y;
         e.t = 1;
         const terrain = this.tile(me.t < 1 ? me.fx : me.x, me.t < 1 ? me.fy : me.y);
-        const area = e.def.area ?? OVERWORLD.areaByTerrain[terrain] ?? 'mote_ang';
+        const table = ENCOUNTER_TABLES[e.def.table ?? TERRAIN_TYPE[terrain] ?? 'ang'];
+        const pick = pickEncounter(table, Math.random(), lastEncounter);
+        lastEncounter = pick.id;
         this.s.ow = { x: me.t < 1 ? me.fx : me.x, y: me.t < 1 ? me.fy : me.y };
+        if ('dialog' in pick) {
+          // A friendly meeting instead of a fight.
+          this.grace = 60;
+          this.game.audio.play('magic');
+          this.game.pushOverlay(new DialogOverlay(this.game, pick.dialog));
+          return;
+        }
         this.leaving = true;
         this.game.audio.play('roar');
         this.game.vibrate(30);
-        flow.goToArea(this.game, area, { entry: 'W', facing: 1 });
+        flow.goToArea(this.game, pick.area, { entry: 'W', facing: 1 });
         return;
       }
     }

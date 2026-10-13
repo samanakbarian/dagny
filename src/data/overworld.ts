@@ -53,7 +53,6 @@ export const OVERWORLD: OverworldDef = {
   start: { x: 10, y: 22 },
   music: 'karta',
   tone: 'karta',
-  areaByTerrain: { '.': 'mote_ang', ':': 'mote_ang', f: 'mote_skog', s: 'mote_myr', _: 'mote_ang', '|': 'mote_ang', '-': 'mote_ang', '+': 'mote_ang' },
   needs: { '~': 'eka', s: 'stovlar' },
   blocked: '^',
   places: [
@@ -86,8 +85,8 @@ export const OVERWORLD: OverworldDef = {
     { sprite: 'owShadow', terrain: 'f', x: 7, y: 11 },
     { sprite: 'owShadow', terrain: 'f', x: 13, y: 13 },
     { sprite: 'owShadow', terrain: '.', x: 16, y: 17 },
-    { sprite: 'owWisp', terrain: '.', x: 14, y: 25, area: 'mote_myr' },
-    { sprite: 'owWisp', terrain: '.f', x: 4, y: 20, area: 'mote_myr' },
+    { sprite: 'owWisp', terrain: '.', x: 14, y: 25, table: 'myr' },
+    { sprite: 'owWisp', terrain: '.f', x: 4, y: 20, table: 'myr' },
     { sprite: 'owShadow', terrain: '.:', x: 38, y: 13 },
     { sprite: 'owShadow', terrain: 'f', x: 38, y: 24 },
   ],

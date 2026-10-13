@@ -147,6 +147,8 @@ export type DialogAction =
   | { type: 'giveItem'; item: string }
   | { type: 'takeItem'; item: string }
   | { type: 'heal' }
+  /** Fills the magic bar. */
+  | { type: 'magic' }
   /** Gives a life or magic container (a quest reward), counted once by id. */
   | { type: 'container'; kind: 'liv' | 'magi'; id: string }
   /** Hands over to a story scene (the ending, the credits). */
@@ -338,8 +340,8 @@ export interface EncounterDef {
   sprite: 'owShadow' | 'owWisp';
   /** Terrain characters it may wander on. */
   terrain: string;
-  /** Side-view area it leads to; defaults to OverworldDef.areaByTerrain. */
-  area?: string;
+  /** Encounter table to use (data/encounters.ts); defaults to the terrain Dagny stands on. */
+  table?: 'ang' | 'skog' | 'myr' | 'strand';
   /** Start tile. */
   x: number;
   y: number;
@@ -352,8 +354,6 @@ export interface OverworldDef {
   places: OverworldPlace[];
   encounters: EncounterDef[];
   start: { x: number; y: number };
-  /** Encounter area by the terrain character the creature stands on. */
-  areaByTerrain: Record<string, string>;
   /** Terrain that needs an item to cross: char → item id. */
   needs: Record<string, string>;
   /** Terrain that can never be crossed. */

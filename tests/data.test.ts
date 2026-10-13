@@ -262,12 +262,8 @@ describe('overworld', () => {
     expect(OVERWORLD.tiles[OVERWORLD.start.y][OVERWORLD.start.x]).not.toBe('^');
   });
 
-  it('encounters start on their terrain and lead to real areas', () => {
-    for (const e of OVERWORLD.encounters) {
-      expect(e.terrain).toContain(OVERWORLD.tiles[e.y][e.x]);
-      if (e.area) expect(AREAS[e.area]).toBeDefined();
-    }
-    for (const a of Object.values(OVERWORLD.areaByTerrain)) expect(AREAS[a]).toBeDefined();
+  it('encounters start on their terrain', () => {
+    for (const e of OVERWORLD.encounters) expect(e.terrain).toContain(OVERWORLD.tiles[e.y][e.x]);
   });
 
   it('the far side of the lake cannot be reached without the eka', () => {

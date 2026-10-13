@@ -256,6 +256,10 @@ export class Game {
         s.hp = hpMax(s);
         this.audio.play('heal');
         break;
+      case 'magic':
+        s.mp = mpMax(s);
+        this.audio.play('heal');
+        break;
       case 'xp':
         s.xp += a.amount;
         this.audio.play('xp');
