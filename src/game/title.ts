@@ -96,7 +96,8 @@ export class TitleScene implements Scene {
     if (Math.floor(this.t / 25) % 2 === 0) drawSprite(ctx, 'note', 0, 84 + Math.sin(this.t / 15) * 3, VIEW_H - 48 - (this.t % 50) / 4);
     this.game.applyTone(ctx, 'midnattssol', true);
 
-    // Title.
+    // Studio and title.
+    drawText(ctx, STR.presents, VIEW_W / 2, 8, 'C', { align: 'center', outline: 'k' });
     const ty = 26;
     drawText(ctx, STR.title, VIEW_W / 2, ty, 'W', { align: 'center', outline: 'k' });
     ctx.fillStyle = PALETTE.y;
@@ -116,6 +117,7 @@ export class TitleScene implements Scene {
       this.menu.render(ctx, x, y, w, { text: 'k', dim: 'w', hi: 'r' });
     }
     drawText(ctx, STR.version, VIEW_W - 4, VIEW_H - 12, 'W', { align: 'right', shadow: 'k' });
+    if (this.game.store.available) drawText(ctx, STR.studio, 4, VIEW_H - 12, 'W', { shadow: 'k' });
     if (!this.game.store.available) drawText(ctx, STR.noStorage, VIEW_W / 2, VIEW_H - 12, 'Y', { align: 'center', outline: 'k' });
   }
 }
