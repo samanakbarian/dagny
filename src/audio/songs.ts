@@ -320,24 +320,26 @@ export const SONGS: Record<string, SongDef> = {
   /** Skogsrået's dance – the boss polska, lower and darker. */
   skogsraboss: { base: 'boss', bpm: 140, loop: true, tracks: [], transpose: -3 },
   /**
-   * Trollberget – the last temple: fast and relentless in E minor, a grinding
-   * octave bass, restless sixteenth arpeggios, a dark Neapolitan F chord and
-   * a lead that keeps climbing. Never lets Dagny catch her breath.
+   * Trollberget – the last temple. Opens on a heavy unison riff pounded out
+   * in the depths, then drives on: E minor darkened by F and B-flat (the
+   * tritone), a grinding low octave bass, restless arpeggios and a lead that
+   * climbs and never rests.
    */
   trollberget: {
-    bpm: 158,
+    bpm: 150,
     loop: true,
     tracks: [
       {
         inst: 'pulse', vol: 0.95,
-        notes: `e5:2 b4:2 e5:2 f#5:2 g5:4 f#5:2 e5:2 | d5:2 e5:2 b4:4 r:2 b4:2 e5:2 g5:2 | c6:4 b5:2 a5:2 g5:2 e5:2 c5:2 e5:2 | d5:2 f#5:2 a5:4 g5:2 f#5:2 d5:4 |
-                e5:2 b4:2 e5:2 f#5:2 g5:4 a5:2 b5:2 | e6:6 d6:2 b5:4 g5:4 | f5:2 a5:2 c6:2 a5:2 f5:2 e5:2 f5:4 | d#5:4 f#5:4 b5:4 a5:2 f#5:2 |
-                a5:3 a5:1 c6:2 a5:2 e5:4 a5:4 | g5:2 a5:2 b5:2 c6:2 b5:2 a5:2 g5:2 e5:2 | g5:3 g5:1 b5:2 g5:2 e5:4 g5:4 | f#5:2 g5:2 a5:2 b5:2 a5:2 g5:2 f#5:2 d#5:2 |
-                e5:2 g5:2 c6:2 e6:2 d6:2 c6:2 b5:2 a5:2 | f#5:2 a5:2 d6:2 f#6:2 e6:2 d6:2 c6:2 a5:2 | b5:4 a#5:2 b5:2 d#6:4 f#6:4 | f6:2 e6:2 d#6:2 c6:2 b5:4 r:4`,
+        notes: `e4:3 b3:1 e4:3 b3:1 f4:2 e4:4 d#4:1 e4:1 | e4:3 b3:1 e4:3 b3:1 g4:2 f4:4 e4:1 d#4:1 | e4:3 b3:1 e4:3 b3:1 f4:2 e4:4 d#4:1 e4:1 | e4:3 b3:1 e4:3 b3:1 g4:2 f4:4 e4:1 d#4:1 |
+                e4:2 g4:2 b4:4 a#4:2 b4:2 g4:4 | e4:2 f4:2 g4:2 f4:2 e4:4 d#4:4 | f4:2 a4:2 c5:4 b4:2 a4:2 f4:4 | e4:4 b3:2 e4:2 g4:6 r:2 |
+                b4:2 b4:2 c5:2 b4:2 a#4:2 b4:2 g4:4 | e5:4 d#5:2 e5:2 b4:4 g4:4 | f5:2 d5:2 bb4:2 f4:2 bb4:4 a4:4 | d#5:4 c5:2 b4:2 a4:2 f#4:2 d#4:4 |
+                a4:2 c5:2 e5:4 d#5:2 e5:2 c5:4 | b4:2 c5:2 a4:2 e4:2 a4:4 g#4:4 | f4:2 a4:2 c5:2 f5:2 e5:4 c5:4 | a4:2 c5:2 b4:2 a4:2 g#4:4 a4:4 |
+                g4:2 b4:2 e5:2 g5:2 f#5:2 e5:2 d#5:2 e5:2 | f5:4 d5:2 bb4:2 f5:4 e5:4 | d#5:2 f#5:2 b5:4 a5:2 f#5:2 d#5:4 | c6:2 b5:2 a5:2 f#5:2 d#5:2 c5:2 b4:4`,
       },
-      { inst: 'pulse2', vol: 0.5, notes: 'e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 | d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | f4:1 a4:1 c5:1 a4:1 f4:1 a4:1 c5:1 a4:1 f4:1 a4:1 c5:1 a4:1 f4:1 a4:1 c5:1 a4:1 | b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 | a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 | a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 a3:1 c4:1 e4:1 c4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 e4:1 g4:1 b4:1 g4:1 | c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 c4:1 e4:1 g4:1 e4:1 | d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 d4:1 f#4:1 a4:1 f#4:1 | b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 | b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1 b3:1 d#4:1 f#4:1 a4:1' },
-      { inst: 'bass', vol: 1, notes: 'e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d#3:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 f2:2 f3:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 a#2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 e2:2 e3:2 | c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 c2:2 c3:2 | d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 d2:2 d3:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 a#2:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 b2:2' },
-      { inst: 'drum', vol: 0.5, notes: 'k:2 h:1 h:1 s:2 h:1 h:1 k:1 k:1 h:2 s:2 h:2 '.repeat(16) },
+      { inst: 'pulse2', vol: 0.55, notes: 'e3:3 b2:1 e3:3 b2:1 f3:2 e3:4 d#3:1 e3:1 | e3:3 b2:1 e3:3 b2:1 g3:2 f3:4 e3:1 d#3:1 | e3:3 b2:1 e3:3 b2:1 f3:2 e3:4 d#3:1 e3:1 | e3:3 b2:1 e3:3 b2:1 g3:2 f3:4 e3:1 d#3:1 | e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 | e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 | f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 | e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 | e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 | e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 | bb2:1 d3:1 f3:1 d3:1 bb2:1 d3:1 f3:1 d3:1 bb2:1 d3:1 f3:1 d3:1 bb2:1 d3:1 f3:1 d3:1 | b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1 | a2:1 c3:1 e3:1 c3:1 a2:1 c3:1 e3:1 c3:1 a2:1 c3:1 e3:1 c3:1 a2:1 c3:1 e3:1 c3:1 | a2:1 c3:1 e3:1 c3:1 a2:1 c3:1 e3:1 c3:1 a2:1 c3:1 e3:1 c3:1 a2:1 c3:1 e3:1 c3:1 | f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 | f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 f3:1 a3:1 c4:1 a3:1 | e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 e3:1 g3:1 b3:1 g3:1 | bb2:1 d3:1 f3:1 d3:1 bb2:1 d3:1 f3:1 d3:1 bb2:1 d3:1 f3:1 d3:1 bb2:1 d3:1 f3:1 d3:1 | b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1 | b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1 b2:1 d#3:1 f#3:1 c4:1' },
+      { inst: 'bass', vol: 1, notes: 'e2:3 b1:1 e2:3 b1:1 f2:2 e2:4 d#2:1 e2:1 | e2:3 b1:1 e2:3 b1:1 g2:2 f2:4 e2:1 d#2:1 | e2:3 b1:1 e2:3 b1:1 f2:2 e2:4 d#2:1 e2:1 | e2:3 b1:1 e2:3 b1:1 g2:2 f2:4 e2:1 d#2:1 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 a1:2 a2:2 | f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 | f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 f1:2 f2:2 | e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 e1:2 e2:2 | bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 bb1:2 bb2:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 | b1:2 b2:2 b1:2 b2:2 b1:2 b2:2 b1:2 b2:2' },
+      { inst: 'drum', vol: 0.55, notes: 'k:3 k:1 k:3 k:1 s:2 k:4 s:1 s:1 '.repeat(4) + 'k:2 h:1 h:1 s:2 h:1 h:1 k:2 h:1 h:1 s:2 k:1 k:1 '.repeat(16) },
     ],
   },
   /** Bergakungen – the boss fight, driving and stomping. */
