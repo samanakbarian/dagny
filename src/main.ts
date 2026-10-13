@@ -9,7 +9,7 @@ import { TitleScene } from './game/title';
 import { PauseOverlay } from './game/menus';
 import { RotateScreen } from './game/rotate';
 import { SPELL_ORDER } from './data/spells';
-import { maxMp } from './game/progression';
+import { mpMax } from './game/state';
 import { playCredits, playEnding } from './game/flow';
 
 /** Boot: build the sprite cache, wire up the shell and start the 60 Hz loop. */
@@ -38,7 +38,7 @@ function boot(): void {
         for (const id of SPELL_ORDER) if (!s.spells.includes(id)) s.spells.push(id);
         s.selectedSpell ??= 'lakning';
         for (const sk of ['nedatstot', 'uppatstot'] as const) if (!s.skills.includes(sk)) s.skills.push(sk);
-        s.mp = maxMp(s.levels.magi);
+        s.mp = mpMax(s);
       }
       origSet(scene);
     };

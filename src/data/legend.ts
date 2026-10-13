@@ -16,6 +16,7 @@ import { Kind, type TileKind } from '../engine/collision';
  *  q the area's quest item (AreaDef.questItem)
  *  %  &  dance-floor squares that come and go with the beat (AreaDef.beat)
  *  ?  hidden passage: looks solid until Dagny carries the transistor radio
+ *  h  life container (livbehållare)   p  magic container (magibehållare)
  */
 export const ENEMY_CHARS: Readonly<Record<string, string>> = {
   v: 'vatte',

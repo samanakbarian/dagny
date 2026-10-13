@@ -3,7 +3,7 @@ import type { SkillId, SpellId, StatId } from '../data/types';
 import { MAX_LEVEL } from '../data/progression';
 import { SPELL_ORDER } from '../data/spells';
 import { maxHp, maxMp } from './progression';
-import { newGame, type GameState, type Location } from './state';
+import { hpMax, mpMax, newGame, type GameState, type Location } from './state';
 
 /** Bump when the format changes, and add a migration below. */
 export const SAVE_VERSION = 1;
@@ -86,7 +86,10 @@ export function deserialize(text: string | null): SaveFile | null {
     lastVillage: typeof s.lastVillage === 'string' ? s.lastVillage : d.lastVillage,
     checkpoint: s.checkpoint === null || s.checkpoint === undefined ? null : loc(s.checkpoint, d.loc),
     playTime: Math.max(0, num(s.playTime, 0)),
+    containers: [...new Set(strArr(s.containers).filter((c) => /^(liv|magi):./.test(c)))],
   };
+  state.hp = Math.max(1, Math.min(hpMax(state), num(s.hp, d.hp)));
+  state.mp = Math.max(0, Math.min(mpMax(state), num(s.mp, d.mp)));
   return { v: SAVE_VERSION, savedAt: num(file.savedAt, 0), state };
 }
 

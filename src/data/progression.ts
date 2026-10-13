@@ -17,6 +17,10 @@ export const COSTS: Readonly<Record<StatId, readonly number[]>> = {
 export const SWORD_DAMAGE = [2, 3, 4, 5, 6, 8, 10, 12];
 /** Max health per Liv level (one point = half a heart segment on the HUD). */
 export const MAX_HP = [8, 10, 12, 14, 16, 18, 20, 24];
+/** Extra max health per life container ("livbehållare"), on top of the Liv level. */
+export const CONTAINER_HP = 2;
+/** Extra max magic per magic container ("magibehållare"), on top of the Magi level. */
+export const CONTAINER_MP = 1;
 /** Max magic per Magi level. */
 export const MAX_MP = [4, 5, 6, 7, 8, 9, 10, 12];
 

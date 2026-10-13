@@ -2,8 +2,8 @@ import { drawSprite } from '../engine/sprites';
 import { drawText } from '../engine/text';
 import { SPELLS } from '../data/spells';
 import { STR } from '../data/strings';
-import type { GameState } from './state';
-import { maxHp, maxMp, nextTarget } from './progression';
+import { hpMax, mpMax, type GameState } from './state';
+import { nextTarget } from './progression';
 import { P, drawBar } from './ui';
 
 /**
@@ -11,8 +11,8 @@ import { P, drawBar } from './ui';
  * touch controls (which live in the bottom corners and the top-right corner).
  */
 export function drawHud(ctx: CanvasRenderingContext2D, s: GameState, opts: { keys?: number; frame: number; lowHpBlink?: boolean }): void {
-  const mh = maxHp(s.levels.liv);
-  const mm = maxMp(s.levels.magi);
+  const mh = hpMax(s);
+  const mm = mpMax(s);
   // Life
   drawSprite(ctx, 'hudHeart', 0, 5, 5);
   const blink = s.hp <= 2 && Math.floor(opts.frame / 15) % 2 === 0;

@@ -23,8 +23,8 @@ import { drawBackdrop } from './backdrop';
 import { DialogOverlay } from './dialog';
 import type { Game, Scene } from './game';
 import { drawHud } from './hud';
-import { canLevelUp, damageTaken, maxHp, maxMp, swordDamage } from './progression';
-import { hasFlag, hasItem, setFlag, type GameState } from './state';
+import { canLevelUp, damageTaken, swordDamage } from './progression';
+import { addContainer, hasFlag, hasItem, hpMax, mpMax, setFlag, type GameState } from './state';
 import * as flow from './flow';
 import { beatIndex, squareActive, stepsToSwap } from './beat';
 import { LevelUpOverlay, GameOverOverlay } from './menus';
@@ -63,6 +63,8 @@ export class SideScene implements Scene, WorldApi {
   private entries = new Map<string, Marker>();
   private doors: Array<Marker & { exit: Exit; ch: string }> = [];
   private signs: Array<Marker & { dialog: string }> = [];
+  /** Glints where a lamp reveals a secret. */
+  private lampGlints: Array<{ x: number; y: number }> = [];
   private checkpoints: Checkpoint[] = [];
   private altar: Marker | null = null;
   readonly player = new Player();
@@ -214,6 +216,16 @@ export class SideScene implements Scene, WorldApi {
             }
             break;
           }
+          case 'h':
+          case 'p': {
+            // Life ('h') and magic ('p') containers, each taken once.
+            const kind = ch === 'h' ? 'liv' : 'magi';
+            const id = this.pid(tx, ty);
+            if (!s.containers.includes(`${kind}:${id}`)) {
+              this.pickups.push(new Pickup('container', px - 6, py - 13, kind === 'liv' ? 'livbehallare' : 'magibehallare', false, `${kind}:${id}`));
+            }
+            break;
+          }
           case 'M':
             if (!hasItem(s, 'murre') && !hasFlag(s, 'murre_hemma')) {
               this.pickups.push(new Pickup('cat', px - 7, py - 10, 'cat', false));
@@ -253,9 +265,25 @@ export class SideScene implements Scene, WorldApi {
         this.grid.kinds[i] = kind;
       }
     }
+    // Without the radio, rooms behind a hidden wall look like solid rock.
+    if (!hasItem(s, 'radio') && a.tiles.some((r) => r.includes('?'))) this.sealHiddenRooms(theme.fill);
     // The treasure appears on the altar once the guardian is reconciled.
     if (this.altar && a.treasure && !hasItem(s, a.treasure) && (!this.boss)) this.spawnTreasure();
     if (a.afterBoss && a.temple && hasFlag(s, `${a.temple}_boss`)) this.spawnAfterBoss();
+    // Secrets only the lamps reveal.
+    for (const ls of a.lampSecrets ?? []) {
+      if (!hasItem(s, ls.item)) continue;
+      const px = ls.tx * TILE + TILE / 2;
+      const py = (ls.ty + 1) * TILE;
+      if (ls.container) {
+        const key = `${ls.container}:${this.pid(ls.tx, ls.ty)}`;
+        if (!s.containers.includes(key)) {
+          this.pickups.push(new Pickup('container', px - 6, py - 13, ls.container === 'liv' ? 'livbehallare' : 'magibehallare', false, key));
+        }
+      }
+      if (ls.dialog) this.signs.push({ tx: ls.tx, ty: ls.ty, dialog: ls.dialog });
+      this.lampGlints.push({ x: px, y: py - 8 });
+    }
     // Animated decor (candles).
     if (a.deco) {
       for (let ty = 0; ty < h; ty++) {
@@ -264,6 +292,39 @@ export class SideScene implements Scene, WorldApi {
           if (id && frameCount(id) > 1) this.anim.push({ x: tx * TILE, y: ty * TILE, sprite: id, offset: tx * 3 + ty });
         }
       }
+    }
+  }
+
+  /**
+   * Paints every open cell that can't be reached without passing a hidden
+   * wall ('?') as rock, and hides what lies there, so the room stays secret.
+   */
+  private sealHiddenRooms(fill: string): void {
+    const { w, h } = this.grid;
+    const tiles = this.area.tiles;
+    const open = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < w && y < h && this.grid.kinds[y * w + x] !== Kind.Solid;
+    const seen = new Uint8Array(w * h);
+    const stack: number[] = [];
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const ch = tiles[y][x];
+        if ((x === 0 || x === w - 1 || (/[A-Z@]/.test(ch) && ch !== 'L')) && open(x, y)) stack.push(y * w + x);
+      }
+    }
+    while (stack.length) {
+      const i = stack.pop()!;
+      if (seen[i]) continue;
+      seen[i] = 1;
+      const x = i % w;
+      const y = (i - x) / w;
+      for (const [nx, ny] of [[x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]]) if (open(nx, ny) && !seen[ny * w + nx]) stack.push(ny * w + nx);
+    }
+    for (let i = 0; i < w * h; i++) {
+      if (seen[i] || this.grid.kinds[i] === Kind.Solid) continue;
+      this.tileSprite[i] = fill;
+      const x = (i % w) * TILE;
+      const y = Math.floor(i / w) * TILE;
+      this.pickups = this.pickups.filter((pk) => !(pk.x + pk.w / 2 >= x && pk.x + pk.w / 2 < x + TILE && pk.y + pk.h / 2 >= y && pk.y + pk.h / 2 < y + TILE));
     }
   }
 
@@ -828,11 +889,11 @@ export class SideScene implements Scene, WorldApi {
         this.particles.spawn({ x: pk.x - 4, y: pk.y - 6, vy: -0.5, life: 45, text: '+10', color: PALETTE.Y });
         break;
       case 'termos':
-        s.mp = Math.min(maxMp(s.levels.magi), s.mp + 4);
+        s.mp = Math.min(mpMax(s), s.mp + 4);
         this.sfx('pickup');
         break;
       case 'lingon':
-        s.hp = Math.min(maxHp(s.levels.liv), s.hp + 4);
+        s.hp = Math.min(hpMax(s), s.hp + 4);
         this.sfx('pickup');
         break;
       case 'key': {
@@ -850,6 +911,16 @@ export class SideScene implements Scene, WorldApi {
         g.pushOverlay(new DialogOverlay(g, 'murre_hittad'));
         g.save();
         break;
+      case 'container': {
+        const [kind, ...rest] = (pk.pid ?? '').split(':');
+        const k = kind === 'magi' ? 'magi' : 'liv';
+        if (addContainer(s, k, rest.join(':'))) {
+          g.audio.play('levelup');
+          g.pushOverlay(new DialogOverlay(g, k === 'liv' ? 'fick_livbehallare' : 'fick_magibehallare'));
+          g.save();
+        }
+        break;
+      }
       case 'quest': {
         const id = pk.pid ?? '';
         if (id && !s.items.includes(id)) s.items.push(id);
@@ -1072,7 +1143,7 @@ export class SideScene implements Scene, WorldApi {
     }
     switch (id) {
       case 'lakning':
-        s.hp = Math.min(maxHp(s.levels.liv), s.hp + 8);
+        s.hp = Math.min(hpMax(s), s.hp + 8);
         this.sfx('heal');
         break;
       case 'skydd':
@@ -1278,6 +1349,15 @@ export class SideScene implements Scene, WorldApi {
       }
     }
     // Checkpoint candles.
+    // Lamp light catches something: a slow twinkle.
+    for (const gl of this.lampGlints) {
+      const tw = (f + gl.x) % 90;
+      if (tw > 30) continue;
+      const r = tw < 15 ? tw / 5 : (30 - tw) / 5;
+      ctx.fillStyle = PALETTE.W;
+      ctx.fillRect(Math.round(gl.x - camX - r), Math.round(gl.y - camY), Math.round(r * 2) + 1, 1);
+      ctx.fillRect(Math.round(gl.x - camX), Math.round(gl.y - camY - r), 1, Math.round(r * 2) + 1);
+    }
     for (const cp of this.checkpoints) {
       drawSprite(ctx, cp.lit ? 'candle' : 'candleOff', Math.floor((f + cp.tx * 5) / 18), cp.tx * TILE - camX, cp.ty * TILE - camY);
     }
@@ -1451,6 +1531,7 @@ export class SideScene implements Scene, WorldApi {
     }
     for (const pr of this.area.props ?? []) if (pr.sprite === 'irrbloss') light(pr.tx * TILE + 4 + (pr.dx ?? 0) - camX, (pr.ty + 1) * TILE - 4 + (pr.dy ?? 0) - camY, 34 + flicker);
     for (const pr of this.projectiles) if (pr.sprite === 'noteShot') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
+    for (const pk of this.pickups) if (pk.kind === 'container' || pk.kind === 'treasure') light(pk.x + 6 - camX, pk.y + 6 - camY, 24 + flicker);
     for (const n of this.npcs) if (n.def.id === 'dagmar') light(n.x + 8 - camX, n.y + 10 - camY, 60 + flicker);
     for (const pr of this.projectiles) if (pr.sprite === 'stone') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);
     for (const pr of this.projectiles) if (pr.sprite === 'fireball') light(pr.x + 4 - camX, pr.y + 4 - camY, 24);

@@ -12,8 +12,8 @@ import { STR } from '../data/strings';
 import { TEMPLES } from '../data/temples';
 import type { StatId } from '../data/types';
 import type { Game, Overlay } from './game';
-import { nextCost, raise, maxHp, maxMp } from './progression';
-import { hasFlag } from './state';
+import { nextCost, raise } from './progression';
+import { hasFlag, hpMax, mpMax } from './state';
 import { ListMenu, drawPanel, drawPostcard, P } from './ui';
 import * as flow from './flow';
 
@@ -204,7 +204,7 @@ export class ItemsOverlay extends SubOverlay {
     // Stats summary.
     const y = f.y + f.h - 36;
     drawText(ctx, `${STAT_NAMES.styrka} ${s.levels.styrka}   ${STAT_NAMES.magi} ${s.levels.magi}   ${STAT_NAMES.liv} ${s.levels.liv}`, f.x + 14, y, 'c');
-    drawText(ctx, `Liv ${s.hp}/${maxHp(s.levels.liv)}   Magi ${s.mp}/${maxMp(s.levels.magi)}   XP ${s.xp}`, f.x + 14, y + 12, 'w');
+    drawText(ctx, `Liv ${s.hp}/${hpMax(s)}   Magi ${s.mp}/${mpMax(s)}   XP ${s.xp}`, f.x + 14, y + 12, 'w');
   }
 }
 
@@ -314,8 +314,8 @@ export class LevelUpOverlay implements Overlay {
           onSelect: () => {
             s.xp = raise(s.xp, s.levels, st);
             // Raising Liv / Magi fills the new capacity.
-            if (st === 'liv') s.hp = maxHp(s.levels.liv);
-            if (st === 'magi') s.mp = maxMp(s.levels.magi);
+            if (st === 'liv') s.hp = hpMax(s);
+            if (st === 'magi') s.mp = mpMax(s);
             game.audio.play('levelup');
             game.vibrate([20, 40, 20]);
             onChange?.();

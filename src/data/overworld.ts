@@ -12,6 +12,7 @@ import type { OverworldDef } from './types';
  *  Y  the lighthouse on the skerry (temple 4)
  *  P  the folk park (temple 5)       Z  the summer farm in the forest (temple 6)
  *  T  Trollberget (temple 7, opens when the six others are restored)
+ *  C  caves (Tjuvgrottan in the bog, Jättegrytan on an islet in the lake)
  *  B  other villages
  */
 export const OVERWORLD: OverworldDef = {
@@ -28,7 +29,7 @@ export const OVERWORLD: OverworldDef = {
     '^^ffffffffffffffff..|.fffff_~~~~~~~~....B.^^',
     '^^ffffffffffffffff..|.ffQff~~~~~~~~~......^^',
     '^^ffffffffffffffff..|.fffff~~~~~~~~~...B..^^',
-    '^^ffffffffffffffff..|.fffff~~~~~~~~~.:::::^^',
+    '^^ffffffffffffffff..|.fffff~~~~C~~~~.:::::^^',
     '^^ffffffffffffffff..|.fffff~~~~~~~~~.:::::^^',
     '^^ffffffffffffffff..|......~~~___~~~.::P::^^',
     '^^ffffff............|......~~~_Y_~~~.:::::^^',
@@ -45,7 +46,7 @@ export const OVERWORLD: OverworldDef = {
     '^^................sssssssss~~~~~~~~~ffffBf^^',
     '^^................ssssZssss~~~~~~~~~ffffff^^',
     '^^................sssssssss~~~~~~~~~ffffff^^',
-    '^^................sssssssss~~~~~~~~~......^^',
+    '^^................sssssssCs~~~~~~~~~......^^',
     '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
     '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
   ],
@@ -68,6 +69,9 @@ export const OVERWORLD: OverworldDef = {
       x: 36, y: 3, name: 'Trollberget', area: 'troll_1', entry: 'A', dialog: 'trollberget_sover',
       requires: ['krypta_klar', 'gruvan_klar', 'kvarnen_klar', 'fyren_klar', 'folkparken_klar', 'fabodskogen_klar'],
     },
+    // Caves – secrets that need a treasure to reach.
+    { x: 25, y: 29, name: 'Tjuvgrottan', area: 'tjuvgrottan', entry: 'A' },
+    { x: 31, y: 12, name: 'Jättegrytan', area: 'jattegrytan', entry: 'A' },
     // Villages.
     { x: 17, y: 5, name: 'Kyrkbyn', area: 'kyrkbyn', entry: 'W' },
     { x: 39, y: 11, name: 'Bruksorten', area: 'bruksorten', entry: 'W' },

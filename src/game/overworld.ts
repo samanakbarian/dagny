@@ -37,6 +37,7 @@ const TILE_SPRITE: Record<string, string> = {
   Y: 'owLighthouse',
   P: 'owPark',
   T: 'owTroll',
+  C: 'owCave',
   Z: 'owFabod',
 };
 
@@ -72,7 +73,7 @@ function buildStatic(): HTMLCanvasElement {
       const ch = tiles[y][x];
       if (ch === '~') continue;
       // Places sit on grass.
-      if ('VKGBOMQYPZT'.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
+      if ('VKGBOMQYPZTC'.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
       drawSprite(ctx, TILE_SPRITE[ch] ?? 'owGrass', 0, x * T, y * T);
     }
   }

@@ -147,6 +147,8 @@ export type DialogAction =
   | { type: 'giveItem'; item: string }
   | { type: 'takeItem'; item: string }
   | { type: 'heal' }
+  /** Gives a life or magic container (a quest reward), counted once by id. */
+  | { type: 'container'; kind: 'liv' | 'magi'; id: string }
   /** Hands over to a story scene (the ending, the credits). */
   | { type: 'scene'; scene: 'ending' | 'credits' };
 
@@ -305,6 +307,11 @@ export interface AreaDef {
   showName?: boolean;
   /** Ambient life. */
   ambience?: Array<'fireflies' | 'mosquitoes' | 'dust' | 'mist' | 'leaves' | 'rain' | 'spray'>;
+  /**
+   * Things only seen in the light of a lamp Dagny carries (karbidlampan,
+   * ficklampan): a container lying there, or words to read (Up).
+   */
+  lampSecrets?: Array<{ item: 'karbidlampa' | 'ficklampa'; tx: number; ty: number; container?: 'liv' | 'magi'; dialog?: string }>;
   /** NPC that appears where the boss stood once it is reconciled. */
   afterBoss?: { npc: string; tx: number; ty: number };
   /** Dialog started automatically the first time (needs flag to not repeat). */

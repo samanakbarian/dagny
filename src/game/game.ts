@@ -11,8 +11,7 @@ import { TEMPLES } from '../data/temples';
 import type { Condition, DialogAction } from '../data/types';
 import { loadSettings, saveSettings, PLACEMENT_OFFSETS, type Settings } from './settings';
 import { readSave, writeSave } from './save';
-import { hasFlag, hasItem, setFlag, type GameState } from './state';
-import { maxHp, maxMp } from './progression';
+import { addContainer, hasFlag, hasItem, hpMax, mpMax, setFlag, type GameState } from './state';
 
 export interface Scene {
   /** Music id to play while this scene is active. */
@@ -249,12 +248,12 @@ export class Game {
         this.audio.play('levelup');
         break;
       case 'rest':
-        s.hp = maxHp(s.levels.liv);
-        s.mp = maxMp(s.levels.magi);
+        s.hp = hpMax(s);
+        s.mp = mpMax(s);
         this.audio.play('heal');
         break;
       case 'heal':
-        s.hp = maxHp(s.levels.liv);
+        s.hp = hpMax(s);
         this.audio.play('heal');
         break;
       case 'xp':
@@ -270,6 +269,9 @@ export class Game {
         break;
       case 'scene':
         this.onScene?.(a.scene);
+        break;
+      case 'container':
+        if (addContainer(s, a.kind, a.id)) this.audio.play('levelup');
         break;
     }
     this.onAction?.(a);

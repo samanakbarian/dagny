@@ -1,6 +1,7 @@
 import type { SkillId, SpellId } from '../data/types';
 import type { Levels } from './progression';
 import { maxHp, maxMp } from './progression';
+import { CONTAINER_HP, CONTAINER_MP } from '../data/progression';
 
 /** Where Dagny is: a side-view area or the overworld. */
 export interface Location {
@@ -32,7 +33,11 @@ export interface GameState {
   /** Latest temple checkpoint (lit candle). */
   checkpoint: Location | null;
   playTime: number;
+  /** Life and magic containers found, as "liv:<id>" / "magi:<id>" (each counts once). */
+  containers: string[];
 }
+
+export type ContainerKind = 'liv' | 'magi';
 
 export function newGame(): GameState {
   const levels: Levels = { styrka: 1, magi: 1, liv: 1 };
@@ -53,6 +58,7 @@ export function newGame(): GameState {
     lastVillage: 'mormors_by',
     checkpoint: null,
     playTime: 0,
+    containers: [],
   };
 }
 
@@ -66,4 +72,35 @@ export function setFlag(s: GameState, f: string): void {
 
 export function hasItem(s: GameState, id: string): boolean {
   return s.items.includes(id);
+}
+
+export function containerCount(s: GameState, kind: ContainerKind): number {
+  return s.containers.filter((c) => c.startsWith(`${kind}:`)).length;
+}
+
+/** Max health: the Liv level plus every life container found. */
+export function hpMax(s: GameState): number {
+  return maxHp(s.levels.liv) + CONTAINER_HP * containerCount(s, 'liv');
+}
+
+/** Max magic: the Magi level plus every magic container found. */
+export function mpMax(s: GameState): number {
+  return maxMp(s.levels.magi) + CONTAINER_MP * containerCount(s, 'magi');
+}
+
+/**
+ * Takes a container (id unique per container). Fills the bar it raises.
+ * Returns false if this container was already taken – each counts only once.
+ */
+export function addContainer(s: GameState, kind: ContainerKind, id: string): boolean {
+  const key = `${kind}:${id}`;
+  if (s.containers.includes(key)) return false;
+  s.containers.push(key);
+  if (kind === 'liv') s.hp = hpMax(s);
+  else s.mp = mpMax(s);
+  return true;
+}
+
+export function hasContainer(s: GameState, kind: ContainerKind, id: string): boolean {
+  return s.containers.includes(`${kind}:${id}`);
 }

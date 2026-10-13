@@ -507,6 +507,18 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
   tempel_sover: {
     pages: ['En ring av resta stenar. Det surrar svagt i luften, som från en ledning.\nPlatsen sover ännu.'],
   },
+  fick_livbehallare: {
+    pages: ['Dagny hittade en LIVBEHÅLLARE!\nHennes liv räcker lite längre nu.'],
+  },
+  fick_magibehallare: {
+    pages: ['Dagny hittade en MAGIBEHÅLLARE!\nHon orkar läsa lite fler läsningar nu.'],
+  },
+  tjuvgrottan_skylt: {
+    pages: ['Någon har ristat i berget med en kniv:\n"HÄR GÖMDE GRÅ-PELLE SITT SILVER 1899. DET SYNS BARA I RÄTT LJUS."'],
+  },
+  jattegrytan_ristning: {
+    pages: ['I lampans sken syns två bokstäver ristade i berget, nästan utplånade av vattnet: D. och H. Under dem en liten sol.'],
+  },
   bjorkhagen_nasslor: {
     pages: ['En lapp på en pinne, skriven med barnhandstil:\n"AKTA BRÄNNÄSSLORNA I GROPEN! HOPPA ÖVER! /OLLE"'],
   },
@@ -755,11 +767,11 @@ export const DIALOG: Readonly<Record<string, DialogDef>> = {
       'Där är den! Och nålen pekar mot norr igen. Då har stormen lagt sig på riktigt.',
       'Ta det här. Och kom ut med båten en morgon, så ska jag visa dig var gäddorna står.',
     ],
-    actions: [{ type: 'takeItem', item: 'kompass' }, { type: 'flag', flag: 'kompass_klar' }, { type: 'xp', amount: 250 }, { type: 'heal' }],
+    actions: [{ type: 'takeItem', item: 'kompass' }, { type: 'flag', flag: 'kompass_klar' }, { type: 'xp', amount: 250 }, { type: 'heal' }, { type: 'container', kind: 'liv', id: 'kompass' }],
     next: 'johan_xp',
   },
   johan_xp: {
-    pages: ['Dagny fick 250 XP och känner sig utvilad.'],
+    pages: ['Dagny fick 250 XP och en LIVBEHÅLLARE av Johan.'],
   },
   johan_glad: {
     speaker: 'Fiskaren Johan',

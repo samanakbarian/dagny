@@ -2,8 +2,7 @@ import { AREAS } from '../data/areas';
 import { STR } from '../data/strings';
 import { VILLAGES } from '../data/temples';
 import type { Game } from './game';
-import { newGame, setFlag } from './state';
-import { maxHp, maxMp } from './progression';
+import { hpMax, mpMax, newGame, setFlag } from './state';
 import { SideScene, type Spawn } from './sidescene';
 import { OverworldScene } from './overworld';
 import { TitleScene } from './title';
@@ -68,8 +67,8 @@ export function toTitle(game: Game): void {
 export function wakeAtVillage(game: Game): void {
   const st = game.state;
   if (!st) return;
-  st.hp = maxHp(st.levels.liv);
-  st.mp = maxMp(st.levels.magi);
+  st.hp = hpMax(st);
+  st.mp = mpMax(st);
   const v = VILLAGES.find((x) => x.area === st.lastVillage) ?? VILLAGES[0];
   goToArea(game, v.area ?? 'mormors_by', { entry: v.wakeEntry });
 }
@@ -81,8 +80,8 @@ export function retryCheckpoint(game: Game): void {
     wakeAtVillage(game);
     return;
   }
-  st.hp = maxHp(st.levels.liv);
-  st.mp = Math.max(st.mp, Math.ceil(maxMp(st.levels.magi) / 2));
+  st.hp = hpMax(st);
+  st.mp = Math.max(st.mp, Math.ceil(mpMax(st) / 2));
   goToArea(game, st.checkpoint.area, { x: st.checkpoint.x, y: st.checkpoint.y });
 }
 

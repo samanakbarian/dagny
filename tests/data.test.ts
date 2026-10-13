@@ -18,7 +18,7 @@ import { parseNotes } from '../src/engine/audio';
 import { wrap } from '../src/engine/text';
 import type { DialogAction } from '../src/data/types';
 
-const KNOWN_TILE = new Set(['.', '#', '=', '^', '~', 'n', 'L', 'k', 'c', 'X', '@', 'q', '%', '&', '?', ...Object.keys(ENEMY_CHARS), ...Object.keys(PICKUP_CHARS), 'B', 'M']);
+const KNOWN_TILE = new Set(['.', '#', '=', '^', '~', 'n', 'L', 'k', 'c', 'X', '@', 'q', '%', '&', '?', ...Object.keys(ENEMY_CHARS), ...Object.keys(PICKUP_CHARS), 'B', 'M', 'h', 'p']);
 
 describe('palette', () => {
   it('has about 32 colours and no pure black', () => {
@@ -253,7 +253,7 @@ describe('overworld', () => {
     for (const r of OVERWORLD.tiles) expect(r.length).toBe(w);
     for (const p of OVERWORLD.places) {
       const ch = OVERWORLD.tiles[p.y]?.[p.x];
-      expect('VKGBOMQYPZT').toContain(ch);
+      expect('VKGBOMQYPZTC').toContain(ch);
       if (p.area) {
         expect(AREAS[p.area], p.area).toBeDefined();
         if (p.entry) expect(AREAS[p.area].tiles.join('')).toContain(p.entry);

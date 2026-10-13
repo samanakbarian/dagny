@@ -364,4 +364,23 @@ export const overworldSprites: Record<string, SpriteDef> = {
       ],
     ],
   },
+  /** A cave mouth in the rock. */
+  owCave: t([
+    'GGGGGGgGGGGGGGGG',
+    'GGgGGGGGGGGgGGGG',
+    'GGGGGggggggGGGGG',
+    'GGGGgkkkkkkgGGgG',
+    'GgGgkkkkkkkkgGGG',
+    'GGGgkkkkkkkkgGGG',
+    'GGgkkkkkkkkkkgGG',
+    'GGgkkkKkkkkkkgGG',
+    'GgkkkkkkkkKkkkgG',
+    'GgkkkkkkkkkkkkgG',
+    'gkkkkkkkkkkkkkkg',
+    'gkkkKkkkkkkkkkkg',
+    'MMMMkkkkkkkkMMMM',
+    'MlMMMMttMMMMMMlM',
+    'MMMMMMttMMMMMMMM',
+    'MMMlMMMMMMMlMMMM',
+  ]),
 };
