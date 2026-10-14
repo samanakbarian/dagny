@@ -206,6 +206,8 @@ export interface NpcDef {
    * sets the flag and shows the dialog. Nothing in the talk does it for her.
    */
   burns?: { flag: string; dialog?: string };
+  /** Sends up smoke (a lit charcoal stack). */
+  smoke?: boolean;
 }
 
 // --- Areas --------------------------------------------------------------------

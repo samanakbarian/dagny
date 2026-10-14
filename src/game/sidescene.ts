@@ -685,7 +685,9 @@ export class SideScene implements Scene, WorldApi {
   private burn(pr: Projectile): void {
     for (const n of this.npcs) {
       const b = n.def.burns;
-      if (!b || hasFlag(this.s, b.flag) || !overlaps(pr.box, n.box)) continue;
+      // A little above counts too: a fireball from a standing Dagny flies over a low mound.
+      const nb = n.box;
+      if (!b || hasFlag(this.s, b.flag) || !overlaps(pr.box, { x: nb.x, y: nb.y - 10, w: nb.w, h: nb.h + 10 })) continue;
       pr.dead = true;
       setFlag(this.s, b.flag);
       this.sfx('fire');
@@ -877,6 +879,10 @@ export class SideScene implements Scene, WorldApi {
       for (const pr of this.area.props ?? []) {
         if (!pr.smoke) continue;
         a.spawn({ x: pr.tx * TILE + 8 + Math.random() * 2, y: (pr.ty + 1) * TILE + 2, vx: 0.15 + Math.random() * 0.1, vy: -0.35, life: 110, color: 'rgba(201,187,165,0.55)', size: 3 });
+      }
+      for (const n of this.npcs) {
+        if (!n.def.smoke) continue;
+        a.spawn({ x: n.x + n.w / 2 - 1 + Math.random() * 2, y: n.y + 2, vx: 0.1 + Math.random() * 0.1, vy: -0.3, life: 120, color: 'rgba(160,170,190,0.55)', size: 3 });
       }
     }
   }

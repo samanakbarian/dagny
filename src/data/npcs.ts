@@ -222,6 +222,7 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
   kolmila_glod: {
     id: 'kolmila_glod', sprite: 'kolmila', still: true, idle: { frames: [1], every: 1 },
     if: [{ flag: 'kolmilan_tand' }],
+    smoke: true,
     talk: [],
   },
   grafru: {
