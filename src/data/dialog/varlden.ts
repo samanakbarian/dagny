@@ -1,11 +1,7 @@
 import type { DialogDef } from '../types';
 
-/** The overworld: sleeping temples, closed roads, friendly meetings and the caves. */
+/** The overworld: the sleeping mountain, what each border needs, friendly meetings and the caves. */
 export const VARLDEN: Record<string, DialogDef> = {
-  tempel_sover: {
-    pages: ['En ring av resta stenar. Det surrar svagt i luften, som från en ledning.\nPlatsen sover ännu.'],
-  },
-
   mote_vatte_liv: {
     speaker: 'Vätten',
     pages: ['En vätte kliver fram ur gräset med en kopp kaffe. "Du förlikade min släkt i templen. Drick nu, Väktare."', 'Dagny känner sig starkare. Livet är fyllt.'],
@@ -59,10 +55,6 @@ export const VARLDEN: Record<string, DialogDef> = {
 
   trollberget_sover: {
     pages: ['Trollberget reser sig svart mot himlen. Vägen upp är stängd så länge de andra platserna sover.'],
-  },
-
-  by_avsparrad: {
-    pages: ['En skylt vid vägen:\n"VÄGARBETE – AVSTÄNGT TILLS VIDARE"'],
   },
 
   behover_eka: {

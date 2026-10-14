@@ -17,8 +17,4 @@ export const ALLMANT: Record<string, DialogDef> = {
   boss_forlikad: {
     pages: ['Väsendet suckar djupt, som efter en lång dröm, och sjunker ner i marken.'],
   },
-
-  befriend: {
-    pages: ['...'],
-  },
 };

@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "icons": "node --experimental-strip-types --no-warnings scripts/gen-icons.mjs",
     "lint": "eslint .",
-    "check": "npm run lint && npm test && npm run build"
+    "check": "npm run lint && npm test && npm run build",
+    "walkthrough": "WALKTHROUGH=1 vitest run tests/playthrough.test.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

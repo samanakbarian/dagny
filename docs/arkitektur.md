@@ -72,7 +72,7 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
 - **ESLint** (the recommended JS and TypeScript rules, `npm run lint`).
 - **CI** (`.github/workflows/ci.yml`) runs lint, tests and a build on every push
   and pull request. `npm run check` does the same locally.
-- **Vitest, 316 tests** covering:
+- **Vitest, 357 tests** covering:
   - data integrity (every exit, dialog, sprite and character in the font)
   - softlocks and pits (a coarse jump model)
   - region gating
@@ -81,6 +81,15 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
   - creature behaviour
   - music sync
   - that rewards cost something
+  - **a whole logical playthrough** (`src/tools/playthrough.ts`, `tests/playthrough.test.ts`):
+    from a new game to the credits, following the game's own rules (conditions,
+    dialog actions, keys, radio walls, lamp secrets, overworld gates). It checks
+    that every room, person, item, spell, container and näverdocka can be reached,
+    that the temples fall in their fixed order and that each treasure really locks
+    the next one, that every condition waits for something that can happen, that
+    no dialog is orphaned and no item is taken that Dagny lacks. Fights and jumps
+    are taken as won. `npm run walkthrough` writes the result to
+    [genomspelning.md](genomspelning.md).
 - Playwright scripts (outside the repo) are used for screenshots and to record
   music during development.
 - Performance: about 2 ms per frame in the heaviest room.

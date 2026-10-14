@@ -14,10 +14,6 @@ export const KRYPTA: Record<string, DialogDef> = {
     pages: ['Någon har ristat en liten sol i väggen. Under den, med barnslig handstil: "ny dag".'],
   },
 
-  ljus_tant: {
-    pages: ['Dagny tände ljusstaken. Hit kommer hon tillbaka om hon somnar.'],
-  },
-
   grim_vaknar: {
     speaker: 'Kyrkogrimmen',
     pages: ['VEM STÖR... KYRKANS VILA... DE HAR GLÖMT OSS... ALLA HAR GLÖMT...'],
