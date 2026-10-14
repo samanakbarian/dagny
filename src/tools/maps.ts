@@ -13,7 +13,7 @@ import { OVERWORLD } from '../data/overworld';
 import { PALETTE, TONES } from '../data/palettes';
 import { TEMPLES } from '../data/temples';
 import type { AreaDef } from '../data/types';
-import { TILE_SPRITE } from '../game/overworld';
+import { overworldImage } from '../game/overworld';
 import { reachableTiles } from '../game/reach';
 import { SideScene } from '../game/sidescene';
 import type { Game } from '../game/game';
@@ -46,24 +46,17 @@ function label(ctx: CanvasRenderingContext2D, text: string, x: number, y: number
 // --- Overworld ---------------------------------------------------------------------
 
 function drawOverworld(ctx: CanvasRenderingContext2D): void {
-  const tiles = OVERWORLD.tiles;
-  for (let y = 0; y < tiles.length; y++) {
-    for (let x = 0; x < tiles[y].length; x++) {
-      const ch = tiles[y][x];
-      if ('VKGBOMQYPZTC'.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
-      // The hidden pass is drawn open, as Dagny sees it with the radio.
-      drawSprite(ctx, ch === 'H' ? 'owPass' : TILE_SPRITE[ch] ?? 'owGrass', 0, x * T, y * T);
-    }
-  }
+  // The game's own picture of the map, with the hidden ways shown open.
+  ctx.drawImage(overworldImage(), 0, 0);
 }
 
 function placeLabels(ctx: CanvasRenderingContext2D): void {
   for (const p of OVERWORLD.places) {
     const temple = TEMPLES.find((t) => t.entryArea === p.area);
-    const name = temple ? `${temple.number}. ${p.name}` : p.name;
+    const name = temple ? `${temple.number}. ${p.name}` : p.hidden ? `${p.name} (dold)` : p.name;
     const x = p.x * T + T / 2;
     const y = p.y * T - 9;
-    label(ctx, name, Math.max(measure(name) / 2 + 2, Math.min(ctx.canvas.width - measure(name) / 2 - 2, x)), Math.max(2, y), temple ? 'Y' : 'W', 'center');
+    label(ctx, name, Math.max(measure(name) / 2 + 2, Math.min(ctx.canvas.width - measure(name) / 2 - 2, x)), Math.max(2, y), temple ? 'Y' : p.hidden ? 'c' : 'W', 'center');
   }
   label(ctx, 'START', OVERWORLD.start.x * T + 8, OVERWORLD.start.y * T + 18, 'C', 'center');
 }

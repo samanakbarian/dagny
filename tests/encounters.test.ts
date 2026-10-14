@@ -3,6 +3,7 @@ import { AREAS } from '../src/data/areas';
 import { DIALOG } from '../src/data/dialog';
 import { ENCOUNTER_TABLES, TERRAIN_TYPE, type TerrainType } from '../src/data/encounters';
 import { OVERWORLD } from '../src/data/overworld';
+import { TERRAIN } from '../src/data/terrain';
 import { pickEncounter } from '../src/game/encounters';
 
 const tables = Object.entries(ENCOUNTER_TABLES) as Array<[TerrainType, (typeof ENCOUNTER_TABLES)[TerrainType]]>;
@@ -36,13 +37,15 @@ describe('overworld encounters', () => {
   });
 
   it('every walkable terrain on the map has a table', () => {
-    const places = new Set(OVERWORLD.places.map((p) => OVERWORLD.tiles[p.y][p.x]));
     for (const row of OVERWORLD.tiles) {
       for (const ch of row) {
-        if (ch === '^' || ch === '~' || places.has(ch)) continue;
-        expect(TERRAIN_TYPE[ch], `terrain '${ch}'`).toBeDefined();
+        expect(TERRAIN[ch], `terrain '${ch}' is described in data/terrain.ts`).toBeDefined();
+        if (TERRAIN[ch].blocked) continue;
+        expect(ENCOUNTER_TABLES[TERRAIN_TYPE[ch]], `terrain '${ch}' (${TERRAIN[ch].name}) has a table`).toBeDefined();
       }
     }
+    // Every table is used by some ground.
+    for (const type of Object.keys(ENCOUNTER_TABLES)) expect(Object.values(TERRAIN_TYPE), type).toContain(type);
     for (const e of OVERWORLD.encounters) if (e.table) expect(ENCOUNTER_TABLES[e.table]).toBeDefined();
   });
 

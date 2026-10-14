@@ -7,9 +7,14 @@ Drawn straight from `src/data/overworld.ts` with the game's own sprites.
 ![The world map](varldskarta.png)
 
 80 × 56 tiles.
-- Temples are marked in yellow with their number, villages and caves in white.
+- Temples are marked in yellow with their number, villages and caves in white, and hidden places in light blue, marked "(dold)".
 - **START** is where a new game begins, just below Mormors by.
-- The hidden pass is drawn open, as Dagny sees it once she carries the radio.
+- Hidden things are drawn open, as Dagny sees them with every treasure: the path through the spruce thicket, the door in the cliff below Trollberget, and the cave behind the waterfall.
+- Each border is made of its own stuff: shore and reeds by the lake, a fell with mine adits, a wide marsh, the night forest, rapids with a washed-away bridge, a spruce thicket, and dark cliffs round Trollberget.
+- Small symbols are the forgotten landmarks along the way: walls, springs, crofts, cellars, barns, standing stones, milestones and crosses.
+
+The full design (borders, fields, meetings, landmarks, hidden places) is in
+[speldesign.md](../speldesign.md#the-overworld).
 
 ## Regions
 
@@ -17,7 +22,8 @@ Drawn straight from `src/data/overworld.ts` with the game's own sprites.
 
 Each colour shows where Dagny can first walk once she has the treasure
 (computed with `reachableTiles` in `src/game/reach.ts`, the same logic the
-game uses to check saves):
+game uses to check saves). The order is fixed – each region needs the treasure
+of the temple before it:
 
 ```mermaid
 flowchart LR

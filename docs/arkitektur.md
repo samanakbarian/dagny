@@ -41,6 +41,11 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
   `BEHAVIORS` registry. A behaviour can also parry, through the optional `blocks()`.
   The registry is typed, so a behaviour named in `data/types.ts` without a module
   fails to compile. A new creature: an entry in `data/enemies.ts`, reusing a behaviour or adding one.
+- **One table for the overworld's ground.** `data/terrain.ts` says, for
+  every map character, what it is called, how it is drawn, what it needs, its
+  colour on the small map and which meetings happen there. The map scene, the
+  pause-menu map, the meeting tables and the reachability check all read it.
+  A new kind of ground is one line there.
 - **Data-driven content.** New rooms, creatures, dialog, songs and items are
   added in `src/data`, `src/art` and `src/audio` without touching the engine.
   The meaning of the map characters is in `data/legend.ts`.
@@ -63,7 +68,7 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
 - **ESLint** (the recommended JS and TypeScript rules, `npm run lint`).
 - **CI** (`.github/workflows/ci.yml`) runs lint, tests and a build on every push
   and pull request. `npm run check` does the same locally.
-- **Vitest, 280 tests** covering:
+- **Vitest, 312 tests** covering:
   - data integrity (every exit, dialog, sprite and character in the font)
   - softlocks and pits (a coarse jump model)
   - region gating

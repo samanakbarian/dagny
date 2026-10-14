@@ -92,7 +92,8 @@ tests/         Vitest
 |---|---|
 | `src/data/palettes.ts` | **Paletten** (~32 färger, ingen ren svart) och **tonfiltren** per område (sommarkväll, grå augusti, midnattssol, lyktsken, krypta …) |
 | `src/data/areas/*.ts` | Sidovyområden, en fil per region eller tempel (samlas i `areas.ts`): tilemap + dekorlager, utgångar, NPC:er, rekvisita, mörker. Tecknen förklaras i `src/data/legend.ts` |
-| `src/data/overworld.ts` | Överblickskartan, platser, synliga möten, vad som kräver eka/stövlar |
+| `src/data/overworld.ts` | Överblickskartan: platser, dolda platser, sevärdheter och synliga möten |
+| `src/data/terrain.ts` | Varje sorts mark på kartan: namn, sprite, vad den kräver och vilka möten den ger |
 | `src/data/temples.ts` | De sju templen och byarna |
 | `src/data/enemies.ts` | Väsen (beteende, liv, skada, XP, drops) och bossar med två faser. Beteendena finns i `src/entities/behaviors/` |
 | `src/data/dialog/*.ts` | All dialog, en fil per plats (samlas i `dialog.ts`). Dagny säger aldrig något – val beskriver vad hon gör |

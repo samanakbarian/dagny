@@ -46,20 +46,105 @@ checks that Läkning and Nedåtstöt cannot be had for free.
 Code: `GameOverOverlay` (`src/game/menus.ts`), `retryRoom` and
 `gameOver` (`src/game/flow.ts`). Tests: `tests/lives.test.ts`.
 
-## The world and the order of the temples
+## The order of the temples (decided: fixed)
 
-The map (80 × 56) is split into regions. Each temple's treasure opens the way to the next:
+The order is **fixed: 1 → 2 → 3 → 4 → 5 → 6 → 7**. Each region needs the
+treasure of the temple before it, so there is only one way through, as in
+Zelda II. (Decision A, October 2026: the order stays locked. An earlier text
+said "roughly this order", which was not true.)
 
-1. **Stenkyrkans krypta** → the boat (the lake)
-2. **The old mine** → the karbidlampa (the dark mine passage)
-3. **The mill by the rapids** → the stövlar (the tidal marsh)
-4. **The lighthouse** → the ficklampa (the night forest)
-5. **The folk park** → the radio (the hidden pass, hidden walls)
+1. **Stenkyrkans krypta** → the boat
+2. **The old mine** → the karbidlampa
+3. **The mill by the rapids** → the stövlar
+4. **The lighthouse** → the ficklampa
+5. **The folk park** → the radio
 6. **Fäbodskogen** → the näverlur
-7. **Trollberget** opens when the six others are reconciled
+7. **Trollberget**, which opens when the six others are reconciled
 
-`src/data/overworld.ts` holds the gating (`needs`, `requires`); `tests/world.test.ts`
-checks the order. Saves are checked on load (`repairReach`), so Dagny is never stuck.
+## The overworld
+
+80 × 56 tiles, seven regions, the lake in the middle, the start in the
+south-west and Trollberget in the north. Every kind of ground is described in
+`src/data/terrain.ts`: its name, what it needs, its colour on the small map and
+which meetings happen there. Pictures: [kartor/](kartor/README.md).
+
+### Borders: every border made of its own stuff
+
+| Border | What Dagny sees | What opens it |
+|---|---|---|
+| Home valley ↔ lake | Shore and reeds; the boat waits at a jetty | The boat |
+| Mine country ↔ mill valley | A steep fell with dark adits and boarded-up old ones | The karbidlampa |
+| Mill valley ↔ coast | A wide marsh (Tjuvgrottan lies out in it) | The stövlar |
+| Coast ↔ park plain | The night forest, black at noon | The ficklampa |
+| Home valley ↔ park plain | Rapids, and the bridge the spring flood took | Never: the park is reached the long way round |
+| Home valley ↔ highlands | A spruce thicket; a hidden path runs through it | The radio |
+| Round Trollberget | Dark cliffs and bare fell | The six reconciled places |
+
+Mountains are only the outer frame and a few massifs: about 935 tiles, against
+1,660 on the old box-shaped map. Borders and shores bend: no straight edge is
+longer than six tiles. The ground's colour shifts from region to region and
+blends over a couple of tiles where two meet.
+
+### Fields
+
+| Ground | Where |
+|---|---|
+| Rye field (`:`) | Round Kyrkbyn, Mormors by and the folk park |
+| Hay meadow (`m`) | The home valley, the coast, the park plain |
+| Heather moor (`l`) | The highlands |
+| Clear-cut (`h`) | The mine country and the mill valley |
+| Slag heaps (`g`) | By the iron works in Bruksorten |
+| Sand pit (`d`) | By Gruvsamhället |
+| Bare fell (`k`) | Up towards Trollberget |
+
+### Meetings by ground
+
+| Table | Ground | Fights |
+|---|---|---|
+| `ang` | Grass, roads, landmarks | Meadow, rye field, meadow at night |
+| `aker` | Rye fields | Rye field, heath, at night – birds from above |
+| `hed` | Heather, clear-cut, slag, sand pit | Heath, rye field, storm |
+| `skog` | Forest, the night forest, the hidden path | Forest path, spruce moor, storm |
+| `myr` | Marsh | Marsh, fen, marsh at night |
+| `strand` | Shore, reeds, jetty, water | Shore, reeds, shingle beach, storm |
+| `fjall` | Bare fell below Trollberget | **Kalfjället** (the hardest), heath, storm |
+| `odetorp` | Round the deserted crofts | **Ödetorpet** (vättar indoors), forest path, night |
+
+About 10–15 % of each table is a friendly meeting instead of a fight. Every
+region has its own creatures wandering the map, each tied to its ground, so the
+same meeting doesn't turn up everywhere.
+
+### Landmarks: forgotten things
+
+At least two per region: stone walls (whole and fallen), springs, deserted
+crofts, earth cellars, barns, standing stones, milestones, wayside crosses,
+gates, overgrown paths. On a phone screen (20 × 11 tiles) there is always at
+least one in sight. One per region says something, and gives a little XP the
+first time (`sights` in `src/data/overworld.ts`):
+
+| Region | Landmark | What it tells |
+|---|---|---|
+| Home valley | Offerkällan, Lill-Gärdet, Domarringen | Offerings nobody makes now; a croft left for America; the old thing-stead |
+| Mine country | Gruvfogdens sten, Kolartorpet | A mine bailiff from 1871; a charcoal burner's croft |
+| Mill valley | Pestkorset | The plague of 1711 – and fresh flowers, though nobody lives there |
+| Coast | Skeppssättningen | A stone ship that sails in every storm |
+| Park plain | Milstolpen | A milestone pointing at a road the flood took |
+| Highlands | Fäbodtorpet, Trefaldighetskällan | The milkmaids' summer home; a healing spring |
+| Towards Trollberget | Väktarstenen | The sign from Dagny's blade: "Väktarna vakade så länge människorna mindes" |
+
+### Hidden places
+
+| Place | Where | How it is found | What is in it |
+|---|---|---|---|
+| **Björkhagen** | Beside Mormors by | Open from the start | Murre the cat, johannesört for Sven, a näverdocka, and behind the radio wall a hidden nook |
+| **Tjuvgrottan** | Out in the marsh (stövlar) | On the map | Grå-Pelle's stolen silver: the silver fitting and a magic container show in the karbidlampa's light; a life container and a näverdocka |
+| **Jättegrytan** | On the islet in the lake (boat) | On the map | Initials "D. och H." under a little sun (Dagmar and Hulda) in the ficklampa's light, a magic container and a näverdocka |
+| **Fallgrottan** | Behind the waterfall on the mill valley's northern cliff | Seen only from right beside it | A life container on a ledge, a näverdocka, and Dagmar's carving: "Den som gömmer sig bakom fallet hörs inte av berget" |
+| **Väktarkammaren** | A door in the cliffs below Trollberget | Only with the radio | Dagmar's notebook from midsummer eve 1946, the Väktare's names on the wall – with room for one more – and a magic container |
+
+`tests/landscape.test.ts` checks that each hidden place can be reached with the
+treasures Dagny has in its region, that the cliff door stays shut without the
+radio, and that every cave leads back out beside where it lies.
 
 ## Trollberget – the last temple
 

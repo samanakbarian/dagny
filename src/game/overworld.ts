@@ -3,49 +3,27 @@ import { VIEW_W, VIEW_H } from '../engine/screen';
 import { drawSprite } from '../engine/sprites';
 import { drawText, measure } from '../engine/text';
 import { OVERWORLD } from '../data/overworld';
+import { PLACE_CHARS, TERRAIN } from '../data/terrain';
 import { PALETTE } from '../data/palettes';
 import { STR } from '../data/strings';
-import type { EncounterDef, OverworldPlace } from '../data/types';
+import type { EncounterDef, OverworldPlace, OverworldSight } from '../data/types';
 import { DialogOverlay } from './dialog';
 import type { Game, Scene } from './game';
 import { drawHud } from './hud';
-import { hasFlag, hasItem, type GameState } from './state';
+import { hasFlag, hasItem, setFlag, type GameState } from './state';
 import * as flow from './flow';
 import { ENCOUNTER_TABLES, TERRAIN_TYPE } from '../data/encounters';
 import { pickEncounter } from './encounters';
+import { reachableTiles } from './reach';
 
 const T = 16;
 const STEP_FRAMES = 9;
 
-export const TILE_SPRITE: Readonly<Record<string, string>> = {
-  '.': 'owGrass',
-  f: 'owForest',
-  '~': 'owWater',
-  s: 'owSwamp',
-  '^': 'owMountain',
-  '|': 'owRoad',
-  '-': 'owRoadH',
-  '+': 'owRoad',
-  ':': 'owField',
-  _: 'owSand',
-  '=': 'owBridge',
-  V: 'owVillage',
-  K: 'owChurch',
-  G: 'owGlade',
-  B: 'owVillage',
-  O: 'owStones',
-  M: 'owMine',
-  Q: 'owMill',
-  Y: 'owLighthouse',
-  P: 'owPark',
-  T: 'owTroll',
-  C: 'owCave',
-  D: 'owTunnel',
-  N: 'owNightForest',
-  // The hidden pass looks like the rest of the mountain until the radio finds it.
-  H: 'owMountain',
-  Z: 'owFabod',
-};
+/** Sprite per map character (from data/terrain.ts). */
+export const TILE_SPRITE: Readonly<Record<string, string>> = Object.fromEntries(Object.entries(TERRAIN).map(([c, d]) => [c, d.sprite]));
+
+/** Animated ground: drawn every frame on top of the static map. */
+const ANIMATED: Readonly<Record<string, string>> = { '~': 'owWater', w: 'owRapids', A: 'owWaterfall' };
 
 interface Walker {
   x: number;
@@ -80,13 +58,100 @@ function buildStatic(): HTMLCanvasElement {
   for (let y = 0; y < tiles.length; y++) {
     for (let x = 0; x < tiles[y].length; x++) {
       const ch = tiles[y][x];
-      if (ch === '~') continue;
+      if (ANIMATED[ch]) continue;
       // Places sit on grass.
-      if ('VKGBOMQYPZTC'.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
+      if (PLACE_CHARS.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
       drawSprite(ctx, TILE_SPRITE[ch] ?? 'owGrass', 0, x * T, y * T);
     }
   }
+  tintGround(ctx);
   return c;
+}
+
+/**
+ * The whole map as one picture, as Dagny sees it with every treasure – the
+ * hidden ways open (used by the map tool for docs/kartor/).
+ */
+export function overworldImage(): HTMLCanvasElement {
+  const base = buildStatic();
+  const c = document.createElement('canvas');
+  c.width = base.width;
+  c.height = base.height;
+  const ctx = c.getContext('2d') as CanvasRenderingContext2D;
+  ctx.drawImage(base, 0, 0);
+  const tiles = OVERWORLD.tiles;
+  for (let y = 0; y < tiles.length; y++) {
+    for (let x = 0; x < tiles[y].length; x++) {
+      const ch = tiles[y][x];
+      if (ANIMATED[ch]) drawSprite(ctx, ANIMATED[ch], 0, x * T, y * T);
+      if (ch === 'H') drawSprite(ctx, 'owHiddenPath', 0, x * T, y * T);
+      if (ch === 'E') drawSprite(ctx, 'owCliffDoor', 0, x * T, y * T);
+    }
+  }
+  for (const pl of OVERWORLD.places) if (pl.hidden === 'near') drawSprite(ctx, 'owFallCave', 0, pl.x * T, pl.y * T);
+  return c;
+}
+
+/**
+ * Each region has its own colour of ground; where two meet, the colours
+ * blend over a couple of tiles instead of changing at a hard edge.
+ */
+function tintGround(ctx: CanvasRenderingContext2D): void {
+  const region = regionOfTiles();
+  const tiles = OVERWORLD.tiles;
+  const R = 2;
+  for (let y = 0; y < tiles.length; y++) {
+    for (let x = 0; x < tiles[y].length; x++) {
+      if (region[y][x] < 0 || !TINTED.includes(tiles[y][x])) continue;
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      let n = 0;
+      for (let dy = -R; dy <= R; dy++) {
+        for (let dx = -R; dx <= R; dx++) {
+          const k = region[y + dy]?.[x + dx];
+          if (k === undefined || k < 0) continue;
+          const [cr, cg, cb] = REGION_TINT[k];
+          r += cr;
+          g += cg;
+          b += cb;
+          n++;
+        }
+      }
+      ctx.fillStyle = `rgb(${Math.round(r / n)},${Math.round(g / n)},${Math.round(b / n)})`;
+      ctx.globalAlpha = 0.16;
+      ctx.fillRect(x * T, y * T, T, T);
+      ctx.globalAlpha = 1;
+    }
+  }
+}
+
+/** Ground that takes the region's colour (not water, rock, roads or buildings). */
+const TINTED = '.:mlhgdkfu_reo';
+
+/** Region colours, in the order the regions open (see regionOfTiles). */
+const REGION_TINT: ReadonlyArray<[number, number, number]> = [
+  [150, 190, 70], // the home valley: lush green
+  [70, 110, 90], // the mine country: dark spruce green
+  [170, 120, 60], // the mill valley: rust and autumn
+  [200, 190, 120], // the coast: pale, salty grass
+  [210, 150, 110], // the park plain: warm evening
+  [140, 120, 150], // the highlands: heather and grey
+];
+
+/** The treasures in the order they open the regions. */
+const REGION_KEYS = ['eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio'];
+
+/** For every tile, the region it belongs to (index into REGION_TINT), or -1. */
+function regionOfTiles(): number[][] {
+  const out = OVERWORLD.tiles.map((row) => [...row].map(() => -1));
+  for (let k = 0; k <= REGION_KEYS.length; k++) {
+    for (const key of reachableTiles(REGION_KEYS.slice(0, k))) {
+      const [x, y] = key.split(',').map(Number);
+      if (out[y][x] < 0) out[y][x] = k;
+    }
+  }
+  return out;
 }
 
 export class OverworldScene implements Scene {
@@ -100,8 +165,10 @@ export class OverworldScene implements Scene {
   private camX = 0;
   private camY = 0;
   private leaving = false;
-  private water: Array<{ x: number; y: number }> = [];
-  private passes: Array<{ x: number; y: number }> = [];
+  /** Water, rapids and waterfalls, drawn each frame. */
+  private animated: Array<{ x: number; y: number; sprite: string }> = [];
+  /** Hidden ways (the path through the thicket, the door in the cliff), shown with the radio. */
+  private secrets: Array<{ x: number; y: number; sprite: string }> = [];
 
   constructor(private readonly game: Game) {
     const s = this.s;
@@ -118,8 +185,9 @@ export class OverworldScene implements Scene {
     const tiles = OVERWORLD.tiles;
     for (let y = 0; y < tiles.length; y++) {
       for (let x = 0; x < tiles[y].length; x++) {
-        if (tiles[y][x] === '~') this.water.push({ x, y });
-        else if (tiles[y][x] === 'H') this.passes.push({ x, y });
+        const ch = tiles[y][x];
+        if (ANIMATED[ch]) this.animated.push({ x, y, sprite: ANIMATED[ch] });
+        else if (ch === 'H' || ch === 'E') this.secrets.push({ x, y, sprite: ch === 'H' ? 'owHiddenPath' : 'owCliffDoor' });
       }
     }
     this.updateCamera(true);
@@ -148,6 +216,26 @@ export class OverworldScene implements Scene {
 
   private placeAt(x: number, y: number): OverworldPlace | undefined {
     return OVERWORLD.places.find((p) => p.x === x && p.y === y);
+  }
+
+  private sightAt(x: number, y: number): OverworldSight | undefined {
+    return OVERWORLD.sights.find((p) => p.x === x && p.y === y);
+  }
+
+  /** A landmark that says something – and gives a little XP the first time. */
+  private look(sight: OverworldSight): void {
+    const s = this.s;
+    const first = !hasFlag(s, `sett_${sight.id}`);
+    setFlag(s, `sett_${sight.id}`);
+    this.game.pushOverlay(
+      new DialogOverlay(this.game, sight.dialog, () => {
+        if (first && sight.xp) {
+          s.xp += sight.xp;
+          this.game.audio.play('xp');
+          this.game.toast(`+${sight.xp} XP`, 2);
+        }
+      }),
+    );
   }
 
   /** Can Dagny step onto this tile? Returns the missing item's id if blocked by one. */
@@ -213,6 +301,8 @@ export class OverworldScene implements Scene {
     const me = this.me;
     this.s.ow = { x: me.x, y: me.y };
     if (this.frame % 2 === 0) this.game.audio.play('step');
+    const sight = this.sightAt(me.x, me.y);
+    if (sight) this.look(sight);
     const place = this.placeAt(me.x, me.y);
     if (place) {
       const locked = place.requires && !place.requires.every((f) => hasFlag(this.s, f));
@@ -313,21 +403,27 @@ export class OverworldScene implements Scene {
     const camY = Math.round(this.camY);
     ctx.drawImage(staticMap as HTMLCanvasElement, camX, camY, VIEW_W, VIEW_H, 0, 0, VIEW_W, VIEW_H);
     const wf = Math.floor(this.frame / 30);
-    for (const w of this.water) {
+    const visible = (x: number, y: number): boolean => x > -T && y > -T && x < VIEW_W && y < VIEW_H;
+    for (const w of this.animated) {
       const x = w.x * T - camX;
       const y = w.y * T - camY;
-      if (x < -T || y < -T || x > VIEW_W || y > VIEW_H) continue;
-      drawSprite(ctx, 'owWater', wf + w.x, x, y);
+      if (visible(x, y)) drawSprite(ctx, w.sprite, (w.sprite === 'owWater' ? wf : Math.floor(this.frame / 8)) + w.x, x, y);
     }
-    // With the radio, the hidden pass shows as a crack in the mountain.
     const s = this.s;
+    // With the radio, the hidden ways show.
     if (hasItem(s, 'radio')) {
-      for (const hp of this.passes) {
+      for (const hp of this.secrets) {
         const x = hp.x * T - camX;
         const y = hp.y * T - camY;
-        if (x < -T || y < -T || x > VIEW_W || y > VIEW_H) continue;
-        drawSprite(ctx, 'owPass', 0, x, y);
+        if (visible(x, y)) drawSprite(ctx, hp.sprite, 0, x, y);
       }
+    }
+    // A cave behind a waterfall shows only to someone standing right beside it.
+    for (const pl of OVERWORLD.places) {
+      if (pl.hidden !== 'near' || Math.abs(pl.x - this.me.x) + Math.abs(pl.y - this.me.y) > 1) continue;
+      const x = pl.x * T - camX;
+      const y = pl.y * T - camY;
+      if (visible(x, y)) drawSprite(ctx, 'owFallCave', Math.floor(this.frame / 8), x, y);
     }
     // Encounters.
     for (const e of this.encounters) {
@@ -352,7 +448,9 @@ export class OverworldScene implements Scene {
     this.game.applyTone(ctx, OVERWORLD.tone, true);
 
     // Place name when standing next to / on a place.
-    const near = OVERWORLD.places.find((pl) => Math.abs(pl.x - this.me.x) + Math.abs(pl.y - this.me.y) <= 1);
+    const near = OVERWORLD.places.find(
+      (pl) => Math.abs(pl.x - this.me.x) + Math.abs(pl.y - this.me.y) <= 1 && (pl.hidden !== 'radio' || hasItem(this.s, 'radio')),
+    );
     if (near) {
       const w = measure(near.name) + 12;
       const x = Math.round((VIEW_W - w) / 2);

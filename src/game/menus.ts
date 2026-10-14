@@ -5,6 +5,7 @@ import { drawText, measure, wrap, LINE_HEIGHT } from '../engine/text';
 import { Act } from '../engine/input';
 import { ITEMS, ITEM_ORDER } from '../data/items';
 import { OVERWORLD } from '../data/overworld';
+import { TERRAIN } from '../data/terrain';
 import { PALETTE } from '../data/palettes';
 import { MAX_LEVEL, STAT_NAMES } from '../data/progression';
 import { SKILLS, SPELLS, SPELL_ORDER } from '../data/spells';
@@ -222,14 +223,10 @@ export class MapOverlay extends SubOverlay {
     const mw = tiles[0].length * cell;
     const ox = f.x + 10;
     const oy = f.y + 22;
-    const col: Record<string, string> = {
-      '.': P.M, f: P.m, '~': P.v, s: P.p, '^': P.G, '|': P.t, '-': P.t, '+': P.t, ':': P.y, _: P.t,
-      V: P.r, K: P.W, G: P.l, B: P.R, O: P.Y, M: P.y, Q: P.r, Y: P.W, P: P.i, Z: P.M,
-      T: P.W, C: P.k, D: P.k, N: P.n, H: P.G, '=': P.t,
-    };
+
     for (let y = 0; y < tiles.length; y++) {
       for (let x = 0; x < tiles[y].length; x++) {
-        ctx.fillStyle = col[tiles[y][x]] ?? P.M;
+        ctx.fillStyle = P[TERRAIN[tiles[y][x]]?.map ?? 'M'] ?? P.M;
         ctx.fillRect(ox + x * cell, oy + y * cell, cell, cell);
       }
     }

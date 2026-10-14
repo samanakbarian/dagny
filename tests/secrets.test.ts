@@ -55,10 +55,10 @@ function containersPlaced(): Array<{ area: string; kind: 'liv' | 'magi'; via: st
 }
 
 describe('secrets', () => {
-  it('has about four life and four magic containers', () => {
+  it('has five life and five magic containers (one of each in the hidden caves)', () => {
     const c = containersPlaced();
-    expect(c.filter((x) => x.kind === 'liv')).toHaveLength(4);
-    expect(c.filter((x) => x.kind === 'magi')).toHaveLength(4);
+    expect(c.filter((x) => x.kind === 'liv')).toHaveLength(5);
+    expect(c.filter((x) => x.kind === 'magi')).toHaveLength(5);
   });
 
   it('temples 1–4 each hide a radio room with a container', () => {

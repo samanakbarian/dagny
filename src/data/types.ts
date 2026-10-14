@@ -1,3 +1,5 @@
+import type { TerrainType } from './terrain';
+
 /**
  * Data model shared by all data files. The engine only reads these
  * structures, so temples, creatures, dialog and maps can be changed
@@ -336,6 +338,7 @@ export interface AreaDef {
 
 // --- Overworld --------------------------------------------------------------
 
+
 export interface OverworldPlace {
   /** Character on the overworld map. */
   x: number;
@@ -348,6 +351,22 @@ export interface OverworldPlace {
   dialog?: string;
   /** Flags needed before the area opens; `dialog` is shown until then. */
   requires?: string[];
+  /**
+   * A hidden place: 'near' shows only when Dagny stands right beside it
+   * (a cave behind a waterfall); 'radio' only when she carries the radio.
+   */
+  hidden?: 'near' | 'radio';
+}
+
+/** Something to look at on the map: a dialog when Dagny steps there, XP the first time. */
+export interface OverworldSight {
+  x: number;
+  y: number;
+  /** Unique id (the flag `sett_<id>` remembers it). */
+  id: string;
+  dialog: string;
+  /** XP the first time. */
+  xp?: number;
 }
 
 export interface EncounterDef {
@@ -355,7 +374,7 @@ export interface EncounterDef {
   /** Terrain characters it may wander on. */
   terrain: string;
   /** Encounter table to use (data/encounters.ts); defaults to the terrain Dagny stands on. */
-  table?: 'ang' | 'skog' | 'myr' | 'strand';
+  table?: TerrainType;
   /** Start tile. */
   x: number;
   y: number;
@@ -366,6 +385,8 @@ export interface EncounterDef {
 export interface OverworldDef {
   tiles: string[];
   places: OverworldPlace[];
+  /** Landmarks that say something (the rest of the landmarks are just scenery). */
+  sights: OverworldSight[];
   encounters: EncounterDef[];
   start: { x: number; y: number };
   /** Terrain that needs an item to cross: char → item id. */

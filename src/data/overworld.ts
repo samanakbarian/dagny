@@ -1,92 +1,88 @@
+import { BLOCKED_CHARS, NEEDS } from './terrain';
 import type { OverworldDef } from './types';
 
 /**
  * The overworld, seen from above. One character per 16×16 tile (80 × 56).
+ * What each character is – ground, borders, landmarks, places – is listed in
+ * data/terrain.ts, together with what it needs and which meetings happen there.
  *
- *  .  grass        f  forest       ~  water (needs the eka)
- *  s  bog / tidal marsh (needs the rubber boots)    ^  mountains (impassable)
- *  |  road (N–S)   -  road (E–W)   +  crossroads    =  bridge
- *  :  rye field    _  sand / shore
- *  D  the dark tunnel through the ridge (needs the carbide lamp)
- *  N  the night forest, pitch black (needs the flashlight)
- *  H  the hidden pass in the northern ridge (the transistor radio finds it)
- *  V  Mormors by   K  the stone church (temple 1)   G  Björkhagen
- *  M  the old mine (temple 2)       Q  the mill by the rapids (temple 3)
- *  Y  the lighthouse on the skerry (temple 4)
- *  P  the folk park (temple 5)       Z  the summer farm in the forest (temple 6)
- *  T  Trollberget (temple 7, opens when the six others are restored)
- *  C  caves (Jättegrytan on an islet in the lake, Tjuvgrottan in the marsh)
- *  B  other villages
+ * Seven regions, opened in a fixed order, each by the treasure of the temple
+ * before it, and each border made of its own stuff:
+ *  the home valley →(ekan: the lake, from the jetty)→ the mine country
+ *  →(karbidlampan: the dark adits through the fell)→ the mill valley
+ *  →(stövlarna: the wide marsh)→ the coast →(ficklampan: the night forest)→
+ *  the park plain, which the home valley only sees across the rapids and the
+ *  washed-away bridge →(radion: the hidden path through the spruce thicket,
+ *  from the home valley)→ the summer-farm highlands and the bare fell up to
+ *  Trollberget, ringed by dark cliffs.
  *
- * Seven regions, each opened by the treasure of the temple before it:
- *  the home valley → (ekan) the mine country → (karbidlampan) the mill valley →
- *  (stövlarna) the coast → (ficklampan) the park plain → (radion) the
- *  summer-farm highlands → the road to Trollberget.
+ * The map was reshaped from the earlier box-shaped one; tests/world.test.ts
+ * checks the order, the borders and that something new is always in sight.
  */
 export const OVERWORLD: OverworldDef = {
   tiles: [
     '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
     '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
-    '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
-    '^^^^^.^..^^^^^^^.^^^^.......^^....^^^^^^^^.^..^^^^^ffff...^^^^^..^.^^.^..^.^..^^',
-    '^^^^^.^....^.^^..^^.:::::.......T.^^..ff^ff.....^f^ffffff^^^^^^^....fffff..^..^^',
-    '^^^................:::::::..^^....^^^fffffff...ffffffMffff.^^^^...fffffffff...^^',
-    '^^^....sssss.......:::::::..^^....^^.fffffff..fffffffffffff^^^^..fffffffQfff..^^',
-    '^^^..sssssssss.....:::::::..^^^^^^^^.fffffff..ffffffffffff^^^^^..fffffffffff..^^',
-    '^^^.sssssssssss.....:::::...^^^^^^^^..fffff...fffffffffffff^^^^..fffffffffff^^^^',
-    '^^^sssssssssssss...........^^^^^^^^^^.......+--------------DDDD-------+ffff..^^^',
-    '^^^sssssssssssss...........^^^^^^^^^^^......B...fffffffff..^^^^.....ff|ff...^^^^',
-    '^^^ssssssZssssss...........^^^^^^^^^........|::::.fffff...^^^^^.......|.......^^',
-    '^^^sssssssssssss..........^^^^^^^^^^^.....::|::::::.......^^^^^~~~~~~~|=~~~~~~^^',
-    '^^^sssssssssssss...........^^^^^^^^^^.....::|::::::........^^^^.......|..:::..^^',
-    '^^^.sssssssssss...fffff....^^^^^^^^^......::|::::::........^^^^^......|.:::::^^^',
-    '^^^..sssssssss..fffffffff...^^^^^^^^........|::::......^...^^^^^......|::::::^^^',
-    '^^^^...sssss....fffffffff.^^^^^^^^^^........|........^^^^^.^^^^^.fff..|::::::^^^',
-    '^^^............ffffBffffff.^^^^^^^^^_______________^^^^^^^^^^^^.fffff.|::::::^^^',
-    '^^^...........+-----ffffff..^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^fffffffB.:::::.^^',
-    '^^^...fffff...|fffffffffff..^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^ffffff...:::.^^^',
-    '^^^^.fffffff..|.fffffffff..^^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^fffff.......^^^',
-    '^^^.fffffffff.|.fffffffff..^^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^fffff........^^^',
-    '^^^^^ffffffff.|...fffff.....^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^.fff..........^^',
-    '^^^.fffffffff.|............^^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^.........^.^^^^^',
-    '^^^^.fffffff..|...........^^^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^...fffff...|.....^......^^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^.^^..^^^.^.|.^^^.^^...^..^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^^^^^^^^^^^^H^^^^^^^^^^^^^^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^^^^^^^^^^^^H^^^^^^^^^^^^^^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^^^^^^^^^^^^H^^^^^^^^^^^^^^^^~~~~~~~~~___~~~~~~~~^^^^^^^^^^^^^^^^ssCss^^^^^^^^',
-    '^^^^^^^^^^^^^^H^^^^^^^^^^^^^^^^~~~~~~~~__C__~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^.........^...^^^^^^^...^^^^^~~~~~~~~~___~~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^^..........................^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^^....K...........:::::....._~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^sssss^^^^^^^^',
-    '^^^^^.............::B::::::..._~~~~~~~~~~~~~~~~~~~~^^^^^...^.^^..^.........^..^^',
-    '^^^^.fff.........:::|:::::::.._~~~~~~~~~~~~~~~~~~~~^^^^^^..................^..^^',
-    '^^^^fffff........:::|:::::::.._~~~~~~~~~~~~~~~~~~~~^^^^^..fffff.....:::::.....^^',
-    '^^^^^fffff.......:::|:::::::.._~~~~~~~~~~~~~~~~~~~~^^^^^^fffffff..:::::::::..^^^',
-    '^^^fffffff........::|::::::..._~~~~~~~~~~~~~~~~~~~~^^^^^.fffffff..:::::::::.^^^^',
-    '^^^fffffff..........|::::....._~~~~~~~~~~~~~~~~~~~~^^^^^.fffffff..:::::::::..^^^',
-    '^^^^f-------+-------+---------_~~~~~~~~~~~~~~~~~~~~^^^^^..ff-----------::....^^^',
-    '^^^^.fff....|.................^^^^^^^^^^^^^^^^^^^^^^^^^^....B................^^^',
-    '^^^.........|.................^^^^^^^^^^^^^^^^^^^^^^^^^^.....................^^^',
-    '^^^.........|................^^^^^^^^^^^^^^^^^^^^^^^^^^^....................^^^^',
-    '^^^^..fffff.V...:::::........^^^^^^^^^^^^^^^^^^^^^^^NNNN......................^^',
-    '^^^^^fffffff|..:::::::........^^^^.....^^^.^^.^^^^^.NNNN......................^^',
-    '^^^.fffffffff..:::::::.......^^^^...................^^^^______________________^^',
-    '^^^fffffffffff.:::::::........^^^...................^^^^~~~~~~~~~~~~~~~~~~~~~~^^',
-    '^^^^ffffffffff..:::::.........^^^^..::::---------B..^^^^~~~~~~~~~~~~~~~~~~~~~~^^',
-    '^^^^^fffffffff.........fffff..^^^.::::::P::.........^^^^~~~~~~~~~~~~~~~___~~~~^^',
-    '^^^.fffffffff........fffGfffff^^^^:::::::::.........^^^^~~~~~~~~~~~~~~~_Y_~~~~^^',
-    '^^^^fffffffff........fffffffff^^^^:::::::::.fffff...^^^^~~~~~~~~~~~~~~~___~~~~^^',
-    '^^^...f^fff...^......fffffffff^^^^.^:::::.^fffffff..^^^^~~~~~~~~~~~~~~~~~~~~~~^^',
-    '^^^^...^^^^^^.^^^^^^^..^ff^f..^^^.^^^.^^..^.^fff^^^.^^^^~~~~~~~~~~~~~~~~~~~~~~^^',
-    '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
+    '^^^^^^^^^^^^^k..^^^^^^k^^^XXXXXXXXX^.^^^.^^^h^^^^^^^^^^^^^^^^^^^^^^^^^.^hff^^^^^',
+    '^^^^kk^^^^.kfk....^^kell^kkEXlXkkkXX...ffhhhhh....^ffff^.h.^^^^.^Af^^^hhfffff^^^',
+    '^^^kkk^k.O..kk..llllllllllkkXkkkTk.X.fffOfhhhh..ff.fffffeh...^^..fxf..fffffff^^^',
+    '^^^..kkkkss...lllllllllllkkkkkkkkk.Xffffffff..fffffffMfffhh..^^...f.ffffff...^^^',
+    '^^l.sklsssssllslllllllllfkkkkkkkk.Xfffffffff.ffffffff|.fffhff^^....fffffQff..f^^',
+    '^^.f.ssssssssssllllllllllkOkkkXXXX.ffffffffffffffffff|ffffh.f^^..fffffff|ff...^^',
+    '^^ff.sssssssssss....lllllfkkkkXXXhhhffffff....fffffff|ffff..^^^..fffffff|ff..^^^',
+    '^^^ssssssssssss.....lllllf.kkkXXhhhhhhfff....--------+-----.DD.--------+|f...^^^',
+    '^^^sssssssssss..s...lllllf....XX.hhhfdddf...Bfffffffffffff.^^^...ffffff|.....^^^',
+    '^^^.sssssZssss....ffffffff....XXXfffddddd...|.f.fffffffffh^a^.....fff..|.....^^^',
+    '^^^^lsssssssss.ffffffffoff....l^^fffddddd...|hhhffiffff..h^^^f.u..f....|.......^',
+    '^^^lllsssssssstffffffffff.....l^^fffdddddff.|hhhhhhfh..hhh^^^.....fh...|...L...^',
+    '^^^lllsssssss.ff.fffffff.......^^r....tffff.|hhhhhffff..h^^^^...hhhhh..|gghfh.^^',
+    '^^^llllssfflllff..ffffff.......^^~_h..fffff.|hhhhhhr_r_ffh^^^..hhhhhh..|gggggh^^',
+    '^^..fflfffflllff...fffl.......l^^~_rh.fffff...h~~~~_~~~_ff^^....hhhh...|ggggh.^^',
+    '^^^Offffff.lll.....Bfflf...lll^^^~~~__fff...._r~~~~~~~~~_f^^.fffffh.f..|ggggg.^^',
+    '^^ffffffff.ll......|.llfffflll^^~~~~~~__r..__~~~~~~~~~~~^^^ffffffufff.B...ggg.^^',
+    '^^^fffffff.ll.-----+.llfffffll^^~~~~~~~~~__~~~~~~~~~~~~~^^^ffffffffff...f....^^^',
+    '^^^fffffff....llll.|ll..fffff^^~~~~~~~~~~~~~~~~~~~~~~~~~~^^^sfffffffffffffff.^^^',
+    '^^^fffffff...llllll|.l..ffff^^~~~~~~~~~~~~~~~~~~~~~~~_O_~^^^ffffffffffffiffff^^^',
+    '^^^fffff.....llllll|.ll.e.f^^^~~~~~f_~~~~~~~~~~~~~~~~~_~~^^^ssssffffffffffff^^^^',
+    '^^^ffOfllll.fllllll|.llll.f^^~~~~~~O~~~~~~~~~~~~~~~~~~~~_^^ssssfff........sfs^^^',
+    '^^^^fffllllffflllll|.lllll^F^~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^ssssfsssssssssssss^^^',
+    '^^FF.ff.lllfff.lll.|.lllll.FF~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^sssssssssssssssss^^^',
+    '^^FF.fff...ff....f.|....FFFFF~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^ss^sss^sssssssss^^^^',
+    '^^FFlfffFFFfF.H..f^...FFFFFF~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^mss^ssssssssssssss^^^',
+    '^^FFFFFFFFFFFFHFFFFFFFFFFFFr~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^.mss^ssssssssssssss^^^',
+    '^^FFFFFFFmFFFFHFFFFFFFF....f_~~~~~~~~______~~~~~~~~~~~^^^fcmss^ssssssCsssssss^^^',
+    '^^^FfF..mmmFff.m.F..FF....fr~~~~~~~~~____C_~~~~~~~~~~^^^fmm.ss^sssssssssss^s^^^^',
+    '^^^^....mmmffff............_~~~~~~~~~~_____~~~~~~~~~^^^.fff.ss.^sssssssssssss^^^',
+    '^^^^.......ffffffff.......O._~~~~~~~~~~~~_~~~~~~~~~~^^^.fff....ssssssssssssss^^^',
+    '^^^^....K..fmffffff.......mmm_~~~~~~~~~~~~~~~~~~~~~^^...fff....sssssss.ffssss^^^',
+    '^^^^^.......mffffff.B:......m_~~~~~~~~~~~~~~~~~_~~~^^^..ffff.ff..sssm..ffss.^^^^',
+    '^^^^m...|...m....ff.|:::::::._~~~~~~~~~~~~~~~~_f~~~~^^mm.ffffff...f.mmmff..mm^^^',
+    '^^^^ffm.|...m.....f.|:::::::fr~~~~~~~~_O_~~~~~~~~~~^^^mmffffff.ff.W.mmmmm.mmm^^^',
+    '^^^^ffff|mm.m....ff:|:::::::.r~~~~~~~~~_~~~~~~~~~~~^^^mmfffffffff.mmmmmmmm.Om^^^',
+    '^^^mffff|mmmxmm..f::|::::::::r~~~~~~~~~~~~~~~~~~~~~^^fffmfffffWffmmmmmmmm....^^^',
+    '^^^^.fmm|mmm......::|:::::::.._~~~~~~~~~~~~~~~~~~~~^^fffmmmfff.....mmmmmmm..^^^^',
+    '^^^^.---+---+-------+---------w~~~~^^^~~~~~~~~~~~^^^^...mmm.f----------mm..f^^^^',
+    '^^^...mmmmmm|..c............jjw~~w^^^^^^~^^^~~~^^^^^..mm..m.B.....i.....mmmm^^^^',
+    '^^^...mmmmmm|.m.....mmm.......wwwww^.^^^^^^^^^^^^^^^^.mm......mmmm......mmmm^^^^',
+    '^^...mm..mm.|.......mmm...L..wwww.....^^^^..^^^^mmm^^.mm.cmmmmmmm........mmm^^^^',
+    '^^^mmmm.....V..W.::::mmm.....wwww.....mm.......mmm.NNff.mmmmmm.............m^^^^',
+    '^^^mmmo.....|..f:::::mmmmm...www.mmmmmmmf.mmmmmum.NNNfffmmmm_m.......f..m....^^^',
+    '^^.mmmmm.fff|..:::::::........wwwmmmmmmm.mmmmmmmm..^^^fffm_r~_rr_......mm.r__^^^',
+    '^^...fffffff+-----------+-----bbwm:mi::...mmmmm.....^^ff._~~~~~~~_________~~~^^^',
+    '^^...ffffffff.::::::....|.....wwwm::m:::.--------B..^^f___~~~~~~~~~~~_~~~~~~~^^^',
+    '^^.ffffffffffff:::::....|.f..mwwmm::::::P...........^^^~~~~~~~~~~~~~~~~___~~~^^^',
+    '^^.fffffffff..m::::.....Gfffmmww.f::::::..ff.fff....^^^~~~~~~~~~~~~~~~__Y_~~~^^^',
+    '^^^fffffffff..mmmm:f..ffffffmwww.f::::::.fffLfff.....^^~~~~_O_~~~~~~~~~___~~~~^^',
+    '^^.ftff^ffff..^mmmym..ffffffwwww..y::::::fffffff^^^..^^^^~~~_~~~~~_~~~~~~~~~~~^^',
+    '^^^^^^.^^^^^^^^^mm....fffff^wwwwww^...:^.^ff^^^^^^^^^^^^^~~~~~^^^^^^^^~~~^^^^~^^',
+    '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ww^^^..^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
     '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
   ],
   start: { x: 12, y: 45 },
   music: 'karta',
   tone: 'karta',
-  needs: { '~': 'eka', s: 'stovlar', D: 'karbidlampa', N: 'ficklampa', H: 'radio' },
-  blocked: '^',
+  needs: NEEDS,
+  blocked: BLOCKED_CHARS,
   places: [
     { x: 12, y: 44, name: 'Mormors by', area: 'mormors_by', entry: 'W' },
     { x: 20, y: 34, name: 'Kyrkbyn', area: 'kyrkbyn', entry: 'W' },
@@ -108,22 +104,41 @@ export const OVERWORLD: OverworldDef = {
       x: 32, y: 4, name: 'Trollberget', area: 'troll_1', entry: 'A', dialog: 'trollberget_sover',
       requires: ['krypta_klar', 'gruvan_klar', 'kvarnen_klar', 'fyren_klar', 'folkparken_klar', 'fabodskogen_klar'],
     },
+    { x: 65, y: 3, name: 'Fallgrottan', area: 'fallgrottan', entry: 'A', hidden: 'near' },
+    { x: 27, y: 3, name: 'Väktarkammaren', area: 'vaktarkammaren', entry: 'A', hidden: 'radio' },
+  ],
+  sights: [
+    { x: 6, y: 45, id: 'offerkallan', dialog: 'sevart_offerkallan', xp: 25 },
+    { x: 4, y: 52, id: 'lillgardet', dialog: 'sevart_lillgardet', xp: 15 },
+    { x: 26, y: 32, id: 'domarringen', dialog: 'sevart_domarringen', xp: 20 },
+    { x: 40, y: 4, id: 'gruvfogden', dialog: 'sevart_gruvfogden', xp: 20 },
+    { x: 38, y: 14, id: 'kolartorpet', dialog: 'sevart_kolartorpet', xp: 15 },
+    { x: 66, y: 4, id: 'pestkorset', dialog: 'sevart_pestkorset', xp: 20 },
+    { x: 75, y: 37, id: 'skeppssattningen', dialog: 'sevart_skeppssattningen', xp: 25 },
+    { x: 36, y: 47, id: 'milstolpen', dialog: 'sevart_milstolpen', xp: 15 },
+    { x: 14, y: 13, id: 'fabodtorpet', dialog: 'sevart_fabodtorpet', xp: 20 },
+    { x: 23, y: 12, id: 'trefaldighetskallan', dialog: 'sevart_trefaldighetskallan', xp: 20 },
+    { x: 26, y: 7, id: 'vaktarstenen', dialog: 'sevart_vaktarstenen', xp: 30 },
   ],
   encounters: [
-    { sprite: 'owShadow', terrain: '.:', x: 22, y: 37 },
+    { sprite: 'owShadow', terrain: '.:m', x: 22, y: 38 },
     { sprite: 'owShadow', terrain: 'f', x: 8, y: 48 },
-    { sprite: 'owShadow', terrain: '.', x: 26, y: 45 },
+    { sprite: 'owShadow', terrain: '.m', x: 26, y: 45 },
+    { sprite: 'owShadow', terrain: '.:mf', x: 5, y: 51, table: 'odetorp' },
     { sprite: 'owShadow', terrain: 'f', x: 52, y: 7 },
-    { sprite: 'owShadow', terrain: '.:', x: 47, y: 13 },
-    { sprite: 'owShadow', terrain: 'f', x: 70, y: 6 },
-    { sprite: 'owShadow', terrain: '.', x: 74, y: 20 },
-    { sprite: 'owWisp', terrain: 's', x: 69, y: 26, table: 'myr' },
-    { sprite: 'owShadow', terrain: '.:', x: 66, y: 37 },
-    { sprite: 'owShadow', terrain: '_', x: 64, y: 46 },
-    { sprite: 'owShadow', terrain: '.:', x: 38, y: 51 },
-    { sprite: 'owShadow', terrain: '.f', x: 46, y: 52 },
+    { sprite: 'owShadow', terrain: 'h.', x: 47, y: 14 },
+    { sprite: 'owShadow', terrain: '.f', x: 37, y: 14, table: 'odetorp' },
+    { sprite: 'owShadow', terrain: 'f', x: 70, y: 7 },
+    { sprite: 'owShadow', terrain: 'g.', x: 74, y: 17 },
+    { sprite: 'owWisp', terrain: 's', x: 69, y: 27, table: 'myr' },
+    { sprite: 'owShadow', terrain: '.m', x: 66, y: 37 },
+    { sprite: 'owShadow', terrain: '_r', x: 64, y: 46 },
+    { sprite: 'owShadow', terrain: ':.', x: 38, y: 51 },
+    { sprite: 'owShadow', terrain: '.fm', x: 46, y: 52 },
     { sprite: 'owWisp', terrain: 's', x: 8, y: 9, table: 'myr' },
-    { sprite: 'owShadow', terrain: 'f', x: 20, y: 18 },
-    { sprite: 'owShadow', terrain: '.', x: 24, y: 23 },
+    { sprite: 'owShadow', terrain: 'l.', x: 20, y: 7 },
+    { sprite: 'owShadow', terrain: 'f', x: 21, y: 17 },
+    { sprite: 'owShadow', terrain: 'kl', x: 26, y: 5, table: 'fjall' },
+    { sprite: 'owShadow', terrain: '.lf', x: 14, y: 14, table: 'odetorp' },
   ],
 };

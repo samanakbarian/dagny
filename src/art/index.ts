@@ -5,6 +5,7 @@ import { enemySprites } from './enemies';
 import { tileSprites } from './tiles';
 import { itemSprites } from './items';
 import { overworldSprites } from './overworld';
+import { landscapeSprites } from './landscape';
 import { mineSprites } from './mine';
 import { gruvbySprites } from './gruvby';
 import { millSprites } from './mill';
@@ -22,6 +23,7 @@ export const SPRITES: Record<string, SpriteDef> = {
   ...tileSprites,
   ...itemSprites,
   ...overworldSprites,
+  ...landscapeSprites,
   ...mineSprites,
   ...gruvbySprites,
   ...millSprites,

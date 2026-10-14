@@ -1,6 +1,6 @@
 import type { AreaDef } from '../types';
 
-/** Caves on the overworld: Tjuvgrottan and Jättegrytan. */
+/** Caves on the overworld: Tjuvgrottan, Jättegrytan and the two hidden ones (Fallgrottan, Väktarkammaren). */
 export const GROTTOR: Record<string, AreaDef> = {
   tjuvgrottan: {
     id: 'tjuvgrottan',
@@ -95,6 +95,68 @@ export const GROTTOR: Record<string, AreaDef> = {
       "rrrrrrrrrrrrrrrrrrrrrrrr.....rr.",
       "................................",
       "................................",
+    ],
+  },
+
+  // Behind the waterfall on the mill valley's northern cliff – seen only from right beside it.
+  fallgrottan: {
+    id: 'fallgrottan',
+    name: 'Fallgrottan',
+    kind: 'path',
+    tone: 'storm',
+    music: 'grotta',
+    backdrop: 'mine',
+    theme: 'skar',
+    dark: true,
+    darkness: 0.85,
+    showName: true,
+    ambience: ['spray'],
+    left: { to: 'overworld', ow: { x: 66, y: 3 } },
+    signs: { I: 'fallgrottan_ristning' },
+    tiles: [
+      "##################################",
+      "##################################",
+      "...............................###",
+      "...........................h...###",
+      ".........f.................==..###",
+      "....................===.........##",
+      "...........+..f..................#",
+      "..........===.............===....#",
+      ".................................#",
+      "..A..I.....y..........x...y...g..#",
+      "##################################",
+      "##################################",
+    ],
+  },
+
+  // A door in the cliff below Trollberget, found with the radio: where Dagmar waited.
+  vaktarkammaren: {
+    id: 'vaktarkammaren',
+    name: 'Väktarkammaren',
+    kind: 'path',
+    tone: 'troll',
+    music: 'grotta',
+    backdrop: 'mine',
+    theme: 'berg',
+    dark: true,
+    darkness: 0.8,
+    showName: true,
+    ambience: ['dust'],
+    left: { to: 'overworld', ow: { x: 26, y: 3 } },
+    signs: { I: 'vaktarkammaren_bord', J: 'vaktarkammaren_vagg' },
+    tiles: [
+      "############################",
+      "############################",
+      "#..........................#",
+      "#..........................#",
+      "#..................p.......#",
+      "#.................===......#",
+      "#..........................#",
+      "...........====............#",
+      "...........................#",
+      "..A..I.........J.....T.....#",
+      "############################",
+      "############################",
     ],
   },
 };

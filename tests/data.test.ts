@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { AREAS, AREA_GROUPS } from '../src/data/areas';
+import { PLACE_CHARS, TERRAIN } from '../src/data/terrain';
 import { DIALOG, DIALOG_GROUPS } from '../src/data/dialog';
 import { BOSSES, ENEMIES } from '../src/data/enemies';
 import { ITEMS, ITEM_ORDER } from '../src/data/items';
@@ -254,7 +255,8 @@ describe('overworld', () => {
     for (const r of OVERWORLD.tiles) expect(r.length).toBe(w);
     for (const p of OVERWORLD.places) {
       const ch = OVERWORLD.tiles[p.y]?.[p.x];
-      expect('VKGBOMQYPZTC').toContain(ch);
+      // Hidden places sit on the waterfall or the cliff door that hides them.
+      expect(p.hidden ? 'AE' : PLACE_CHARS, p.name).toContain(ch);
       if (p.area) {
         expect(AREAS[p.area], p.area).toBeDefined();
         if (p.entry) expect(AREAS[p.area].tiles.join('')).toContain(p.entry);
@@ -277,7 +279,7 @@ describe('overworld', () => {
       const k = `${x},${y}`;
       if (seen.has(k)) continue;
       const ch = t[y]?.[x];
-      if (!ch || ch === '^' || ch === '~' || ch === 's') continue;
+      if (!ch || TERRAIN[ch]?.blocked || TERRAIN[ch]?.needs) continue;
       seen.add(k);
       stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
     }
