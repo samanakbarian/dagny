@@ -74,7 +74,7 @@ export const grim: Behavior = {
             // Crashed into the wall: stunned – the moment to strike.
             e.vx = -e.facing * 1.5;
             e.vy = -2;
-            e.stun = 70;
+            e.stun = 85;
             e.mode = 0;
             e.timer = Math.round(ph.attackEvery * 60);
             world.shake(16, 3);

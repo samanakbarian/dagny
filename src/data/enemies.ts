@@ -137,11 +137,11 @@ export const BOSSES: Readonly<Record<string, BossDef>> = {
   grim: {
     id: 'grim', name: 'Kyrkogrimmen', title: 'Kyrkogrimmen – kryptans väktare',
     sprite: 'grim', behavior: 'boss_grim',
-    hp: 44, damage: 3, xp: 200, speed: 1.6,
+    hp: 38, damage: 3, xp: 200, speed: 1.6,
     box: { x: 4, y: 12, w: 26, h: 20 }, puff: 'mist', heavy: true,
     phases: [
       { atHpFraction: 1, sprite: 'grim', speed: 1.7, attackEvery: 2.2 },
-      { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.1, attackEvery: 1.4 },
+      { atHpFraction: 0.5, sprite: 'grimSpirit', speed: 1.1, attackEvery: 1.7 },
     ],
     introDialog: 'grim_vaknar',
     defeatDialog: 'grim_forlikad',
