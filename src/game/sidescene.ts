@@ -30,6 +30,11 @@ import { shieldBlocks, damagePlayer, combat, killEnemy } from './side/combat';
 import { collect } from './side/pickups';
 import { renderScene } from './side/render';
 import { tickSpells, castSpell, blowLur, updateHelpers, shootFire } from './side/spells';
+/** Steps after a dialog closes before Up or a tap can start another (half a second). */
+const INTERACT_PAUSE = 30;
+/** Steps before the same person or sign starts again while Dagny stays put (three seconds). */
+const SAME_TALK_PAUSE = 180;
+
 export interface Spawn {
   entry?: string;
   /** Dialog shown right after arriving. */
@@ -88,6 +93,8 @@ export class SideScene implements Scene, WorldApi {
   bossOutro = 0;
   /** Steps after a hazard respawn during which hazards don't hurt again. */
   private hazardGrace = 0;
+  /** The last thing Dagny talked to or read, where she stood and when. */
+  private lastTalk: { key: string; x: number; at: number } | null = null;
   /** Sealed room: 0 not sealed / cleared, 1 waiting for Dagny, 2 shut until the room is cleared. */
   seal = 0;
   nameT = 0;
@@ -594,10 +601,21 @@ export class SideScene implements Scene, WorldApi {
     this.prompt = null;
     if (p.state !== 'normal' || !p.onGround) return;
     const pc = p.x + p.w / 2;
-    const up = g.input.pressed(Act.Up);
-    const taps = g.input.taps;
+    // Right after a dialog closes, the presses and taps that closed it (and the
+    // ones mashed after) must not start a talk again at once.
+    const calm = g.frame - g.overlayClosedAt >= INTERACT_PAUSE;
+    const up = calm && g.input.pressed(Act.Up);
+    const taps = calm ? g.input.taps : [];
     const tapped = (r: Rect): boolean =>
       taps.some((t) => t.x + this.camX >= r.x - 6 && t.x + this.camX <= r.x + r.w + 6 && t.y + this.camY >= r.y - 6 && t.y + this.camY <= r.y + r.h + 6);
+    // The same person or sign starts again only once Dagny has walked off a little, or after a while.
+    const fresh = (key: string): boolean => {
+      const last = this.lastTalk;
+      return !last || last.key !== key || Math.abs(pc - last.x) > 12 || g.frame - last.at > SAME_TALK_PAUSE;
+    };
+    const talked = (key: string): void => {
+      this.lastTalk = { key, x: pc, at: g.frame };
+    };
 
     // NPCs
     let best: Npc | null = null;
@@ -612,9 +630,10 @@ export class SideScene implements Scene, WorldApi {
     if (best) {
       const b = best.box;
       this.prompt = { x: b.x + b.w / 2, y: b.y - 6 };
-      if (up || tapped(b)) {
+      if ((up || tapped(b)) && fresh(`npc:${best.def.id}`)) {
         const talk = best.def.talk.find((t) => g.check(t.if));
         if (talk) {
+          talked(`npc:${best.def.id}`);
           p.facing = b.x + b.w / 2 < pc ? -1 : 1;
           g.pushOverlay(new DialogOverlay(g, talk.dialog, () => this.afterDialog()));
         }
@@ -626,9 +645,10 @@ export class SideScene implements Scene, WorldApi {
       const r = { x: d.tx * TILE - 4, y: d.ty * TILE - 16, w: TILE + 8, h: 32 };
       if (!overlaps(r, p)) continue;
       this.prompt = { x: d.tx * TILE + 8, y: d.ty * TILE - 20 };
-      if (up || tapped(r)) {
+      if ((up || tapped(r)) && fresh(`door:${d.tx},${d.ty}`)) {
         const req = d.exit.requires;
         if (req && ((req.flag && !hasFlag(this.s, req.flag)) || (req.item && !hasItem(this.s, req.item)))) {
+          talked(`door:${d.tx},${d.ty}`);
           g.pushOverlay(new DialogOverlay(g, req.dialog));
         } else {
           this.sfx('door');
@@ -641,7 +661,10 @@ export class SideScene implements Scene, WorldApi {
       const r = { x: sgn.tx * TILE - 4, y: sgn.ty * TILE - 16, w: TILE + 8, h: 32 };
       if (!overlaps(r, p)) continue;
       this.prompt = { x: sgn.tx * TILE + 8, y: sgn.ty * TILE - 14 };
-      if (up || tapped(r)) g.pushOverlay(new DialogOverlay(g, sgn.dialog));
+      if ((up || tapped(r)) && fresh(`sign:${sgn.tx},${sgn.ty}`)) {
+        talked(`sign:${sgn.tx},${sgn.ty}`);
+        g.pushOverlay(new DialogOverlay(g, sgn.dialog));
+      }
       return;
     }
   }

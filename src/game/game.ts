@@ -56,6 +56,8 @@ export class Game {
   overlays: Overlay[] = [];
   /** Logic frames since start. */
   frame = 0;
+  /** The frame the last overlay (dialog, menu) closed. */
+  overlayClosedAt = -1000;
   private fade = 0;
   private fadeDir = 0;
   private fadeCb: (() => void) | null = null;
@@ -341,6 +343,7 @@ export class Game {
         const i = this.overlays.lastIndexOf(top);
         if (i >= 0) this.overlays.splice(i, 1);
         this.input.consume();
+        this.overlayClosedAt = this.frame;
       }
     } else {
       this.scene?.update();

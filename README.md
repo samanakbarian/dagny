@@ -32,7 +32,7 @@ npm run preview    # servera dist/ lokalt (med service worker)
    - **iOS Safari:** Dela → "Lägg till på hemskärmen". Startar i helskärm och fungerar offline.
    - **Android Chrome:** meny → "Installera app".
 
-Lägg till `?debug` i adressen för att få alla läsningar och tekniker direkt, vilket är praktiskt när man testar. `window.dagny` exponerar spelobjektet i konsolen.
+Lägg till `?debug` i adressen för att få alla läsningar och tekniker direkt, vilket är praktiskt när man testar. `window.dagny` exponerar spelobjektet i konsolen (bara i utvecklingsläge).
 
 ## Kontroller
 
@@ -43,7 +43,10 @@ Lägg till `?debug` i adressen för att få alla läsningar och tekniker direkt,
 | Svärd (håll NER = lågt) | X | B | SVÄRD |
 | Magi (vald läsning) | C | Y | MAGI |
 | Prata / gå in genom dörr | Upp | Upp | Upp, eller tryck på personen |
+| Bläddra i dialog | Z, Enter, X eller Upp | A, B eller Upp | Tryck var som helst |
 | Paus | Esc / P | Start | ❚❚ |
+
+Efter en dialog startar inget nytt samtal förrän efter en halv sekund. Samma person eller skylt startar inte om förrän Dagny har gått därifrån en bit, eller efter tre sekunder, så man öppnar inte samtalet igen av misstag när man trycker sig förbi sista sidan.
 
 Pekkontrollerna visas automatiskt vid beröring och döljs när tangentbord eller handkontroll används. Storlek, placering, genomskinlighet, styrspak/styrkors och vibration ställs in under **Inställningar**.
 
