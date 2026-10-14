@@ -76,13 +76,13 @@ export function wakeAtVillage(game: Game): void {
 /**
  * After a defeat with lives left: try again from the door of the room Dagny
  * fell in – anywhere, as in the old games; in a guardian's hall, that is right
- * at the guardian.
+ * at the guardian, with full health and magic.
  */
 export function retryRoom(game: Game, areaId: string, entry: string | null): void {
   const st = game.state;
   if (!st) return;
   st.hp = hpMax(st);
-  st.mp = Math.max(st.mp, Math.ceil(mpMax(st) / 2));
+  st.mp = mpMax(st);
   goToArea(game, areaId, { entry: entry ?? undefined });
 }
 

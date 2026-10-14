@@ -9,7 +9,7 @@ import type { Game } from '../src/game/game';
 import { LAST_TEMPLE, gameOver, retryRoom } from '../src/game/flow';
 import { GameOverOverlay } from '../src/game/menus';
 import { deserialize, serialize } from '../src/game/save';
-import { MAX_LIVES, START_LIVES, hpMax, newGame, type GameState } from '../src/game/state';
+import { MAX_LIVES, START_LIVES, hpMax, mpMax, newGame, type GameState } from '../src/game/state';
 
 /** Just enough of a Game for the Game Over screen and flow (scene changes are skipped). */
 function fakeGame(state: GameState): Game {
@@ -101,7 +101,7 @@ describe('lives', () => {
     expect(labels).toHaveLength(2); // or wake in the village
   });
 
-  it('a retry fills Dagny up again and moves her', () => {
+  it('a retry fills Dagny up again – health and magic – and moves her', () => {
     const s = newGame();
     s.hp = 0;
     s.mp = 0;
@@ -110,7 +110,7 @@ describe('lives', () => {
     retryRoom(g, 'krypta_4', 'A');
     expect(moved).toBe(true);
     expect(s.hp).toBe(hpMax(s));
-    expect(s.mp).toBeGreaterThan(0);
+    expect(s.mp).toBe(mpMax(s));
   });
 
   it('outside temples too, a lost life means trying again in the same place (or waking in the village)', () => {
