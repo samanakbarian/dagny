@@ -18,6 +18,7 @@ export function goToArea(game: Game, areaId: string, spawn: Spawn): void {
 }
 
 export function goToOverworld(game: Game): void {
+  game.taken.clear();
   game.transition(() => {
     if (game.state) game.state.loc = { area: 'overworld', x: game.state.ow.x, y: game.state.ow.y };
     game.setScene(new OverworldScene(game));
@@ -69,6 +70,7 @@ export function wakeAtVillage(game: Game): void {
   if (!st) return;
   st.hp = hpMax(st);
   st.mp = mpMax(st);
+  game.taken.clear();
   const v = VILLAGES.find((x) => x.area === st.lastVillage) ?? VILLAGES[0];
   goToArea(game, v.area ?? 'mormors_by', { entry: v.wakeEntry });
 }

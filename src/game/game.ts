@@ -58,6 +58,12 @@ export class Game {
   frame = 0;
   /** The frame the last overlay (dialog, menu) closed. */
   overlayClosedAt = -1000;
+  /**
+   * Buns, thermoses and lingonberries lying in rooms that Dagny has taken
+   * (by room position). They stay gone until she goes out onto the overworld
+   * or wakes in a village, so stepping in and out of a room refills nothing.
+   */
+  readonly taken = new Set<string>();
   private fade = 0;
   private fadeDir = 0;
   private fadeCb: (() => void) | null = null;

@@ -11,6 +11,8 @@ export function collect(sc: SideScene, pk: Pickup): void {
   const s = sc.s;
   const g = sc.game;
   pk.taken = true;
+  // Placed buns, thermoses and lingonberries (dropped ones have no id).
+  if ((pk.kind === 'bulle' || pk.kind === 'termos' || pk.kind === 'lingon') && pk.pid) g.taken.add(pk.pid);
   switch (pk.kind) {
     case 'bulle':
       s.xp += 10;

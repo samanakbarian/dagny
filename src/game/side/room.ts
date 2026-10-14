@@ -134,7 +134,7 @@ export function build(sc: SideScene): void {
           } else if (PICKUP_CHARS[ch]) {
             const k = PICKUP_CHARS[ch];
             const sz = spriteSize(k);
-            sc.pickups.push(new Pickup(k, px - sz.w / 2, py - sz.h - 2, k, false));
+            if (!sc.game.taken.has(sc.pid(tx, ty))) sc.pickups.push(new Pickup(k, px - sz.w / 2, py - sz.h - 2, k, false, sc.pid(tx, ty)));
           } else if (ch >= '1' && ch <= '9') {
             const npcId = a.npcs?.[ch];
             const def = npcId ? NPCS[npcId] : undefined;
@@ -208,6 +208,9 @@ export function sealHiddenRooms(sc: SideScene, fill: string): void {
   for (let i = 0; i < w * h; i++) {
     if (seen[i] || sc.grid.kinds[i] === Kind.Solid) continue;
     sc.tileSprite[i] = fill;
+    // The hidden room's floor would show as a ledge inside the rock: plain rock too.
+    const below = i + w;
+    if (below < w * h && tiles[Math.floor(below / w)][below % w] === '#') sc.tileSprite[below] = fill;
     const x = (i % w) * TILE;
     const y = Math.floor(i / w) * TILE;
     sc.pickups = sc.pickups.filter((pk) => !(pk.x + pk.w / 2 >= x && pk.x + pk.w / 2 < x + TILE && pk.y + pk.h / 2 >= y && pk.y + pk.h / 2 < y + TILE));
