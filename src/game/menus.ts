@@ -1,6 +1,6 @@
 import { VILLAGES } from '../data/temples';
 import { VIEW_W, VIEW_H } from '../engine/screen';
-import { drawSprite } from '../engine/sprites';
+import { drawSprite, getSprite } from '../engine/sprites';
 import { drawText, measure, wrap, LINE_HEIGHT } from '../engine/text';
 import { Act } from '../engine/input';
 import { ITEMS, ITEM_ORDER } from '../data/items';
@@ -435,11 +435,14 @@ export class GameOverOverlay implements Overlay {
       items.push({ label, onSelect: () => flow.wakeAtVillage(game) });
     }
     this.menu = new ListMenu(items, game.audio);
+    // The real end: the music stops, and out of the dark Bergakungen laughs.
+    if (this.over) game.audio.playMusic(null);
   }
 
   update(): boolean {
     this.t++;
-    if (this.t < 40) return true;
+    if (this.over && this.t === LAUGH_AT) this.game.audio.play('laugh');
+    if (this.t < (this.over ? LAUGH_AT + LAUGH_LEN : 40)) return true;
     const before = this.game.transitioning;
     this.menu.update(this.game.input);
     // Close once a choice started the transition.
@@ -447,13 +450,19 @@ export class GameOverOverlay implements Overlay {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    dim(ctx, Math.min(this.over ? 0.95 : 0.85, this.t / 40));
+    dim(ctx, Math.min(this.over ? 1 : 0.85, this.t / 40));
     if (this.t < 30) return;
     const s = this.game.state!;
     if (this.over) {
-      drawText(ctx, STR.gameOverEnd, VIEW_W / 2, 44, 'R', { align: 'center' });
-      if (this.temple === flow.LAST_TEMPLE) drawText(ctx, STR.gameOverMountain, VIEW_W / 2, 58, 'W', { align: 'center' });
-      drawText(ctx, STR.gameOverEndText, VIEW_W / 2, this.temple === flow.LAST_TEMPLE ? 72 : 62, 'G', { align: 'center' });
+      this.renderShadow(ctx);
+      if (this.t < LAUGH_AT + LAUGH_LEN) return;
+      let y = 112;
+      drawText(ctx, STR.gameOverEnd, VIEW_W / 2, y, 'R', { align: 'center' });
+      if (this.temple === flow.LAST_TEMPLE) drawText(ctx, STR.gameOverMountain, VIEW_W / 2, (y += 10), 'W', { align: 'center' });
+      drawText(ctx, STR.gameOverEndText, VIEW_W / 2, y + 10, 'G', { align: 'center' });
+      const w = this.menu.width() + 10;
+      this.menu.render(ctx, Math.round((VIEW_W - w) / 2), y + 26, w);
+      return;
     } else {
       drawText(ctx, STR.gameOverTitle, VIEW_W / 2, 44, 'W', { align: 'center' });
       // The lives still left, as little doll heads.
@@ -467,4 +476,45 @@ export class GameOverOverlay implements Overlay {
     const w = this.menu.width() + 10;
     this.menu.render(ctx, Math.round((VIEW_W - w) / 2), 96, w);
   }
+
+  /**
+   * Bergakungen's shadow, twice his size, rising out of the dark with his
+   * arms raised. He shakes with every "ha", and the words drift up round him.
+   */
+  private renderShadow(ctx: CanvasRenderingContext2D): void {
+    const rise = Math.min(1, (this.t - 30) / 24);
+    const lt = this.t - LAUGH_AT;
+    const laughing = lt >= 0 && lt < LAUGH_LEN - 20;
+    const shake = laughing && lt % LAUGH_STEP < LAUGH_STEP / 2 ? 2 : 0;
+    const f = getSprite('bergakungSkugga', 1);
+    const x = Math.round(VIEW_W / 2 - f.w);
+    const y = Math.round(6 + (1 - rise) * 20) - shake;
+    ctx.globalAlpha = rise;
+    ctx.drawImage(f.image, f.sx, f.sy, f.w, f.h, x, y, f.w * 2, f.h * 2);
+    ctx.globalAlpha = 1;
+    // His lower half sinks back into the dark.
+    const fade = ctx.createLinearGradient(0, 64, 0, 104);
+    fade.addColorStop(0, 'rgba(43,34,51,0)');
+    fade.addColorStop(1, PALETTE.k);
+    ctx.fillStyle = fade;
+    ctx.fillRect(0, 64, VIEW_W, 40);
+    ctx.fillStyle = PALETTE.k;
+    ctx.fillRect(0, 104, VIEW_W, VIEW_H - 104);
+    // "HA" for every laugh so far, alternating sides, drifting upwards and fading.
+    if (lt < 0) return;
+    for (let i = 0; i < LAUGH_HAS; i++) {
+      const age = lt - i * LAUGH_STEP;
+      if (age < 0 || age > 50) continue;
+      ctx.globalAlpha = 1 - age / 50;
+      const side = i % 2 ? 1 : -1;
+      drawText(ctx, 'HA', VIEW_W / 2 + side * (60 + (i % 3) * 14), 34 - age / 3 + (i % 3) * 12, 'R', { align: 'center' });
+    }
+    ctx.globalAlpha = 1;
+  }
 }
+
+/** The laugh on the Game Over screen: when it starts, how many "ha"s, frames between them, and how long it all lasts. */
+const LAUGH_AT = 60;
+const LAUGH_HAS = 7;
+const LAUGH_STEP = 12;
+const LAUGH_LEN = LAUGH_HAS * LAUGH_STEP + 40;

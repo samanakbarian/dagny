@@ -65,6 +65,23 @@ describe('lives', () => {
     expect(s.checkpoint).toBeNull();
   });
 
+  it('a lost life keeps the XP; only Game Over takes it', () => {
+    const s = newGame();
+    s.xp = 50;
+    new GameOverOverlay(fakeGame(s), null, { area: 'bjorkhagen', entry: 'W' });
+    expect(s.xp).toBe(50);
+  });
+
+  it('the Game Over screen is silent but for Bergakungen laughing', () => {
+    const s = newGame();
+    s.lives = 1;
+    const heard: Array<string | null> = [];
+    const g = { ...fakeGame(s), input: {}, audio: { play: (id: string) => heard.push(id), playMusic: (id: string | null) => heard.push(id) } } as unknown as Game;
+    const o = new GameOverOverlay(g, null);
+    for (let i = 0; i < 100; i++) o.update();
+    expect(heard).toEqual([null, 'laugh']);
+  });
+
   it('in Trollberget Game Over puts every candle on the mountain out', () => {
     const s = newGame();
     s.lives = 0;

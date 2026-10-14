@@ -39,6 +39,8 @@ checks that Läkning and Nedåtstöt cannot be had for free.
   - In Zelda II a lost life also sent you back to the start of the area outside palaces. Inside palaces it sent you to the palace entrance. Same-room restart in temples is a deliberate, kinder choice for a phone game.
   - Lit candles are save points: they save the game, and "Fortsätt" from the title screen starts there.
 - **The last life lost = Game Over:** she starts over at **Mormor's** with 3 lives. Unspent XP is lost; levels, items and containers are kept.
+  - As in Zelda II, a single lost life costs no XP; only Game Over takes the unspent XP.
+  - The Game Over screen is black and silent. **Bergakungen's shadow** (`bergakungSkugga`), twice his size with ember eyes and arms raised, rises out of the dark and laughs: seven deep "ha"s (sound `laugh`) with the word HA drifting up round him. This is our version of Ganon's shadow laughing in Zelda II. Only then do the text and the choice appear.
 - **Trollberget is the exception:** Game Over there sends her back to the **foot of the mountain**, and every candle on the mountain goes out (as in the Great Palace).
 - **Näverdockor** (birch-bark dolls, tile `+`) give one extra life each and are taken once. There are eight: Björkhagen (early, on a high ledge), Tjuvgrottan, Jättegrytan, Kvarnen, the crypt and Fyren (behind radio walls), Fäbodskogen and Trollgrottan.
 

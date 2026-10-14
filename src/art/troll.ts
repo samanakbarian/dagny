@@ -243,6 +243,18 @@ export const trollSprites: Record<string, SpriteDef> = {
     frames: [],
     recolor: { M: 'G', m: 'g', l: 'Y', e: 'w', k: 'Y' },
   },
+  /**
+   * The Game Over screen: Bergakungen as a black shadow with ember eyes,
+   * the way Ganon's shadow laughs when Zelda II ends.
+   */
+  bergakungSkugga: {
+    base: 'bergakung',
+    w: 40,
+    h: 48,
+    frames: [],
+    outline: 'p',
+    recolor: { y: 'k', Y: 'R', k: 'd', g: 'k', G: 'K', w: 'K', e: 'K', l: 'K', M: 'K', m: 'K' },
+  },
   /** Dagmar – the last Väktare, Dagny's mother, as a figure of light. */
   /** Skuggan: Dagny in shadow colours, red-eyed, with a violet glow round her. */
   skuggan: {
