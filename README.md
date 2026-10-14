@@ -111,7 +111,7 @@ tests/         Vitest
 
 - **Rendering:** Canvas 2D i 320×180. Heltalsskalning när den fyller minst ~85 % av skärmen, annars den största skalan som får plats. `image-rendering: pixelated`. Statiska tiles förrenderas per område och sprites cachas på offscreen-canvas vid uppstart.
 - **Spelloop:** fast tidssteg 60 Hz, rendering på `requestAnimationFrame`. Vid `visibilitychange` pausas och sparas spelet, ljudet stängs av och pausmenyn öppnas när man kommer tillbaka.
-- **Sparning:** `localStorage` bakom en wrapper som aldrig kastar fel och faller tillbaka på minnet. Spelet autosparar vid varje områdesbyte, vila, ljusstake (checkpoint), nyckel och när appen tappar fokus. Sparfilen är versionerad och valideras fält för fält.
+- **Sparning:** `localStorage` bakom en wrapper som aldrig kastar fel och faller tillbaka på minnet. Spelet autosparar vid varje områdesbyte, vila, ljusstake (checkpoint), nyckel och när appen tappar fokus. Sparfilen är versionerad och valideras fält för fält. Vid första tryck ber spelet webbläsaren att aldrig rensa lagringen (`navigator.storage.persist()`). Annars kan till exempel iOS Safari radera den efter sju dagar utan besök.
 - **Ljud:** Web Audio-synt med folkklanger (dragspel, harpa, flöjt, kyrkklocka, orgel) för byarna och NES-pulsvågor för äventyret. Jinglar spelas ovanpå musiken. Låses upp vid första tryck (krav på iOS). Se [docs/soundtrack.md](docs/soundtrack.md).
 - **Förlåtande styrning:** coyote time, hoppbuffert, variabel hopphöjd, stora träffytor och "lugnt läge" som halverar skadan.
 

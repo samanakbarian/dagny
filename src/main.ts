@@ -1,6 +1,7 @@
 import { Loop } from './engine/loop';
 import { AudioEngine } from './engine/audio';
 import { initSprites } from './engine/sprites';
+import { requestPersistentStorage } from './engine/storage';
 import { SPRITES } from './art';
 import { SONGS } from './audio/songs';
 import { SFX } from './audio/sfx';
@@ -76,6 +77,13 @@ function boot(): void {
   document.addEventListener('touchend', wake, { passive: true });
   document.addEventListener('pointerup', wake, { passive: true });
   document.addEventListener('keydown', wake, { passive: true });
+  // Ask once, at the first tap or key press, that the save is never cleared by the browser.
+  const keepSave = (): void => {
+    for (const ev of ['pointerup', 'keydown'] as const) document.removeEventListener(ev, keepSave);
+    void requestPersistentStorage();
+  };
+  document.addEventListener('pointerup', keepSave, { passive: true });
+  document.addEventListener('keydown', keepSave, { passive: true });
   // Coming back from the back/forward cache counts as coming back from the background.
   window.addEventListener('pageshow', (e) => {
     if (e.persisted) game.resumeFromBackground();

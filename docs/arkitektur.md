@@ -57,6 +57,10 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
 - **One state object.** `GameState` (`game/state.ts`) is everything that is saved.
   The save format is versioned with migrations (`game/save.ts`), every field is
   validated on load, and `repairReach` makes sure Dagny is never stuck.
+  At the first tap or key press the game asks the browser to keep its storage
+  (`requestPersistentStorage` in `engine/storage.ts`). Otherwise browsers may
+  clear it, for example iOS Safari after seven days without a visit. Chrome says
+  yes for installed apps (the Android app, home-screen installs) and well-used sites.
 - **Sprites are rasterised once** to offscreen canvases. `getSprite(id, frame)` is the
   only interface, so PNG sheets can replace them later.
 - **Audio** is a small Web Audio synth with a look-ahead sequencer. Music is note
@@ -68,7 +72,7 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
 - **ESLint** (the recommended JS and TypeScript rules, `npm run lint`).
 - **CI** (`.github/workflows/ci.yml`) runs lint, tests and a build on every push
   and pull request. `npm run check` does the same locally.
-- **Vitest, 312 tests** covering:
+- **Vitest, 316 tests** covering:
   - data integrity (every exit, dialog, sprite and character in the font)
   - softlocks and pits (a coarse jump model)
   - region gating
