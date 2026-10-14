@@ -374,7 +374,8 @@ export class GameOverOverlay implements Overlay {
       const label = temple === flow.LAST_TEMPLE ? STR.restartMountain : STR.restartHome;
       items.push({ label, onSelect: () => flow.gameOver(game, temple) });
     } else {
-      if (temple && room) items.push({ label: STR.retryRoom, onSelect: () => flow.retryRoom(game, room.area, room.entry) });
+      // Try again from the door of the room she fell in – in temples and outside them alike.
+      if (room) items.push({ label: STR.retryRoom, onSelect: () => flow.retryRoom(game, room.area, room.entry) });
       // Wake where Dagny last rested (the button names the village).
       const village = VILLAGES.find((v) => v.area === s.lastVillage) ?? VILLAGES[0];
       const label = village.id === 'mormors_by' ? STR.wakeHome : `${STR.wakeIn} ${village.name}`;

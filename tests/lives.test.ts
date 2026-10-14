@@ -96,10 +96,10 @@ describe('lives', () => {
     expect(s.mp).toBeGreaterThan(0);
   });
 
-  it('outside temples there is no retry – Dagny wakes in the village', () => {
-    const o = new GameOverOverlay(fakeGame(newGame()), null, { area: 'mote_ang', entry: null });
+  it('outside temples too, a lost life means trying again in the same place (or waking in the village)', () => {
+    const o = new GameOverOverlay(fakeGame(newGame()), null, { area: 'bjorkhagen', entry: 'W' });
     const labels = (o as unknown as { menu: { items: Array<{ label: string }> } }).menu.items.map((i) => i.label);
-    expect(labels).toEqual(['Vakna hos mormor']);
+    expect(labels).toEqual(['Försök igen', 'Vakna hos mormor']);
   });
 
   it('every temple has a door to retry at (entry marker A)', () => {

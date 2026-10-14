@@ -74,8 +74,9 @@ export function wakeAtVillage(game: Game): void {
 }
 
 /**
- * After a defeat in a temple with lives left: try again from the door of the
- * room Dagny fell in – in the guardian's hall, that is right at the guardian.
+ * After a defeat with lives left: try again from the door of the room Dagny
+ * fell in – anywhere, as in the old games; in a guardian's hall, that is right
+ * at the guardian.
  */
 export function retryRoom(game: Game, areaId: string, entry: string | null): void {
   const st = game.state;

@@ -35,9 +35,8 @@ checks that Läkning and Nedåtstöt cannot be had for free.
 ## Lives and Game Over (Zelda II style)
 
 - Dagny has **3 lives** (`START_LIVES`), at most 9. Lives show in the HUD as little doll heads.
-- **Defeat with lives left:** one life is lost.
-  - In a temple she tries again at the door of the **same room** she fell in. In the guardian's hall that means straight back to the guardian, at full health. (Kinder than Zelda II, which sent you back to the palace entrance – a deliberate choice for a phone game.)
-  - Outside temples she wakes in the last village she rested in.
+- **Defeat with lives left:** one life is lost, and Dagny tries again at the door of the **same room** she fell in. This holds everywhere: in temples, on paths, in caves and in meetings on the map. In a guardian's hall that means straight back to the guardian, at full health. She can also choose to wake in the last village she rested in.
+  - In Zelda II a lost life also sent you back to the start of the area outside palaces. Inside palaces it sent you to the palace entrance. Same-room restart in temples is a deliberate, kinder choice for a phone game.
   - Lit candles are save points: they save the game, and "Fortsätt" from the title screen starts there.
 - **The last life lost = Game Over:** she starts over at **Mormor's** with 3 lives. Unspent XP is lost; levels, items and containers are kept.
 - **Trollberget is the exception:** Game Over there sends her back to the **foot of the mountain**, and every candle on the mountain goes out (as in the Great Palace).
