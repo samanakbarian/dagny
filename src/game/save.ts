@@ -24,6 +24,13 @@ export function serialize(state: GameState, now = Date.now()): string {
   return JSON.stringify(file);
 }
 
+/** Containers once handed out in a dialog, now lying in the room: the same container under its new id. */
+const MOVED_CONTAINERS: Readonly<Record<string, string>> = {
+  'liv:kyrkogarden': 'liv:kyrkogarden:21,9',
+  'magi:kolartorpet': 'magi:kolartorpet:17,9',
+  'liv:fabodtorpet': 'liv:fabodtorpet:17,9',
+};
+
 const isObj = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
 const num = (x: unknown, d: number): number => (typeof x === 'number' && Number.isFinite(x) ? x : d);
 const strArr = (x: unknown): string[] => (Array.isArray(x) ? x.filter((v): v is string => typeof v === 'string') : []);
@@ -105,7 +112,7 @@ export function deserialize(text: string | null): SaveFile | null {
     lastVillage: typeof s.lastVillage === 'string' ? s.lastVillage : d.lastVillage,
     checkpoint: s.checkpoint === null || s.checkpoint === undefined ? null : loc(s.checkpoint, d.loc),
     playTime: Math.max(0, num(s.playTime, 0)),
-    containers: [...new Set(strArr(s.containers).filter((c) => /^(liv|magi):./.test(c)))],
+    containers: [...new Set(strArr(s.containers).filter((c) => /^(liv|magi):./.test(c)).map((c) => MOVED_CONTAINERS[c] ?? c))],
     // Saves from before lives existed start with a full set.
     lives: Math.max(1, Math.min(MAX_LIVES, Math.floor(num(s.lives, START_LIVES)))),
     explored: typeof s.explored === 'string' ? s.explored.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 800) : '',

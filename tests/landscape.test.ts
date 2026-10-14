@@ -113,8 +113,9 @@ describe('the overworld as landscape', () => {
         for (const c of DIALOG[id].choices ?? []) walk(c.next);
       };
       for (const n of npcs) for (const tk of n.talk) walk(tk.dialog);
+      // A container or life from the dialog, or a container the task leaves lying in the room.
       const rewards = [...dialogs].flatMap((id) => DIALOG[id].actions ?? []).filter((a) => a.type === 'container' || a.type === 'life');
-      expect(rewards.length, `${here[0].name} rewards the task`).toBeGreaterThan(0);
+      expect(rewards.length + (area.rewards?.length ?? 0), `${here[0].name} rewards the task`).toBeGreaterThan(0);
     }
   });
 

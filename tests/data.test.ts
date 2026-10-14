@@ -238,7 +238,10 @@ describe('dialog and text', () => {
     for (const n of Object.values(NPCS)) {
       expect(SPRITES[n.sprite], n.sprite).toBeDefined();
       for (const t of n.talk) expect(DIALOG[t.dialog], `${n.id}: ${t.dialog}`).toBeDefined();
-      expect(n.talk[n.talk.length - 1].if, `${n.id} needs a fallback dialog`).toBeUndefined();
+      // Only a thing (a glowing charcoal stack) may have nothing to say.
+      if (n.talk.length) expect(n.talk[n.talk.length - 1].if, `${n.id} needs a fallback dialog`).toBeUndefined();
+      else expect(n.still, `${n.id} has nothing to say`).toBe(true);
+      if (n.burns?.dialog) expect(DIALOG[n.burns.dialog], n.burns.dialog).toBeDefined();
     }
     for (const p of OVERWORLD.places) if (p.dialog) expect(DIALOG[p.dialog], p.dialog).toBeDefined();
     for (const id of ['behover_eka', 'behover_stovlar', 'nyckel_saknas', 'grim_vaknar', 'murre_hittad']) expect(DIALOG[id]).toBeDefined();

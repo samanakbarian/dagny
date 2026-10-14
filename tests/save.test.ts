@@ -24,6 +24,12 @@ describe('save format', () => {
     expect(back!.state).toEqual(s);
   });
 
+  it('a container once given in a dialog keeps counting, under the id of the one now lying in the room', () => {
+    const s = newGame();
+    s.containers.push('magi:kolartorpet', 'liv:kyrkogarden', 'liv:fabodtorpet', 'liv:kompass');
+    expect(deserialize(serialize(s))!.state.containers).toEqual(['magi:kolartorpet:17,9', 'liv:kyrkogarden:21,9', 'liv:fabodtorpet:17,9', 'liv:kompass']);
+  });
+
   it('rejects garbage', () => {
     expect(deserialize(null)).toBeNull();
     expect(deserialize('')).toBeNull();

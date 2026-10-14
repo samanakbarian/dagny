@@ -60,7 +60,7 @@ describe('a whole playthrough', () => {
     expect(Object.keys(SKILLS).filter((s) => !all.skills.has(s))).toEqual([]);
   });
 
-  it('can find every container and every näverdocka placed in a room', () => {
+  it('can find every container and every näverdocka placed in a room (or left by a task)', () => {
     const placed: string[] = [];
     for (const a of Object.values(AREAS)) {
       a.tiles.forEach((r, y) => [...r].forEach((ch, x) => {
@@ -69,6 +69,7 @@ describe('a whole playthrough', () => {
         if (ch === '+') placed.push(`liv1:${a.id}:${x},${y}`);
       }));
       for (const ls of a.lampSecrets ?? []) if (ls.container) placed.push(`${ls.container}:${a.id}:${ls.tx},${ls.ty}`);
+      for (const r of a.rewards ?? []) placed.push(`${r.kind}:${a.id}:${r.tx},${r.ty}`);
     }
     expect(placed.filter((p) => !all.containers.has(p) && !all.lives.has(p))).toEqual([]);
   });
@@ -140,6 +141,26 @@ describe('the logic holds together', () => {
       const cols = new Set(rooms.flatMap((a) => a.tiles.flatMap((r) => [...r].flatMap((ch, x) => (ch === 'L' ? [`${a.id}:${x}`] : [])))));
       const keys = rooms.reduce((n, a) => n + a.tiles.join('').split('k').length - 1, 0);
       expect(keys, t.id).toBeGreaterThanOrEqual(cols.size);
+    }
+  });
+});
+
+describe('tasks done with the hands, not with a menu', () => {
+  it('the charcoal stack is lit only by a fireball: no dialog lights it', () => {
+    const lights = Object.values(DIALOG).some((d) => [...(d.actions ?? []), ...(d.choices ?? []).flatMap((c) => c.actions ?? [])].some((a) => a.type === 'flag' && a.flag === 'kolmilan_tand'));
+    expect(lights).toBe(false);
+    expect(NPCS.kolmila.burns?.flag).toBe('kolmilan_tand');
+    // It happens in the playthrough only after Eld is learned.
+    const lit = run.steps.findIndex((s) => s.kind === 'flag' && s.what === 'kolmilan_tand');
+    const eld = run.steps.findIndex((s) => s.kind === 'spell' && s.what === 'eld');
+    expect(eld).toBeGreaterThanOrEqual(0);
+    expect(lit).toBeGreaterThan(eld);
+  });
+
+  it('a container found on a task lies in the room to be picked up, not handed over in the dialog', () => {
+    for (const id of ['kyrkogarden', 'kolartorpet', 'fabodtorpet']) {
+      expect(AREAS[id].rewards?.length, id).toBe(1);
+      expect(Object.values(DIALOG).some((d) => (d.actions ?? []).some((a) => a.type === 'container' && a.id === id)), id).toBe(false);
     }
   });
 });

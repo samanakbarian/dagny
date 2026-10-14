@@ -32,7 +32,7 @@ import { newGame } from '../game/state';
 
 export interface Step {
   wave: number;
-  kind: 'area' | 'talk' | 'item' | 'lose' | 'flag' | 'spell' | 'skill' | 'boss' | 'container' | 'life' | 'key' | 'door' | 'scene';
+  kind: 'area' | 'talk' | 'burn' | 'item' | 'lose' | 'flag' | 'spell' | 'skill' | 'boss' | 'container' | 'life' | 'key' | 'door' | 'scene';
   what: string;
   /** Where it happened (area id, or 'overworld'). */
   where: string;
@@ -286,6 +286,13 @@ export function playthrough(opts: Options = {}): Playthrough {
     }
     if (a.sealed && [...seen].some((i) => ENEMY_CHARS[a.tiles[Math.floor(i / w)][i % w]])) setFlag(`${a.id}_rensad`);
     for (const fd of a.finds ?? []) if (reached(fd.tx, fd.ty) && !flags.has(`${fd.item}_klar`)) pickUp(fd.item);
+    for (const r of a.rewards ?? []) {
+      const key = `${r.kind}:${a.id}:${r.tx},${r.ty}`;
+      if (flags.has(r.flag) && reached(r.tx, r.ty) && !containers.has(key)) {
+        containers.add(key);
+        log('container', key);
+      }
+    }
     for (const ls of a.lampSecrets ?? []) {
       if (!items.has(ls.item) || !reached(ls.tx, ls.ty)) continue;
       const key = ls.container ? `${ls.container}:${a.id}:${ls.tx},${ls.ty}` : '';
@@ -332,12 +339,18 @@ export function playthrough(opts: Options = {}): Playthrough {
     }
     if (!check(n.if)) return;
     const t = n.talk.find((x) => check(x.if));
-    if (!t) return;
     if (!npcs.has(id)) {
       npcs.add(id);
-      log('talk', id);
+      // A thing with nothing to say (a glowing charcoal stack) is seen all the same.
+      if (t) log('talk', id);
     }
-    talk(t.dialog);
+    if (t) talk(t.dialog);
+    // Something that burns catches fire from a fireball, once she knows Eld.
+    if (n.burns && spells.has('eld') && !flags.has(n.burns.flag)) {
+      log('burn', id);
+      setFlag(n.burns.flag);
+      if (n.burns.dialog) talk(n.burns.dialog);
+    }
   };
 
   const beat = (enemy: string): void => {
@@ -456,6 +469,7 @@ export function walkthroughMarkdown(r: Playthrough): string {
       case 'area':
         return AREAS[s.what]?.name ?? s.what;
       case 'talk':
+      case 'burn':
         return npcName(s.what);
       case 'item':
       case 'lose':
@@ -480,6 +494,7 @@ export function walkthroughMarkdown(r: Playthrough): string {
     life: 'finds a näverdocka',
     key: 'finds a key',
     door: 'unlocks a door',
+    burn: 'sets fire to',
     scene: 'scene:',
   };
   const waves = [...new Set(r.steps.map((s) => s.wave))];

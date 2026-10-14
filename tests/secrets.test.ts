@@ -49,6 +49,7 @@ function containersPlaced(): Array<{ area: string; kind: 'liv' | 'magi'; via: st
   for (const a of Object.values(AREAS)) {
     for (const [x, y] of cellsOf(a, 'hp')) out.push({ area: a.id, kind: a.tiles[y][x] === 'h' ? 'liv' : 'magi', via: 'tile' });
     for (const ls of a.lampSecrets ?? []) if (ls.container) out.push({ area: a.id, kind: ls.container, via: ls.item });
+    for (const r of a.rewards ?? []) out.push({ area: a.id, kind: r.kind, via: r.flag });
   }
   for (const act of allActions) if (act.type === 'container') out.push({ area: 'dialog', kind: act.kind, via: act.id });
   return out;

@@ -43,11 +43,10 @@ export const SMAPLATSER: Record<string, DialogDef> = {
   sten_karin_ask: {
     pages: [
       'Stenen glider åt sidan med ett gnissel. I gropen under ligger en rostig plåtask.',
-      'I asken: en LIVBEHÅLLARE och en lapp.\n"Till den som läser stenarna och inte glömmer dem. /Kyrkvaktaren, 1946"',
+      'I asken ligger en lapp, och under den blänker något.\n"Till den som läser stenarna och inte glömmer dem. /Kyrkvaktaren, 1946"',
     ],
     actions: [
       { type: 'flag', flag: 'karins_sten_rubbad' },
-      { type: 'container', kind: 'liv', id: 'kyrkogarden' },
       { type: 'xp', amount: 40 },
     ],
   },
@@ -66,25 +65,14 @@ export const SMAPLATSER: Record<string, DialogDef> = {
     ],
   },
   kolmila_eld: {
-    pages: ['Kolmilan har slocknat. Torven har sjunkit ihop, och veden därinne är kall.'],
-    choices: [
-      { text: 'Läs Eld över milan', next: 'kolmila_tand' },
-      { text: 'Låt den vara' },
-    ],
+    pages: ['Kolmilan har slocknat. Torven har sjunkit ihop, och veden därinne är kall. Den väntar på eld.'],
   },
   kolmila_tand: {
     pages: [
       'Lågan kryper in under torven. Det knäpper och pyser – och sedan stiger röken, rak och blå, som förr.',
-      'I röken tycker Dagny att hon ser en gammal man som lyfter på mössan. Där han stod ligger en MAGIBEHÅLLARE.',
+      'I röken tycker Dagny att hon ser en gammal man som lyfter på mössan. Där han stod blänker något i askan.',
     ],
-    actions: [
-      { type: 'flag', flag: 'kolmilan_tand' },
-      { type: 'container', kind: 'magi', id: 'kolartorpet' },
-      { type: 'xp', amount: 60 },
-    ],
-  },
-  kolmila_glod: {
-    pages: ['Milan glöder igen, varm och jämn. Det luktar tjära och sommar.'],
+    actions: [{ type: 'xp', amount: 60 }],
   },
 
   // --- Pestkorset: flowers for the dead ---------------------------------------------------
@@ -203,11 +191,10 @@ export const SMAPLATSER: Record<string, DialogDef> = {
   kalla_rensa: {
     pages: [
       'Dagny plockar bort löv och kvistar, en näve i taget. Vattnet börjar porla, kallt och klart.',
-      'På botten blänker något: en LIVBEHÅLLARE som någon offrade här en gång.',
+      'Vid kanten, där vattnet rinner undan, blänker något som någon offrade här en gång.',
     ],
     actions: [
       { type: 'flag', flag: 'kallan_rensad' },
-      { type: 'container', kind: 'liv', id: 'fabodtorpet' },
       { type: 'heal' },
       { type: 'magic' },
     ],

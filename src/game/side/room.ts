@@ -170,6 +170,7 @@ export function build(sc: SideScene): void {
     if (ls.gives) placeFind(sc, ls.gives, ls.tx, ls.ty);
     sc.lampGlints.push({ x: px, y: py - 8 });
   }
+  refreshRoom(sc);
   // Animated decor (candles).
   if (a.deco) {
     for (let ty = 0; ty < h; ty++) {
@@ -293,4 +294,32 @@ export function renderFront(sc: SideScene): HTMLCanvasElement | null {
     }
   }
   return c;
+}
+
+/**
+ * Brings the room in line with what Dagny has done since it was built: people
+ * and things that now should (or should no longer) be here, and containers a
+ * finished task has left lying (AreaDef.rewards). Called after every dialog
+ * and when something catches fire.
+ */
+export function refreshRoom(sc: SideScene): void {
+  const a = sc.area;
+  const s = sc.s;
+  sc.npcs = sc.npcs.filter((n) => sc.game.check(n.def.if));
+  for (let ty = 0; ty < a.tiles.length; ty++) {
+    for (let tx = 0; tx < a.tiles[ty].length; tx++) {
+      const ch = a.tiles[ty][tx];
+      const def = ch >= '1' && ch <= '9' ? NPCS[a.npcs?.[ch] ?? ''] : undefined;
+      if (!def || !sc.game.check(def.if) || sc.npcs.some((n) => n.def.id === def.id)) continue;
+      sc.npcs.push(new Npc(def, tx * TILE + TILE / 2, (ty + 1) * TILE));
+      sc.puff(tx * TILE + TILE / 2, ty * TILE + 8, 'mist');
+    }
+  }
+  for (const r of a.rewards ?? []) {
+    const key = `${r.kind}:${sc.pid(r.tx, r.ty)}`;
+    if (!hasFlag(s, r.flag) || s.containers.includes(key) || sc.pickups.some((p) => p.pid === key && !p.taken)) continue;
+    const px = r.tx * TILE + TILE / 2;
+    const py = (r.ty + 1) * TILE;
+    sc.pickups.push(new Pickup('container', px - 6, py - 13, r.kind === 'liv' ? 'livbehallare' : 'magibehallare', false, key));
+  }
 }

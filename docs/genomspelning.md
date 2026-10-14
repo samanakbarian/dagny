@@ -38,7 +38,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Gruvsamhället**: meets Maj på pensionatet, Gamla Elin, Lisa, Gruvarbetaren Nils, Gruvarbetaren Anders; learns Lyse
 - **Den gamla gruvan**: finds a key
 - **Jättegrytan**: finds a näverdocka
-- **Kolartorpet**: meets kolmila, kolmila_glod; finds a container
+- **Kolartorpet**: meets kolmila; sets fire to kolmila; finds a container
 
 ## 6
 

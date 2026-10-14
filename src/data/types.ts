@@ -201,6 +201,11 @@ export interface NpcDef {
   wander?: number;
   /** A thing rather than a person (a gravestone, a charcoal stack): never turns round. */
   still?: boolean;
+  /**
+   * Catches fire when one of Dagny's fireballs (the Eld reading) hits it:
+   * sets the flag and shows the dialog. Nothing in the talk does it for her.
+   */
+  burns?: { flag: string; dialog?: string };
 }
 
 // --- Areas --------------------------------------------------------------------
@@ -327,6 +332,12 @@ export interface AreaDef {
    * ficklampan): a container lying there, or words to read (Up).
    */
   lampSecrets?: Array<{ item: 'karbidlampa' | 'ficklampa'; tx: number; ty: number; container?: 'liv' | 'magi'; dialog?: string; gives?: string }>;
+  /**
+   * Containers that appear in the room once a task here is done (the flag is
+   * set), to be picked up like any other: a box under a gravestone, the
+   * bottom of a spring.
+   */
+  rewards?: Array<{ flag: string; kind: 'liv' | 'magi'; tx: number; ty: number }>;
   /** Items lying in the room, picked up once (dialog `hittade_<item>`; gone for good once `<item>_klar`). */
   finds?: Array<{ item: string; tx: number; ty: number }>;
   /** NPC that appears where the boss stood once it is reconciled. */

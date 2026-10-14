@@ -208,18 +208,21 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     if: [{ flag: 'karins_sten_rubbad' }],
     talk: [{ dialog: 'sten_karin_tom' }],
   },
+  /** The cold charcoal stack: it takes a fireball (the Eld reading) to light it – talking won't. */
   kolmila: {
     id: 'kolmila', sprite: 'kolmila', still: true, idle: { frames: [0], every: 1 },
     if: [{ notFlag: 'kolmilan_tand' }],
+    burns: { flag: 'kolmilan_tand', dialog: 'kolmila_tand' },
     talk: [
       { if: [{ spell: 'eld' }], dialog: 'kolmila_eld' },
       { dialog: 'kolmila_kall' },
     ],
   },
+  /** Lit: it just glows, with nothing more to say. */
   kolmila_glod: {
     id: 'kolmila_glod', sprite: 'kolmila', still: true, idle: { frames: [1], every: 1 },
     if: [{ flag: 'kolmilan_tand' }],
-    talk: [{ dialog: 'kolmila_glod' }],
+    talk: [],
   },
   grafru: {
     id: 'grafru', sprite: 'grafru', idle: { frames: [0, 0, 2, 0], every: 0.9 },

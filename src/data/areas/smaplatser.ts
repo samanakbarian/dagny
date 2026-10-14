@@ -15,6 +15,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     ambience: ['fireflies'],
     signs: { I: 'kyrkogarden_grind' },
     npcs: { '1': 'sten_anna', '2': 'sten_per', '3': 'sten_karin', '4': 'sten_karin_rubbad', '5': 'sten_johan' },
+    rewards: [{ flag: 'karins_sten_rubbad', kind: 'liv', tx: 21, ty: 9 }],
     props: [{ sprite: 'birch', tx: 28, ty: 9 }],
     left: { to: 'overworld', ow: { x: 22, y: 31 } },
     tiles: [
@@ -46,6 +47,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     ambience: ['leaves'],
     signs: { I: 'kolartorpet_skylt' },
     npcs: { '1': 'kolmila', '2': 'kolmila_glod' },
+    rewards: [{ flag: 'kolmilan_tand', kind: 'magi', tx: 17, ty: 9 }],
     props: [{ sprite: 'spruce', tx: 3, ty: 9 }, { sprite: 'spruce', tx: 29, ty: 9 }],
     left: { to: 'overworld', ow: { x: 37, y: 14 } },
     tiles: [
@@ -58,7 +60,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
       "......===..............===......",
       "................................",
       "................................",
-      "..A.I..v......12.....m....v....#",
+      "..A.I..v......12..........v....#",
       "################################",
       "################################",
     ],
@@ -176,6 +178,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     ambience: ['mist', 'leaves'],
     signs: { I: 'fabodtorpet_skylt' },
     npcs: { '1': 'kalla', '2': 'kalla_ren' },
+    rewards: [{ flag: 'kallan_rensad', kind: 'liv', tx: 17, ty: 9 }],
     props: [{ sprite: 'spruce', tx: 6, ty: 9 }, { sprite: 'birch', tx: 26, ty: 9 }],
     left: { to: 'overworld', ow: { x: 13, y: 13 } },
     tiles: [

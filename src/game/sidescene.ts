@@ -25,7 +25,7 @@ import { LevelUpOverlay, GameOverOverlay } from './menus';
 import { compact, nearestFreeSpot, tmpA, type Checkpoint, type Marker, type SpellTimers } from './side/shared';
 
 export { nearestFreeSpot } from './side/shared';
-import { build, spawnAfterBoss, spawnTreasure, renderStatic, renderFront } from './side/room';
+import { build, refreshRoom, spawnAfterBoss, spawnTreasure, renderStatic, renderFront } from './side/room';
 import { shieldBlocks, damagePlayer, combat, killEnemy } from './side/combat';
 import { collect } from './side/pickups';
 import { renderScene } from './side/render';
@@ -472,6 +472,7 @@ export class SideScene implements Scene, WorldApi {
       pr.update(this.grid, solidAt);
       if (pr.dead || pr.delay > 0) continue;
       if (pr.fromPlayer) {
+        if (pr.sprite === 'fireball') this.burn(pr);
         for (const e of this.enemies) {
           if (e.dead || !overlaps(pr.box, e.box(tmpA))) continue;
           const r = e.takeHit(pr.damage, pr.x, 'magic', this);
@@ -630,6 +631,8 @@ export class SideScene implements Scene, WorldApi {
     let best: Npc | null = null;
     let bestD = 26;
     for (const n of this.npcs) {
+      // Things with nothing to say (a glowing charcoal stack) give no prompt.
+      if (!n.def.talk.some((t) => g.check(t.if))) continue;
       const d = Math.abs(n.x + n.box.w / 2 - pc);
       if (d < bestD && Math.abs(n.y + n.box.h - (p.y + p.h)) < 12) {
         best = n;
@@ -678,10 +681,28 @@ export class SideScene implements Scene, WorldApi {
     }
   }
 
+  /** A fireball that reaches something that burns (a cold charcoal stack) sets it alight. */
+  private burn(pr: Projectile): void {
+    for (const n of this.npcs) {
+      const b = n.def.burns;
+      if (!b || hasFlag(this.s, b.flag) || !overlaps(pr.box, n.box)) continue;
+      pr.dead = true;
+      setFlag(this.s, b.flag);
+      this.sfx('fire');
+      this.shake(10, 1);
+      for (let i = 0; i < 4; i++) this.puff(n.box.x + Math.random() * n.box.w, n.box.y + Math.random() * n.box.h, 'mist');
+      if (b.dialog) this.game.pushOverlay(new DialogOverlay(this.game, b.dialog, () => this.afterDialog()));
+      else this.afterDialog();
+      this.game.save();
+      return;
+    }
+  }
+
   /** NPC talk may have changed flags (e.g. the cat went home). */
   private afterDialog(): void {
     const s = this.s;
     this.applySkills();
+    refreshRoom(this);
     // Spawn Murre when he is home.
     if (hasFlag(s, 'murre_hemma') && !this.npcs.some((n) => n.def.id === 'murre')) {
       const a = this.area;

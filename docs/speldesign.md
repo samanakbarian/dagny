@@ -160,15 +160,21 @@ reward.
 | Region | Place | Task | Reward |
 |---|---|---|---|
 | Home valley | **Gamla kyrkogården** | The sexton's riddle on the gate: read the stones and move the one of the woman who died on midsummer day | Life container, 40 XP |
-| Mine country | **Kolartorpet** | Light the cold charcoal stack with **Eld** (taught by Prosten in Kyrkbyn) | Magic container, 60 XP |
+| Mine country | **Kolartorpet** | Light the cold charcoal stack: cast **Eld** (taught by Prosten in Kyrkbyn) and strike at it, so a fireball hits it. Talking to it only says it is cold | Magic container (left lying by the stack), 60 XP |
 | Mill valley | **Pestkorset** | Den grå frun wants ox-eye daisies for those who rest there; they grow high up on the cliff | Extra life, 40 XP |
 | Coast | **Skeppssättningen** | Find the missing piece of the rune stone in the sand | Extra life, 50 XP |
 | Park plain | **Milstolpen** | The drowned postman lost his horn in the rapids; fetch it from the stones | Magic container, 80 XP |
 | Highlands | **Fäbodtorpet** | Clear the choked healing spring (afterwards Dagny can drink there and be restored) | Life container |
 
 Things in these places (gravestones, the charcoal stack, the rune stone, the
-spring) are NPCs that never turn round (`still` in `data/npcs.ts`). Their dialog
-choices give the rewards; an extra life from dialog is the `life` action.
+spring) are NPCs that never turn round (`still` in `data/npcs.ts`). A task done
+with the hands leaves its container **lying in the room**, to be picked up like
+any other (`rewards` on the area): the box under Karin's stone, the bottom of
+the spring, the ashes of the charcoal stack. Something that must be set alight
+has `burns` and reacts only to a fireball, never to a dialog choice. Once done,
+a thing with nothing more to say gives no prompt. People who hand something
+over (the postman, Johan) still give it in the dialog; an extra life from
+dialog is the `life` action.
 
 ### Hidden places
 
