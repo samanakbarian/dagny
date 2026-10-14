@@ -20,7 +20,7 @@ alternates the root with the fifth below, then turns. It ties the temples togeth
 
 | Song | How the theme appears |
 |---|---|
-| `tempel` – *Väktarnas salar* | Opens the shared temple theme in A minor, then marches on: short phrases that ask and answer, two voices a third apart, a bass bouncing in octaves; each loop runs back into the riff |
+| `tempel` – *Väktarnas salar* | Opens the shared temple theme. Four parts: the riff; a fast part of broken chords over a bass falling by half steps; a calmer part with a phrase sung twice; a build back into the riff |
 | `boss` – *Väktarstriden* | At double speed to start each guardian fight |
 | `trollberget` | Pounded out low and dark (♭2, a tone lower, organ drone) |
 | `bergakung` | Trollberget's version at full speed in the final fight |
