@@ -113,23 +113,27 @@ About 10–15 % of each table is a friendly meeting instead of a fight. Every
 region has its own creatures wandering the map, each tied to its ground, so the
 same meeting doesn't turn up everywhere.
 
-### Landmarks: forgotten things
+### Small places: one per region, each with a task
 
-At least two per region: stone walls (whole and fallen), springs, deserted
-crofts, earth cellars, barns, standing stones, milestones, wayside crosses,
-gates, overgrown paths. On a phone screen (20 × 11 tiles) there is always at
-least one in sight. One per region says something, and gives a little XP the
-first time (`sights` in `src/data/overworld.ts`):
+Nothing on the map looks like a place without being one: every croft, cross,
+standing stone, milestone or churchyard can be visited. Stone walls, gates and
+overgrown paths are plain scenery, and on land something is always in sight
+on a phone screen (20 × 11 tiles). `tests/landscape.test.ts` checks that there
+are no fake places and that every region has one small place whose task gives a
+reward.
 
-| Region | Landmark | What it tells |
-|---|---|---|
-| Home valley | Offerkällan, Lill-Gärdet, Domarringen | Offerings nobody makes now; a croft left for America; the old thing-stead |
-| Mine country | Gruvfogdens sten, Kolartorpet | A mine bailiff from 1871; a charcoal burner's croft |
-| Mill valley | Pestkorset | The plague of 1711 – and fresh flowers, though nobody lives there |
-| Coast | Skeppssättningen | A stone ship that sails in every storm |
-| Park plain | Milstolpen | A milestone pointing at a road the flood took |
-| Highlands | Fäbodtorpet, Trefaldighetskällan | The milkmaids' summer home; a healing spring |
-| Towards Trollberget | Väktarstenen | The sign from Dagny's blade: "Väktarna vakade så länge människorna mindes" |
+| Region | Place | Task | Reward |
+|---|---|---|---|
+| Home valley | **Gamla kyrkogården** | The sexton's riddle on the gate: read the stones and move the one of the woman who died on midsummer day | Life container, 40 XP |
+| Mine country | **Kolartorpet** | Light the cold charcoal stack with **Eld** (taught by Prosten in Kyrkbyn) | Magic container, 60 XP |
+| Mill valley | **Pestkorset** | Den grå frun wants ox-eye daisies for those who rest there; they grow high up on the cliff | Extra life, 40 XP |
+| Coast | **Skeppssättningen** | Find the missing piece of the rune stone in the sand | Extra life, 50 XP |
+| Park plain | **Milstolpen** | The drowned postman lost his horn in the rapids; fetch it from the stones | Magic container, 80 XP |
+| Highlands | **Fäbodtorpet** | Clear the choked healing spring (afterwards Dagny can drink there and be restored) | Life container |
+
+Things in these places (gravestones, the charcoal stack, the rune stone, the
+spring) are NPCs that never turn round (`still` in `data/npcs.ts`). Their dialog
+choices give the rewards; an extra life from dialog is the `life` action.
 
 ### Hidden places
 

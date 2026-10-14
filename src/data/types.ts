@@ -158,6 +158,8 @@ export type DialogAction =
   | { type: 'magic' }
   /** Gives a life or magic container (a quest reward), counted once by id. */
   | { type: 'container'; kind: 'liv' | 'magi'; id: string }
+  /** Gives one extra life (a quest reward), once per id. */
+  | { type: 'life'; id: string }
   /** Hands over to a story scene (the ending, the credits). */
   | { type: 'scene'; scene: 'ending' | 'credits' };
 
@@ -195,6 +197,8 @@ export interface NpcDef {
   if?: Condition[];
   /** Follows Dagny around slowly (e.g. the cat when found). */
   wander?: number;
+  /** A thing rather than a person (a gravestone, a charcoal stack): never turns round. */
+  still?: boolean;
 }
 
 // --- Areas --------------------------------------------------------------------
@@ -358,16 +362,6 @@ export interface OverworldPlace {
   hidden?: 'near' | 'radio';
 }
 
-/** Something to look at on the map: a dialog when Dagny steps there, XP the first time. */
-export interface OverworldSight {
-  x: number;
-  y: number;
-  /** Unique id (the flag `sett_<id>` remembers it). */
-  id: string;
-  dialog: string;
-  /** XP the first time. */
-  xp?: number;
-}
 
 export interface EncounterDef {
   sprite: 'owShadow' | 'owWisp';
@@ -385,8 +379,6 @@ export interface EncounterDef {
 export interface OverworldDef {
   tiles: string[];
   places: OverworldPlace[];
-  /** Landmarks that say something (the rest of the landmarks are just scenery). */
-  sights: OverworldSight[];
   encounters: EncounterDef[];
   start: { x: number; y: number };
   /** Terrain that needs an item to cross: char → item id. */

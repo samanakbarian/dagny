@@ -193,4 +193,73 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
   greta_ep: { id: 'greta_ep', sprite: 'woman2', idle: { frames: [0, 0, 1, 0, 0, 2], every: 0.8 }, talk: [{ dialog: 'greta_epilog' }] },
   murre_ep: { id: 'murre_ep', sprite: 'cat', idle: { frames: [0, 0, 1, 0, 1], every: 0.5 }, talk: [{ dialog: 'murre_epilog' }] },
   vatte_ep: { id: 'vatte_ep', sprite: 'vatte', idle: { frames: [0, 1], every: 0.4 }, talk: [{ dialog: 'vatte_epilog' }] },
+
+  // --- The small places on the map -------------------------------------------------------
+  sten_anna: { id: 'sten_anna', sprite: 'gravsten', still: true, idle: { frames: [0], every: 1 }, talk: [{ dialog: 'sten_anna' }] },
+  sten_per: { id: 'sten_per', sprite: 'gravsten', still: true, idle: { frames: [0], every: 1 }, talk: [{ dialog: 'sten_per' }] },
+  sten_johan: { id: 'sten_johan', sprite: 'gravsten', still: true, idle: { frames: [0], every: 1 }, talk: [{ dialog: 'sten_johan' }] },
+  sten_karin: {
+    id: 'sten_karin', sprite: 'gravstenLutar', still: true, idle: { frames: [0], every: 1 },
+    if: [{ notFlag: 'karins_sten_rubbad' }],
+    talk: [{ dialog: 'sten_karin' }],
+  },
+  sten_karin_rubbad: {
+    id: 'sten_karin_rubbad', sprite: 'gravstenFlyttad', still: true, idle: { frames: [0], every: 1 },
+    if: [{ flag: 'karins_sten_rubbad' }],
+    talk: [{ dialog: 'sten_karin_tom' }],
+  },
+  kolmila: {
+    id: 'kolmila', sprite: 'kolmila', still: true, idle: { frames: [0], every: 1 },
+    if: [{ notFlag: 'kolmilan_tand' }],
+    talk: [
+      { if: [{ spell: 'eld' }], dialog: 'kolmila_eld' },
+      { dialog: 'kolmila_kall' },
+    ],
+  },
+  kolmila_glod: {
+    id: 'kolmila_glod', sprite: 'kolmila', still: true, idle: { frames: [1], every: 1 },
+    if: [{ flag: 'kolmilan_tand' }],
+    talk: [{ dialog: 'kolmila_glod' }],
+  },
+  grafru: {
+    id: 'grafru', sprite: 'grafru', idle: { frames: [0, 0, 2, 0], every: 0.9 },
+    if: [{ notFlag: 'grafru_frid' }],
+    talk: [
+      { if: [{ item: 'prastkragar' }], dialog: 'grafru_tack' },
+      { if: [{ flag: 'grafru_bad' }], dialog: 'grafru_vantar' },
+      { dialog: 'grafru_ber' },
+    ],
+  },
+  runsten: {
+    id: 'runsten', sprite: 'runsten', still: true, idle: { frames: [0], every: 1 },
+    if: [{ notFlag: 'runstenen_hel' }],
+    talk: [
+      { if: [{ item: 'runbit' }], dialog: 'runsten_laga' },
+      { dialog: 'runsten_trasig' },
+    ],
+  },
+  runsten_hel: {
+    id: 'runsten_hel', sprite: 'runsten', still: true, idle: { frames: [1], every: 1 },
+    if: [{ flag: 'runstenen_hel' }],
+    talk: [{ dialog: 'runsten_hel' }],
+  },
+  postiljon: {
+    id: 'postiljon', sprite: 'postiljon', idle: { frames: [0, 0, 1, 0], every: 0.8 },
+    talk: [
+      { if: [{ item: 'posthorn' }], dialog: 'postiljon_tack' },
+      { if: [{ flag: 'posthorn_klar' }], dialog: 'postiljon_frid' },
+      { if: [{ flag: 'postiljon_bad' }], dialog: 'postiljon_vantar' },
+      { dialog: 'postiljon_ber' },
+    ],
+  },
+  kalla: {
+    id: 'kalla', sprite: 'kalla', still: true, idle: { frames: [0], every: 1 },
+    if: [{ notFlag: 'kallan_rensad' }],
+    talk: [{ dialog: 'kalla_igensatt' }],
+  },
+  kalla_ren: {
+    id: 'kalla_ren', sprite: 'kalla', still: true, idle: { frames: [1], every: 1 },
+    if: [{ flag: 'kallan_rensad' }],
+    talk: [{ dialog: 'kalla_drick' }],
+  },
 };

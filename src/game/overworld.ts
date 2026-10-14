@@ -6,11 +6,11 @@ import { OVERWORLD } from '../data/overworld';
 import { PLACE_CHARS, TERRAIN } from '../data/terrain';
 import { PALETTE } from '../data/palettes';
 import { STR } from '../data/strings';
-import type { EncounterDef, OverworldPlace, OverworldSight } from '../data/types';
+import type { EncounterDef, OverworldPlace } from '../data/types';
 import { DialogOverlay } from './dialog';
 import type { Game, Scene } from './game';
 import { drawHud } from './hud';
-import { hasFlag, hasItem, setFlag, type GameState } from './state';
+import { hasFlag, hasItem, type GameState } from './state';
 import * as flow from './flow';
 import { ENCOUNTER_TABLES, TERRAIN_TYPE } from '../data/encounters';
 import { pickEncounter } from './encounters';
@@ -218,26 +218,6 @@ export class OverworldScene implements Scene {
     return OVERWORLD.places.find((p) => p.x === x && p.y === y);
   }
 
-  private sightAt(x: number, y: number): OverworldSight | undefined {
-    return OVERWORLD.sights.find((p) => p.x === x && p.y === y);
-  }
-
-  /** A landmark that says something – and gives a little XP the first time. */
-  private look(sight: OverworldSight): void {
-    const s = this.s;
-    const first = !hasFlag(s, `sett_${sight.id}`);
-    setFlag(s, `sett_${sight.id}`);
-    this.game.pushOverlay(
-      new DialogOverlay(this.game, sight.dialog, () => {
-        if (first && sight.xp) {
-          s.xp += sight.xp;
-          this.game.audio.play('xp');
-          this.game.toast(`+${sight.xp} XP`, 2);
-        }
-      }),
-    );
-  }
-
   /** Can Dagny step onto this tile? Returns the missing item's id if blocked by one. */
   private passable(x: number, y: number): true | string | false {
     const ch = this.tile(x, y);
@@ -301,8 +281,6 @@ export class OverworldScene implements Scene {
     const me = this.me;
     this.s.ow = { x: me.x, y: me.y };
     if (this.frame % 2 === 0) this.game.audio.play('step');
-    const sight = this.sightAt(me.x, me.y);
-    if (sight) this.look(sight);
     const place = this.placeAt(me.x, me.y);
     if (place) {
       const locked = place.requires && !place.requires.every((f) => hasFlag(this.s, f));

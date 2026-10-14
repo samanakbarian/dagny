@@ -55,6 +55,24 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
     description: 'Anders lyckofickur i mässing. Det tickar fortfarande.',
     sprite: 'fickur',
   },
+  prastkragar: {
+    id: 'prastkragar',
+    name: 'Prästkragar',
+    description: 'En bukett prästkragar till de som vilar vid pestkorset.',
+    sprite: 'prastkragar',
+  },
+  runbit: {
+    id: 'runbit',
+    name: 'Runstensbit',
+    description: 'En bit av runstenen vid skeppssättningen.',
+    sprite: 'runbit',
+  },
+  posthorn: {
+    id: 'posthorn',
+    name: 'Posthornet',
+    description: 'Postiljonens mässingshorn, hittat vid forsen.',
+    sprite: 'posthorn',
+  },
   johannesort: {
     id: 'johannesort',
     name: 'Johannesört',
@@ -130,4 +148,4 @@ export const ITEMS: Readonly<Record<string, ItemDef>> = {
 };
 
 /** Order shown in the items menu. */
-export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'klingaHardad', 'klingaBlank', 'silverbeslag', 'malm', 'askstenen', 'murre', 'johannesort', 'fickur', 'psalmbok', 'medaljong', 'kompass', 'skalla', 'visselpipa'];
+export const ITEM_ORDER = ['svard', 'eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio', 'naverlur', 'klingaHardad', 'klingaBlank', 'silverbeslag', 'malm', 'askstenen', 'murre', 'johannesort', 'prastkragar', 'runbit', 'posthorn', 'fickur', 'psalmbok', 'medaljong', 'kompass', 'skalla', 'visselpipa'];

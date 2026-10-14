@@ -15,6 +15,7 @@ export class Npc {
   private t: number;
 
   constructor(readonly def: NpcDef, px: number, py: number) {
+    if (def.still) this.facing = 1;
     const size = spriteSize(def.sprite);
     this.w = size.w;
     this.h = size.h;
@@ -30,7 +31,7 @@ export class Npc {
   update(playerX: number): void {
     this.t++;
     const cx = this.x + this.w / 2;
-    if (Math.abs(playerX - cx) < 64) this.facing = playerX < cx ? -1 : 1;
+    if (!this.def.still && Math.abs(playerX - cx) < 64) this.facing = playerX < cx ? -1 : 1;
   }
 
   render(ctx: CanvasRenderingContext2D, camX: number, camY: number): void {

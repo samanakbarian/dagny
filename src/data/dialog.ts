@@ -15,6 +15,7 @@ import { FABODSKOGEN } from './dialog/fabodskogen';
 import { TROLLBERGET } from './dialog/trollberget';
 import { VARLDEN } from './dialog/varlden';
 import { FOREMAL } from './dialog/foremal';
+import { SMAPLATSER } from './dialog/smaplatser';
 import { EPILOG } from './dialog/epilog';
 import { ALLMANT } from './dialog/allmant';
 
@@ -26,7 +27,7 @@ import { ALLMANT } from './dialog/allmant';
  * The dialog lives in data/dialog/, one file per place.
  */
 export const DIALOG_GROUPS: ReadonlyArray<Record<string, DialogDef>> = [
-  HEM, GRUVSAMHALLET, KYRKBYN, BRUKSORTEN, FISKELAGET, FABODEN, STATIONSSAMHALLET, KRYPTA, GRUVAN, KVARNEN, FYREN, FOLKPARKEN, FABODSKOGEN, TROLLBERGET, VARLDEN, FOREMAL, EPILOG, ALLMANT,
+  HEM, GRUVSAMHALLET, KYRKBYN, BRUKSORTEN, FISKELAGET, FABODEN, STATIONSSAMHALLET, KRYPTA, GRUVAN, KVARNEN, FYREN, FOLKPARKEN, FABODSKOGEN, TROLLBERGET, VARLDEN, FOREMAL, SMAPLATSER, EPILOG, ALLMANT,
 ];
 
 export const DIALOG: Readonly<Record<string, DialogDef>> = Object.assign({}, ...DIALOG_GROUPS);

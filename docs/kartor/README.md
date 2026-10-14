@@ -11,7 +11,7 @@ Drawn straight from `src/data/overworld.ts` with the game's own sprites.
 - **START** is where a new game begins, just below Mormors by.
 - Hidden things are drawn open, as Dagny sees them with every treasure: the path through the spruce thicket, the door in the cliff below Trollberget, and the cave behind the waterfall.
 - Each border is made of its own stuff: shore and reeds by the lake, a fell with mine adits, a wide marsh, the night forest, rapids with a washed-away bridge, a spruce thicket, and dark cliffs round Trollberget.
-- Small symbols are the forgotten landmarks along the way: walls, springs, crofts, cellars, barns, standing stones, milestones and crosses.
+- The six small places (churchyard, charcoal croft, plague cross, stone ship, milestone, summer-farm croft) can all be visited, each with a little task. Walls, gates and overgrown paths are just scenery.
 
 The full design (borders, fields, meetings, landmarks, hidden places) is in
 [speldesign.md](../speldesign.md#the-overworld).

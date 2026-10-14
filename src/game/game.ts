@@ -11,7 +11,7 @@ import { TEMPLES } from '../data/temples';
 import type { Condition, DialogAction } from '../data/types';
 import { loadSettings, saveSettings, PLACEMENT_OFFSETS, type Settings } from './settings';
 import { readSave, writeSave } from './save';
-import { addContainer, hasFlag, hasItem, hpMax, mpMax, setFlag, type GameState } from './state';
+import { MAX_LIVES, addContainer, hasFlag, hasItem, hpMax, mpMax, setFlag, type GameState } from './state';
 
 export interface Scene {
   /** Music id to play while this scene is active. */
@@ -285,6 +285,13 @@ export class Game {
         break;
       case 'container':
         if (addContainer(s, a.kind, a.id)) this.audio.jingle('fynd');
+        break;
+      case 'life':
+        if (!s.opened.includes(`liv1:${a.id}`)) {
+          s.opened.push(`liv1:${a.id}`);
+          s.lives = Math.min(MAX_LIVES, s.lives + 1);
+          this.audio.jingle('fynd');
+        }
         break;
     }
     this.onAction?.(a);

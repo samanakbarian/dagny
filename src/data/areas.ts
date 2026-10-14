@@ -3,6 +3,7 @@ import { HEM } from './areas/hem';
 import { MOTEN } from './areas/moten';
 import { BYAR } from './areas/byar';
 import { GROTTOR } from './areas/grottor';
+import { SMAPLATSER } from './areas/smaplatser';
 import { KRYPTA } from './areas/krypta';
 import { GRUVAN } from './areas/gruvan';
 import { KVARNEN } from './areas/kvarnen';
@@ -17,6 +18,6 @@ import { TROLLBERGET } from './areas/trollberget';
  *
  * The rooms live in data/areas/, one file per region or temple.
  */
-export const AREA_GROUPS: ReadonlyArray<Record<string, AreaDef>> = [HEM, MOTEN, BYAR, GROTTOR, KRYPTA, GRUVAN, KVARNEN, FYREN, FOLKPARKEN, FABODSKOGEN, TROLLBERGET];
+export const AREA_GROUPS: ReadonlyArray<Record<string, AreaDef>> = [HEM, MOTEN, BYAR, GROTTOR, SMAPLATSER, KRYPTA, GRUVAN, KVARNEN, FYREN, FOLKPARKEN, FABODSKOGEN, TROLLBERGET];
 
 export const AREAS: Record<string, AreaDef> = Object.assign({}, ...AREA_GROUPS);

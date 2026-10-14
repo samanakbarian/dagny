@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { AREAS } from '../src/data/areas';
 import { DIALOG } from '../src/data/dialog';
 import { OVERWORLD } from '../src/data/overworld';
-import { TERRAIN } from '../src/data/terrain';
+import { NPCS } from '../src/data/npcs';
+import { PLACE_CHARS, TERRAIN } from '../src/data/terrain';
 import { reachableTiles } from '../src/game/reach';
 
 const t = OVERWORLD.tiles;
@@ -86,33 +87,44 @@ describe('the overworld as landscape', () => {
     for (const ch of [':', 'm', 'l', 'h', 'g', 'd', 'k']) expect(t.join('')).toContain(ch);
   });
 
-  it('every region has at least two landmarks, and one of them says something', () => {
-    const landmarks = new Map<number, number>();
+  it('nothing on the map looks like a place without being one', () => {
+    const fakes: string[] = [];
     for (let y = 0; y < H; y++) {
       for (let x = 0; x < W; x++) {
-        if (!TERRAIN[at(x, y)]?.landmark) continue;
-        // A landmark belongs to the region of the walkable tile beside it.
-        const near = [[x, y], [x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]].map(([a, b]) => regionOf.get(`${a},${b}`)).find((r) => r !== undefined);
-        if (near !== undefined) landmarks.set(near, (landmarks.get(near) ?? 0) + 1);
+        if (TERRAIN[at(x, y)]?.visitable && !OVERWORLD.places.some((p) => p.x === x && p.y === y)) fakes.push(`${at(x, y)} at ${x},${y}`);
       }
     }
+    expect(fakes).toEqual([]);
+  });
+
+  it('every region has one small place to visit, with a task inside', () => {
+    const small = OVERWORLD.places.filter((p) => TERRAIN[at(p.x, p.y)]?.visitable);
     for (let r = 0; r < REGIONS.length; r++) {
-      expect(landmarks.get(r) ?? 0, REGIONS[r]).toBeGreaterThanOrEqual(2);
-      const sights = OVERWORLD.sights.filter((s) => regionOf.get(`${s.x},${s.y}`) === r);
-      expect(sights.length, `${REGIONS[r]} has a landmark that says something`).toBeGreaterThanOrEqual(1);
+      const here = small.filter((p) => [[p.x + 1, p.y], [p.x - 1, p.y], [p.x, p.y + 1], [p.x, p.y - 1]].some(([a, b]) => regionOf.get(`${a},${b}`) === r));
+      expect(here.length, REGIONS[r]).toBe(1);
+      // The task: someone or something to talk to whose dialog gives a reward.
+      const area = AREAS[here[0].area!];
+      const npcs = Object.values(area.npcs ?? {}).map((id) => NPCS[id]);
+      const dialogs = new Set<string>();
+      const walk = (id: string | undefined): void => {
+        if (!id || dialogs.has(id) || !DIALOG[id]) return;
+        dialogs.add(id);
+        walk(DIALOG[id].next);
+        for (const c of DIALOG[id].choices ?? []) walk(c.next);
+      };
+      for (const n of npcs) for (const tk of n.talk) walk(tk.dialog);
+      const rewards = [...dialogs].flatMap((id) => DIALOG[id].actions ?? []).filter((a) => a.type === 'container' || a.type === 'life');
+      expect(rewards.length, `${here[0].name} rewards the task`).toBeGreaterThan(0);
     }
-    for (const s of OVERWORLD.sights) {
-      expect(DIALOG[s.dialog], s.dialog).toBeDefined();
-      expect(TERRAIN[at(s.x, s.y)]?.landmark, `${s.id} stands on a landmark`).toBe(true);
-    }
-    expect(new Set(OVERWORLD.sights.map((s) => s.id)).size).toBe(OVERWORLD.sights.length);
   });
 
   it('never leaves a phone screen (20 × 11 tiles) without something new in sight', () => {
-    const feature = (ch: string): boolean => !!TERRAIN[ch]?.landmark || 'VBKGMQYPZTC'.includes(ch);
+    const feature = (ch: string): boolean => !!TERRAIN[ch]?.landmark || PLACE_CHARS.includes(ch);
     const empty: string[] = [];
     for (const key of reachableTiles(KEYS)) {
       const [x, y] = key.split(',').map(Number);
+      // On land; out on the water the shores and holms are in sight.
+      if (at(x, y) === '~') continue;
       let seen = false;
       for (let dy = -5; dy <= 5 && !seen; dy++) for (let dx = -10; dx <= 10 && !seen; dx++) seen = feature(at(x + dx, y + dy));
       if (!seen) empty.push(key);

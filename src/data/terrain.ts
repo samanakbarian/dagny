@@ -22,6 +22,12 @@ export interface TerrainDef {
   encounter?: TerrainType;
   /** A landmark: something to look at on the way. */
   landmark?: boolean;
+  /**
+   * Looks like somewhere to go (a croft, a cross, a stone): on the map only
+   * as a small place Dagny can visit. Walls, gates and overgrown paths are
+   * plain scenery.
+   */
+  visitable?: boolean;
 }
 
 export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
@@ -65,15 +71,16 @@ export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
 
   // --- Landmarks: forgotten things along the way --------------------------------------
   u: { name: 'riven gärdsgård', sprite: 'owWallBroken', map: 'G', encounter: 'ang', landmark: true },
-  o: { name: 'offerkälla', sprite: 'owSpring', map: 'U', encounter: 'ang', landmark: true },
-  t: { name: 'ödetorp', sprite: 'owCroft', map: 'r', encounter: 'odetorp', landmark: true },
-  c: { name: 'jordkällare', sprite: 'owCellar', map: 'B', encounter: 'ang', landmark: true },
-  L: { name: 'lada', sprite: 'owBarn', map: 'r', encounter: 'ang', landmark: true },
-  O: { name: 'bautasten', sprite: 'owStones', map: 'W', encounter: 'ang', landmark: true },
-  i: { name: 'milstolpe', sprite: 'owMilestone', map: 'W', encounter: 'ang', landmark: true },
-  x: { name: 'vägkors', sprite: 'owCross', map: 'W', encounter: 'ang', landmark: true },
+  o: { name: 'offerkälla', sprite: 'owSpring', map: 'U', encounter: 'ang', landmark: true, visitable: true },
+  t: { name: 'ödetorp', sprite: 'owCroft', map: 'r', encounter: 'odetorp', landmark: true, visitable: true },
+  c: { name: 'jordkällare', sprite: 'owCellar', map: 'B', encounter: 'ang', landmark: true, visitable: true },
+  L: { name: 'lada', sprite: 'owBarn', map: 'r', encounter: 'ang', landmark: true, visitable: true },
+  O: { name: 'bautasten', sprite: 'owStones', map: 'W', encounter: 'ang', landmark: true, visitable: true },
+  i: { name: 'milstolpe', sprite: 'owMilestone', map: 'W', encounter: 'ang', landmark: true, visitable: true },
+  x: { name: 'vägkors', sprite: 'owCross', map: 'W', encounter: 'ang', landmark: true, visitable: true },
   y: { name: 'grind', sprite: 'owGate', map: 'B', encounter: 'ang', landmark: true },
   e: { name: 'övervuxen stig', sprite: 'owOvergrown', map: 'l', encounter: 'skog', landmark: true },
+  q: { name: 'gamla kyrkogården', sprite: 'owChurchyard', map: 'W', encounter: 'ang', landmark: true, visitable: true },
   // A waterfall with a cave behind it, seen only when standing beside it.
   A: { name: 'vattenfall', sprite: 'owWaterfall', map: 'c', encounter: 'skog', landmark: true },
 

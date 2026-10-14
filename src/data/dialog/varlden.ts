@@ -85,50 +85,6 @@ export const VARLDEN: Record<string, DialogDef> = {
     pages: ['Myren suger tag i skorna. Utan stövlar kommer man inte långt.'],
   },
 
-  // --- Landmarks on the map: forgotten things (a little XP the first time) -------------
-  sevart_offerkallan: {
-    pages: [
-      'En källa inringad av stenar. På stolpen bredvid sitter en urblekt ylletråd.',
-      'Förr offrade folk en slant här för god hälsa. Ingen har gjort det på länge. Dagny lägger en blank knapp i vattnet.',
-    ],
-  },
-  sevart_lillgardet: {
-    pages: ['Lill-Gärdet. Taket har rasat in och nässlorna står höga.\nI dörrkarmen har någon ristat: "VI REJSTE TILL AMERIKA 1903".'],
-  },
-  sevart_domarringen: {
-    pages: ['En ring av resta stenar i gräset. Här höll man ting förr, långt innan det fanns någon kyrka i bygden. Nu betar bara korna här.'],
-  },
-  sevart_gruvfogden: {
-    pages: ['En kantig sten med en järnplåt:\n"HÄR VILAR GRUVFOGDEN PER ERSSON, SOM GICK NER I GRUVAN SISTA GÅNGEN 1871."\nPlåten har nästan rostat bort.'],
-  },
-  sevart_kolartorpet: {
-    pages: ['Ett ödetorp vid hygget. En kolmila har stått här – marken är svart än, och när det regnar luktar det rök.'],
-  },
-  sevart_pestkorset: {
-    pages: [
-      'Ett vägkors av ek. "TILL MINNE AV DEM SOM DOG I FARSOTEN 1711."',
-      'Vid foten ligger en färsk bukett prästkragar. Fast ingen bor här längre.',
-    ],
-  },
-  sevart_skeppssattningen: {
-    pages: ['Stenar ställda som ett skepp, med stäven mot havet. Fiskarna säger att en hövding seglar ut i det varje gång det stormar.'],
-  },
-  sevart_milstolpen: {
-    pages: ['En milstolpe: "TILL STADEN 2 MIL".\nVägen den pekar mot finns inte kvar. Den gick där forsen går nu, innan vårfloden tog bron.'],
-  },
-  sevart_fabodtorpet: {
-    pages: ['Fäbodtorpet. Spisen står kvar, och på hyllan en näverask med torkade örter. Här bodde vallkullorna om somrarna, förr i tiden.'],
-  },
-  sevart_trefaldighetskallan: {
-    pages: ['En källa där folk drack på trefaldighetsafton för att bli friska. En kåsa av björk hänger på en gren, som om någon väntade besök.'],
-  },
-  sevart_vaktarstenen: {
-    pages: [
-      'En hög sten med ett tecken inhugget – samma tecken som på Dagnys klinga.',
-      'Under det, nästan bortnött:\n"VÄKTARNA VAKADE SÅ LÄNGE MÄNNISKORNA MINDES."',
-    ],
-  },
-
   // --- The hidden caves -----------------------------------------------------------------
   fallgrottan_ristning: {
     pages: ['Inristat i berget bakom vattenridån:\n"DEN SOM GÖMMER SIG BAKOM FALLET HÖRS INTE AV BERGET. – D."'],
