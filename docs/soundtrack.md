@@ -21,7 +21,7 @@ alternates the root with the fifth below, then turns. It ties the temples togeth
 | Song | How the theme appears |
 |---|---|
 | `tempel` – *Väktarnas salar* | Opens the shared temple theme. Four parts: the riff; a fast part of broken chords over a bass falling by half steps; a calmer part with a phrase sung twice; a build back into the riff |
-| `boss` – *Väktarstriden* | At double speed to start each guardian fight |
+| `boss` – *Väktarstriden* | Two pulse voices a fourth apart: a short cell out of the Väktarmotiv sinks a step at a time (A–G–F–E) over a pumping bass, then the motif an octave up over the same descent |
 | `trollberget` | Pounded out low and dark (♭2, a tone lower, organ drone) |
 | `bergakung` | Trollberget's version at full speed in the final fight |
 | `skuggan` | **Upside down** in Skuggsalen – Dagny's mirror image – played against the right way up in the harmony |
