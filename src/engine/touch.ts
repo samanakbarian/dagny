@@ -163,18 +163,19 @@ export class TouchControls {
       const mag = Math.hypot(dx, dy);
       let l = false, rr = false, u = false, d = false;
       if (mag > dead) {
-        // 8-way with generous diagonals; diagonals are narrower for the d-pad.
-        const ang = Math.atan2(dy, dx);
-        const sector = Math.round(ang / (Math.PI / 4));
-        switch (sector) {
-          case 0: rr = true; break;
-          case 1: rr = true; d = true; break;
-          case 2: d = true; break;
-          case 3: l = true; d = true; break;
-          case 4: case -4: l = true; break;
-          case -3: l = true; u = true; break;
-          case -2: u = true; break;
-          case -1: rr = true; u = true; break;
+        // Left and right get the widest slices (±30°), so walking never turns
+        // into a duck or an up-thrust by a slightly slanted thumb; straight up
+        // and down get ±25°, and the diagonals what is left between.
+        const slope = (Math.atan2(Math.abs(dy), Math.abs(dx)) * 180) / Math.PI;
+        const horiz = slope < 65;
+        const vert = slope > 30;
+        if (horiz) {
+          l = dx < 0;
+          rr = dx > 0;
+        }
+        if (vert) {
+          u = dy < 0;
+          d = dy > 0;
         }
       }
       this.setDirs(l, rr, u, d);

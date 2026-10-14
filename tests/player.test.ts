@@ -34,7 +34,39 @@ describe('Dagny movement', () => {
   });
 
   it('jump height depends on how long the button is held', () => {
-    expect(jumpHeight(3)).toBeLessThan(jumpHeight(60) * 0.6);
+    expect(jumpHeight(8)).toBeLessThan(jumpHeight(60) * 0.8);
+    expect(jumpHeight(4)).toBeLessThan(jumpHeight(60) * 0.7);
+  });
+
+  it('a quick tap on glass still gives a proper hop (two tiles), not a skip', () => {
+    expect(jumpHeight(1)).toBeGreaterThanOrEqual(30);
+    expect(jumpHeight(1)).toBe(jumpHeight(4));
+  });
+
+  it('a sword press during a swing is kept and strikes again', () => {
+    const g = flat();
+    const p = new Player();
+    p.place(100, 100);
+    settle(p, g);
+    p.update({ ...none, swordPressed: true }, g);
+    expect(p.attacking).toBe(true);
+    let again = false;
+    for (let i = 0; i < 20; i++) {
+      p.update({ ...none, swordPressed: i === 8 }, g);
+      if (i > 12 && p.attacking) again = true;
+    }
+    expect(again).toBe(true);
+  });
+
+  it('a sword press while frozen for a hit is not lost', () => {
+    const g = flat();
+    const p = new Player();
+    p.place(100, 100);
+    settle(p, g);
+    p.queue({ ...none, swordPressed: true });
+    p.queue(none);
+    p.update(none, g);
+    expect(p.attacking).toBe(true);
   });
 
   it('coyote time allows a jump just after leaving a ledge', () => {

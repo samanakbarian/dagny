@@ -26,6 +26,20 @@ or a hidden place. At the start she has only the blade Mormor gives her.
 The NPC dialog conditions are in `src/data/npcs.ts`; `tests/start.test.ts`
 checks that Läkning and Nedåtstöt cannot be had for free.
 
+## Controls: the game reads what the player meant
+
+Difficulty belongs to enemies, rooms and timing, never to the controls. A
+press the game swallows feels like the game's fault, so every input has some
+give (`src/entities/player.ts`, `src/engine/touch.ts`):
+
+- **Jump buffer and coyote time:** a jump pressed up to 8 frames before landing still counts, and so does one up to 7 frames after walking off an edge.
+- **Lowest jump:** every jump rises as if held for at least 7 frames, so a quick tap on glass gives a hop of two tiles, not a skip. Holding goes to three.
+- **Sword buffer:** a press is kept for 10 frames, so pressing during a swing or a stagger still strikes as soon as she can.
+- **Hit-stop:** when a blow lands the world holds still for 4 frames (6 on a kill, 2 on a parry), with a short buzz. Presses made meanwhile are kept.
+- **Stick:** left and right get ±30°, up and down ±25°, and the diagonals the rest. A slightly slanted thumb walks; it doesn't duck or thrust upwards.
+
+Next up: buttons a thumb can roll between (and press two at once), letting Dagny drift and turn early in a ground strike, and a shorter knockback when she is hurt (spikes in the temples throw her too far).
+
 ## Levels and strength
 
 - Three stats, **Styrka, Magi, Liv**, each 1–12, raised with XP (`COSTS` in `src/data/progression.ts`).

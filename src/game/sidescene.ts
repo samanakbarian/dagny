@@ -320,6 +320,9 @@ export class SideScene implements Scene, WorldApi {
     if (dx !== 0) pushX(this.grid, p, p.onGround ? dx * 0.6 : dx);
   }
 
+  /** Frames left of the freeze after a hit (see combat). */
+  hitStop = 0;
+
   shake(frames: number, strength = 2): void {
     this.shakeT = Math.max(this.shakeT, frames);
     this.shakeS = strength;
@@ -341,6 +344,12 @@ export class SideScene implements Scene, WorldApi {
   }
 
   update(): void {
+    // Hit-stop: the world holds still for a few frames when a blow lands.
+    if (this.hitStop > 0) {
+      this.hitStop--;
+      this.player.queue(this.controls());
+      return;
+    }
     this.frame++;
     const g = this.game;
     const s = this.s;

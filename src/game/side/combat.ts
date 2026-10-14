@@ -63,9 +63,12 @@ export function combat(sc: SideScene): void {
       const r = e.takeHit(dmg, p.x + p.w / 2, height, sc);
       if (r === 'blocked') {
         sc.game.vibrate(10);
+        sc.hitStop = 2;
         p.vx = -p.facing * 1.2;
       } else if (r === 'hit' || r === 'dead') {
-        sc.game.vibrate(20);
+        sc.game.vibrate(r === 'dead' ? 30 : 20);
+        // A short freeze gives the hit weight and shows that it landed.
+        sc.hitStop = r === 'dead' ? 6 : 4;
         sc.sparks(sword.x + sword.w / 2, sword.y + sword.h / 2);
         if (r === 'dead') killEnemy(sc, e);
       }

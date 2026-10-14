@@ -26,6 +26,14 @@ const JUMP_CUT = 2;
 /** Generous touch tolerance. */
 const COYOTE = 7;
 const BUFFER = 8;
+/** A sword press is kept this long, so a press during a swing or a stagger still strikes. */
+const SWORD_BUFFER = 10;
+/**
+ * Every jump rises with the button "held" for at least this long, so a quick
+ * tap on glass (60–100 ms) still gives a proper hop of two tiles instead of a
+ * skip. Holding goes higher, to three tiles.
+ */
+const MIN_JUMP = 7;
 const ATTACK_FRAMES = 15;
 const ATTACK_ACTIVE: [number, number] = [2, 10];
 const INVULN = 60;
@@ -58,6 +66,9 @@ export class Player implements Body {
   /** A down-thrust bounce is not cut short by releasing jump. */
   private bouncing = false;
   private buffer = 0;
+  private swordBuffer = 0;
+  /** Frames since the jump began (for MIN_JUMP). */
+  private jumpT = 99;
   private animT = 0;
   private walkFrame = 0;
   private breatheT = 0;
@@ -186,6 +197,17 @@ export class Player implements Body {
     return true;
   }
 
+  /**
+   * Remember fresh jump and sword presses (the buffers count down each step).
+   * Also called while the game is frozen for a hit, so no press is lost.
+   */
+  queue(c: PlayerControls): void {
+    if (c.jumpPressed) this.buffer = BUFFER;
+    else if (this.buffer > 0) this.buffer--;
+    if (c.swordPressed) this.swordBuffer = SWORD_BUFFER;
+    else if (this.swordBuffer > 0) this.swordBuffer--;
+  }
+
   update(c: PlayerControls, grid: TileGrid): void {
     this.landed = false;
     this.jumped = false;
@@ -203,8 +225,7 @@ export class Player implements Body {
     }
 
     // Buffers for forgiving touch play.
-    if (c.jumpPressed) this.buffer = BUFFER;
-    else if (this.buffer > 0) this.buffer--;
+    this.queue(c);
     if (this.onGround) this.coyote = COYOTE;
     else if (this.coyote > 0) this.coyote--;
 
@@ -223,7 +244,8 @@ export class Player implements Body {
     this.downThrust = this.canDownThrust && !this.onGround && c.down && this.state !== 'hurt' && this.vy > -1.5;
 
     // Attack.
-    if (c.swordPressed && this.state === 'normal') {
+    if (this.swordBuffer > 0 && this.state === 'normal') {
+      this.swordBuffer = 0;
       this.state = 'attack';
       this.attackT = 0;
       this.lowAttack = this.ducking;
@@ -263,14 +285,17 @@ export class Player implements Body {
         this.coyote = 0;
         this.buffer = 0;
         this.jumped = true;
+        this.jumpT = 0;
       }
     }
 
     // Variable jump height: lighter gravity while rising with the button held,
     // and releasing early cuts the jump short.
     if (this.vy >= 0) this.bouncing = false;
-    if (!c.jumpHeld && this.vy < -JUMP_CUT && this.state !== 'hurt' && !this.bouncing) this.vy = -JUMP_CUT;
-    const g = this.vy < 0 && c.jumpHeld ? GRAV_HOLD : GRAV;
+    const held = c.jumpHeld || this.jumpT < MIN_JUMP;
+    this.jumpT++;
+    if (!held && this.vy < -JUMP_CUT && this.state !== 'hurt' && !this.bouncing) this.vy = -JUMP_CUT;
+    const g = this.vy < 0 && held ? GRAV_HOLD : GRAV;
     this.vy = Math.min(MAX_FALL, this.vy + g);
 
     const wasGround = this.onGround;
