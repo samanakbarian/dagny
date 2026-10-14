@@ -17,7 +17,7 @@ import { pickEncounter } from './encounters';
 const T = 16;
 const STEP_FRAMES = 9;
 
-const TILE_SPRITE: Record<string, string> = {
+export const TILE_SPRITE: Readonly<Record<string, string>> = {
   '.': 'owGrass',
   f: 'owForest',
   '~': 'owWater',

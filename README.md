@@ -57,6 +57,7 @@ Play Console, Digital Asset Links) finns i [`android/README.md`](android/README.
 
 | Dokument | Innehåll |
 |---|---|
+| [docs/kartor/](docs/kartor/README.md) | Världskartan och regionerna, ritade ur speldata |
 | [docs/arkitektur.md](docs/arkitektur.md) | Kodens uppbyggnad, mönster, kvalitet och känd teknisk skuld |
 | [docs/speldesign.md](docs/speldesign.md) | Progression, vem som lär ut vad, liv och Game Over, templens ordning, Trollberget |
 | [docs/soundtrack.md](docs/soundtrack.md) | Musiken: två ljudvärldar, Väktarmotivet, alla låtar och jinglar |
