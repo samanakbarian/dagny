@@ -40,6 +40,14 @@ give (`src/entities/player.ts`, `src/engine/touch.ts`):
 
 Next up: buttons a thumb can roll between (and press two at once), letting Dagny drift and turn early in a ground strike, and a shorter knockback when she is hurt (spikes in the temples throw her too far).
 
+## The first temple's creatures
+
+Dagny starts with 8 health (four bars), so the crypt must not drain it faster than skill can keep up:
+
+- **Stenknekt** (the slow stone soldier in the dark Benhuset) hits for 2, not 3: four hits to go down instead of three.
+- **Tomtenisse-krigare** fence instead of rushing. They copy her guard, keep their distance and make a short thrust up close (open while thrusting). Beating them is about switching height faster than they follow, or striking into the thrust (`behaviors/parrier.ts`, `tests/fencer.test.ts`).
+- Buns, thermoses and lingonberries lying in rooms are taken once until Dagny leaves for the overworld, so they can't be farmed by stepping in and out.
+
 ## Levels and strength
 
 - Three stats, **Styrka, Magi, Liv**, each 1–12, raised with XP (`COSTS` in `src/data/progression.ts`).

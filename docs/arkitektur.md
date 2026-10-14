@@ -72,7 +72,7 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
 - **ESLint** (the recommended JS and TypeScript rules, `npm run lint`).
 - **CI** (`.github/workflows/ci.yml`) runs lint, tests and a build on every push
   and pull request. `npm run check` does the same locally.
-- **Vitest, 357 tests** covering:
+- **Vitest, 359 tests** covering:
   - data integrity (every exit, dialog, sprite and character in the font)
   - softlocks and pits (a coarse jump model)
   - region gating

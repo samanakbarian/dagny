@@ -42,7 +42,7 @@ export const ENEMIES: Readonly<Record<string, EnemyDef>> = {
   },
   stenknekt: {
     id: 'stenknekt', name: 'Stenknekt', sprite: 'stenknekt', behavior: 'tank',
-    hp: 18, damage: 3, xp: 30, speed: 0.25,
+    hp: 18, damage: 2, xp: 30, speed: 0.25,
     box: { x: 1, y: 1, w: 13, h: 23 }, puff: 'moss', heavy: true,
     drops: { lingon: 0.4, termos: 0.3 },
   },
