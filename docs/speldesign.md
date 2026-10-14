@@ -67,6 +67,16 @@ south-west and Trollberget in the north. Every kind of ground is described in
 `src/data/terrain.ts`: its name, what it needs, its colour on the small map and
 which meetings happen there. Pictures: [kartor/](kartor/README.md).
 
+### The map in the pause menu
+
+It shows only what Dagny has seen, about one phone screen round every step she
+has taken (`game/explored.ts`, saved as a small bit set). The rest is fog. It
+zooms in on what is seen, so tiles are large early on. The colours are few
+and clear: ground, forest, field, marsh, water, shore, rock and roads. Markers
+show temples (yellow, white once restored), villages (red) and small places
+(pale). Hidden places are never marked. The temple list shows a name only
+once its place has been seen, otherwise "???".
+
 ### Borders: every border made of its own stuff
 
 | Border | What Dagny sees | What opens it |

@@ -4,6 +4,7 @@ import { drawSprite } from '../engine/sprites';
 import { drawText, measure, wrap, LINE_HEIGHT } from '../engine/text';
 import { Act } from '../engine/input';
 import { ITEMS, ITEM_ORDER } from '../data/items';
+import { AREAS } from '../data/areas';
 import { OVERWORLD } from '../data/overworld';
 import { TERRAIN } from '../data/terrain';
 import { PALETTE } from '../data/palettes';
@@ -14,7 +15,8 @@ import { TEMPLES } from '../data/temples';
 import type { StatId } from '../data/types';
 import type { Game, Overlay } from './game';
 import { nextCost, raise } from './progression';
-import { hasFlag, hpMax, mpMax } from './state';
+import { hasFlag, hasItem, hpMax, mpMax } from './state';
+import { exploredBounds, isExplored } from './explored';
 import { ListMenu, drawPanel, drawPostcard, P } from './ui';
 import * as flow from './flow';
 
@@ -217,36 +219,87 @@ export class MapOverlay extends SubOverlay {
   }
   render(ctx: CanvasRenderingContext2D): void {
     const f = this.frame(ctx, STR.map);
+    const s = this.game.state!;
     const tiles = OVERWORLD.tiles;
-    // Scale the map to fit beside the list of places.
-    const cell = Math.max(1, Math.min(3, Math.floor(170 / tiles[0].length)));
-    const mw = tiles[0].length * cell;
-    const ox = f.x + 10;
-    const oy = f.y + 22;
-
-    for (let y = 0; y < tiles.length; y++) {
-      for (let x = 0; x < tiles[y].length; x++) {
-        ctx.fillStyle = P[TERRAIN[tiles[y][x]]?.map ?? 'M'] ?? P.M;
-        ctx.fillRect(ox + x * cell, oy + y * cell, cell, cell);
+    // Only what Dagny has seen; the map zooms in on it (bigger tiles early on).
+    const box = exploredBounds(s) ?? { x0: s.ow.x, y0: s.ow.y, x1: s.ow.x, y1: s.ow.y };
+    const pad = 1;
+    const x0 = Math.max(0, box.x0 - pad);
+    const y0 = Math.max(0, box.y0 - pad);
+    const bw = Math.min(tiles[0].length - 1, box.x1 + pad) - x0 + 1;
+    const bh = Math.min(tiles.length - 1, box.y1 + pad) - y0 + 1;
+    const areaW = 168;
+    const areaH = f.h - 32;
+    const cell = Math.max(2, Math.min(7, Math.floor(Math.min(areaW / bw, areaH / bh))));
+    const ox = f.x + 10 + Math.floor((areaW - bw * cell) / 2);
+    const oy = f.y + 22 + Math.floor((areaH - bh * cell) / 2);
+    ctx.fillStyle = P.k;
+    ctx.fillRect(ox - 2, oy - 2, bw * cell + 4, bh * cell + 4);
+    const radio = hasItem(s, 'radio');
+    for (let y = y0; y < y0 + bh; y++) {
+      for (let x = x0; x < x0 + bw; x++) {
+        const px = ox + (x - x0) * cell;
+        const py = oy + (y - y0) * cell;
+        if (!isExplored(s, x, y)) {
+          // Unseen: fog.
+          ctx.fillStyle = (x + y) % 2 ? P.K : P.k;
+          ctx.fillRect(px, py, cell, cell);
+          continue;
+        }
+        const ch = tiles[y][x];
+        // The hidden path and the cliff door look like their surroundings until the radio finds them.
+        const shown = (ch === 'H' || ch === 'E') && radio ? 'W' : TERRAIN[ch]?.map ?? 'M';
+        ctx.fillStyle = P[shown] ?? P.M;
+        ctx.fillRect(px, py, cell, cell);
       }
     }
-    const s = this.game.state!;
-    if (Math.floor(this.t / 15) % 2 === 0) {
-      ctx.fillStyle = P.W;
-      ctx.fillRect(ox + s.ow.x * cell - 1, oy + s.ow.y * cell - 1, cell + 2, cell + 2);
-      ctx.fillStyle = P.r;
-      ctx.fillRect(ox + s.ow.x * cell, oy + s.ow.y * cell, cell, cell);
+    // Places Dagny has seen: temples yellow, villages red, small places pale (hidden places stay hidden).
+    const m = Math.max(3, cell);
+    for (const pl of OVERWORLD.places) {
+      if (pl.hidden || !isExplored(s, pl.x, pl.y) || pl.x < x0 || pl.y < y0 || pl.x >= x0 + bw || pl.y >= y0 + bh) continue;
+      const temple = TEMPLES.find((tt) => tt.entryArea === pl.area);
+      const village = AREAS[pl.area ?? '']?.kind === 'village';
+      const col = temple ? (hasFlag(s, `${temple.id}_klar`) ? P.W : P.Y) : village ? P.R : P.C;
+      const px = ox + (pl.x - x0) * cell + Math.floor(cell / 2) - Math.floor(m / 2);
+      const py = oy + (pl.y - y0) * cell + Math.floor(cell / 2) - Math.floor(m / 2);
+      ctx.fillStyle = P.k;
+      ctx.fillRect(px - 1, py - 1, m + 2, m + 2);
+      ctx.fillStyle = col;
+      ctx.fillRect(px, py, m, m);
+      if (temple && cell >= 4) drawText(ctx, `${temple.number}`, px + m + 1, py - 2, 'Y', { outline: 'k' });
     }
-    // Legend: temples.
-    let y = oy;
-    const lx = ox + mw + 10;
+    // Dagny, blinking.
+    if (Math.floor(this.t / 15) % 2 === 0) {
+      const px = ox + (s.ow.x - x0) * cell + Math.floor(cell / 2) - Math.floor(m / 2);
+      const py = oy + (s.ow.y - y0) * cell + Math.floor(cell / 2) - Math.floor(m / 2);
+      ctx.fillStyle = P.W;
+      ctx.fillRect(px - 1, py - 1, m + 2, m + 2);
+      ctx.fillStyle = P.r;
+      ctx.fillRect(px, py, m, m);
+    }
+    // The temples: names only once their place has been seen.
+    let y = f.y + 22;
+    const lx = f.x + 10 + areaW + 8;
     drawText(ctx, STR.templesHeading, lx, y, 'Y');
     y += 13;
-    for (const t of TEMPLES) {
-      const done = hasFlag(s, `${t.id}_klar`);
-      drawText(ctx, `${t.number}. ${t.name}`, lx, y, done ? 'Y' : t.entryArea ? 'W' : 'G');
-      if (done) drawText(ctx, '★', lx + measure(`${t.number}. ${t.name}`) + 3, y, 'Y');
+    for (const tt of TEMPLES) {
+      const place = OVERWORLD.places.find((p) => p.area === tt.entryArea);
+      const known = !!place && isExplored(s, place.x, place.y);
+      const done = hasFlag(s, `${tt.id}_klar`);
+      const label = known ? `${tt.number}. ${tt.short}` : `${tt.number}. ???`;
+      drawText(ctx, label, lx, y, done ? 'Y' : known ? 'W' : 'G');
+      if (done) drawText(ctx, '★', lx + measure(label) + 3, y, 'Y');
       y += 11;
+    }
+    // A small key.
+    y += 6;
+    for (const [col, txt] of [[P.Y, STR.mapKeyTemple], [P.R, STR.mapKeyVillage], [P.C, STR.mapKeyPlace]] as const) {
+      ctx.fillStyle = P.k;
+      ctx.fillRect(lx - 1, y + 1, 5, 5);
+      ctx.fillStyle = col;
+      ctx.fillRect(lx, y + 2, 3, 3);
+      drawText(ctx, txt, lx + 7, y, 'G');
+      y += 10;
     }
   }
 }

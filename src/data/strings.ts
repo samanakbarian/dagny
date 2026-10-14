@@ -80,6 +80,9 @@ export const STR = {
   restartMountain: 'Börja om vid bergets fot',
   extraLife: 'Ett extra liv!',
   sealOpen: 'Vägen är fri',
+  mapKeyTemple: 'Tempel',
+  mapKeyVillage: 'By',
+  mapKeyPlace: 'Plats',
   wakeHome: 'Vakna hos mormor',
   wakeIn: 'Vakna i',
 

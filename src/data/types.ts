@@ -112,6 +112,8 @@ export interface TempleDef {
   id: string;
   number: number;
   name: string;
+  /** Short name for tight spots (the map's list). */
+  short: string;
   /** Environment / mechanic description (design notes, shown nowhere). */
   mechanic: string;
   tone: string;

@@ -38,6 +38,8 @@ export interface GameState {
   containers: string[];
   /** Tries left before Game Over (Zelda II style). */
   lives: number;
+  /** Overworld tiles seen so far, as a bit set (see game/explored.ts). */
+  explored: string;
 }
 
 /** Lives at the start and after a Game Over. */
@@ -68,6 +70,7 @@ export function newGame(): GameState {
     playTime: 0,
     containers: [],
     lives: START_LIVES,
+    explored: '',
   };
 }
 

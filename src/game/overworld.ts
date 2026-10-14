@@ -15,6 +15,7 @@ import * as flow from './flow';
 import { ENCOUNTER_TABLES, TERRAIN_TYPE } from '../data/encounters';
 import { pickEncounter } from './encounters';
 import { reachableTiles } from './reach';
+import { markExplored } from './explored';
 
 const T = 16;
 const STEP_FRAMES = 9;
@@ -190,6 +191,7 @@ export class OverworldScene implements Scene {
         else if (ch === 'H' || ch === 'E') this.secrets.push({ x, y, sprite: ch === 'H' ? 'owHiddenPath' : 'owCliffDoor' });
       }
     }
+    markExplored(s, s.ow.x, s.ow.y);
     this.updateCamera(true);
   }
 
@@ -280,6 +282,7 @@ export class OverworldScene implements Scene {
   private arrive(): void {
     const me = this.me;
     this.s.ow = { x: me.x, y: me.y };
+    markExplored(this.s, me.x, me.y);
     if (this.frame % 2 === 0) this.game.audio.play('step');
     const place = this.placeAt(me.x, me.y);
     if (place) {

@@ -6,6 +6,8 @@ import { SPELL_ORDER } from '../data/spells';
 import { maxHp, maxMp } from './progression';
 import { MAX_LIVES, START_LIVES, hpMax, mpMax, newGame, type GameState, type Location } from './state';
 import { repairReach } from './reach';
+import { markExplored } from './explored';
+import { TEMPLES } from '../data/temples';
 
 /** Bump when the format changes, and add a migration below. */
 export const SAVE_VERSION = 3;
@@ -106,11 +108,21 @@ export function deserialize(text: string | null): SaveFile | null {
     containers: [...new Set(strArr(s.containers).filter((c) => /^(liv|magi):./.test(c)))],
     // Saves from before lives existed start with a full set.
     lives: Math.max(1, Math.min(MAX_LIVES, Math.floor(num(s.lives, START_LIVES)))),
+    explored: typeof s.explored === 'string' ? s.explored.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 800) : '',
   };
   state.hp = Math.max(1, Math.min(hpMax(state), num(s.hp, d.hp)));
   state.mp = Math.max(0, Math.min(mpMax(state), num(s.mp, d.mp)));
   // Never leave Dagny where she can't get out with what she carries.
   repairReach(state);
+  // Saves from before the map remembered what Dagny had seen: count where
+  // she stands, where she last rested and the temples she has restored.
+  if (typeof s.explored !== 'string') {
+    markExplored(state, state.ow.x, state.ow.y);
+    for (const p of OVERWORLD.places) {
+      const temple = TEMPLES.find((t) => t.entryArea === p.area);
+      if (p.area === state.lastVillage || (temple && state.flags.includes(`${temple.id}_klar`))) markExplored(state, p.x, p.y);
+    }
+  }
   return { v: SAVE_VERSION, savedAt: num(file.savedAt, 0), state };
 }
 
