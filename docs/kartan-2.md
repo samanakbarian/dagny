@@ -1,6 +1,6 @@
 # Kartan 2.0 – specifikation
 
-*Status: förslag att granska. Stryk, ändra och lägg till direkt i texten.*
+*Status: steg 1 påbörjat. Beslut 15 oktober 2026 (se §10).*
 *Ersätter överblickskartan från oktober 2026 (80 × 56, sju regioner).*
 
 ## 1. Problemet
@@ -151,12 +151,21 @@ fiender, ett hot och gärna ett vägval eller en hemlighet.
 - **Strömmar** (ny terräng `≈` eller en riktningstabell) knuffar ekan.
 - Sjöfärden har egen musik.
 
-### 5.4 Dygnet
+### 5.4 Dygnet – struket
+
+Beslut: inga tider på dygnet som styr hemligheter. Gryningsskäret hittas i
+stället med ett rykte från eremiten och syns från en utsiktspunkt. Natten i
+kapitel 6 är platsens egenskap (nattskogen), inte en klocka.
+
+<details><summary>Det ursprungliga förslaget</summary>
+
 
 - Tiden går med stegen på kartan: **dag, kväll, natt, gryning**. En hel cykel tar ungefär fem minuters vandring.
 - Att vila i en by sätter tiden till morgon.
 - Kartan tonas efter tid på dygnet. Mötestabellerna har redan nattvarianter.
 - Vissa saker finns bara vid vissa tider: Gryningsskäret, fiolen i Folkparken på natten, ett irrbloss på kyrkogården vid midnatt.
+
+</details>
 
 ### 5.5 Rykten, utsikter och skyltar
 
@@ -255,7 +264,21 @@ Varje steg går att provspela innan nästa påbörjas.
 6. **Kapitel 7–8:** radiojakten och Bergsstigen.
 7. **Förvandling och finputs:** blommande områden, vandrande folk, musik, balans.
 
-## 10. Frågor att avgöra
+## 10. Beslut (15 oktober 2026)
+
+1. **Dygnet:** nej – inga tider som styr hemligheter (§5.4 struket).
+2. **Snabbresa:** tåget mellan stationerna i Hemdalen, Gruvbygden och vid kusten, öppnat i kapitel 6. Avgörs när kapitel 6 byggs.
+3. **Kartans storlek:** 96 × 72.
+4. **Ekan:** fri segling bara om den tillför något – provas i steg 2, annars bryggor att hoppa mellan.
+5. **Byn ger nyckeln:** tabellen i §5.8 gäller tills vidare.
+6. **Nya platser:** börja med grunden och se om det tillför spelkänsla.
+
+### Steg 1 (gjort)
+
+- **Gamla stollen** (`data/areas/passager.ts`): gruvorten är nu en mörk sidovybana genom fjället, inträde från båda håll, med vagn över en taggränna, ett ras att hoppa över och ett galleri under taket där radion avslöjar en näverdocka (återkomst). Gruvorten är markerad `passage` i terrängtabellen.
+- **Dimma på myren och mörker i nattskogen** (`sight` i terrängtabellen): bara några rutor runt Dagny syns, i skogen bara ficklampans sken framför henne, och pausmenyns karta fylls bara i nära henne.
+
+## 11. Ursprungliga frågor
 
 1. **Dygnet:** fullt dygn med tidsberoende hemligheter, eller bara fasta tider per kapitel (natt i kapitel 6, gryning vid skäret)?
 2. **Tåget som snabbresa:** ja eller nej? Det gör världen mindre men bekvämare.

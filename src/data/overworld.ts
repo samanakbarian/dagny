@@ -112,6 +112,9 @@ export const OVERWORLD: OverworldDef = {
     { x: 75, y: 37, name: 'Skeppssättningen', area: 'skeppssattningen', entry: 'A' },
     { x: 36, y: 47, name: 'Milstolpen', area: 'milstolpen', entry: 'A' },
     { x: 14, y: 13, name: 'Fäbodtorpet', area: 'fabodtorpet', entry: 'A' },
+    // Passages: the way through is a side-view stretch, entered from either end.
+    { x: 60, y: 9, name: 'Gamla stollen', area: 'stollen', entry: 'A' },
+    { x: 61, y: 9, name: 'Gamla stollen', area: 'stollen', entry: 'E' },
   ],
   encounters: [
     { sprite: 'owShadow', terrain: '.:m', x: 22, y: 38 },

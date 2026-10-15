@@ -159,6 +159,9 @@ export class OverworldScene implements Scene {
   private me: Walker;
   private facing: 'down' | 'up' | 'side' = 'down';
   private flip = false;
+  /** How far the marsh fog and the night forest's dark have closed in (0–1, eased). */
+  private fog = 0;
+  private dark = 0;
   private frame = 0;
   private grace = 90;
   private blockedMsgT = 0;
@@ -282,7 +285,9 @@ export class OverworldScene implements Scene {
   private arrive(): void {
     const me = this.me;
     this.s.ow = { x: me.x, y: me.y };
-    markExplored(this.s, me.x, me.y);
+    // In fog or dark Dagny sees – and so maps – only what is close.
+    const near = TERRAIN[this.tile(me.x, me.y)]?.sight ? 2 : undefined;
+    markExplored(this.s, me.x, me.y, near, near);
     if (this.frame % 2 === 0) this.game.audio.play('step');
     const place = this.placeAt(me.x, me.y);
     if (place) {
@@ -379,6 +384,38 @@ export class OverworldScene implements Scene {
     }
   }
 
+  /**
+   * The marsh fog and the night forest's dark: only a little round Dagny
+   * shows, and in the forest only what the torch lights ahead of her.
+   */
+  private renderSight(ctx: CanvasRenderingContext2D, cx: number, cy: number): void {
+    const me = this.me;
+    const at = me.t > 0.5 ? this.tile(me.x, me.y) : this.tile(me.fx, me.fy);
+    const sight = TERRAIN[at]?.sight;
+    this.fog += ((sight === 'fog' ? 1 : 0) - this.fog) * 0.06;
+    this.dark += ((sight === 'dark' ? 1 : 0) - this.dark) * 0.08;
+    if (this.fog > 0.01) {
+      const drift = Math.sin(this.frame / 50) * 4;
+      const g = ctx.createRadialGradient(cx, cy, 20 + drift, cx, cy, 62 + drift);
+      g.addColorStop(0, 'rgba(201,187,165,0)');
+      g.addColorStop(1, `rgba(201,187,165,${(0.94 * this.fog).toFixed(3)})`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, VIEW_W, VIEW_H);
+    }
+    if (this.dark > 0.01) {
+      // The beam reaches ahead in the way she faces; a faint ring keeps her own feet in sight.
+      const ahead = this.facing === 'up' ? [0, -1] : this.facing === 'down' ? [0, 1] : [this.flip ? -1 : 1, 0];
+      const bx = cx + ahead[0] * 22;
+      const by = cy + ahead[1] * 22;
+      const g = ctx.createRadialGradient(bx, by, 10, bx, by, 44);
+      g.addColorStop(0, 'rgba(43,34,51,0)');
+      g.addColorStop(0.6, `rgba(43,34,51,${(0.55 * this.dark).toFixed(3)})`);
+      g.addColorStop(1, `rgba(43,34,51,${(0.97 * this.dark).toFixed(3)})`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, VIEW_W, VIEW_H);
+    }
+  }
+
   render(ctx: CanvasRenderingContext2D): void {
     const camX = Math.round(this.camX);
     const camY = Math.round(this.camY);
@@ -426,6 +463,7 @@ export class OverworldScene implements Scene {
       drawSprite(ctx, 'owDagny', base + step, p.x - camX, p.y - camY, this.facing === 'side' && this.flip);
     }
 
+    this.renderSight(ctx, p.x + T / 2 - camX, p.y + T / 2 - camY);
     this.game.applyTone(ctx, OVERWORLD.tone, true);
 
     // Place name when standing next to / on a place.

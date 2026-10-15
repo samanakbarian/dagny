@@ -260,7 +260,7 @@ describe('overworld', () => {
       const ch = OVERWORLD.tiles[p.y]?.[p.x];
       // Hidden places sit on the waterfall or the cliff door that hides them;
       // small places on the croft, cross, stone or churchyard that marks them.
-      const ok = p.hidden ? 'AE'.includes(ch) : PLACE_CHARS.includes(ch) || !!TERRAIN[ch]?.visitable;
+      const ok = p.hidden ? 'AE'.includes(ch) : PLACE_CHARS.includes(ch) || !!TERRAIN[ch]?.visitable || !!TERRAIN[ch]?.passage;
       expect(ok, `${p.name} on '${ch}'`).toBe(true);
       if (p.area) {
         expect(AREAS[p.area], p.area).toBeDefined();

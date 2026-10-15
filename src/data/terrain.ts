@@ -32,6 +32,13 @@ export interface TerrainDef {
    * plain scenery.
    */
   visitable?: boolean;
+  /**
+   * What Dagny can see while standing here: 'fog' (the marsh – only a few
+   * tiles round her) or 'dark' (the night forest – only the torch's beam).
+   */
+  sight?: 'fog' | 'dark';
+  /** The mouth of a passage: stepping on it goes into a side-view stretch (data/areas/passager.ts). */
+  passage?: boolean;
 }
 
 export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
@@ -55,9 +62,9 @@ export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
 
   // --- Ground that needs a treasure ---------------------------------------------------
   '~': { name: 'vatten', sprite: 'owWater', map: 'U', needs: 'eka', encounter: 'strand' },
-  s: { name: 'myr', sprite: 'owSwamp', map: 'v', needs: 'stovlar', encounter: 'myr' },
-  D: { name: 'gruvort', sprite: 'owTunnel', map: 'k', needs: 'karbidlampa', encounter: 'skog' },
-  N: { name: 'nattskog', sprite: 'owNightForest', map: 'n', needs: 'ficklampa', encounter: 'skog' },
+  s: { name: 'myr', sprite: 'owSwamp', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog' },
+  D: { name: 'gruvort', sprite: 'owTunnel', map: 'k', needs: 'karbidlampa', encounter: 'skog', passage: true },
+  N: { name: 'nattskog', sprite: 'owNightForest', map: 'n', needs: 'ficklampa', encounter: 'skog', sight: 'dark' },
   // The hidden path through the dense spruce: looks like the rest of the
   // thicket until the radio's static gives it away (then drawn as owHiddenPath).
   H: { name: 'dold stig', sprite: 'owDenseForest', map: 'K', needs: 'radio', encounter: 'skog' },

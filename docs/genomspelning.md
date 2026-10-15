@@ -62,6 +62,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Kvarnen vid forsen**: finds a key
 - **Fallgrottan**: finds a container; finds a näverdocka
 - **Pestkorset**: meets Den grå frun; gets Prästkragar
+- **Gamla stollen**
 
 ## 10
 
@@ -129,6 +130,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 
 - **Dansbanan**: unlocks a door
 - **Scenen**: reconciles Spelmannen; gets Transistorradion
+- **Gamla stollen**: finds a näverdocka
 
 ## 21
 

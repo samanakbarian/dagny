@@ -2,6 +2,10 @@ import type { DialogDef } from '../types';
 
 /** The overworld: the sleeping mountain, what each border needs, friendly meetings and the caves. */
 export const VARLDEN: Record<string, DialogDef> = {
+  stollen_skylt: {
+    pages: ['Ett murket plank vid ortmynningen:\n"GAMLA STOLLEN. STÄNGD 1931 EFTER RASET. TRÄD EJ IN."', 'Någon har ristat under, med kniv: "Lampan visar vägen. Håll dig från taket."'],
+  },
+
   mote_vatte_liv: {
     speaker: 'Vätten',
     pages: ['En vätte kliver fram ur gräset med en kopp kaffe. "Du förlikade min släkt i templen. Drick nu, Väktare."', 'Dagny känner sig starkare. Livet är fyllt.'],

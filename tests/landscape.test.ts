@@ -91,7 +91,8 @@ describe('the overworld as landscape', () => {
     const fakes: string[] = [];
     for (let y = 0; y < H; y++) {
       for (let x = 0; x < W; x++) {
-        if (TERRAIN[at(x, y)]?.visitable && !OVERWORLD.places.some((p) => p.x === x && p.y === y)) fakes.push(`${at(x, y)} at ${x},${y}`);
+        const looks = TERRAIN[at(x, y)]?.visitable || TERRAIN[at(x, y)]?.passage;
+        if (looks && !OVERWORLD.places.some((p) => p.x === x && p.y === y)) fakes.push(`${at(x, y)} at ${x},${y}`);
       }
     }
     expect(fakes).toEqual([]);
