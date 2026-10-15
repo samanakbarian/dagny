@@ -220,7 +220,8 @@ function rides(a: AreaDef): Array<Set<string>> {
 
 /**
  * Coarse platformer reachability: Dagny stands on a cell with floor under it,
- * walks, falls, and jumps up to 3 tiles high and 4 tiles across, and rides
+ * walks, falls, and jumps up to 3 tiles high and 3 tiles across (a running jump
+ * carries her 3.1 tiles), and rides
  * moving platforms anywhere along their way. Rooms with wind or dance
  * squares are left out (they need timing).
  */
@@ -248,7 +249,7 @@ function softlocks(a: AreaDef, radio: boolean): string[] {
       }
     }
     for (let up = 1; up <= 3 && free(x, y - up); up++) {
-      for (let dx = -4; dx <= 4; dx++) {
+      for (let dx = -3; dx <= 3; dx++) {
         let ok = true;
         for (let cx = x; cx !== x + dx + Math.sign(dx || 1) && ok; cx += Math.sign(dx || 1)) if (!free(cx, y - up)) ok = false;
         const l = ok ? land(x + dx, y - up) : null;
