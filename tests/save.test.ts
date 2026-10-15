@@ -157,3 +157,15 @@ describe('version 3 (the larger overworld)', () => {
     expect(fine.state.lastVillage).toBe('stationssamhallet');
   });
 });
+
+describe('version 4 (Kartan 2.0, 96 × 72)', () => {
+  it('moves a version-3 save beside its village and counts again what Dagny has seen', async () => {
+    const { OVERWORLD } = await import('../src/data/overworld');
+    const { isExplored } = await import('../src/game/explored');
+    const old = { ...newGame(), items: ['svard', 'eka'], lastVillage: 'kyrkbyn', ow: { x: 70, y: 40 }, loc: { area: 'overworld', x: 70, y: 40 }, explored: 'AAAA' };
+    const f = deserialize(JSON.stringify({ v: 3, savedAt: 0, state: old }))!;
+    const p = OVERWORLD.places.find((x) => x.area === 'kyrkbyn')!;
+    expect(f.state.ow).toEqual({ x: p.x, y: p.y + 1 });
+    expect(isExplored(f.state, p.x, p.y)).toBe(true);
+  });
+});

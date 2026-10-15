@@ -13,7 +13,7 @@ export const FABODSKOGEN: Record<string, AreaDef> = {
     theme: 'skog',
     ambience: ['mosquitoes', 'mist'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 8, y: 11 } },
+    left: { to: 'overworld', ow: { x: 6, y: 6 } },
     right: { to: 'fabod_2', entry: 'A' },
     signs: { I: 'fabod_skylt1' },
     platforms: [
@@ -211,7 +211,7 @@ export const FABODSKOGEN: Record<string, AreaDef> = {
     ambience: ['mist', 'leaves'],
     treasure: 'naverlur',
     left: { to: 'fabod_3', entry: 'A' },
-    doors: { U: { to: 'overworld', ow: { x: 9, y: 12 }, requires: { flag: 'fabodskogen_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 7, y: 7 }, requires: { flag: 'fabodskogen_klar', dialog: 'dorr_last' } } },
     tiles: [
       "#......................#",
       "#......................#",

@@ -230,27 +230,32 @@ export class MapOverlay extends SubOverlay {
     const bh = Math.min(tiles.length - 1, box.y1 + pad) - y0 + 1;
     const areaW = 168;
     const areaH = f.h - 32;
-    const cell = Math.max(2, Math.min(7, Math.floor(Math.min(areaW / bw, areaH / bh))));
+    // Whole pixels per tile while they fit; a large seen area gets uneven tiles rather than overflowing.
+    const fit = Math.min(areaW / bw, areaH / bh);
+    const cell = fit >= 2 ? Math.min(7, Math.floor(fit)) : fit;
     const ox = f.x + 10 + Math.floor((areaW - bw * cell) / 2);
     const oy = f.y + 22 + Math.floor((areaH - bh * cell) / 2);
+    const at = (n: number): number => Math.floor(n * cell);
     ctx.fillStyle = P.k;
-    ctx.fillRect(ox - 2, oy - 2, bw * cell + 4, bh * cell + 4);
+    ctx.fillRect(ox - 2, oy - 2, at(bw) + 4, at(bh) + 4);
     const radio = hasItem(s, 'radio');
     for (let y = y0; y < y0 + bh; y++) {
       for (let x = x0; x < x0 + bw; x++) {
-        const px = ox + (x - x0) * cell;
-        const py = oy + (y - y0) * cell;
+        const px = ox + at(x - x0);
+        const py = oy + at(y - y0);
+        const cw = at(x - x0 + 1) - at(x - x0);
+        const chh = at(y - y0 + 1) - at(y - y0);
         if (!isExplored(s, x, y)) {
           // Unseen: fog.
           ctx.fillStyle = (x + y) % 2 ? P.K : P.k;
-          ctx.fillRect(px, py, cell, cell);
+          ctx.fillRect(px, py, cw, chh);
           continue;
         }
         const ch = tiles[y][x];
         // The hidden path and the cliff door look like their surroundings until the radio finds them.
         const shown = (ch === 'H' || ch === 'E') && radio ? 'W' : TERRAIN[ch]?.map ?? 'M';
         ctx.fillStyle = P[shown] ?? P.M;
-        ctx.fillRect(px, py, cell, cell);
+        ctx.fillRect(px, py, cw, chh);
       }
     }
     // Places Dagny has seen: temples yellow, villages red, small places pale (hidden places stay hidden).
@@ -260,8 +265,8 @@ export class MapOverlay extends SubOverlay {
       const temple = TEMPLES.find((tt) => tt.entryArea === pl.area);
       const village = AREAS[pl.area ?? '']?.kind === 'village';
       const col = temple ? (hasFlag(s, `${temple.id}_klar`) ? P.W : P.Y) : village ? P.R : P.C;
-      const px = ox + (pl.x - x0) * cell + Math.floor(cell / 2) - Math.floor(m / 2);
-      const py = oy + (pl.y - y0) * cell + Math.floor(cell / 2) - Math.floor(m / 2);
+      const px = ox + at(pl.x - x0 + 0.5) - Math.floor(m / 2);
+      const py = oy + at(pl.y - y0 + 0.5) - Math.floor(m / 2);
       ctx.fillStyle = P.k;
       ctx.fillRect(px - 1, py - 1, m + 2, m + 2);
       ctx.fillStyle = col;
@@ -270,8 +275,8 @@ export class MapOverlay extends SubOverlay {
     }
     // Dagny, blinking.
     if (Math.floor(this.t / 15) % 2 === 0) {
-      const px = ox + (s.ow.x - x0) * cell + Math.floor(cell / 2) - Math.floor(m / 2);
-      const py = oy + (s.ow.y - y0) * cell + Math.floor(cell / 2) - Math.floor(m / 2);
+      const px = ox + at(s.ow.x - x0 + 0.5) - Math.floor(m / 2);
+      const py = oy + at(s.ow.y - y0 + 0.5) - Math.floor(m / 2);
       ctx.fillStyle = P.W;
       ctx.fillRect(px - 1, py - 1, m + 2, m + 2);
       ctx.fillStyle = P.r;

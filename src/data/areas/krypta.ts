@@ -13,7 +13,7 @@ export const KRYPTA: Record<string, AreaDef> = {
     theme: 'crypt',
     showName: true,
     ambience: ['dust'],
-    left: { to: 'overworld', ow: { x: 7, y: 33 } },
+    left: { to: 'overworld', ow: { x: 6, y: 40 } },
     right: { to: 'krypta_2', entry: 'A' },
     signs: { I: 'krypta_skylt1' },
   tiles: [
@@ -150,7 +150,7 @@ export const KRYPTA: Record<string, AreaDef> = {
     treasure: 'eka',
     ambience: ['dust'],
     left: { to: 'krypta_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 8, y: 34 }, requires: { flag: 'krypta_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 7, y: 41 }, requires: { flag: 'krypta_klar', dialog: 'dorr_last' } } },
   tiles: [
     "######################",
     "######################",

@@ -124,7 +124,7 @@ function fakeGame(): Game {
   const state = newGame();
   // Show the secrets: hidden passages open, lamp secrets visible.
   state.items.push('svard', 'radio', 'karbidlampa', 'ficklampa');
-  return { state, check: (c?: unknown[]) => !c || c.length === 0 } as unknown as Game;
+  return { state, taken: new Set<string>(), check: (c?: unknown[]) => !c || c.length === 0 } as unknown as Game;
 }
 
 const DARK_BACKDROPS = new Set(['crypt', 'mine', 'mill', 'none']);

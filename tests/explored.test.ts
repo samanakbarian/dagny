@@ -23,9 +23,9 @@ describe('the map remembers what Dagny has seen', () => {
     const back = deserialize(serialize(s))!.state;
     expect(isExplored(back, 60, 41)).toBe(true);
     expect(isExplored(back, 40, 25)).toBe(false);
-    // The whole map seen still fits in under 800 characters.
-    for (let y = 0; y < OVERWORLD.tiles.length; y += 5) for (let x = 0; x < 80; x += 10) markExplored(s, x, y);
-    expect(s.explored.length).toBeLessThanOrEqual(750);
+    // The whole map seen still fits in about 1,150 characters (one bit per tile).
+    for (let y = 0; y < OVERWORLD.tiles.length; y += 5) for (let x = 0; x < OVERWORLD.tiles[0].length; x += 10) markExplored(s, x, y);
+    expect(s.explored.length).toBeLessThanOrEqual(1200);
   });
 
   it('saves from before it existed start with what Dagny must have seen', () => {

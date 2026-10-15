@@ -17,7 +17,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     npcs: { '1': 'sten_anna', '2': 'sten_per', '3': 'sten_karin', '4': 'sten_karin_rubbad', '5': 'sten_johan' },
     rewards: [{ flag: 'karins_sten_rubbad', kind: 'liv', tx: 21, ty: 9 }],
     props: [{ sprite: 'birch', tx: 28, ty: 9 }],
-    left: { to: 'overworld', ow: { x: 22, y: 31 } },
+    left: { to: 'overworld', ow: { x: 21, y: 33 } },
     tiles: [
       "################################",
       "................................",
@@ -49,7 +49,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     npcs: { '1': 'kolmila', '2': 'kolmila_glod' },
     rewards: [{ flag: 'kolmilan_tand', kind: 'magi', tx: 17, ty: 9 }],
     props: [{ sprite: 'spruce', tx: 3, ty: 9 }, { sprite: 'spruce', tx: 29, ty: 9 }],
-    left: { to: 'overworld', ow: { x: 37, y: 14 } },
+    left: { to: 'overworld', ow: { x: 36, y: 23 } },
     tiles: [
       "................................",
       "................................",
@@ -81,7 +81,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     signs: { I: 'pestkorset_skylt' },
     npcs: { '1': 'grafru' },
     props: [{ sprite: 'pestkors', tx: 5, ty: 9, dx: 1 }],
-    left: { to: 'overworld', ow: { x: 65, y: 15 } },
+    left: { to: 'overworld', ow: { x: 79, y: 24 } },
     tiles: [
       "................................",
       "................................",
@@ -116,7 +116,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
       { sprite: 'skeppssten', tx: 10, ty: 9 }, { sprite: 'skeppssten', tx: 13, ty: 9 }, { sprite: 'skeppssten', tx: 16, ty: 9 },
       { sprite: 'skeppssten', tx: 19, ty: 9 }, { sprite: 'skeppssten', tx: 24, ty: 9, dx: 4 },
     ],
-    left: { to: 'overworld', ow: { x: 74, y: 37 } },
+    left: { to: 'overworld', ow: { x: 83, y: 50 } },
     tiles: [
       "................................",
       "................................",
@@ -148,7 +148,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     signs: { I: 'milstolpen_skylt' },
     npcs: { '1': 'postiljon' },
     props: [{ sprite: 'birch', tx: 8, ty: 9 }, { sprite: 'milsten', tx: 4, ty: 9, dx: 3 }],
-    left: { to: 'overworld', ow: { x: 35, y: 47 } },
+    left: { to: 'overworld', ow: { x: 38, y: 55 } },
     tiles: [
       "................................",
       "................................",
@@ -180,7 +180,7 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     npcs: { '1': 'kalla', '2': 'kalla_ren' },
     rewards: [{ flag: 'kallan_rensad', kind: 'liv', tx: 17, ty: 9 }],
     props: [{ sprite: 'spruce', tx: 6, ty: 9 }, { sprite: 'birch', tx: 26, ty: 9 }],
-    left: { to: 'overworld', ow: { x: 13, y: 13 } },
+    left: { to: 'overworld', ow: { x: 11, y: 19 } },
     tiles: [
       "................................",
       "................................",

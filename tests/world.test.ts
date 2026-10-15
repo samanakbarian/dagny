@@ -28,11 +28,11 @@ function reach(items: Iterable<string>): Set<string> {
 const placeOfArea = (area: string) => OVERWORLD.places.find((p) => p.area === area)!;
 
 describe('the overworld', () => {
-  it('is 80 × 56 tiles, ringed by mountains', () => {
-    expect(t.length).toBe(56);
-    for (const r of t) expect(r.length).toBe(80);
+  it('is 96 × 72 tiles, ringed by mountains', () => {
+    expect(t.length).toBe(72);
+    for (const r of t) expect(r.length).toBe(96);
     expect(t[0]).toMatch(/^\^+$/);
-    expect(t[55]).toMatch(/^\^+$/);
+    expect(t[71]).toMatch(/^\^+$/);
   });
 
   it('each temple needs the treasure of the one before it, in order', () => {

@@ -13,7 +13,7 @@ export const KVARNEN: Record<string, AreaDef> = {
     theme: 'meadow',
     ambience: ['rain', 'leaves'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 71, y: 6 } },
+    left: { to: 'overworld', ow: { x: 85, y: 8 } },
     right: { to: 'kvarnen_2', entry: 'A' },
     signs: { I: 'kvarnen_skylt1' },
     props: [{ sprite: 'spruce', tx: 7, ty: 9 }, { sprite: 'birch', tx: 20, ty: 9 }, { sprite: 'spruce', tx: 40, ty: 9, dx: 6 }],
@@ -196,7 +196,7 @@ export const KVARNEN: Record<string, AreaDef> = {
     ambience: ['rain', 'mist'],
     treasure: 'stovlar',
     left: { to: 'kvarnen_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 72, y: 7 }, requires: { flag: 'kvarnen_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 86, y: 9 }, requires: { flag: 'kvarnen_klar', dialog: 'dorr_last' } } },
     tiles: [
       "#....................#",
       "#....................#",

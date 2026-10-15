@@ -13,8 +13,8 @@ export const BYAR: Record<string, AreaDef> = {
     showName: true,
     ambience: ['mosquitoes', 'leaves'],
     npcs: { '1': 'maj', '2': 'elin', '3': 'lisa', '4': 'nils', '5': 'anders' },
-    left: { to: 'overworld', ow: { x: 43, y: 10 } },
-    right: { to: 'overworld', ow: { x: 45, y: 10 } },
+    left: { to: 'overworld', ow: { x: 41, y: 20 } },
+    right: { to: 'overworld', ow: { x: 43, y: 20 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -8 },
       { sprite: 'mjolkpall', tx: 16, ty: 9, dx: 4 },
@@ -68,8 +68,8 @@ export const BYAR: Record<string, AreaDef> = {
     ambience: ['fireflies', 'leaves'],
     npcs: { '1': 'signe', '2': 'prosten', '3': 'ingrid', '4': 'bosse', '5': 'tyra' },
     signs: { I: 'kyrkby_klockstapel' },
-    left: { to: 'overworld', ow: { x: 19, y: 34 } },
-    right: { to: 'overworld', ow: { x: 21, y: 34 } },
+    left: { to: 'overworld', ow: { x: 28, y: 37 } },
+    right: { to: 'overworld', ow: { x: 30, y: 37 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -6 },
       { sprite: 'klockstapel', tx: 29, ty: 9, dx: 4 },
@@ -173,7 +173,7 @@ export const BYAR: Record<string, AreaDef> = {
     ambience: ['spray'],
     npcs: { '1': 'hilma', '2': 'viola', '3': 'johan', '4': 'stina', '5': 'ture' },
     signs: { I: 'fiske_skylt' },
-    left: { to: 'overworld', ow: { x: 59, y: 41 } },
+    left: { to: 'overworld', ow: { x: 71, y: 54 } },
     props: [
       { sprite: 'fiskebat', tx: 58, ty: 10, dy: 5 },
       { sprite: 'kaffepanna', tx: 9, ty: 9, dx: 2, front: true },
@@ -221,8 +221,8 @@ export const BYAR: Record<string, AreaDef> = {
     showName: true,
     ambience: ['mosquitoes', 'fireflies'],
     npcs: { '1': 'anna', '2': 'karna', '3': 'lillper', '4': 'stjarna', '5': 'britta', '6': 'rosen' },
-    left: { to: 'overworld', ow: { x: 18, y: 17 } },
-    right: { to: 'overworld', ow: { x: 20, y: 17 } },
+    left: { to: 'overworld', ow: { x: 19, y: 14 } },
+    right: { to: 'overworld', ow: { x: 21, y: 14 } },
     props: [
       { sprite: 'spruce', tx: 0, ty: 9, dx: -4 },
       { sprite: 'birch', tx: 11, ty: 9 },
@@ -273,8 +273,8 @@ export const BYAR: Record<string, AreaDef> = {
     showName: true,
     ambience: ['leaves'],
     npcs: { '1': 'lind', '2': 'oskar', '3': 'berg', '4': 'resenaren', '5': 'kalle' },
-    left: { to: 'overworld', ow: { x: 48, y: 48 } },
-    right: { to: 'overworld', ow: { x: 50, y: 48 } },
+    left: { to: 'overworld', ow: { x: 47, y: 56 } },
+    right: { to: 'overworld', ow: { x: 49, y: 56 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -6 },
       { sprite: 'stationsur', tx: 29, ty: 9, dx: 2 },

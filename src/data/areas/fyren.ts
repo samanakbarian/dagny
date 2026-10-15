@@ -13,7 +13,7 @@ export const FYREN: Record<string, AreaDef> = {
     theme: 'skar',
     ambience: ['rain', 'spray'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 71, y: 50 } },
+    left: { to: 'overworld', ow: { x: 88, y: 64 } },
     right: { to: 'fyren_2', entry: 'A' },
     signs: { I: 'fyren_skylt1' },
     wind: [
@@ -208,7 +208,7 @@ export const FYREN: Record<string, AreaDef> = {
     ambience: ['rain', 'spray'],
     treasure: 'ficklampa',
     left: { to: 'fyren_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 72, y: 51 }, requires: { flag: 'fyren_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 89, y: 65 }, requires: { flag: 'fyren_klar', dialog: 'dorr_last' } } },
     tiles: [
       "#.......................",
       "#.......................",

@@ -13,8 +13,8 @@ export const HEM: Record<string, AreaDef> = {
     showName: true,
     ambience: ['mosquitoes', 'fireflies'],
     npcs: { '1': 'hulda', '2': 'sven', '3': 'karin', '4': 'handlarn', '5': 'olle', '6': 'algot', '7': 'murre', '8': 'greta' },
-    left: { to: 'overworld', ow: { x: 11, y: 44 } },
-    right: { to: 'overworld', ow: { x: 13, y: 44 } },
+    left: { to: 'overworld', ow: { x: 9, y: 58 } },
+    right: { to: 'overworld', ow: { x: 11, y: 58 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -6 },
       { sprite: 'laundry', tx: 13, ty: 9, dy: -2, anim: 0.6 },
@@ -72,8 +72,8 @@ export const HEM: Record<string, AreaDef> = {
     theme: 'meadow',
     showName: true,
     ambience: ['mosquitoes', 'leaves'],
-    left: { to: 'overworld', ow: { x: 23, y: 50 } },
-    right: { to: 'overworld', ow: { x: 25, y: 50 } },
+    left: { to: 'overworld', ow: { x: 21, y: 65 } },
+    right: { to: 'overworld', ow: { x: 23, y: 65 } },
     signs: { I: 'bjorkhagen_nasslor' },
     questItem: 'johannesort',
     props: [
@@ -110,8 +110,8 @@ export const HEM: Record<string, AreaDef> = {
     showName: true,
     ambience: ['leaves'],
     npcs: { '1': 'hulda_ep', '2': 'sven_ep', '3': 'karin_ep', '4': 'maj_ep', '5': 'olle_ep', '6': 'anders_ep', '7': 'murre_ep', '8': 'greta_ep', '9': 'vatte_ep' },
-    left: { to: 'overworld', ow: { x: 11, y: 44 } },
-    right: { to: 'overworld', ow: { x: 13, y: 44 } },
+    left: { to: 'overworld', ow: { x: 9, y: 58 } },
+    right: { to: 'overworld', ow: { x: 11, y: 58 } },
     props: [
       { sprite: 'birch', tx: 0, ty: 9, dx: -6 },
       { sprite: 'laundry', tx: 13, ty: 9, dy: -2, anim: 0.6 },

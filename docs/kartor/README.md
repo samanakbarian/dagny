@@ -6,11 +6,12 @@ Drawn straight from `src/data/overworld.ts` with the game's own sprites.
 
 ![The world map](varldskarta.png)
 
-80 × 56 tiles.
+96 × 72 tiles (Kartan 2.0, see [kartan-2.md](../kartan-2.md)).
 - Temples are marked in yellow with their number, villages and caves in white, and hidden places in light blue, marked "(dold)".
 - **START** is where a new game begins, just below Mormors by.
 - Hidden things are drawn open, as Dagny sees them with every treasure: the path through the spruce thicket, the door in the cliff below Trollberget, and the cave behind the waterfall.
-- Each border is made of its own stuff: shore and reeds by the lake, a fell with mine adits, a wide marsh, the night forest, rapids with a washed-away bridge, a spruce thicket, and dark cliffs round Trollberget.
+- Each border is made of its own stuff: the lake (crossed by boat), the fell with **Gamla stollen** (a side-view passage), a wide marsh in fog, the night forest in darkness, rapids with a washed-away bridge, a spruce thicket with a hidden path, and dark cliffs round Trollberget, reached from the highlands by Bergsstigen.
+- Kyrkbyn and the sandy strip on the far shore face each other across the lake: where Dagmar signalled with her lamp and Hulda answered from the belfry.
 - The six small places (churchyard, charcoal croft, plague cross, stone ship, milestone, summer-farm croft) can all be visited, each with a little task. Walls, gates and overgrown paths are just scenery.
 
 The full design (borders, fields, meetings, landmarks, hidden places) is in

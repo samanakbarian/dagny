@@ -10,7 +10,7 @@ import { markExplored } from './explored';
 import { TEMPLES } from '../data/temples';
 
 /** Bump when the format changes, and add a migration below. */
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 export const SAVE_KEY = 'dagny.save';
 
 export interface SaveFile {
@@ -49,15 +49,17 @@ function migrate(file: Record<string, unknown>): Record<string, unknown> {
     const lv = file.state.levels;
     for (const k of ['styrka', 'magi', 'liv']) lv[k] = convertOldLevel(num(lv[k], 1));
   }
-  // Version 3: a new, larger overworld. Old map positions don't fit it, so
-  // Dagny is put beside the village she last rested in (or Mormors by).
-  if (v < 3 && isObj(file.state)) {
+  // Version 3 (a larger overworld) and 4 (Kartan 2.0, 96 × 72): old map
+  // positions don't fit, so Dagny is put beside the village she last rested
+  // in (or Mormors by), and what she had seen is counted again on the new map.
+  if (v < 4 && isObj(file.state)) {
     const st = file.state;
     const villageArea = typeof st.lastVillage === 'string' ? st.lastVillage : 'mormors_by';
     const place = OVERWORLD.places.find((p) => p.area === villageArea) ?? OVERWORLD.places.find((p) => p.area === 'mormors_by')!;
     const spot = { x: place.x, y: place.y + 1 };
     st.ow = spot;
     if (isObj(st.loc) && st.loc.area === 'overworld') st.loc = { area: 'overworld', x: spot.x, y: spot.y };
+    delete st.explored;
   }
   return file;
 }
@@ -115,7 +117,7 @@ export function deserialize(text: string | null): SaveFile | null {
     containers: [...new Set(strArr(s.containers).filter((c) => /^(liv|magi):./.test(c)).map((c) => MOVED_CONTAINERS[c] ?? c))],
     // Saves from before lives existed start with a full set.
     lives: Math.max(1, Math.min(MAX_LIVES, Math.floor(num(s.lives, START_LIVES)))),
-    explored: typeof s.explored === 'string' ? s.explored.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 800) : '',
+    explored: typeof s.explored === 'string' ? s.explored.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 1200) : '',
   };
   state.hp = Math.max(1, Math.min(hpMax(state), num(s.hp, d.hp)));
   state.mp = Math.max(0, Math.min(mpMax(state), num(s.mp, d.mp)));

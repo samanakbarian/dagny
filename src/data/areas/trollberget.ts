@@ -14,7 +14,7 @@ export const TROLLBERGET: Record<string, AreaDef> = {
     theme: 'berg',
     ambience: ['leaves'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 31, y: 4 } },
+    left: { to: 'overworld', ow: { x: 47, y: 6 } },
     right: { to: 'troll_2', entry: 'A' },
     signs: { I: 'troll_skylt1' },
     props: [{ sprite: 'spruce', tx: 7, ty: 9 }, { sprite: 'spruce', tx: 15, ty: 9, dx: 6 }, { sprite: 'birch', tx: 48, ty: 9 }],

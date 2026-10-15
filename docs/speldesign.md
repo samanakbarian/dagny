@@ -90,8 +90,13 @@ said "roughly this order", which was not true.)
 
 ## The overworld
 
-80 × 56 tiles, seven regions, the lake in the middle, the start in the
-south-west and Trollberget in the north. Every kind of ground is described in
+96 × 72 tiles (Kartan 2.0, being built chapter by chapter: [kartan-2.md](kartan-2.md)).
+The lake lies in the middle with islands, Hemdalen and the start in the
+south-west, Trollberget in the north, reached from the highlands by
+Bergsstigen. Kyrkbyn and Signalstranden face each other across the lake. The
+map is generated from a coarse plan by a development script and checked for
+the gate order, open ground and straight edges; the tests in
+`tests/landscape.test.ts` and `tests/world.test.ts` hold it to that. Every kind of ground is described in
 `src/data/terrain.ts`: its name, what it needs, its colour on the small map and
 which meetings happen there. Pictures: [kartor/](kartor/README.md).
 

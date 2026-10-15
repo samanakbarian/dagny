@@ -13,7 +13,7 @@ export const GRUVAN: Record<string, AreaDef> = {
     theme: 'mine',
     ambience: ['dust'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 52, y: 5 } },
+    left: { to: 'overworld', ow: { x: 55, y: 18 } },
     right: { to: 'gruvan_2', entry: 'A' },
     signs: { I: 'gruvan_skylt1' },
     platforms: [
@@ -195,7 +195,7 @@ export const GRUVAN: Record<string, AreaDef> = {
     dark: true,
     treasure: 'karbidlampa',
     left: { to: 'gruvan_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 53, y: 6 }, requires: { flag: 'gruvan_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 56, y: 19 }, requires: { flag: 'gruvan_klar', dialog: 'dorr_last' } } },
     tiles: [
       "######################",
       "######################",

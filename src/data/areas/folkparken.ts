@@ -15,7 +15,7 @@ export const FOLKPARKEN: Record<string, AreaDef> = {
     darkness: 0.72,
     ambience: ['fireflies'],
     showName: true,
-    left: { to: 'overworld', ow: { x: 39, y: 49 } },
+    left: { to: 'overworld', ow: { x: 41, y: 62 } },
     right: { to: 'folkparken_2', entry: 'A' },
     signs: { I: 'park_skylt1' },
     tiles: [
@@ -157,7 +157,7 @@ export const FOLKPARKEN: Record<string, AreaDef> = {
     beat: { period: 90 },
     treasure: 'radio',
     left: { to: 'folkparken_3', entry: 'E' },
-    doors: { U: { to: 'overworld', ow: { x: 40, y: 50 }, requires: { flag: 'folkparken_klar', dialog: 'dorr_last' } } },
+    doors: { U: { to: 'overworld', ow: { x: 42, y: 63 }, requires: { flag: 'folkparken_klar', dialog: 'dorr_last' } } },
     tiles: [
       "#......................#",
       "#......................#",

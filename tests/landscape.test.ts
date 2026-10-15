@@ -50,8 +50,8 @@ describe('the overworld as landscape', () => {
     expect(long).toEqual([]);
   });
 
-  it('has fewer mountains than the old box-shaped map (1660)', () => {
-    expect(t.join('').split('^').length - 1).toBeLessThan(1100);
+  it('is not mostly mountains: at most a fifth of the map', () => {
+    expect(t.join('').split('^').length - 1).toBeLessThan(W * H * 0.22);
   });
 
   it('gives each border its own material', () => {
@@ -60,22 +60,22 @@ describe('the overworld as landscape', () => {
       for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) if (chars.includes(at(x, y))) n++;
       return n;
     };
-    // Home ↔ the lake: shore and reeds, and a jetty where the boat waits.
-    expect(count('r', 20, 30, 34, 45)).toBeGreaterThan(3);
-    expect(count('j', 0, 0, W - 1, H - 1)).toBeGreaterThan(0);
-    // Mine ↔ mill: a fell with dark adits (and boarded-up old ones).
-    expect(count('D', 50, 3, 70, 16)).toBeGreaterThan(0);
-    expect(count('a', 50, 3, 70, 16)).toBeGreaterThan(0);
+    // Home ↔ the lake: shore and reeds, and jetties where the boat waits.
+    expect(count('r', 20, 30, 34, 50)).toBeGreaterThan(3);
+    expect(count('j', 0, 0, W - 1, H - 1)).toBeGreaterThan(1);
+    // Mine ↔ mill: a fell with the mouths of Gamla stollen (and boarded-up old adits).
+    expect(count('D', 55, 8, 70, 26)).toBe(2);
+    expect(count('a', 55, 8, 70, 26)).toBeGreaterThan(0);
     // Mill ↔ coast: a wide marsh.
-    expect(count('s', 58, 20, 78, 37)).toBeGreaterThan(120);
+    expect(count('s', 60, 26, 92, 48)).toBeGreaterThan(300);
     // Home ↔ park plain: rapids, and the bridge the flood took.
-    expect(count('w', 26, 40, 36, 55)).toBeGreaterThan(15);
-    expect(count('b', 26, 40, 36, 55)).toBeGreaterThan(0);
+    expect(count('w', 28, 48, 40, 71)).toBeGreaterThan(30);
+    expect(count('b', 28, 48, 40, 71)).toBeGreaterThan(0);
     // Home ↔ highlands: a spruce thicket with the hidden path.
-    expect(count('F', 0, 18, 35, 34)).toBeGreaterThan(30);
-    expect(count('H', 0, 18, 35, 34)).toBeGreaterThan(0);
+    expect(count('F', 0, 20, 35, 34)).toBeGreaterThan(100);
+    expect(count('H', 0, 20, 35, 34)).toBeGreaterThan(0);
     // Trollberget: dark cliffs, darker than the other mountains.
-    expect(count('X', 25, 0, 38, 9)).toBeGreaterThan(6);
+    expect(count('X', 34, 0, 60, 14)).toBeGreaterThan(30);
   });
 
   it('names every kind of ground it uses', () => {

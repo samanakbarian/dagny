@@ -14,7 +14,7 @@ export const GROTTOR: Record<string, AreaDef> = {
     darkness: 0.9,
     showName: true,
     ambience: ['dust'],
-    left: { to: 'overworld', ow: { x: 68, y: 29 } },
+    left: { to: 'overworld', ow: { x: 74, y: 36 } },
     signs: { I: 'tjuvgrottan_skylt' },
     lampSecrets: [
       { item: 'karbidlampa', tx: 34, ty: 4, container: 'magi' },
@@ -62,7 +62,7 @@ export const GROTTOR: Record<string, AreaDef> = {
     darkness: 0.95,
     showName: true,
     ambience: ['spray'],
-    left: { to: 'overworld', ow: { x: 40, y: 30 } },
+    left: { to: 'overworld', ow: { x: 47, y: 38 } },
     signs: { I: 'jattegrytan_skylt' },
     lampSecrets: [
       { item: 'ficklampa', tx: 21, ty: 9, dialog: 'jattegrytan_ristning' },
@@ -111,7 +111,7 @@ export const GROTTOR: Record<string, AreaDef> = {
     darkness: 0.85,
     showName: true,
     ambience: ['spray'],
-    left: { to: 'overworld', ow: { x: 66, y: 3 } },
+    left: { to: 'overworld', ow: { x: 88, y: 3 } },
     signs: { I: 'fallgrottan_ristning' },
     tiles: [
       "##################################",
@@ -142,7 +142,7 @@ export const GROTTOR: Record<string, AreaDef> = {
     darkness: 0.8,
     showName: true,
     ambience: ['dust'],
-    left: { to: 'overworld', ow: { x: 26, y: 3 } },
+    left: { to: 'overworld', ow: { x: 38, y: 7 } },
     signs: { I: 'vaktarkammaren_bord', J: 'vaktarkammaren_vagg' },
     tiles: [
       "############################",

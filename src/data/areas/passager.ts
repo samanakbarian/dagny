@@ -24,8 +24,8 @@ export const PASSAGER: Record<string, AreaDef> = {
     ambience: ['dust'],
     showName: true,
     signs: { I: 'stollen_skylt' },
-    left: { to: 'overworld', ow: { x: 59, y: 9 } },
-    right: { to: 'overworld', ow: { x: 62, y: 9 } },
+    left: { to: 'overworld', ow: { x: 61, y: 18 } },
+    right: { to: 'overworld', ow: { x: 64, y: 18 } },
     platforms: [{ kind: 'cart', tx: 13, ty: 9, toTx: 27, toTy: 9, mode: 'ride' }],
     tiles: [
       "################################################################",
