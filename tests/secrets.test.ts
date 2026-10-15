@@ -196,17 +196,43 @@ describe('sword upgrades', () => {
 });
 
 /**
+ * Where moving platforms carry Dagny: for each platform, the cells she can
+ * stand in while riding it (a lift's whole column, a cart's or log's whole
+ * run, every cell a wheel's paddles pass). Riding joins them all.
+ */
+function rides(a: AreaDef): Array<Set<string>> {
+  return (a.platforms ?? []).map((p) => {
+    const cells = new Set<string>();
+    const add = (x: number, surface: number): void => void cells.add(`${x},${surface - 1}`);
+    if (p.kind === 'lift') {
+      for (let r = Math.min(p.ty, p.toTy); r <= Math.max(p.ty, p.toTy); r++) for (const x of [p.tx, p.tx + 1]) add(x, r);
+    } else if (p.kind === 'cart' || p.kind === 'log') {
+      const surface = p.kind === 'log' ? p.ty + 1 : p.ty;
+      for (let x = Math.min(p.tx, p.toTx); x <= Math.max(p.tx, p.toTx) + 1; x++) add(x, surface);
+    } else {
+      const rx = p.radius ?? 2;
+      const ry = p.radiusY ?? rx;
+      for (let i = 0; i < 32; i++) add(Math.round(p.tx + Math.cos((i / 32) * Math.PI * 2) * rx), Math.round(p.ty + Math.sin((i / 32) * Math.PI * 2) * ry));
+    }
+    return cells;
+  });
+}
+
+/**
  * Coarse platformer reachability: Dagny stands on a cell with floor under it,
- * walks, falls, and jumps up to 3 tiles high and 4 tiles across. Rooms with
- * moving platforms, wind or dance squares are left out (they need timing).
+ * walks, falls, and jumps up to 3 tiles high and 4 tiles across, and rides
+ * moving platforms anywhere along their way. Rooms with wind or dance
+ * squares are left out (they need timing).
  */
 function softlocks(a: AreaDef, radio: boolean): string[] {
   const t = a.tiles;
   const h = t.length;
   const w = t[0].length;
+  const groups = rides(a);
+  const onRide = (x: number, y: number): boolean => groups.some((g) => g.has(`${x},${y}`));
   const solid = (x: number, y: number): boolean => y >= h || (x >= 0 && x < w && y >= 0 && (t[y][x] === '#' || t[y][x] === 'L' || (t[y][x] === '?' && !radio)));
   const free = (x: number, y: number): boolean => x >= 0 && x < w && y < h && (y < 0 || (!solid(x, y) && !'^~n'.includes(t[y][x])));
-  const floor = (x: number, y: number): boolean => y + 1 < h && (solid(x, y + 1) || '=%&'.includes(t[y + 1][x]));
+  const floor = (x: number, y: number): boolean => y + 1 < h && y + 1 >= 0 && (solid(x, y + 1) || '=%&'.includes(t[y + 1][x] ?? '') || onRide(x, y));
   const stand = (x: number, y: number): boolean => free(x, y) && free(x, y - 1) && floor(x, y);
   const land = (x: number, y: number): [number, number] | null => {
     let yy = y;
@@ -228,6 +254,13 @@ function softlocks(a: AreaDef, radio: boolean): string[] {
         const l = ok ? land(x + dx, y - up) : null;
         if (l) out.push(l);
         if (dx === 0) continue;
+      }
+    }
+    for (const g of groups) {
+      if (!g.has(`${x},${y}`)) continue;
+      for (const k of g) {
+        const [gx, gy] = k.split(',').map(Number);
+        if (free(gx, gy) && free(gx, gy - 1)) out.push([gx, gy]);
       }
     }
     return out;
@@ -267,9 +300,14 @@ function softlocks(a: AreaDef, radio: boolean): string[] {
 
 describe('no pits to get stuck in', () => {
   it('from every place Dagny can stand she can get back to an exit (without keys, with or without the radio)', () => {
+    const bad: string[] = [];
     for (const a of Object.values(AREAS)) {
-      if (a.platforms || a.wind || a.beat) continue;
-      for (const radio of [false, true]) expect(softlocks(a, radio), `${a.id} radio=${radio}`).toEqual([]);
+      if (a.wind || a.beat) continue;
+      for (const radio of [false, true]) {
+        const stuck = softlocks(a, radio);
+        if (stuck.length) bad.push(`${a.id} radio=${radio}: ${stuck.join(' ')}`);
+      }
     }
+    expect(bad).toEqual([]);
   });
 });

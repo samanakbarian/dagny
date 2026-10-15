@@ -74,7 +74,7 @@ the `WorldApi` interface (`entities/types.ts`), never directly to
   and pull request. `npm run check` does the same locally.
 - **Vitest, 362 tests** covering:
   - data integrity (every exit, dialog, sprite and character in the font)
-  - softlocks and pits (a coarse jump model)
+  - softlocks and pits (a coarse jump model that also rides lifts, carts, logs and wheels)
   - region gating
   - the save format and migrations
   - lives
