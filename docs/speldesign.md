@@ -38,7 +38,10 @@ give (`src/entities/player.ts`, `src/engine/touch.ts`):
 - **Hit-stop:** when a blow lands the world holds still for 4 frames (6 on a kill, 2 on a parry), with a short buzz. Presses made meanwhile are kept.
 - **Stick:** left and right get ±30°, up and down ±25°, and the diagonals the rest. A slightly slanted thumb walks; it doesn't duck or thrust upwards.
 
-Next up: buttons a thumb can roll between (and press two at once), letting Dagny drift and turn early in a ground strike, and a shorter knockback when she is hurt (spikes in the temples throw her too far).
+- **Knockback:** a hit throws Dagny back about one tile (as in Zelda II), with drag, not across the room.
+- **Carts and logs** that move only while ridden come back for her when she waits at the other end, so a fall never strands her on the wrong side.
+
+Next up: buttons a thumb can roll between (and press two at once), and letting Dagny drift and turn early in a ground strike.
 
 ## The first temple's creatures
 

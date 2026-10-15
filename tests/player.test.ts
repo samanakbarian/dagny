@@ -129,3 +129,18 @@ describe('Dagny movement', () => {
     expect(p.vx).toBeGreaterThan(0);
   });
 });
+
+describe('being hurt', () => {
+  it('knocks Dagny back about a tile, not across the room', () => {
+    const g = flat();
+    const p = new Player();
+    p.place(200, 100);
+    settle(p, g);
+    const x0 = p.x;
+    p.hurt(p.x + 20);
+    for (let i = 0; i < 60; i++) p.update(none, g);
+    const moved = Math.abs(p.x - x0);
+    expect(moved).toBeGreaterThan(8);
+    expect(moved).toBeLessThanOrEqual(24);
+  });
+});

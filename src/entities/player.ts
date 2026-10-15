@@ -142,12 +142,13 @@ export class Player implements Body {
   hurt(fromX: number): void {
     if (this.invuln > 0 || this.state === 'dead') return;
     this.state = 'hurt';
-    this.hurtT = 18;
+    this.hurtT = 14;
     this.invuln = INVULN;
     this.downThrust = false;
+    // A short knock back, about one tile (as in Zelda II), not a flight.
     const dir = this.x + this.w / 2 < fromX ? -1 : 1;
-    this.vx = dir * 2.2;
-    this.vy = -2.6;
+    this.vx = dir * 1.6;
+    this.vy = -2;
     this.setDuck(false, null);
   }
 
@@ -274,7 +275,7 @@ export class Player implements Body {
       const f = this.onGround ? FRICTION : 0.04;
       if (Math.abs(this.vx) <= f) this.vx = 0;
       else this.vx -= Math.sign(this.vx) * f;
-    }
+    } else this.vx *= 0.94;
 
     // Jump (coyote time + jump buffer).
     if (this.buffer > 0 && this.coyote > 0 && this.state !== 'hurt') {

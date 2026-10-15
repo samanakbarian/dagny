@@ -399,7 +399,8 @@ export class SideScene implements Scene, WorldApi {
     const wasGround = p.onGround;
     // Platforms move first and carry whoever stands on them.
     const rider = this.riding;
-    for (const pl of this.platforms) pl.update(pl === rider && p.onGround);
+    const waiting = p.onGround && !rider ? p.x + p.w / 2 : null;
+    for (const pl of this.platforms) pl.update(pl === rider && p.onGround, waiting);
     if (rider && p.onGround) {
       const ox = p.x;
       p.x += rider.dx;
