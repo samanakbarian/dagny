@@ -29,6 +29,19 @@ platserna är halva äventyret**.
 5. **Varje kapitel har egen karaktär.** Egna faror, eget ljus, eget väder, egen musik och eget tempo.
 6. **Framsteg syns.** Ett förlikat tempel får området att blomma upp, och byarna förändras.
 
+### Storyns tråd: Dagmars spår
+
+Resan följer Dagmar, den sista Väktaren. Varje skatt var hennes: ekan bar
+henne över sjön (Grimmen), lampan har initialerna H.D., stövlarna lämnade hon
+vid forsen, radion lyssnade hon på mellan stationerna, och näverfilten vävde
+hon på vallen. Därför ska äventyret på kartan drivas av hennes spår, inte bara
+av nästa lås:
+
+- **Varje resa (§4) bär ett spår av Dagmar:** en ristning, ett föremål eller en plats hon stod på. Dagny följer en människa, inte en lista.
+- **Signalen över sjön.** Dagmar blinkade varje kväll med sin lampa från en strand (tre korta, tre långa, tre korta), och Hulda svarade från vinden i klockstapeln i Kyrkbyn. Kartan ska därför ha **fri sikt över sjön mellan Kyrkbyn och Signalstranden** på andra sidan. Signalstranden blir en liten plats som nås med ekan, och med ficklampan (kapitel 6) kan Dagny blinka signalen själv. Det blir en återkomst med en stark scen.
+- **Vägen till Trollberget.** Tyra såg Dagmar gå från klockstapeln mot Trollberget. Bergsstigen nås därför norrifrån via höglandet, inte genom gruvbygden.
+- **Hulda berättar i takt med resan** (`hulda_efter_*`). Rykten och nya platser får inte avslöja mer än hon gjort.
+
 ### Det som ligger fast
 
 - **Templens ordning är fast, 1 → 7** (beslut A). Friheten finns i sidoplatserna och i hur man tar sig fram.
@@ -62,8 +75,8 @@ en väg till gruvan.
 - **Känsla:** trygg sommarkväll, men Trollberget hänger svart i norr, alltid synligt.
 - **Innehåll:** Mormors by, Kyrkbyn, Björkhagen, Gamla kyrkogården, Stenkyrkan. Läkning från Sven, Nedåtstöt från Algot.
 - **Nytt:** en **utsiktspunkt** (Kyrkbacken) som visar sjön, öarna och fjället på pausmenyns karta som "sedda på avstånd". Det sår frön.
-- **Rykten:** Telefonist-Greta har hört om en båt som ingen äger vid bryggan, och om ljus på en ö.
-- **Gränsen:** sjön. Ekan ligger vid bryggan när kryptan är förlikad.
+- **Rykten:** Telefonist-Greta har hört om ljus på en ö mitt i sjön.
+- **Gränsen:** sjön. Ekan är Dagmars båt. Grimmen ger den när kryptan är förlikad ("Den bar henne över sjön en gång"), och den väntar vid bryggan.
 
 ### Kapitel 2 – Sjön (frihet)
 
@@ -73,7 +86,8 @@ en väg till gruvan.
 - **Öar att välja mellan** (valfri ordning):
   - **Jättegrytan** (finns i dag): grotta på holmen.
   - **Eremitholmen** (ny): en gubbe som byter ett ryktesminne mot en fisk och berättar om gruvan.
-  - **Gryningsskäret** (nytt, hemligt): syns bara tidigt på morgonen (se dygnet, §5.4). Där ligger en näverdocka.
+  - **Måsskäret** (nytt, hemligt): ett litet skär som eremiten berättar om. Där ligger en näverdocka.
+  - **Signalstranden** (ny, på andra sidan sjön, mitt emot Kyrkbyn): stenen där Dagmar stod och blinkade. Ristat i stenen: tre streck, tre ringar, tre streck.
 - **Gruvbryggan** i norr leder till kapitel 3.
 - **Återkomst:** en vik vid Mormors by blir en genväg hem.
 
@@ -153,7 +167,7 @@ fiender, ett hot och gärna ett vägval eller en hemlighet.
 
 ### 5.4 Dygnet – struket
 
-Beslut: inga tider på dygnet som styr hemligheter. Gryningsskäret hittas i
+Beslut: inga tider på dygnet som styr hemligheter. Gryningsskäret heter nu Måsskäret och hittas i
 stället med ett rykte från eremiten och syns från en utsiktspunkt. Natten i
 kapitel 6 är platsens egenskap (nattskogen), inte en klocka.
 
@@ -216,7 +230,7 @@ föremål, som Zelda II:s byar. Tabell:
   │ Kyrkbacken☆      Gruvbryggan                ░░ MYREN ░░        │
   │ Kyrkbyn  Stenkyrkan   ~~~~~~~ SJÖN ~~~~~~~  ░ Tjuvgrottan ░    │
   │ Kyrkogården        ~ Eremitholmen ~ Jättegrytan ~   Fiskeläget │
-  │ Mormors by ⌂ brygga ~~~ Gryningsskäret ~~~       Skeppssättn.  │
+  │ Mormors by ⌂ brygga ~~~ Måsskäret     ~~~       Skeppssättn.  │
   │ Björkhagen      ▓▓ NATTSKOGEN ▓▓   Stationen ═ räls ═  Fyren ⌂ │
   │                  Milstolpen   Folkparken ✦                     │
   └──────────────────────────────────────────────────────────────┘
