@@ -13,6 +13,7 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
       { if: [{ flag: 'kvarnen_klar' }, { notFlag: 'hulda_efter_kvarnen' }], dialog: 'hulda_efter_kvarnen' },
       { if: [{ flag: 'gruvan_klar' }, { notFlag: 'hulda_efter_gruvan' }], dialog: 'hulda_efter_gruvan' },
       { if: [{ flag: 'krypta_klar' }, { notFlag: 'hulda_efter_krypta' }], dialog: 'hulda_efter_krypta' },
+      { if: [{ flag: 'signalen_besvarad' }, { notFlag: 'hulda_signal' }], dialog: 'hulda_signal' },
       { if: [{ notFlag: 'intro_done' }], dialog: 'intro_hulda' },
       { dialog: 'hulda_vila' },
     ],
@@ -232,6 +233,20 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
       { if: [{ item: 'prastkragar' }], dialog: 'grafru_tack' },
       { if: [{ flag: 'grafru_bad' }], dialog: 'grafru_vantar' },
       { dialog: 'grafru_ber' },
+    ],
+  },
+  // --- The lake ---
+  eremit: {
+    id: 'eremit', sprite: 'fiskare', idle: { frames: [0, 0, 0, 2, 0, 1, 0], every: 0.9 },
+    talk: [{ if: [{ flag: 'eremit_traffad' }], dialog: 'eremit_igen' }, { dialog: 'eremit_forsta' }],
+  },
+  /** Dagmar's signal stone: with the torch, Dagny can flash her signal across the lake. */
+  signalsten: {
+    id: 'signalsten', sprite: 'runsten', still: true, idle: { frames: [0], every: 1 },
+    talk: [
+      { if: [{ flag: 'signalen_besvarad' }], dialog: 'signalsten_besvarad' },
+      { if: [{ item: 'ficklampa' }], dialog: 'signalsten_ficklampa' },
+      { dialog: 'signalsten_las' },
     ],
   },
   runsten: {

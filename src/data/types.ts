@@ -375,6 +375,8 @@ export interface OverworldPlace {
    * (a cave behind a waterfall); 'radio' only when she carries the radio.
    */
   hidden?: 'near' | 'radio';
+  /** A viewpoint: standing here maps this many tiles round about (Kyrkbacken). */
+  view?: number;
 }
 
 

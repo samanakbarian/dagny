@@ -37,6 +37,8 @@ export interface TerrainDef {
    * tiles round her) or 'dark' (the night forest – only the torch's beam).
    */
   sight?: 'fog' | 'dark';
+  /** Water that draws a boat along, one tile in this direction, when Dagny stops rowing. */
+  drift?: [number, number];
   /** The mouth of a passage: stepping on it goes into a side-view stretch (data/areas/passager.ts). */
   passage?: boolean;
 }
@@ -62,6 +64,10 @@ export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
 
   // --- Ground that needs a treasure ---------------------------------------------------
   '~': { name: 'vatten', sprite: 'owWater', map: 'U', needs: 'eka', encounter: 'strand' },
+  // Currents towards the rapids where the lake drains, and a fog bank out on the water.
+  z: { name: 'ström söderut', sprite: 'owCurrent', map: 'U', needs: 'eka', encounter: 'strand', drift: [0, 1] },
+  n: { name: 'ström västerut', sprite: 'owCurrent', map: 'U', needs: 'eka', encounter: 'strand', drift: [-1, 0] },
+  R: { name: 'dimbank', sprite: 'owWater', map: 'U', needs: 'eka', encounter: 'strand', sight: 'fog' },
   s: { name: 'myr', sprite: 'owSwamp', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog' },
   D: { name: 'gruvort', sprite: 'owTunnel', map: 'k', needs: 'karbidlampa', encounter: 'skog', passage: true },
   N: { name: 'nattskog', sprite: 'owNightForest', map: 'n', needs: 'ficklampa', encounter: 'skog', sight: 'dark' },
@@ -92,6 +98,8 @@ export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
   y: { name: 'grind', sprite: 'owGate', map: 'M', encounter: 'ang', landmark: true },
   e: { name: 'övervuxen stig', sprite: 'owOvergrown', map: 'M', encounter: 'skog', landmark: true },
   q: { name: 'gamla kyrkogården', sprite: 'owChurchyard', map: 'M', encounter: 'ang', landmark: true, visitable: true },
+  U: { name: 'utsiktsröse', sprite: 'owCairn', map: 'M', encounter: 'ang', landmark: true, visitable: true },
+  S: { name: 'signalstenen', sprite: 'owSignalStone', map: 't', encounter: 'strand', landmark: true, visitable: true },
   // A waterfall with a cave behind it, seen only when standing beside it.
   A: { name: 'vattenfall', sprite: 'owWaterfall', map: 'c', encounter: 'skog', landmark: true },
 

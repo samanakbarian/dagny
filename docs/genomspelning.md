@@ -39,6 +39,9 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Den gamla gruvan**: finds a key
 - **Jättegrytan**: finds a näverdocka
 - **Kolartorpet**: meets kolmila; sets fire to kolmila; finds a container
+- **Eremitholmen**: meets Eremiten
+- **Måsskäret**: finds a näverdocka
+- **Signalstranden**: meets signalsten
 
 ## 6
 
@@ -106,6 +109,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Fiskeläget**: hands over Kompassen; finds a container
 - **Linsrummet**: unlocks a door
 - **Fyrgalleriet**: reconciles Havsfrun; gets Ficklampan
+- **Signalstranden**: finds a näverdocka
 
 ## 17
 

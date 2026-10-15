@@ -24,7 +24,10 @@ const STEP_FRAMES = 9;
 export const TILE_SPRITE: Readonly<Record<string, string>> = Object.fromEntries(Object.entries(TERRAIN).map(([c, d]) => [c, d.sprite]));
 
 /** Animated ground: drawn every frame on top of the static map. */
-const ANIMATED: Readonly<Record<string, string>> = { '~': 'owWater', w: 'owRapids', A: 'owWaterfall' };
+/** Water: anything crossed in the boat. */
+const isWater = (ch: string): boolean => TERRAIN[ch]?.needs === 'eka';
+
+const ANIMATED: Readonly<Record<string, string>> = { '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall' };
 
 interface Walker {
   x: number;
@@ -159,6 +162,8 @@ export class OverworldScene implements Scene {
   private me: Walker;
   private facing: 'down' | 'up' | 'side' = 'down';
   private flip = false;
+  /** Steps Dagny has sat still on a current. */
+  private drifting = 0;
   /** How far the marsh fog and the night forest's dark have closed in (0–1, eased). */
   private fog = 0;
   private dark = 0;
@@ -258,6 +263,17 @@ export class OverworldScene implements Scene {
         if (Math.abs(wx) > Math.abs(wy)) dx = Math.sign(wx);
         else dy = Math.sign(wy);
       }
+      // A current takes the boat along when Dagny stops rowing.
+      const drift = TERRAIN[this.tile(me.x, me.y)]?.drift;
+      if (dx || dy) this.drifting = 0;
+      else if (drift && ++this.drifting > 16 && this.passable(me.x + drift[0], me.y + drift[1]) === true) {
+        this.drifting = 0;
+        me.fx = me.x;
+        me.fy = me.y;
+        me.x += drift[0];
+        me.y += drift[1];
+        me.t = 0;
+      }
       if (dx || dy) {
         this.facing = dy < 0 ? 'up' : dy > 0 ? 'down' : 'side';
         if (dx) this.flip = dx < 0;
@@ -270,7 +286,7 @@ export class OverworldScene implements Scene {
           me.x = nx;
           me.y = ny;
           me.t = 0;
-          if (this.tile(nx, ny) === '~' && this.tile(me.fx, me.fy) !== '~') this.game.audio.play('water');
+          if (isWater(this.tile(nx, ny)) && !isWater(this.tile(me.fx, me.fy))) this.game.audio.play('water');
         } else if (typeof ok === 'string' && this.blockedMsgT === 0) {
           this.blockedMsgT = 90;
           this.game.pushOverlay(new DialogOverlay(this.game, `behover_${ok}`));
@@ -290,6 +306,11 @@ export class OverworldScene implements Scene {
     markExplored(this.s, me.x, me.y, near, near);
     if (this.frame % 2 === 0) this.game.audio.play('step');
     const place = this.placeAt(me.x, me.y);
+    // A viewpoint: from up here Dagny sees far, and the map fills in.
+    if (place?.view && markExplored(this.s, me.x, me.y, place.view, Math.round(place.view * 0.7))) {
+      this.game.toast(STR.viewpoint, 3);
+      this.game.audio.play('key');
+    }
     if (place) {
       const locked = place.requires && !place.requires.every((f) => hasFlag(this.s, f));
       if (place.area && !locked) {
@@ -453,7 +474,7 @@ export class OverworldScene implements Scene {
     }
     // Dagny.
     const p = this.pos(this.me);
-    const onWater = this.tile(this.me.x, this.me.y) === '~' && this.me.t > 0.5 || (this.tile(this.me.fx, this.me.fy) === '~' && this.me.t <= 0.5);
+    const onWater = (isWater(this.tile(this.me.x, this.me.y)) && this.me.t > 0.5) || (isWater(this.tile(this.me.fx, this.me.fy)) && this.me.t <= 0.5);
     const walking = this.me.t < 1;
     const step = walking ? Math.floor(this.frame / 5) % 2 : 0;
     if (onWater) {

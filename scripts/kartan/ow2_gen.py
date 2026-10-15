@@ -314,7 +314,7 @@ road('faboden', 'fabodtorpet'); road('faboden', 'fabodskogen')
 # ------------------------------------------------------------------ break straight edges
 BLK = set('^FwbXaW')
 def kind(ch): return 'B' if ch in BLK else ('W' if ch == '~' else 'L')
-KEEP = set('|-+VBKGMQYPZTCqtxOiDHEAbj')
+KEEP = set('|-+VBKGMQYPZTCqtxOiDHEAbjUS')
 for _ in range(6):
     fixes = []
     for y in range(2, H - 3):
@@ -357,8 +357,39 @@ def jetty(region_code, tx, ty):
     return [best[1], best[2]]
 JETTIES = {'hem': jetty('e', 33, 46), 'gruv': jetty('n', 46, 26)}
 
+# ------------------------------------------------------------------ the lake's own places (kapitel 1–2)
+def nearest(test, tx, ty):
+    best = None
+    for y in range(1, H - 1):
+        for x in range(1, W - 1):
+            if test(x, y):
+                dd = abs(x - tx) + abs(y - ty)
+                if best is None or dd < best[0]: best = (dd, x, y)
+    return best[1], best[2]
+open_ground = lambda x, y, r: region[y][x] == r and g[y][x] in '.mfhl:' and all(g[y + b][x + a] not in BLK for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1)))
+KYRKBACKEN = nearest(lambda x, y: open_ground(x, y, 'e') and y < 34, 20, 30)
+g[KYRKBACKEN[1]][KYRKBACKEN[0]] = 'U'
+SIGNAL = (62, 37); g[SIGNAL[1]][SIGNAL[0]] = 'S'
+EREMIT = nearest(lambda x, y: region[y][x] == 'I' and g[y][x] in '.f' and abs(x - 40) + abs(y - 30) < 4, 40, 30)
+g[EREMIT[1]][EREMIT[0]] = 't'
+MASSKAR = nearest(lambda x, y: region[y][x] == 'I' and abs(x - 57) + abs(y - 46) < 3, 57, 46)
+g[MASSKAR[1]][MASSKAR[0]] = 'O'
+# a fog bank round Måsskäret: it can't be seen from afar
+for y in range(MASSKAR[1] - 4, MASSKAR[1] + 5):
+    for x in range(MASSKAR[0] - 5, MASSKAR[0] + 6):
+        if g[y][x] == '~' and math.hypot(x - MASSKAR[0], (y - MASSKAR[1]) * 1.3) < 4.6: g[y][x] = 'R'
+# currents: the lake drains into the rapids in the south-west and draws a boat that way
+outlet = [(x, y) for y in range(1, H - 1) for x in range(1, W - 1) if g[y][x] == '~' and any(g[y + b][x + a] == 'w' for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1)))]
+if outlet:
+    ox_, oy_ = min(outlet, key=lambda p: (p[1] * -1, p[0]))
+    for y in range(oy_ - 7, oy_ + 1):
+        for x in range(ox_ - 2, ox_ + 9):
+            if 0 < x < W - 1 and 0 < y < H - 1 and g[y][x] == '~' and math.hypot(x - ox_, y - oy_) < 7:
+                g[y][x] = 'n' if (x - ox_) > abs(y - oy_) else 'z'
+CURRENT_OUTLET = outlet and (ox_, oy_)
+
 # ------------------------------------------------------------------ landmarks: something new in sight on every screen
-FEATURE = set('WuyeA') | set('VBKGMQYPZTCqtxOiD')
+FEATURE = set('WuyeA') | set('VBKGMQYPZTCqtxOiDUS')
 NEED = {'~': 'x', 's': 'x', 'N': 'x', 'H': 'x', 'D': 'x', 'E': 'x'}
 def walk_all():
     seen = set(); st = [(P['mormor'][0], P['mormor'][1] + 1)]
@@ -396,7 +427,7 @@ out = {
     'places': {k: [x, y] for k, (x, y, _) in P.items()},
     'stollen': STOLLEN, 'stollen_exits': [[west, STOLLEN_Y], [east, STOLLEN_Y]],
     'vakt': VAKT, 'fall': FALL, 'islands': {k: [x, y] for k, (x, y, _) in ISLANDS.items()},
-    'signal': [62, 37], 'jetties': JETTIES,
+    'signal': [62, 37], 'jetties': JETTIES, 'kyrkbacken': KYRKBACKEN, 'eremit': EREMIT, 'masskar': MASSKAR, 'outlet': CURRENT_OUTLET,
 }
 open(f'{SP}/ow2.txt', 'w').write('\n'.join(''.join(r) for r in g))
 open(f'{SP}/ow2_region.txt', 'w').write('\n'.join(''.join(r) for r in region))

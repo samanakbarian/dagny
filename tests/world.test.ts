@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { AREAS } from '../src/data/areas';
 import { DIALOG } from '../src/data/dialog';
 import { OVERWORLD } from '../src/data/overworld';
+import { reachableTiles } from '../src/game/reach';
 import { TEMPLES, VILLAGES } from '../src/data/temples';
 
 const t = OVERWORLD.tiles;
@@ -91,5 +92,27 @@ describe('a new game', () => {
     expect(newGame().ow).toEqual(OVERWORLD.start);
     const mormor = placeOfArea('mormors_by');
     expect(Math.abs(mormor.x - OVERWORLD.start.x) + Math.abs(mormor.y - OVERWORLD.start.y)).toBeLessThanOrEqual(2);
+  });
+});
+
+describe('the story on the map', () => {
+  it('Kyrkbyn and Signalstranden face each other across open water (Dagmar’s lamp, Hulda’s answer)', () => {
+    const k = placeOfArea('kyrkbyn');
+    const s = placeOfArea('signalstranden');
+    expect(Math.abs(k.y - s.y)).toBeLessThanOrEqual(1);
+    const between = t[s.y].slice(k.x + 1, s.x);
+    // Water, shore and low ground in between: no forest or rock hides the one light from the other.
+    expect(between).not.toMatch(/[f^FXaNW]/);
+    expect(between.replace(/[^~znR]/g, '').length).toBeGreaterThan(20);
+  });
+
+  it('Signalstranden and the islands are reached by boat, not on foot', () => {
+    const onFoot = reachableTiles([]);
+    const byBoat = reachableTiles(['eka']);
+    for (const area of ['signalstranden', 'eremitholmen', 'masskaret']) {
+      const p = placeOfArea(area);
+      expect(onFoot.has(`${p.x},${p.y}`), area).toBe(false);
+      expect(byBoat.has(`${p.x},${p.y}`), area).toBe(true);
+    }
   });
 });

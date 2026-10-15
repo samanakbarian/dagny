@@ -222,7 +222,14 @@ export class MapOverlay extends SubOverlay {
     const s = this.game.state!;
     const tiles = OVERWORLD.tiles;
     // Only what Dagny has seen; the map zooms in on it (bigger tiles early on).
-    const box = exploredBounds(s) ?? { x0: s.ow.x, y0: s.ow.y, x1: s.ow.x, y1: s.ow.y };
+    const seen = exploredBounds(s) ?? { x0: s.ow.x, y0: s.ow.y, x1: s.ow.x, y1: s.ow.y };
+    // Places Dagny has heard of (rykte_<area>) are on the map before she has seen them.
+    const rumours = OVERWORLD.places.filter((p) => p.area && hasFlag(s, `rykte_${p.area}`) && !isExplored(s, p.x, p.y));
+    const box = { ...seen };
+    for (const p of rumours) {
+      box.x0 = Math.min(box.x0, p.x); box.y0 = Math.min(box.y0, p.y);
+      box.x1 = Math.max(box.x1, p.x); box.y1 = Math.max(box.y1, p.y);
+    }
     const pad = 1;
     const x0 = Math.max(0, box.x0 - pad);
     const y0 = Math.max(0, box.y0 - pad);
@@ -273,6 +280,12 @@ export class MapOverlay extends SubOverlay {
       ctx.fillRect(px, py, m, m);
       if (temple && cell >= 4) drawText(ctx, `${temple.number}`, px + m + 1, py - 2, 'Y', { outline: 'k' });
     }
+    // Heard of, not yet seen: a question mark.
+    for (const pl of rumours) {
+      const px = ox + at(pl.x - x0 + 0.5);
+      const py = oy + at(pl.y - y0 + 0.5);
+      drawText(ctx, '?', px - 2, py - 5, 'Y', { outline: 'k' });
+    }
     // Dagny, blinking.
     if (Math.floor(this.t / 15) % 2 === 0) {
       const px = ox + at(s.ow.x - x0 + 0.5) - Math.floor(m / 2);
@@ -294,17 +307,22 @@ export class MapOverlay extends SubOverlay {
       const label = known ? `${tt.number}. ${tt.short}` : `${tt.number}. ???`;
       drawText(ctx, label, lx, y, done ? 'Y' : known ? 'W' : 'G');
       if (done) drawText(ctx, '★', lx + measure(label) + 3, y, 'Y');
-      y += 11;
+      y += 10;
     }
     // A small key.
-    y += 6;
+    y += 3;
+    if (rumours.length) {
+      drawText(ctx, '?', lx, y - 1, 'Y', { outline: 'k' });
+      drawText(ctx, STR.mapKeyRumour, lx + 7, y, 'G');
+      y += 9;
+    }
     for (const [col, txt] of [[P.Y, STR.mapKeyTemple], [P.R, STR.mapKeyVillage], [P.C, STR.mapKeyPlace]] as const) {
       ctx.fillStyle = P.k;
       ctx.fillRect(lx - 1, y + 1, 5, 5);
       ctx.fillStyle = col;
       ctx.fillRect(lx, y + 2, 3, 3);
       drawText(ctx, txt, lx + 7, y, 'G');
-      y += 10;
+      y += 9;
     }
   }
 }

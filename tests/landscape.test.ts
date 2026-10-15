@@ -98,13 +98,10 @@ describe('the overworld as landscape', () => {
     expect(fakes).toEqual([]);
   });
 
-  it('every region has one small place to visit, with a task inside', () => {
-    const small = OVERWORLD.places.filter((p) => TERRAIN[at(p.x, p.y)]?.visitable);
-    for (let r = 0; r < REGIONS.length; r++) {
-      const here = small.filter((p) => [[p.x + 1, p.y], [p.x - 1, p.y], [p.x, p.y + 1], [p.x, p.y - 1]].some(([a, b]) => regionOf.get(`${a},${b}`) === r));
-      expect(here.length, REGIONS[r]).toBe(1);
-      // The task: someone or something to talk to whose dialog gives a reward.
-      const area = AREAS[here[0].area!];
+  it('every region has a small place with a task that rewards it (more may be there for the story or the view)', () => {
+    const small = OVERWORLD.places.filter((p) => TERRAIN[at(p.x, p.y)]?.visitable && p.area);
+    const rewardsOf = (areaId: string): number => {
+      const area = AREAS[areaId];
       const npcs = Object.values(area.npcs ?? {}).map((id) => NPCS[id]);
       const dialogs = new Set<string>();
       const walk = (id: string | undefined): void => {
@@ -114,10 +111,15 @@ describe('the overworld as landscape', () => {
         for (const c of DIALOG[id].choices ?? []) walk(c.next);
       };
       for (const n of npcs) for (const tk of n.talk) walk(tk.dialog);
-      // A container or life from the dialog, or a container the task leaves lying in the room.
-      const rewards = [...dialogs].flatMap((id) => DIALOG[id].actions ?? []).filter((a) => a.type === 'container' || a.type === 'life');
-      expect(rewards.length + (area.rewards?.length ?? 0), `${here[0].name} rewards the task`).toBeGreaterThan(0);
+      const fromDialog = [...dialogs].flatMap((id) => DIALOG[id].actions ?? []).filter((a) => a.type === 'container' || a.type === 'life');
+      return fromDialog.length + (area.rewards?.length ?? 0);
+    };
+    for (let r = 0; r < REGIONS.length; r++) {
+      const here = small.filter((p) => [[p.x + 1, p.y], [p.x - 1, p.y], [p.x, p.y + 1], [p.x, p.y - 1]].some(([a, b]) => regionOf.get(`${a},${b}`) === r));
+      expect(here.some((p) => rewardsOf(p.area!) > 0), REGIONS[r]).toBe(true);
     }
+    // Every visitable spot is a place to go into or a viewpoint.
+    for (const p of OVERWORLD.places.filter((pl) => TERRAIN[at(pl.x, pl.y)]?.visitable)) expect(!!p.area || !!p.view, p.name).toBe(true);
   });
 
   it('never leaves a phone screen (20 × 11 tiles) without something new in sight', () => {

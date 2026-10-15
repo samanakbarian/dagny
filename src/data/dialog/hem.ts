@@ -209,7 +209,9 @@ export const HEM: Record<string, DialogDef> = {
     pages: [
       'Telefonkiosken har ringt av sig själv tre nätter i rad. När jag svarar hörs bara kyrkklockor.',
       'Stenkyrkan ligger rakt norrut, förbi rågfälten. Var försiktig, Dagny.',
+      'Och en sak till. Om kvällarna har jag sett ett ljus ute på en holme mitt i sjön. Någon bor där, fast ingen här vet vem.',
     ],
+    actions: [{ type: 'flag', flag: 'rykte_eremitholmen' }],
   },
 
   hulda_efter_gruvan: {

@@ -18,6 +18,7 @@ import { FOREMAL } from './dialog/foremal';
 import { SMAPLATSER } from './dialog/smaplatser';
 import { EPILOG } from './dialog/epilog';
 import { ALLMANT } from './dialog/allmant';
+import { SJON } from './dialog/sjon';
 
 /**
  * All dialog in the game. Dagny never speaks: choices describe what she
@@ -27,7 +28,7 @@ import { ALLMANT } from './dialog/allmant';
  * The dialog lives in data/dialog/, one file per place.
  */
 export const DIALOG_GROUPS: ReadonlyArray<Record<string, DialogDef>> = [
-  HEM, GRUVSAMHALLET, KYRKBYN, BRUKSORTEN, FISKELAGET, FABODEN, STATIONSSAMHALLET, KRYPTA, GRUVAN, KVARNEN, FYREN, FOLKPARKEN, FABODSKOGEN, TROLLBERGET, VARLDEN, FOREMAL, SMAPLATSER, EPILOG, ALLMANT,
+  HEM, GRUVSAMHALLET, KYRKBYN, BRUKSORTEN, FISKELAGET, FABODEN, STATIONSSAMHALLET, KRYPTA, GRUVAN, KVARNEN, FYREN, FOLKPARKEN, FABODSKOGEN, TROLLBERGET, VARLDEN, FOREMAL, SMAPLATSER, SJON, EPILOG, ALLMANT,
 ];
 
 export const DIALOG: Readonly<Record<string, DialogDef>> = Object.assign({}, ...DIALOG_GROUPS);

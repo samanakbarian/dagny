@@ -292,6 +292,14 @@ Varje steg går att provspela innan nästa påbörjas.
 - **Gamla stollen** (`data/areas/passager.ts`): gruvorten är nu en mörk sidovybana genom fjället, inträde från båda håll, med vagn över en taggränna, ett ras att hoppa över och ett galleri under taket där radion avslöjar en näverdocka (återkomst). Gruvorten är markerad `passage` i terrängtabellen.
 - **Dimma på myren och mörker i nattskogen** (`sight` i terrängtabellen): bara några rutor runt Dagny syns, i skogen bara ficklampans sken framför henne, och pausmenyns karta fylls bara i nära henne.
 
+### Steg 2 (gjort)
+
+- **Ny karta, 96 × 72** (`scripts/kartan/`): genererad från en grov plan enligt §6 och storyns krav – sjön i mitten, Kyrkbyn och Signalstranden mitt emot varandra, Bergsstigen från höglandet. Alla rum har fått sina utgångar flyttade, och gamla sparfiler (version 4) hamnar vid sin by.
+- **Sjön:** strömmar mot forsen drar ekan när Dagny slutar ro, en dimbank döljer Måsskäret, och bryggor på båda stränderna.
+- **Kyrkbacken:** ett utsiktsröse – härifrån fylls kartan i långt ut över sjön.
+- **Rykten:** Greta har sett ett ljus på en holme; eremiten berättar om Måsskäret och Signalstranden. Det man hört om står som **?** på pausmenyns karta.
+- **Eremitholmen, Måsskäret, Signalstranden:** eremiten minns kvinnan med kopparhår, på Måsskäret är ett D och ett H ristade sida vid sida, och vid signalstenen kan Dagny med ficklampan (kapitel 6) blinka tre korta, tre långa, tre korta – och klockstapeln svarar. Hulda berättar efteråt.
+
 ## 11. Ursprungliga frågor
 
 1. **Dygnet:** fullt dygn med tidsberoende hemligheter, eller bara fasta tider per kapitel (natt i kapitel 6, gryning vid skäret)?

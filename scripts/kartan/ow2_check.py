@@ -4,7 +4,7 @@ SP = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'out')
 g = open(f'{SP}/ow2.txt').read().split('\n')
 d = json.load(open(f'{SP}/ow2.json'))
 W, H = len(g[0]), len(g)
-NEEDS = {'~': 'eka', 's': 'stovlar', 'D': 'karbidlampa', 'N': 'ficklampa', 'H': 'radio', 'E': 'radio'}
+NEEDS = {'~': 'eka', 'z': 'eka', 'n': 'eka', 'R': 'eka', 's': 'stovlar', 'D': 'karbidlampa', 'N': 'ficklampa', 'H': 'radio', 'E': 'radio'}
 BLOCKED = set('^FwbXaW')
 START = tuple(d['places']['mormor']); START = (START[0], START[1] + 1)
 def reach(items):
@@ -40,7 +40,11 @@ if (f[0], f[1] + 1) not in reach(KEYS[:2]): problems.append(f'Fallgrottan below 
 sig = tuple(d['signal'])
 if sig not in reach(KEYS[:1]): problems.append('Signalstranden unreachable by boat')
 if sig in reach([]): problems.append('Signalstranden reachable on foot')
-def kind(ch): return 'B' if ch in BLOCKED else ('W' if ch == '~' else 'L')
+for k in ('kyrkbacken',):
+    if tuple(d[k]) not in reach([]): problems.append(f'{k} not reachable on foot')
+for k in ('eremit', 'masskar'):
+    if tuple(d[k]) not in reach(KEYS[:1]) or tuple(d[k]) in reach([]): problems.append(f'{k} not a boat trip')
+def kind(ch): return 'B' if ch in BLOCKED else ('W' if ch in '~znR' else 'L')
 runs = {}
 for y in range(2, H - 3):
     run = 0; prev = None

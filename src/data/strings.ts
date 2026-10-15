@@ -83,6 +83,8 @@ export const STR = {
   mapKeyTemple: 'Tempel',
   mapKeyVillage: 'By',
   mapKeyPlace: 'Plats',
+  mapKeyRumour: 'Hört talas om',
+  viewpoint: 'Härifrån ser man långt',
   wakeHome: 'Vakna hos mormor',
   wakeIn: 'Vakna i',
 
