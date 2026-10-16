@@ -43,6 +43,8 @@ export interface Options {
   withhold?: readonly string[];
   /** Readings and techniques she never learns (to check what each one opens). */
   withholdSkills?: readonly string[];
+  /** Readings (spells) she never learns. */
+  withholdSpells?: readonly string[];
   /** Also take the random meetings on the overworld (friendly ones and fights). */
   meetings?: boolean;
   /** Stop after this many waves. */
@@ -131,7 +133,7 @@ export function playthrough(opts: Options = {}): Playthrough {
         setFlag(a.flag);
         break;
       case 'learnSpell':
-        if (!spells.has(a.spell)) {
+        if (!spells.has(a.spell) && !(opts.withholdSpells ?? []).includes(a.spell)) {
           spells.add(a.spell);
           log('spell', a.spell);
         }
@@ -210,6 +212,8 @@ export function playthrough(opts: Options = {}): Playthrough {
     if (ch === 'L') return !done.has(`${a.id}:col${x}`);
     // A hatch opens to an up-thrust from below.
     if (ch === '!') return !skills.has('uppatstot');
+    // A ledge only a reading reaches.
+    for (const n of a.needsSpell ?? []) if (x >= n.x0 && x <= n.x1 && y >= n.y0 && y <= n.y1 && !spells.has(n.spell)) return true;
     return false;
   };
 

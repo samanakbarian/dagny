@@ -27,6 +27,7 @@ export const FISKELAGET: Record<string, DialogDef> = {
       'Du hoppar bra, men du hoppar som en människa. Jag ska lära dig hoppa som en sädesärla.',
       'Min mormor sa läsningen varje vår när fåglarna kom tillbaka. Hon påstod att hon kunde hoppa över båtarna.',
       '"Fjäder i fot och vind under häl, lätt som en ärla, lätt som en själ." Så. Nu ska du se.',
+      'Ska du ut i fyren? Där uppe i linsrummet ligger saker på hyllor dit ingen människa når. Men en sädesärla når.',
     ],
     actions: [{ type: 'learnSpell', spell: 'hopp' }],
     next: 'lart_hopp',

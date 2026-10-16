@@ -155,6 +155,14 @@ describe('the village holds the key to its temple', () => {
   });
 });
 
+describe('the village gives the key (chapter 5)', () => {
+  it('the lighthouse cannot be done without Hopp from Viola in Fiskeläget (the key on a high ledge)', () => {
+    const r = playthrough({ withholdSpells: ['hopp'], meetings: true });
+    expect(r.flags.has('fyren_klar')).toBe(false);
+    expect(run.flags.has('fyren_klar')).toBe(true);
+  });
+});
+
 describe('tasks done with the hands, not with a menu', () => {
   it('the charcoal stack is lit only by a fireball: no dialog lights it', () => {
     const lights = Object.values(DIALOG).some((d) => [...(d.actions ?? []), ...(d.choices ?? []).flatMap((c) => c.actions ?? [])].some((a) => a.type === 'flag' && a.flag === 'kolmilan_tand'));
