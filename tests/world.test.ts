@@ -116,3 +116,52 @@ describe('the story on the map', () => {
     }
   });
 });
+
+describe('the marsh maze (chapter 5)', () => {
+  const ALL = ['eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio'];
+  /** Steps from a to b over walkable ground, never onto quagmire (-1 if there is no way). */
+  const steps = (a: { x: number; y: number }, b: { x: number; y: number }): number => {
+    const ok = reachableTiles(ALL);
+    const dist = new Map<string, number>([[`${a.x},${a.y}`, 0]]);
+    const queue = [a];
+    while (queue.length) {
+      const p = queue.shift()!;
+      const d = dist.get(`${p.x},${p.y}`)!;
+      if (p.x === b.x && p.y === b.y) return d;
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const k = `${p.x + dx},${p.y + dy}`;
+        if (ok.has(k) && !dist.has(k)) {
+          dist.set(k, d + 1);
+          queue.push({ x: p.x + dx, y: p.y + dy });
+        }
+      }
+    }
+    return -1;
+  };
+
+  it('winds: the way through is much longer than the straight line', () => {
+    const north = { x: 67, y: 28 };
+    const cave = OVERWORLD.places.find((p) => p.name === 'Tjuvgrottan')!;
+    const coast = { x: 70, y: 47 };
+    const d1 = steps(north, cave);
+    const d2 = steps(cave, coast);
+    expect(d1).toBeGreaterThan(0);
+    expect(d2).toBeGreaterThan(0);
+    expect(d1).toBeGreaterThan(1.2 * (Math.abs(cave.x - north.x) + Math.abs(cave.y - north.y)));
+    expect(d2).toBeGreaterThan(1.2 * (Math.abs(cave.x - coast.x) + Math.abs(cave.y - coast.y)));
+  });
+
+  it('has quagmire and the three landmarks to steer by', () => {
+    const all = t.join('');
+    expect(all.split('v').length - 1).toBeGreaterThan(200);
+    for (const ch of 'pIJ') expect(all.includes(ch), ch).toBe(true);
+  });
+
+  it('the quagmire is the marsh’s own: without the boots nothing of it is in reach', () => {
+    const noBoots = reachableTiles(['eka', 'karbidlampa']);
+    for (const k of noBoots) {
+      const [x, y] = k.split(',').map(Number);
+      expect('svpIJ'.includes(at(x, y)!), k).toBe(false);
+    }
+  });
+});

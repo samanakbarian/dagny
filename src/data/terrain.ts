@@ -41,6 +41,8 @@ export interface TerrainDef {
   drift?: [number, number];
   /** The mouth of a passage: stepping on it goes into a side-view stretch (data/areas/passager.ts). */
   passage?: boolean;
+  /** Quagmire: it swallows Dagny, and she crawls out where she last stood on firm ground. */
+  sink?: boolean;
 }
 
 export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
@@ -69,6 +71,12 @@ export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
   n: { name: 'ström västerut', sprite: 'owCurrent', map: 'U', needs: 'eka', encounter: 'strand', drift: [-1, 0] },
   R: { name: 'dimbank', sprite: 'owWater', map: 'U', needs: 'eka', encounter: 'strand', sight: 'fog' },
   s: { name: 'myr', sprite: 'owSwamp', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog' },
+  // The marsh maze (chapter 5): quagmire that looks almost like the rest – only the bubbles
+  // give it away – and the landmarks to steer by, which show through the fog.
+  v: { name: 'gungfly', sprite: 'owQuag', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog', sink: true },
+  p: { name: 'död tall', sprite: 'owDeadPine', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog', landmark: true },
+  I: { name: 'myrkors', sprite: 'owCross', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog', landmark: true },
+  J: { name: 'övergiven pråm', sprite: 'owBarge', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog', landmark: true },
   D: { name: 'gruvort', sprite: 'owTunnel', map: 'k', needs: 'karbidlampa', encounter: 'skog', passage: true },
   N: { name: 'nattskog', sprite: 'owNightForest', map: 'n', needs: 'ficklampa', encounter: 'skog', sight: 'dark' },
   // The hidden path through the dense spruce: looks like the rest of the

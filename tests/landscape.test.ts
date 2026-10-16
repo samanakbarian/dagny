@@ -67,7 +67,7 @@ describe('the overworld as landscape', () => {
     expect(count('D', 55, 8, 70, 26)).toBe(3);
     expect(count('a', 55, 8, 70, 26)).toBeGreaterThan(0);
     // Mill ↔ coast: a wide marsh.
-    expect(count('s', 60, 26, 92, 48)).toBeGreaterThan(300);
+    expect(count('sv', 60, 26, 92, 48)).toBeGreaterThan(300);
     // Home ↔ park plain: rapids, and the bridge the flood took.
     expect(count('w', 28, 48, 40, 71)).toBeGreaterThan(30);
     expect(count('b', 28, 48, 40, 71)).toBeGreaterThan(0);

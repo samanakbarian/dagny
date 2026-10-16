@@ -1,5 +1,6 @@
 import { AREAS } from '../data/areas';
 import { OVERWORLD } from '../data/overworld';
+import { TERRAIN } from '../data/terrain';
 import { TEMPLES } from '../data/temples';
 import type { GameState } from './state';
 
@@ -13,7 +14,8 @@ export function reachableTiles(items: readonly string[]): Set<string> {
     const [x, y] = stack.pop()!;
     const k = `${x},${y}`;
     const ch = t[y]?.[x];
-    if (!ch || seen.has(k) || OVERWORLD.blocked.includes(ch)) continue;
+    // Quagmire never holds: it is a wall in the marsh maze.
+    if (!ch || seen.has(k) || OVERWORLD.blocked.includes(ch) || TERRAIN[ch]?.sink) continue;
     const need = OVERWORLD.needs[ch];
     if (need && !have.has(need)) continue;
     seen.add(k);

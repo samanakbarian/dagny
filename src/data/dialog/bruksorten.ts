@@ -105,6 +105,10 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
 
   sigge_efter: {
     speaker: 'Sigge',
-    pages: ['Hammaren går igen! Dunk, dunk, dunk hela dagen. Jag har aldrig tyckt att det låtit så fint.'],
+    pages: [
+      'Hammaren går igen! Dunk, dunk, dunk hela dagen. Jag har aldrig tyckt att det låtit så fint.',
+      'Ska du över myren? Pappa har en ramsa: "Till döda tallen, sen österut där stigen slingrar. Korset visar söderut, och pråmen visar havet."',
+      'Och där det bubblar bär det inte. Gå aldrig efter irrbloss!',
+    ],
   },
 };

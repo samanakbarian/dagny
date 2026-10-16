@@ -17,6 +17,7 @@ import { ENCOUNTER_TABLES, TERRAIN_TYPE } from '../data/encounters';
 import { pickEncounter } from './encounters';
 import { reachableTiles } from './reach';
 import { markExplored } from './explored';
+import { SPRITES } from '../art';
 
 const T = 16;
 const STEP_FRAMES = 9;
@@ -28,7 +29,7 @@ export const TILE_SPRITE: Readonly<Record<string, string>> = Object.fromEntries(
 /** Water: anything crossed in the boat. */
 const isWater = (ch: string): boolean => TERRAIN[ch]?.needs === 'eka';
 
-const ANIMATED: Readonly<Record<string, string>> = { '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall' };
+const ANIMATED: Readonly<Record<string, string>> = { '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall', v: 'owQuag' };
 
 interface Walker {
   x: number;
@@ -53,6 +54,31 @@ let lastEncounter: string | null = null;
 const encounterMemory = new Map<number, EncounterRuntime>();
 
 let staticMap: HTMLCanvasElement | null = null;
+
+/** Landmark shapes without their ground, to show through the marsh fog. */
+const cutouts = new Map<string, HTMLCanvasElement | null>();
+const GROUND = 'MmlvVt_';
+function cutout(id: string): HTMLCanvasElement | null {
+  if (cutouts.has(id)) return cutouts.get(id)!;
+  const def = SPRITES[id];
+  const rows = def && Array.isArray(def.frames[0]) ? (def.frames[0] as string[]) : null;
+  let c: HTMLCanvasElement | null = null;
+  if (rows && typeof document !== 'undefined') {
+    c = document.createElement('canvas');
+    c.width = def.w;
+    c.height = def.h;
+    const g = c.getContext('2d')!;
+    rows.forEach((row, y) =>
+      [...row].forEach((ch, x) => {
+        if (GROUND.includes(ch) || !PALETTE[ch]) return;
+        g.fillStyle = PALETTE[ch];
+        g.fillRect(x, y, 1, 1);
+      }),
+    );
+  }
+  cutouts.set(id, c);
+  return c;
+}
 
 function buildStatic(): HTMLCanvasElement {
   const tiles = OVERWORLD.tiles;
@@ -165,6 +191,10 @@ export class OverworldScene implements Scene {
   private flip = false;
   /** Steps Dagny has sat still on a current. */
   private drifting = 0;
+  /** Where Dagny last stood on firm ground (outside the fog): the quagmire spits her out there. */
+  private firm: { x: number; y: number } | null = null;
+  /** Frames left of sinking into a quagmire. */
+  private sinkT = 0;
   /** Frames left of the mountain's rumble. */
   private shakeT = 0;
   /** How far the marsh fog and the night forest's dark have closed in (0–1, eased). */
@@ -277,6 +307,10 @@ export class OverworldScene implements Scene {
     if (this.grace > 0) this.grace--;
     if (this.blockedMsgT > 0) this.blockedMsgT--;
     if (this.leaving) return;
+    if (this.sinkT > 0) {
+      if (--this.sinkT === 0) this.surface();
+      return;
+    }
     const input = this.game.input;
     const me = this.me;
 
@@ -337,8 +371,16 @@ export class OverworldScene implements Scene {
     const me = this.me;
     this.s.ow = { x: me.x, y: me.y };
     // In fog or dark Dagny sees – and so maps – only what is close.
-    const near = TERRAIN[this.tile(me.x, me.y)]?.sight ? 2 : undefined;
+    const ground = TERRAIN[this.tile(me.x, me.y)];
+    const near = ground?.sight ? 2 : undefined;
     markExplored(this.s, me.x, me.y, near, near);
+    if (!ground?.sight) this.firm = { x: me.x, y: me.y };
+    if (ground?.sink) {
+      this.sinkT = 40;
+      this.game.audio.play('water');
+      this.game.vibrate([40, 30, 60]);
+      return;
+    }
     if (this.frame % 2 === 0) this.game.audio.play('step');
     const place = this.placeAt(me.x, me.y);
     // A viewpoint: from up here Dagny sees far, and the map fills in.
@@ -356,6 +398,35 @@ export class OverworldScene implements Scene {
         this.game.pushOverlay(new DialogOverlay(this.game, place.dialog));
       }
     }
+  }
+
+  /** Out of the quagmire, back where the ground last held. */
+  private surface(): void {
+    const me = this.me;
+    const back = this.firm ?? this.nearestFirm();
+    me.x = me.fx = back.x;
+    me.y = me.fy = back.y;
+    me.t = 1;
+    this.s.ow = { x: me.x, y: me.y };
+    this.grace = 60;
+    this.updateCamera(true);
+    this.game.toast(STR.sank, 3);
+  }
+
+  /** The closest open ground outside the fog (after a meeting dropped Dagny back in the marsh). */
+  private nearestFirm(): { x: number; y: number } {
+    const me = this.me;
+    for (let r = 1; r < 30; r++) {
+      for (let dy = -r; dy <= r; dy++) {
+        for (const dx of [r - Math.abs(dy), Math.abs(dy) - r]) {
+          const x = me.x + dx;
+          const y = me.y + dy;
+          const d = TERRAIN[this.tile(x, y)];
+          if (d && !d.sight && !d.blocked && !d.needs && !this.placeAt(x, y)) return { x, y };
+        }
+      }
+    }
+    return OVERWORLD.start;
   }
 
   private pos(w: Walker): { x: number; y: number } {
@@ -472,6 +543,32 @@ export class OverworldScene implements Scene {
     }
   }
 
+  /**
+   * In the marsh fog the landmarks to steer by stand out as shapes further
+   * off, and the irrbloss glow – which is how they lure.
+   */
+  private renderThroughFog(ctx: CanvasRenderingContext2D, camX: number, camY: number): void {
+    const me = this.me;
+    ctx.save();
+    ctx.globalAlpha = 0.7 * this.fog;
+    for (let y = me.y - 7; y <= me.y + 7; y++) {
+      for (let x = me.x - 10; x <= me.x + 10; x++) {
+        const d = TERRAIN[this.tile(x, y)];
+        if (!d?.landmark || Math.abs(x - me.x) + Math.abs(y - me.y) < 3) continue;
+        const c = cutout(d.sprite);
+        if (c) ctx.drawImage(c, x * T - camX, y * T - camY);
+      }
+    }
+    ctx.globalAlpha = this.fog;
+    for (const e of this.encounters) {
+      if (e.def.sprite !== 'owWisp' || this.s.playTime < e.respawnAt) continue;
+      const p = this.pos(e);
+      const bob = Math.round(Math.sin(this.frame / 10 + e.def.x) * 2);
+      drawSprite(ctx, 'owWisp', Math.floor(this.frame / 16) % 2, p.x - camX, p.y - camY + bob);
+    }
+    ctx.restore();
+  }
+
   render(ctx: CanvasRenderingContext2D): void {
     const quake = this.shakeT > 0 ? (this.shakeT--, Math.round((Math.random() - 0.5) * 4)) : 0;
     const camX = Math.round(this.camX) + quake;
@@ -515,6 +612,15 @@ export class OverworldScene implements Scene {
     const step = walking ? Math.floor(this.frame / 5) % 2 : 0;
     if (onWater) {
       drawSprite(ctx, 'owBoat', Math.floor(this.frame / 12) % 2, p.x - camX, p.y - camY);
+    } else if (this.sinkT > 0) {
+      // Going down: less and less of her above the mire.
+      const down = Math.round(((40 - this.sinkT) / 40) * 14);
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(p.x - camX, p.y - camY - 2, T, T - 2);
+      ctx.clip();
+      drawSprite(ctx, 'owDagny', 0, p.x - camX, p.y - camY + down);
+      ctx.restore();
     } else {
       const base = this.facing === 'down' ? 0 : this.facing === 'up' ? 2 : 4;
       drawSprite(ctx, 'owDagny', base + step, p.x - camX, p.y - camY, this.facing === 'side' && this.flip);
@@ -522,6 +628,7 @@ export class OverworldScene implements Scene {
 
     this.renderMountain(ctx, camX, camY);
     this.renderSight(ctx, p.x + T / 2 - camX, p.y + T / 2 - camY);
+    if (this.fog > 0.05) this.renderThroughFog(ctx, camX, camY);
     this.game.applyTone(ctx, OVERWORLD.tone, true);
 
     // Place name when standing next to / on a place.
