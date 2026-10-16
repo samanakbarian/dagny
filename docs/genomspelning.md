@@ -66,6 +66,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Fallgrottan**: finds a container; finds a näverdocka
 - **Pestkorset**: meets Den grå frun; gets Prästkragar
 - **Gamla stollen**
+- **Rasgången**
 
 ## 10
 

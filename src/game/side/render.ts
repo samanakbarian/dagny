@@ -50,6 +50,17 @@ export function renderScene(sc: SideScene, ctx: CanvasRenderingContext2D): void 
       drawSprite(ctx, id, (c.tx + c.ty) % 2, x, y);
     }
   }
+  // The cave-in's rubble behind its front.
+  if (sc.caveX !== null) {
+    const front = sc.caveX - camX;
+    ctx.fillStyle = PALETTE.k;
+    ctx.fillRect(0, 0, Math.max(0, front - 6), VIEW_H);
+    for (let y = 0; y < VIEW_H; y += 6) {
+      const jag = ((y * 37 + Math.floor(sc.frame / 3) * 11) % 13) - 6;
+      ctx.fillStyle = (y / 6) % 2 ? PALETTE.K : PALETTE.g;
+      ctx.fillRect(Math.max(0, front - 10 + jag), y, 10, 6);
+    }
+  }
   // Checkpoint candles.
   // Lamp light catches something: a slow twinkle.
   for (const gl of sc.lampGlints) {

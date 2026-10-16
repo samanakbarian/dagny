@@ -135,7 +135,7 @@ export const OVERWORLD: OverworldDef = {
     { x: 57, y: 46, name: 'Måsskäret', area: 'masskaret', entry: 'A' },
     { x: 62, y: 37, name: 'Signalstranden', area: 'signalstranden', entry: 'A' },
     { x: 62, y: 18, name: 'Gamla stollen', area: 'stollen', entry: 'A' },
-    { x: 63, y: 18, name: 'Gamla stollen', area: 'stollen', entry: 'E' },
+    { x: 63, y: 18, name: 'Gamla stollen', area: 'stollen_2', entry: 'E' },
   ],
   encounters: [
     { sprite: 'owShadow', terrain: '.:m', x: 22, y: 43 },

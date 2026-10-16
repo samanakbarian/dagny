@@ -1,6 +1,6 @@
 # Kartan 2.0 – specifikation
 
-*Status: steg 1–2 klara. Beslut 15 oktober 2026 (se §11).*
+*Status: steg 1–2 klara, steg 3 (kapitel 4) påbörjat. Beslut 15 oktober 2026 (se §11).*
 *Ersätter överblickskartan från oktober 2026 (80 × 56, sju regioner).*
 
 > Granskning 15 oktober 2026 ("Storykartan"): handlingen saknades (nu §4)
@@ -353,6 +353,11 @@ Varje steg går att provspela innan nästa påbörjas.
 - **Kyrkbacken:** ett utsiktsröse – härifrån fylls kartan i långt ut över sjön.
 - **Rykten:** Greta har sett ett ljus på en holme; eremiten berättar om Måsskäret och Signalstranden. Det man hört om står som **?** på pausmenyns karta.
 - **Eremitholmen, Måsskäret, Signalstranden:** eremiten minns kvinnan med kopparhår, på Måsskäret är ett D och ett H ristade sida vid sida, och vid signalstenen kan Dagny med ficklampan (kapitel 6) blinka tre korta, tre långa, tre korta – och klockstapeln svarar. Hulda berättar efteråt.
+
+### Steg 3 – kapitel 4 (påbörjat)
+
+- **Bruksorten lär ut det kvarnen kräver:** nyckeln i kvarnen ligger i en stängd kammare ovanför en lucka (`!`) som bara Uppåtstöt slår upp. Karlsson nämner luckan, och lösaren bevisar att kvarnen inte går utan Uppåtstöt.
+- **Gamla stollen, Rasgången** (`stollen_2`): ett andra mörkt rum. När Dagny har gått in en bit rasar taket bakom henne och raset rullar efter (`cavein` på rummet) – stenar faller vid fronten, och den som blir hunnen får ont och knuffas fram. Ut på andra sidan är raset över för gott (flaggan `stollen_rasat`); kommer man från öster händer ingenting.
 
 ## 12. Ursprungliga frågor
 

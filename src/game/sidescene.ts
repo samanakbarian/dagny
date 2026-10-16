@@ -240,8 +240,8 @@ export class SideScene implements Scene, WorldApi {
   }
 
   puff(x: number, y: number, kind: PuffKind): void {
-    this.particles.spawn({ x: x - 8, y: y - 8, sprite: 'puff', frames: 3, life: 27 });
-    const colors = kind === 'moss' ? ['M', 'l', 'e'] : kind === 'leaf' ? ['o', 'y', 'R'] : ['W', 'C', 'w'];
+    if (kind !== 'dust') this.particles.spawn({ x: x - 8, y: y - 8, sprite: 'puff', frames: 3, life: 27 });
+    const colors = kind === 'moss' ? ['M', 'l', 'e'] : kind === 'leaf' ? ['o', 'y', 'R'] : kind === 'dust' ? ['K', 'g', 'w'] : ['W', 'C', 'w'];
     for (let i = 0; i < 10; i++) {
       const a = (i / 10) * Math.PI * 2;
       this.particles.spawn({
@@ -319,6 +319,9 @@ export class SideScene implements Scene, WorldApi {
     }
     if (dx !== 0) pushX(this.grid, p, p.onGround ? dx * 0.6 : dx);
   }
+
+  /** The front of a cave-in chasing Dagny (px), while it lasts (AreaDef.cavein). */
+  caveX: number | null = null;
 
   /** Frames left of the freeze after a hit (see combat). */
   hitStop = 0;
@@ -450,6 +453,7 @@ export class SideScene implements Scene, WorldApi {
     // Locked doors: push against them with a key.
     this.tryDoors();
     this.tryHatch();
+    this.updateCavein();
 
     // --- Sealed room ---
     if (this.seal) this.updateSeal();
@@ -575,6 +579,36 @@ export class SideScene implements Scene, WorldApi {
 
 
 
+
+  /** The roof coming down behind Dagny: rubble rolls right, stones fall at its front. */
+  private updateCavein(): void {
+    const c = this.area.cavein;
+    const p = this.player;
+    if (!c || hasFlag(this.s, c.flag) || p.state === 'dead') return;
+    if (this.caveX === null) {
+      if (this.spawn.entry === 'E' || p.x < c.at * TILE) return;
+      this.caveX = Math.max(0, p.x - 7 * TILE);
+      this.sfx('roar');
+      this.shake(30, 3);
+      this.game.vibrate([80, 40, 80]);
+      return;
+    }
+    this.caveX += c.speed;
+    if (this.frame % 5 === 0) {
+      this.spawnProjectile({
+        x: this.caveX + Math.random() * 40 - 8, y: 4 * TILE, vx: 0, vy: 1, w: 8, h: 8,
+        sprite: 'stone', damage: 2, fromPlayer: false, life: 120, gravity: 0.2,
+      });
+    }
+    if (this.frame % 24 === 0) this.shake(10, 2);
+    if (this.frame % 6 === 0) this.puff(this.caveX, 9 * TILE + Math.random() * TILE, 'dust');
+    // Caught by the rubble: hurt, and shoved out ahead of it.
+    if (p.x < this.caveX + 4) {
+      if (p.invuln === 0) damagePlayer(this, 2, this.caveX - 20);
+      p.x = this.caveX + 4;
+    }
+    if (this.caveX > (this.grid.w - 3) * TILE) this.caveX = null;
+  }
 
   /** An up-thrust that strikes a hatch from below knocks it open, for good. */
   private tryHatch(): void {
@@ -779,6 +813,8 @@ export class SideScene implements Scene, WorldApi {
   private leave(exit: Exit): void {
     if (this.exiting) return;
     this.exiting = true;
+    // Out ahead of the cave-in: it is over for good.
+    if (this.area.cavein && exit === this.area.right) setFlag(this.s, this.area.cavein.flag);
     const g = this.game;
     if (exit.to === 'overworld') {
       if (exit.ow) this.s.ow = { ...exit.ow };

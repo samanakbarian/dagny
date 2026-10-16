@@ -61,7 +61,7 @@ export type Behavior =
   | 'boss_bergakung'
   | 'boss_placeholder';
 
-export type PuffKind = 'moss' | 'leaf' | 'mist';
+export type PuffKind = 'moss' | 'leaf' | 'mist' | 'dust';
 
 export interface EnemyDef {
   id: string;
@@ -349,6 +349,13 @@ export interface AreaDef {
    * Once cleared, flag `<area id>_rensad` keeps the room empty for good.
    */
   sealed?: { dialog: string; music?: string };
+  /**
+   * A cave-in that chases Dagny: once she passes tile column `at` (coming in
+   * from the left), the roof comes down behind her and the rubble moves right
+   * at `speed` px per step until she gets out. Escaped once, `flag` is set and
+   * it never happens again.
+   */
+  cavein?: { at: number; speed: number; flag: string };
   /** Tougher creatures (the last temple): more health and harder blows. */
   hard?: boolean;
   /** Dialog started automatically the first time (needs flag to not repeat). */

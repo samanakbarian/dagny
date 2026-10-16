@@ -198,6 +198,15 @@ dialog is the `life` action.
 treasures Dagny has in its region, that the cliff door stays shut without the
 radio, and that every cave leads back out beside where it lies.
 
+### Gamla stollen: the passage through the fell
+
+Two dark side-view rooms instead of a map tile. The first has a cart over a
+spike gutter and a radio gallery; in the second, **Rasgången**, the roof caves
+in behind Dagny once she is a few steps in and the rubble rolls after her
+(`cavein` on the room). Stones fall at its front; being caught hurts and shoves
+her ahead. Reaching the far side ends it for good; from the east it never
+starts.
+
 ## Trollberget – the last temple
 
 It should be really hard, like the last palace in Zelda II:
