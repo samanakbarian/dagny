@@ -67,6 +67,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Pestkorset**: meets Den grå frun; gets Prästkragar
 - **Gamla stollen**
 - **Rasgången**
+- **Sidoorten**
 
 ## 10
 

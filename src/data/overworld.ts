@@ -36,7 +36,7 @@ export const OVERWORLD: OverworldDef = {
     '^^llllssssfff|llllll....lllllu.^^kkkkkkkXkkkkkXXXX^^^^^^^^^^^^^^^^....|.h....hhhhh...........^^^',
     '^^llll.llffff|.lllll.....lllll.^^^kkkkkkXkkukXX^^^^^^^^^^^^^^^^^^^....|..ggf.hhhhh...........^^^',
     '^^lulllllffff+------B...ffflllk^^^^kkkk^XkkkXX^^^^^^ffff^^^^^^^^^^^...|..ggffhhhhh...........^^^',
-    '^^lllllllffff|...lllll..ffff.lkk^^^^kkk^XXXXX^^^....ffffff..a^^^^^....|ggggff....hh.........^^^^',
+    '^^lllllllffff|...lllll..ffff.lkk^^^^kkk^XXXXX^^^....ffffff.Da^^^^^....|ggggff....hh.........^^^^',
     '^^lllllllfff++..lllllll.fff..^^^^^^^^^^^^^^^^.......ffffff......^^....|.gggf.........u.......^^^',
     '^^lllllllfff|ff.llllllllfff..^^^^^^^^^^^h.^^.hhhh....fff.hhhh.^^^^^..h|..g...................^^^',
     '^^llll...fff|fffflllllllfff..^^^^^.hh^^hh.+------------+M+---.DD....--B.....................hh^^',
@@ -136,6 +136,7 @@ export const OVERWORLD: OverworldDef = {
     { x: 62, y: 37, name: 'Signalstranden', area: 'signalstranden', entry: 'A' },
     { x: 62, y: 18, name: 'Gamla stollen', area: 'stollen', entry: 'A' },
     { x: 63, y: 18, name: 'Gamla stollen', area: 'stollen_2', entry: 'E' },
+    { x: 59, y: 15, name: 'Sidoorten', area: 'stollen_gomd', entry: 'E' },
   ],
   encounters: [
     { sprite: 'owShadow', terrain: '.:m', x: 22, y: 43 },

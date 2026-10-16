@@ -88,6 +88,12 @@ export const VARLDEN: Record<string, DialogDef> = {
   fallgrottan_ristning: {
     pages: ['Inristat i berget bakom vattenridån:\n"DEN SOM GÖMMER SIG BAKOM FALLET HÖRS INTE AV BERGET. – D."'],
   },
+  stollen_gomd_ristning: {
+    pages: [
+      'Inristat i en gammal stolpe: ett stort H och bredvid det ett litet, vingligt D.',
+      'Under dem, i samma hand som det stora H:et:\n"Här lärde jag henne lyssna på berget. H.D. 1934"',
+    ],
+  },
   vaktarkammaren_bord: {
     pages: [
       'Ett bord av sten, en ljusstump och en anteckningsbok med fuktiga blad. Handstilen är prydlig.',

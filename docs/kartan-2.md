@@ -358,6 +358,7 @@ Varje steg går att provspela innan nästa påbörjas.
 
 - **Bruksorten lär ut det kvarnen kräver:** nyckeln i kvarnen ligger i en stängd kammare ovanför en lucka (`!`) som bara Uppåtstöt slår upp. Karlsson nämner luckan, och lösaren bevisar att kvarnen inte går utan Uppåtstöt.
 - **Gamla stollen, Rasgången** (`stollen_2`): ett andra mörkt rum. När Dagny har gått in en bit rasar taket bakom henne och raset rullar efter (`cavein` på rummet) – stenar faller vid fronten, och den som blir hunnen får ont och knuffas fram. Ut på andra sidan är raset över för gott (flaggan `stollen_rasat`); kommer man från öster händer ingenting.
+- **Vägvalet i Rasgången:** mitt i raset finns en öppning till **Sidoorten** (`stollen_gomd`). Där har Hulda ristat ett H och ett litet D: "Här lärde jag henne lyssna på berget. H.D. 1934" – en ledtråd till vändningen. Sidoorten mynnar vid den igenrasade gruvorten ovanför Gamla gruvan, en genväg tillbaka till Gruvsamhället (karbidlampan behövs).
 
 ## 12. Ursprungliga frågor
 

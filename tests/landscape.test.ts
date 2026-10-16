@@ -63,8 +63,8 @@ describe('the overworld as landscape', () => {
     // Home ↔ the lake: shore and reeds, and jetties where the boat waits.
     expect(count('r', 20, 30, 34, 50)).toBeGreaterThan(3);
     expect(count('j', 0, 0, W - 1, H - 1)).toBeGreaterThan(1);
-    // Mine ↔ mill: a fell with the mouths of Gamla stollen (and boarded-up old adits).
-    expect(count('D', 55, 8, 70, 26)).toBe(2);
+    // Mine ↔ mill: a fell with the mouths of Gamla stollen and its side gallery (and boarded-up old adits).
+    expect(count('D', 55, 8, 70, 26)).toBe(3);
     expect(count('a', 55, 8, 70, 26)).toBeGreaterThan(0);
     // Mill ↔ coast: a wide marsh.
     expect(count('s', 60, 26, 92, 48)).toBeGreaterThan(300);

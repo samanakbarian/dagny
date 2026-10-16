@@ -76,6 +76,8 @@ export const PASSAGER: Record<string, AreaDef> = {
     cavein: { at: 6, speed: 1.15, flag: 'stollen_rasat' },
     left: { to: 'stollen', entry: 'E' },
     right: { to: 'overworld', ow: { x: 64, y: 18 } },
+    // A side gallery off the cave-in: Hulda's old pocket, and a way out by the mine.
+    doors: { U: { to: 'stollen_gomd', entry: 'A' } },
     tiles: [
       "########################################################################",
       "########################################################################",
@@ -86,7 +88,7 @@ export const PASSAGER: Record<string, AreaDef> = {
       "................................................f.......................",
       "................................................................##......",
       "..............##..............##..........................##....##......",
-      "..A.I.........##..............##..g.......................##....##...E..",
+      "..A.I.........##..............##..g.........U.............##....##...E..",
       "######################^^###########################^^###################",
       "########################################################################",
     ],
@@ -98,11 +100,47 @@ export const PASSAGER: Record<string, AreaDef> = {
       "rrrrrOrrrrrrrrrrOrrrrrrrrrrOrrrrrrrrrr........rrrOrrrrrrrrrrOrrrrrrrrrrO",
       "|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrr........rrrrrrrrr|rrrrrrrrrr|rrrrr",
       "|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrrr",
-      "|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrr..|rrrrr",
-      "|rrrrrrrrrr|rr..rrrrrr|rrrrrrr..r|rrrrrrrrrr|rrrrrrrrrr|rr..rrrr..|rrrrr",
-      "|rrrrrrrrrr|rr..rrrrrr|rrrrrrr..r|rrrrrrrrrr|rrrrrrrrrr|rr..rrrr..|rrrrr",
+      "|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrrr|rrrrrrrrr...rrrrrrrrr|rrrrrrrr..|rrrrr",
+      "|rrrrrrrrrr|rr..rrrrrr|rrrrrrr..r|rrrrrrrrr...rrrrrrrrr|rr..rrrr..|rrrrr",
+      "|rrrrrrrrrr|rr..rrrrrr|rrrrrrr..r|rrrrrrrrr...rrrrrrrrr|rr..rrrr..|rrrrr",
       "........................................................................",
       "........................................................................",
+    ],
+  },
+
+  /**
+   * The side gallery: where Hulda, the Väktare before Dagmar, brought her
+   * daughter to listen to the fell. Comes out by the caved-in adit above the
+   * old mine – a way back to Gruvsamhället.
+   */
+  stollen_gomd: {
+    id: 'stollen_gomd',
+    name: 'Sidoorten',
+    kind: 'path',
+    tone: 'gruva',
+    music: 'grotta',
+    backdrop: 'mine',
+    theme: 'mine',
+    dark: true,
+    darkness: 0.85,
+    ambience: ['dust'],
+    showName: true,
+    signs: { I: 'stollen_gomd_ristning' },
+    left: { to: 'stollen_2', entry: 'U' },
+    right: { to: 'overworld', ow: { x: 58, y: 15 } },
+    tiles: [
+      "##################################",
+      "##################################",
+      "##################################",
+      "##########.....##########.........",
+      "##########..T..##########.........",
+      "...........===..........f.........",
+      "..................................",
+      "........===..........===..........",
+      "..................................",
+      "..A....I.......b.........u.....E..",
+      "##################################",
+      "##################################",
     ],
   },
 };
