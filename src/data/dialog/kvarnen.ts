@@ -2,6 +2,13 @@ import type { DialogDef } from '../types';
 
 /** Temple 3: Kvarnen vid forsen and Bäckahästen. */
 export const KVARNEN: Record<string, DialogDef> = {
+  kvarnen_lucka: {
+    pages: [
+      'Rakt ovanför sitter en lucka i taket, tung och fastrostad. Den går inte att nå med händerna.',
+      'Någon har ristat i bjälken bredvid: "SLÅ UPP DEN UNDERIFRÅN SOM VI GÖR PÅ BRUKET."',
+    ],
+  },
+
   kvarnen_skylt1: {
     pages: ['En skylt vid bäcken:\n"BADA EJ I FORSEN. FÖLJ EJ EFTER VITA HÄSTAR."\nNågon har strukit under sista raden.'],
   },

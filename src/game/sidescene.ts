@@ -449,6 +449,7 @@ export class SideScene implements Scene, WorldApi {
 
     // Locked doors: push against them with a key.
     this.tryDoors();
+    this.tryHatch();
 
     // --- Sealed room ---
     if (this.seal) this.updateSeal();
@@ -574,6 +575,27 @@ export class SideScene implements Scene, WorldApi {
 
 
 
+
+  /** An up-thrust that strikes a hatch from below knocks it open, for good. */
+  private tryHatch(): void {
+    const p = this.player;
+    if (!p.upThrust || !p.swordActive) return;
+    const b = p.swordBox({ x: 0, y: 0, w: 0, h: 0 });
+    for (let ty = Math.floor(b.y / TILE); ty <= Math.floor((b.y + b.h) / TILE); ty++) {
+      for (let tx = Math.floor(b.x / TILE); tx <= Math.floor((b.x + b.w) / TILE); tx++) {
+        const i = ty * this.grid.w + tx;
+        if (this.area.tiles[ty]?.[tx] !== '!' || this.grid.kinds[i] !== Kind.Solid) continue;
+        this.grid.kinds[i] = Kind.Empty;
+        this.tileSprite[i] = null;
+        this.s.opened.push(this.pid(tx, ty));
+        this.puff(tx * TILE + 8, ty * TILE + 8, 'mist');
+        this.sfx('door');
+        this.shake(8, 2);
+        this.staticLayer = renderStatic(this);
+        this.game.save();
+      }
+    }
+  }
 
   private tryDoors(): void {
     const p = this.player;

@@ -46,6 +46,7 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
     pages: [
       'Jaså, du har lärt dig stöta nedåt hos Algot? Då ska du få lära dig åt andra hållet också.',
       'Håll UPP och slå, så går klingan rakt upp. Bra mot fladdermöss och sådant som hänger i taket.',
+      'Ska du till kvarnen vid forsen? Där sitter en lucka i taket som mjölnarn alltid slog upp underifrån. Nu vet du hur.',
     ],
     actions: [{ type: 'learnSkill', skill: 'uppatstot' }, { type: 'flag', flag: 'karlsson_lart' }],
     next: 'lart_uppatstot',

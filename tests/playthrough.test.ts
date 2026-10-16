@@ -145,6 +145,16 @@ describe('the logic holds together', () => {
   });
 });
 
+describe('the village holds the key to its temple', () => {
+  it('the mill cannot be done without Uppåtstöt from Bruksorten (the hatch to the key)', () => {
+    const r = playthrough({ withholdSkills: ['uppatstot'], meetings: true });
+    expect(r.flags.has('kvarnen_boss')).toBe(false);
+    expect(run.flags.has('kvarnen_boss')).toBe(true);
+    // Karlsson, who teaches it, lives in Bruksorten on the way to the mill.
+    expect(run.steps.findIndex((s) => s.kind === 'skill' && s.what === 'uppatstot')).toBeLessThan(run.steps.findIndex((s) => s.kind === 'boss' && s.what === 'backahasten'));
+  });
+});
+
 describe('tasks done with the hands, not with a menu', () => {
   it('the charcoal stack is lit only by a fireball: no dialog lights it', () => {
     const lights = Object.values(DIALOG).some((d) => [...(d.actions ?? []), ...(d.choices ?? []).flatMap((c) => c.actions ?? [])].some((a) => a.type === 'flag' && a.flag === 'kolmilan_tand'));

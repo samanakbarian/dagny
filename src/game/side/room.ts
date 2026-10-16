@@ -67,6 +67,10 @@ export function build(sc: SideScene): void {
           if (s.opened.includes(sc.pid(tx, ty))) kind = Kind.Empty;
           else sc.tileSprite[i] = 'lockedDoor';
           break;
+        case '!':
+          if (s.opened.includes(sc.pid(tx, ty))) kind = Kind.Empty;
+          else sc.tileSprite[i] = 'hatch';
+          break;
         case 'k':
           if (!s.opened.includes(sc.pid(tx, ty))) {
             sc.pickups.push(new Pickup('key', px - 4, py - 12, 'key', false, sc.pid(tx, ty)));

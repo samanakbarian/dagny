@@ -41,6 +41,8 @@ export interface Step {
 export interface Options {
   /** Items that never reach Dagny's hands (to check what each one opens). */
   withhold?: readonly string[];
+  /** Readings and techniques she never learns (to check what each one opens). */
+  withholdSkills?: readonly string[];
   /** Also take the random meetings on the overworld (friendly ones and fights). */
   meetings?: boolean;
   /** Stop after this many waves. */
@@ -135,7 +137,7 @@ export function playthrough(opts: Options = {}): Playthrough {
         }
         break;
       case 'learnSkill':
-        if (!skills.has(a.skill)) {
+        if (!skills.has(a.skill) && !(opts.withholdSkills ?? []).includes(a.skill)) {
           skills.add(a.skill);
           log('skill', a.skill);
         }
@@ -206,6 +208,8 @@ export function playthrough(opts: Options = {}): Playthrough {
     if (ch === undefined || ch === '#') return true;
     if (ch === '?') return !items.has('radio');
     if (ch === 'L') return !done.has(`${a.id}:col${x}`);
+    // A hatch opens to an up-thrust from below.
+    if (ch === '!') return !skills.has('uppatstot');
     return false;
   };
 

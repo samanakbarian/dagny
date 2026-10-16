@@ -231,7 +231,7 @@ function softlocks(a: AreaDef, radio: boolean): string[] {
   const w = t[0].length;
   const groups = rides(a);
   const onRide = (x: number, y: number): boolean => groups.some((g) => g.has(`${x},${y}`));
-  const solid = (x: number, y: number): boolean => y >= h || (x >= 0 && x < w && y >= 0 && (t[y][x] === '#' || t[y][x] === 'L' || (t[y][x] === '?' && !radio)));
+  const solid = (x: number, y: number): boolean => y >= h || (x >= 0 && x < w && y >= 0 && (t[y][x] === '#' || t[y][x] === 'L' || t[y][x] === '!' || (t[y][x] === '?' && !radio)));
   const free = (x: number, y: number): boolean => x >= 0 && x < w && y < h && (y < 0 || (!solid(x, y) && !'^~n'.includes(t[y][x])));
   const floor = (x: number, y: number): boolean => y + 1 < h && y + 1 >= 0 && (solid(x, y + 1) || '=%&'.includes(t[y + 1][x] ?? '') || onRide(x, y));
   const stand = (x: number, y: number): boolean => free(x, y) && free(x, y - 1) && floor(x, y);
