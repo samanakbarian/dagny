@@ -3,6 +3,7 @@ import { VIEW_W, VIEW_H } from '../engine/screen';
 import { drawSprite } from '../engine/sprites';
 import { drawText, measure } from '../engine/text';
 import { OVERWORLD } from '../data/overworld';
+import { TEMPLES } from '../data/temples';
 import { PLACE_CHARS, TERRAIN } from '../data/terrain';
 import { PALETTE } from '../data/palettes';
 import { STR } from '../data/strings';
@@ -164,6 +165,8 @@ export class OverworldScene implements Scene {
   private flip = false;
   /** Steps Dagny has sat still on a current. */
   private drifting = 0;
+  /** Frames left of the mountain's rumble. */
+  private shakeT = 0;
   /** How far the marsh fog and the night forest's dark have closed in (0–1, eased). */
   private fog = 0;
   private dark = 0;
@@ -213,6 +216,38 @@ export class OverworldScene implements Scene {
 
   enter(): void {
     this.game.save();
+    // Each place that wakes loosens Dagmar's hold on the mountain: the first
+    // time Dagny comes out after a temple, Trollberget rumbles.
+    const s = this.s;
+    const woken = TEMPLES.filter((t) => t.id !== 'trollberget' && hasFlag(s, `${t.id}_klar`)).length;
+    if (woken > 0 && !hasFlag(s, `berg_mullrar_${woken}`) && !hasFlag(s, 'trollberget_klar')) {
+      s.flags.push(`berg_mullrar_${woken}`);
+      this.shakeT = 60;
+      this.game.audio.play('roar');
+      this.game.toast(STR.mountainRumble, 3.5);
+      this.game.vibrate([60, 40, 90]);
+    }
+  }
+
+  /** The glow round Trollberget: Dagmar's hold. It flickers harder the more places have woken. */
+  private renderMountain(ctx: CanvasRenderingContext2D, camX: number, camY: number): void {
+    const s = this.s;
+    if (hasFlag(s, 'trollberget_klar')) return;
+    const troll = OVERWORLD.places.find((p) => p.area === 'troll_1');
+    if (!troll) return;
+    const cx = troll.x * T + T / 2 - camX;
+    const cy = troll.y * T + T / 2 - camY;
+    if (cx < -80 || cy < -80 || cx > VIEW_W + 80 || cy > VIEW_H + 80) return;
+    const woken = TEMPLES.filter((t) => t.id !== 'trollberget' && hasFlag(s, `${t.id}_klar`)).length;
+    const unrest = woken / 6;
+    const flicker = Math.sin(this.frame / (24 - unrest * 16)) * (0.04 + unrest * 0.1) + (Math.random() < unrest * 0.05 ? -0.12 : 0);
+    const a = Math.max(0, 0.42 + flicker);
+    const g = ctx.createRadialGradient(cx, cy, 4, cx, cy, 70);
+    g.addColorStop(0, `rgba(240,210,122,${a.toFixed(3)})`);
+    g.addColorStop(0.5, `rgba(207,106,76,${(a * 0.5).toFixed(3)})`);
+    g.addColorStop(1, 'rgba(207,106,76,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(cx - 70, cy - 70, 140, 140);
   }
 
   capture(state: GameState): void {
@@ -438,7 +473,8 @@ export class OverworldScene implements Scene {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    const camX = Math.round(this.camX);
+    const quake = this.shakeT > 0 ? (this.shakeT--, Math.round((Math.random() - 0.5) * 4)) : 0;
+    const camX = Math.round(this.camX) + quake;
     const camY = Math.round(this.camY);
     ctx.drawImage(staticMap as HTMLCanvasElement, camX, camY, VIEW_W, VIEW_H, 0, 0, VIEW_W, VIEW_H);
     const wf = Math.floor(this.frame / 30);
@@ -484,6 +520,7 @@ export class OverworldScene implements Scene {
       drawSprite(ctx, 'owDagny', base + step, p.x - camX, p.y - camY, this.facing === 'side' && this.flip);
     }
 
+    this.renderMountain(ctx, camX, camY);
     this.renderSight(ctx, p.x + T / 2 - camX, p.y + T / 2 - camY);
     this.game.applyTone(ctx, OVERWORLD.tone, true);
 

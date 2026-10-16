@@ -54,7 +54,7 @@ export const TROLLBERGET: Record<string, DialogDef> = {
       'Midsommarnatten 1946 sov alla platserna in, och Bergakungen vaknade i vrede. Det fanns ingen annan Väktare än jag.',
       'Så jag lade dig i näverfilten under klockstapeln, där Hulda skulle hitta dig. Och så gick jag upp i berget.',
       'Jag band mig vid honom, så länge människorna mindes de heliga platserna. Men de glömde. Bandet blev svagare för varje sommar.',
-      'Nu har du väckt dem igen, en efter en. Bandet behövs inte längre. Och jag... jag kan inte stanna, älskling.',
+      'Nu har du väckt dem igen, en efter en. Bandet behövs inte längre. Och jag... jag kan inte stanna. Inte än, älskling.',
     ],
     choices: [{ text: 'Krama henne', next: 'dagmar_ljus' }],
   },
@@ -64,7 +64,8 @@ export const TROLLBERGET: Record<string, DialogDef> = {
     pages: [
       'Där. Nu vet jag hur det känns. Det räckte gott.',
       'Du behöver inte säga något. Det har du aldrig behövt. Ditt namn säger allt: ny dag.',
-      'Hälsa Hulda. Tacka henne från mig, för allt hon har gjort.',
+      'Berget släpper mig inte på en gång. Arton år sitter i. Men en dag kommer jag hem. Det lovar jag.',
+      'Hälsa Hulda. Tacka henne från mig, för allt hon har gjort. Säg att hon höll sitt löfte.',
       'Se. Solen går upp.',
     ],
     actions: [{ type: 'flag', flag: 'trollberget_klar' }, { type: 'scene', scene: 'ending' }],

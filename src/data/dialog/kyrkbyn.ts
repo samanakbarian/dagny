@@ -113,6 +113,7 @@ export const KYRKBYN: Record<string, DialogDef> = {
     pages: [
       'Jag var vaken den natten, 1946. Jag såg en kvinna med kopparhår gå förbi med en korg.',
       'Hon stannade vid klockstapeln och grät. Sedan gick hon mot Trollberget, utan korgen.',
+      'Folk sa sedan att Väktaren gick in i berget och höll det stilla med sina egna händer. Att det är därför berget har varit tyst i alla år. Men nu börjar det mullra igen.',
       'Du har hennes hår, lilla vän. Och hennes sätt att lyssna utan att säga något.',
     ],
   },

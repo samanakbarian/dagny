@@ -12,6 +12,7 @@ export const EPILOG: Record<string, DialogDef> = {
       'Där är du ju! Kom hit med dig. Jag hälsade på vid klockstapeln i morse. Det låg färska blommor där.',
       'Dagmar vävde aldrig klart filten. Så jag gjorde det i vintras, med din hjälp. Den hänger över din säng nu.',
       'Varje midsommar ska vi tända ljusen på de sju platserna. Så glömmer ingen igen.',
+      'Du är Väktare nu, Dagny. Den första på arton år. Din mamma skulle ha varit så stolt. Hon kommer att bli det.',
       'Gå nu och dansa. Det är midsommar, och sommaren är ljus igen.',
     ],
     choices: [

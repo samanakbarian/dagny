@@ -85,6 +85,7 @@ export const STR = {
   mapKeyPlace: 'Plats',
   mapKeyRumour: 'Hört talas om',
   viewpoint: 'Härifrån ser man långt',
+  mountainRumble: 'Det mullrar i Trollberget.',
   wakeHome: 'Vakna hos mormor',
   wakeIn: 'Vakna i',
 
@@ -125,6 +126,7 @@ export const STR = {
   teaser: [
     'Hösten 1965. Ett brev kommer till Mormors by, utan frimärke och utan avsändare.',
     '"Det finns fler platser än sju. Norrut, där tåget slutar gå."',
+    'Handstilen är densamma som i anteckningsboken från Väktarkammaren.',
     'Dagnys äventyr 2 – kommer.',
   ],
 };

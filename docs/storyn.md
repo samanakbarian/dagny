@@ -1,7 +1,7 @@
 # Storyn – Dagnys äventyr
 
-*Utkast att godkänna (15 oktober 2026). Klartext: vad som hände, vem som vet
-vad, och hur det syns i spelet. Spelets texter ska följa det här, inte tvärtom.*
+*Godkänd 16 oktober 2026. Klartext: vad som hände, vem som vet vad, och hur
+det syns i spelet. Spelets texter ska följa det här, inte tvärtom.*
 
 ## På en minut
 
@@ -88,8 +88,16 @@ bygden. Platserna vårdas igen. Dagny är Väktare nu.
 - **Löftet antyds tidigt:** Hulda: "Det finns saker jag har lovat att inte säga. Inte än." – och förklaras i slutet.
 - **Varför platserna sov** sägs av någon i varje by: vägen dit växte igen, ingen tände ljusen, ingen sa namnet.
 
-## Frågor att avgöra
+## Beslut (16 oktober 2026)
 
-1. Godkänner du löftet och skulden som Huldas skäl?
-2. Ska Dagny bli Väktare i epilogen (finns inte uttalat i dag)?
-3. Ska Dagmar verkligen försvinna i slutet, eller finns en väg för henne att komma hem (till exempel i Dagnys äventyr 2)?
+1. **Huldas skäl:** löftet till Dagmar och hennes egen skuld – ja.
+2. **Dagny blir Väktare** i epilogen – ja (Hulda säger det).
+3. **Dagmar kan komma hem i del 2.** Hon försvinner inte för gott: "Jag kan inte stanna. Inte än." och "En dag kommer jag hem. Det lovar jag." Teasern för del 2: brevet utan avsändare har samma handstil som anteckningsboken i Väktarkammaren.
+
+## Inbyggt i spelet
+
+- Hulda antyder löftet redan första dagen och förklarar varför platserna somnar (vägarna växer igen, ingen tänder ljusen, ingen säger namnen).
+- Gamla Tyra: Väktaren "gick in i berget och höll det stilla med sina egna händer".
+- Hulda efter Fäbodskogen: "Hon var din mamma", löftet, och "Förlåt att jag lät dig gå ensam också."
+- Dagmar i slutet: "Inte än", "en dag kommer jag hem", "säg att hon höll sitt löfte".
+- **Berget syns:** Trollberget glöder svagt på kartan och flämtar oroligare för varje plats som vaknat, och första gången Dagny går ut efter ett tempel mullrar berget (skärmen skakar).
