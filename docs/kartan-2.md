@@ -86,19 +86,19 @@ har blivit vilda, och bandet håller på att brista. Därför:
 
 - **Hotet växer.** För varje plats som glömts har berget mullrat lite mer. Varje förlikad plats lugnar det – men stärker också Bergakungen inför slutet, för han vaknar när bandet inte längre behövs.
 - **Dagny följer sin mor utan att veta det.** Hon vet inte att Väktaren är hennes mor. Spåren (§2) och Huldas bitar lägger pusslet åt spelaren innan Dagny själv får höra det.
-- **Hulda vet allt** och berättar i takt med att Dagny har sett tillräckligt själv ("Först måste du se mer själv").
+- **Hulda vet allt** och berättar i takt med att Dagny har sett tillräckligt själv ("Först måste du se mer själv"). Vändningen efter kapitel 7: Hulda är Dagmars mamma och var själv Väktare före henne (se `docs/storyn.md`).
 
 ### Byggstenarna per kapitel
 
 | # | Varför Dagny går dit | Dagmars spår | Vad Dagny förstår | Hulda efteråt | Berget |
 |---|---|---|---|---|---|
 | 1 | Hulda: de sju platserna vaktades förr; Stenkyrkan ligger närmast | "...da, Väktare" i kryptan; Tyra såg en kvinna med kopparhår | Det fanns en Väktare som försvann samma natt som Dagny hittades | "Du är den vi väntat på." | Klockstapeln ringde av sig själv 1946 |
-| 2 | Grimmen ger ekan: "Den bar henne över sjön" | Eremiten minns kvinnan; D och H på Måsskäret; signalstenen | Väktaren och någon "H" stod varandra nära | (inget nytt – sjön är resan) | Mullret hörs över vattnet om kvällarna |
-| 3 | Eremiten: hackor i den tysta gruvan | Lampan med H.D. | H.D. – två personer, eller en? | "H.D. Jag har inte sett de bokstäverna på arton år." | Gruvan skakar |
+| 2 | Grimmen ger ekan: "Den bar henne över sjön" | Eremiten minns kvinnan; D och H på Måsskäret; signalstenen | Väktaren och någon "H" stod varandra nära (mor och dotter, visar det sig) | (inget nytt – sjön är resan) | Mullret hörs över vattnet om kvällarna |
+| 3 | Eremiten: hackor i den tysta gruvan | Lampan med H.D. | H.D. – vems lampa? (Hulda Dahls) | "H.D. Jag har inte sett de bokstäverna på arton år." | Gruvan skakar |
 | 4 | Gamla stollen leder vidare; Bruksortens folk behöver hjälp | Stövlarna på stranden vid forsen | Hon gav upp något för att gå vidare | "Jag köpte dem 1945 … Ja, jag kände henne." | Forsen går baklänges en natt |
 | 5 | Rykten om ljus som går ner; Fiskelägets saknade kompass | Fyrens loggbok: "Signalen från stranden tystnade" | Signalen gick mellan stranden och Kyrkbyn | "Det var jag som svarade." | Fyrljuset slocknar av sig självt |
 | 6 | Ficklampan; fiolen hörs genom nattskogen | Fotografiet: hon dansar med ett irrbloss; signalen besvaras igen | Hon var ung, glad, levande | "Hon hette Dagmar." | Folkparkens ljus flimrar i takt med berget |
-| 7 | Radion knastrar – "någon sjunger mellan stationerna" (Olle) | Näverfilten i korgen under klockstapeln | Filten var Dagnys. Väktaren är hennes mor | "Dagmar vävde den åt dig." | Stigen till höglandet öppnas för första gången på arton år |
+| 7 | Radion knastrar – "någon sjunger mellan stationerna" (Olle) | Näverfilten i korgen under klockstapeln | Filten var Dagnys. Väktaren är hennes mor – och Huldas dotter | "Hon var din mamma. Och hon var min dotter." | Stigen till höglandet öppnas för första gången på arton år |
 | 8 | Hulda: "Där får du hela sanningen" | "D. gick här", anteckningsboken i Väktarkammaren | Dagmar band sig vid berget för hennes skull | – (finalen) | Bergakungen vaknar |
 
 ### Det som saknas och ska skrivas

@@ -2,6 +2,8 @@
 
 Den här rapporten samlar allt i spelet som berättar om den förra Väktaren, Dagmar, och om natten 1946. Texterna står i spelordning. Rapporten ändrar ingen text i spelet. Motsägelser är markerade med **⚠**, och förslag finns sist.
 
+> **Avgjort 16 oktober 2026:** vändningen valdes – Hulda är Dagmars mamma och den förra Väktaren. Se `docs/storyn.md`.
+
 Källor: `src/data/dialog.ts`, `src/data/strings.ts` och `src/data/temples.ts` (fältet `lore`, som inte visas i spelet).
 
 ## 1. Texterna i spelordning

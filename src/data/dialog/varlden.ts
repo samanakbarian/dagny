@@ -91,11 +91,14 @@ export const VARLDEN: Record<string, DialogDef> = {
   vaktarkammaren_bord: {
     pages: [
       'Ett bord av sten, en ljusstump och en anteckningsbok med fuktiga blad. Handstilen är prydlig.',
-      '"Midsommarafton 1946. Jag har lagt henne under klockstapeln, där Hulda går förbi varje kväll. Klingan ligger bredvid."',
+      '"Midsommarafton 1946. Jag har lagt henne under klockstapeln och låtit klockan ringa. Mamma är ute på en förlossning, men klockan hör hon. Klingan ligger bredvid, och en lapp."',
       '"I natt går jag in i berget. Någon gång kommer hon att förstå varför." – Dagmar',
+      'På sista sidan, med darrigare handstil:\n"Mamma. Det var inte ditt fel. Säg det till dig själv tills du tror på det."',
+      'Dagny stoppar anteckningsboken innanför jackan.',
     ],
+    actions: [{ type: 'flag', flag: 'anteckningsboken' }],
   },
   vaktarkammaren_vagg: {
-    pages: ['På väggen står namn huggna i berget, ett under det andra – Väktare efter Väktare. Det sista namnet är DAGMAR. Under det finns plats för ett till.'],
+    pages: ['På väggen står namn huggna i berget, ett under det andra – Väktare efter Väktare. Näst sist står HULDA. Det sista namnet är DAGMAR. Under det finns plats för ett till.'],
   },
 };

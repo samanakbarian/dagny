@@ -184,7 +184,11 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     id: 'hulda_ep',
     sprite: 'hulda',
     idle: { frames: [0, 0, 0, 2, 0, 1, 1, 0], every: 0.7 },
-    talk: [{ dialog: 'hulda_epilog' }],
+    talk: [
+      { if: [{ flag: 'anteckningsboken' }, { notFlag: 'hulda_halsad' }], dialog: 'hulda_halsning_bok' },
+      { if: [{ notFlag: 'hulda_halsad' }], dialog: 'hulda_halsning' },
+      { dialog: 'hulda_epilog' },
+    ],
   },
   sven_ep: { id: 'sven_ep', sprite: 'man', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'sven_epilog' }] },
   karin_ep: { id: 'karin_ep', sprite: 'woman', idle: { frames: [0, 0, 2, 0], every: 0.8 }, talk: [{ dialog: 'karin_epilog' }] },

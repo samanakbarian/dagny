@@ -410,3 +410,19 @@ describe('music and sound', () => {
     expect(() => parseNotes('x9')).toThrow();
   });
 });
+
+describe('dialog pages', () => {
+  it('every page fits the dialog box (four lines)', () => {
+    // The box is VIEW_W - 48 px wide inside its margins; longer pages are cut off.
+    for (const [id, d] of Object.entries(DIALOG)) {
+      d.pages.forEach((p, i) => expect(wrap(p, 272).length, `${id}[${i}]`).toBeLessThanOrEqual(4));
+    }
+  });
+
+  it('the story twist is told the same way everywhere', () => {
+    const all = Object.values(DIALOG).flatMap((d) => d.pages).join('\n') + STR.ending.join('\n');
+    expect(all).toContain('Och hon var min dotter.');
+    expect(all).toContain('Näst sist står HULDA');
+    expect(all).not.toMatch(/din mors ögon|fick komma hem till slut|bästa vän/);
+  });
+});

@@ -6,13 +6,35 @@ export const EPILOG: Record<string, DialogDef> = {
     pages: ['Midsommarafton, ett år senare. Hela byn har kommit ut på vägen. Någon har rest en majstång mitt i byn.'],
   },
 
+  // Dagmar's greeting reaches Hulda without a word: the notebook, if Dagny found it.
+  hulda_halsning_bok: {
+    pages: [
+      'Hulda ser upp när Dagny kommer. Dagny tar fram anteckningsboken från Väktarkammaren och lägger den i hennes händer, uppslagen på sista sidan.',
+      'Hulda läser länge. Sedan stänger hon boken och håller den mot bröstet.',
+    ],
+    next: 'hulda_halsning_svar',
+  },
+  hulda_halsning: {
+    pages: ['Hulda ser upp när Dagny kommer. Dagny tar hennes händer och håller dem länge. Hon behöver inte säga något.'],
+    next: 'hulda_halsning_svar',
+  },
+  hulda_halsning_svar: {
+    speaker: 'Mormor Hulda',
+    pages: [
+      'Hon hälsade. Jag ser det på dig.',
+      'Arton år har jag burit det. Jag tror att jag kan lägga ner det nu.',
+    ],
+    actions: [{ type: 'flag', flag: 'hulda_halsad' }],
+    next: 'hulda_epilog',
+  },
+
   hulda_epilog: {
     speaker: 'Mormor Hulda',
     pages: [
-      'Där är du ju! Kom hit med dig. Jag hälsade på vid klockstapeln i morse. Det låg färska blommor där.',
+      'Jag hälsade på vid klockstapeln i morse. Det låg färska blommor där.',
       'Dagmar vävde aldrig klart filten. Så jag gjorde det i vintras, med din hjälp. Den hänger över din säng nu.',
       'Varje midsommar ska vi tända ljusen på de sju platserna. Så glömmer ingen igen.',
-      'Du är Väktare nu, Dagny. Den första på arton år. Din mamma skulle ha varit så stolt. Hon kommer att bli det.',
+      'Du är Väktare nu, Dagny. Den första på arton år. Din mamma är stolt, var hon än är. En dag får hon säga det själv.',
       'Gå nu och dansa. Det är midsommar, och sommaren är ljus igen.',
     ],
     choices: [

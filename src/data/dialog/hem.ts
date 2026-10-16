@@ -59,7 +59,7 @@ export const HEM: Record<string, DialogDef> = {
   sven_uppdrag: {
     speaker: 'Gamle Sven',
     pages: [
-      'Så Hulda har skickat dig. Hmm. Du har din mors ögon, det har du.',
+      'Så Hulda har skickat dig. Hmm. Du har ögon som... nej. Glöm det. Gamla gubbar pratar för mycket.',
       'Jag kan en gammal läsning mot värk. Men den biter inte utan johannesört – och mina knän tar mig inte till skogen längre.',
       'Den växer i Björkhagen, väster om byn, högt uppe där solen når. Akta dig för nässlorna. Hämta en kvist, så lär jag dig.',
     ],
@@ -229,7 +229,7 @@ export const HEM: Record<string, DialogDef> = {
     speaker: 'Mormor Hulda',
     pages: [
       'Stövlar... gröna stövlar, storlek trettioåtta. Jag köpte dem på lanthandeln i Kyrkbyn 1945.',
-      'Ja, Dagny. Jag kände henne. Mer än så säger jag inte förrän du har varit på Trollberget.',
+      'Ja, Dagny. Jag kände henne. Bättre än någon. Mer än så säger jag inte förrän du har sett alla platserna.',
       'Sov nu. Tre platser har vaknat i godo. Det känns i luften.',
     ],
     actions: [{ type: 'flag', flag: 'hulda_efter_kvarnen' }, { type: 'rest' }],
@@ -264,10 +264,13 @@ export const HEM: Record<string, DialogDef> = {
     speaker: 'Mormor Hulda',
     pages: [
       'Näverfilten... den du låg i när jag hittade dig. Dagmar vävde den åt dig, fast hon aldrig hann bli klar.',
-      'Hon var din mamma, Dagny.',
-      'Den natten tog hon ett löfte av mig: att inte säga något förrän du hade sett platserna själv. Hade du vetat, hade du sprungit rakt upp i berget. Och berget släpper ingen som inte först väckt de andra platserna.',
-      'Jag lät henne gå ensam. Det har jag aldrig förlåtit mig. Förlåt att jag lät dig gå ensam också.',
-      'Sex platser har vaknat i godo. Nu återstår bara Trollberget. Där är hon. Där får du resten av sanningen.',
+      'Hon var din mamma, Dagny. Och hon var min dotter.',
+      '"...da, Väktare 1921–1946" – det står Hulda i kryptan. H.D., Hulda Dahl, står det på lampan. Jag var Väktare före henne. Du kallar mig mormor som alla andra. Jag är det på riktigt.',
+      'Det var jag som slutade gå. Kriget kom, och jag förlöste halva bygden de åren. En sommar till, tänkte jag, så tänder jag ljusen igen. Och så en till.',
+      'Midsommarnatten 1946 vaknade berget. Jag var ute på en förlossning. Gåvan hade redan lämnat mig, och Dagmar gick i stället. Hon lade dig under klockstapeln och lät klockan ringa. I korgen låg en lapp till mig.',
+      '"Berätta inget för henne förrän hon har sett platserna själv." Hade du vetat, hade du sprungit rakt upp i berget. Och berget släpper ingen som inte först väckt de andra platserna.',
+      'Jag fick aldrig säga ja. Men jag har hållit det. Förlåt att jag lät dig gå ensam, som jag lät henne.',
+      'Sex platser har vaknat i godo. Nu återstår bara Trollberget. Där är hon.',
       'Men först vilar du. Kom hit.',
     ],
     actions: [{ type: 'flag', flag: 'hulda_efter_fabodskogen' }, { type: 'rest' }],

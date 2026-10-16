@@ -111,7 +111,7 @@ export const STR = {
   ],
   // Trollberget is reconciled – sunrise on midsummer morning.
   ending: [
-    'Dagmar blev ljus. Ljuset steg genom berget och ut över skogen, sjön och åkrarna.',
+    'Dagmar blev ljus – för en tid. Ljuset steg genom berget och ut över skogen, sjön och åkrarna.',
     'I Kyrkbyn började klockan i klockstapeln ringa av sig själv. Den här gången väckte den ingen vrede.',
     'Över Trollberget gick solen upp. Det var midsommarmorgon, och sommaren var ljus igen.',
     'Alla sju platser är förlikade.',
