@@ -561,9 +561,10 @@ export class OverworldScene implements Scene {
     if (this.frame % 2 === 0) this.game.audio.play('step');
     const place = this.placeAt(me.x, me.y);
     // A viewpoint: from up here Dagny sees far, and the map fills in.
-    if (place?.view && markExplored(this.s, me.x, me.y, place.view, Math.round(place.view * 0.7))) {
-      this.game.toast(STR.viewpoint, 3);
-      this.game.audio.play('key');
+    // (Every time, so it is clear what the place is: nothing to go into, a view.)
+    if (place?.view) {
+      if (markExplored(this.s, me.x, me.y, place.view, Math.round(place.view * 0.7))) this.game.audio.play('key');
+      this.game.toast(`${place.name} – ${STR.viewpoint}`, 3.5);
     }
     // A place the radio finds is nothing at all without it.
     const byRadio = place?.hidden === 'radio' || place?.radio;

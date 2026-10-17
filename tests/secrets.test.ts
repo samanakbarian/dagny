@@ -222,7 +222,14 @@ interface JumpModel {
 }
 
 /** The coarse platformer model of one room (see softlocks); `up` is how many tiles a jump rises. */
-function jumpModel(a: AreaDef, radio: boolean, opts: { up?: number; hatches?: boolean; keys?: boolean } = {}): JumpModel {
+/**
+ * How far Dagny really carries (tiles, measured in the engine with a run-up and
+ * the button held) when landing this many tiles higher: index = rise 0..5.
+ */
+const REACH = [3.12, 2.78, 2.45, 2.02];
+const REACH_HOPP = [4.3, 3.97, 3.71, 3.46, 3.21, 2.87];
+
+function jumpModel(a: AreaDef, radio: boolean, opts: { up?: number; hatches?: boolean; keys?: boolean; strict?: boolean } = {}): JumpModel {
   const t = a.tiles;
   const h = t.length;
   const w = t[0].length;
@@ -245,13 +252,21 @@ function jumpModel(a: AreaDef, radio: boolean, opts: { up?: number; hatches?: bo
         if (l) out.push(l);
       }
     }
+    const reach = (opts.up ?? 3) > 3 ? REACH_HOPP : REACH;
+    const span = opts.strict ? 6 : 3;
     for (let up = 1; up <= (opts.up ?? 3) && free(x, y - up); up++) {
-      for (let dx = -3; dx <= 3; dx++) {
+      for (let dx = -span; dx <= span; dx++) {
         let ok = true;
         for (let cx = x; cx !== x + dx + Math.sign(dx || 1) && ok; cx += Math.sign(dx || 1)) if (!free(cx, y - up)) ok = false;
         const l = ok ? land(x + dx, y - up) : null;
-        if (l) out.push(l);
-        if (dx === 0) continue;
+        if (!l) continue;
+        if (opts.strict) {
+          // Comfortably within the measured reach: a few pixels to spare at each end.
+          const rise = y - l[1];
+          const carry = rise >= 0 ? reach[rise] ?? -1 : reach[0] + 0.35 * -rise;
+          if (Math.abs(dx) * 16 - 10 > carry * 16) continue;
+        }
+        out.push(l);
       }
     }
     for (const g of groups) {
@@ -268,7 +283,7 @@ function jumpModel(a: AreaDef, radio: boolean, opts: { up?: number; hatches?: bo
 
 function softlocks(a: AreaDef, radio: boolean): string[] {
   const t = a.tiles;
-  const { w, h, land, moves, free } = jumpModel(a, radio);
+  const { w, h, land, moves, free } = jumpModel(a, radio, { strict: true });
   const exits = new Set<string>();
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
@@ -348,7 +363,8 @@ describe('everything in a room can be reached by jumping, not only by the solver
   const touches = (seen: Set<string>, m: JumpModel, tx: number, ty: number, up: number): boolean => {
     for (const k of seen) {
       const [x, y] = k.split(',').map(Number);
-      if (Math.abs(x - tx) > 1 || ty > y || y - ty > up + 1) continue;
+      // Jumping only gets the head up so far: touching a thing up on a ledge means standing next to it, near enough.
+      if (Math.abs(x - tx) > 1 || ty > y || y - ty > Math.min(up, 2)) continue;
       let clear = true;
       for (let yy = y - 1; yy > ty && clear; yy--) if (!m.free(x, yy)) clear = false;
       if (clear) return true;
@@ -359,10 +375,10 @@ describe('everything in a room can be reached by jumping, not only by the solver
   it('keys, treasures, quest things, containers, dolls, doors, people and the boss', () => {
     const bad: string[] = [];
     for (const a of Object.values(AREAS)) {
-      if (a.wind || a.beat) continue;
+      if (process.env.ALLROOMS ? false : a.wind || a.beat) continue;
       const hopp = a.needsSpell?.some((n) => n.spell === 'hopp');
       const up = hopp ? 5 : 3;
-      const m = jumpModel(a, true, { up, hatches: true, keys: true });
+      const m = jumpModel(a, true, { up, hatches: true, keys: true, strict: true });
       const seen = reachable(a, m);
       a.tiles.forEach((row, ty) =>
         [...row].forEach((ch, tx) => {
