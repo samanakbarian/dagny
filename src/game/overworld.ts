@@ -54,6 +54,8 @@ let lastEncounter: string | null = null;
 const encounterMemory = new Map<number, EncounterRuntime>();
 
 let staticMap: HTMLCanvasElement | null = null;
+/** The map with the sleeping regions drained of colour, built once per set of woken places. */
+let wokenMap: { key: string; canvas: HTMLCanvasElement } | null = null;
 
 /** The flag set when Dagny has found a place only the radio shows. */
 export function radioFound(pl: OverworldPlace): string {
@@ -62,9 +64,12 @@ export function radioFound(pl: OverworldPlace): string {
 }
 
 /** What the radio's static leads to: places it shows, and the hidden path through the spruce. */
+let radioCache: Array<{ x: number; y: number; flag: string }> | null = null;
 export function radioTargets(): Array<{ x: number; y: number; flag: string }> {
+  if (radioCache) return radioCache;
   const out = OVERWORLD.places.filter((p) => p.hidden === 'radio' || p.radio).map((p) => ({ x: p.x, y: p.y, flag: radioFound(p) }));
   OVERWORLD.tiles.forEach((row, y) => [...row].forEach((ch, x) => ch === 'H' && out.push({ x, y, flag: 'radiofynd_stigen' })));
+  radioCache = out;
   return out;
 }
 
@@ -239,8 +244,8 @@ export class OverworldScene implements Scene {
   private secrets: Array<{ x: number; y: number; sprite: string }> = [];
   /** Meetings that stay away once their region's place has woken (every other one there). */
   private thin = new Map<EncounterRuntime, string>();
-  /** How grey each tile still is (0–1): regions whose place sleeps are drained of colour. */
-  private grey: Float32Array | null = null;
+  /** The map as drawn: the static map with sleeping regions greyed (see transform). */
+  private map: HTMLCanvasElement | null = null;
   /** Folk walking the roads of the regions that have woken. */
   private folk: Walker[] = [];
 
@@ -299,23 +304,38 @@ export class OverworldScene implements Scene {
       const t = regionTemple(k);
       return t && !hasFlag(this.s, `${t}_klar`) ? 1 : 0;
     };
-    this.grey = new Float32Array(w * h);
-    const R = 2;
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
-        let sum = 0;
-        let n = 0;
-        for (let dy = -R; dy <= R; dy++) {
-          for (let dx = -R; dx <= R; dx++) {
-            const k = region[y + dy]?.[x + dx];
-            if (k === undefined || k < 0) continue;
-            sum += asleep(k);
-            n++;
+    const key = TEMPLES.map((t) => (hasFlag(this.s, `${t.id}_klar`) ? 1 : 0)).join('');
+    if (wokenMap?.key !== key && staticMap && typeof document !== 'undefined') {
+      // Drawn once here, not every frame: blending tile by tile is far too slow for phones.
+      const c = document.createElement('canvas');
+      c.width = staticMap.width;
+      c.height = staticMap.height;
+      const ctx = c.getContext('2d') as CanvasRenderingContext2D;
+      ctx.drawImage(staticMap, 0, 0);
+      ctx.globalCompositeOperation = 'saturation';
+      ctx.fillStyle = '#808080';
+      const R = 2;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          let sum = 0;
+          let n = 0;
+          for (let dy = -R; dy <= R; dy++) {
+            for (let dx = -R; dx <= R; dx++) {
+              const k = region[y + dy]?.[x + dx];
+              if (k === undefined || k < 0) continue;
+              sum += asleep(k);
+              n++;
+            }
           }
+          const g = n ? sum / n : 0;
+          if (g <= 0) continue;
+          ctx.globalAlpha = 0.55 * g;
+          ctx.fillRect(x * T, y * T, T, T);
         }
-        this.grey[y * w + x] = n ? sum / n : 0;
       }
+      wokenMap = { key, canvas: c };
     }
+    this.map = wokenMap?.canvas ?? staticMap;
     // Two walkers on the roads of each woken region.
     this.folk = [];
     const roads = new Map<number, Array<[number, number]>>();
@@ -817,7 +837,7 @@ export class OverworldScene implements Scene {
     const quake = this.shakeT > 0 ? (this.shakeT--, Math.round((Math.random() - 0.5) * 4)) : 0;
     const camX = Math.round(this.camX) + quake;
     const camY = Math.round(this.camY);
-    ctx.drawImage(staticMap as HTMLCanvasElement, camX, camY, VIEW_W, VIEW_H, 0, 0, VIEW_W, VIEW_H);
+    ctx.drawImage((this.map ?? staticMap) as HTMLCanvasElement, camX, camY, VIEW_W, VIEW_H, 0, 0, VIEW_W, VIEW_H);
     const wf = Math.floor(this.frame / 30);
     const visible = (x: number, y: number): boolean => x > -T && y > -T && x < VIEW_W && y < VIEW_H;
     for (const w of this.animated) {
@@ -840,24 +860,6 @@ export class OverworldScene implements Scene {
       const x = pl.x * T - camX;
       const y = pl.y * T - camY;
       if (visible(x, y)) drawSprite(ctx, 'owFallCave', Math.floor(this.frame / 8), x, y);
-    }
-    // Regions whose place still sleeps are drained of colour.
-    if (this.grey) {
-      const w = OVERWORLD.tiles[0].length;
-      const x0 = Math.floor(camX / T);
-      const y0 = Math.floor(camY / T);
-      ctx.save();
-      ctx.globalCompositeOperation = 'saturation';
-      ctx.fillStyle = '#808080';
-      for (let y = y0; y <= y0 + VIEW_H / T + 1; y++) {
-        for (let x = x0; x <= x0 + VIEW_W / T + 1; x++) {
-          const g = this.grey[y * w + x] ?? 0;
-          if (g <= 0) continue;
-          ctx.globalAlpha = 0.55 * g;
-          ctx.fillRect(x * T - camX, y * T - camY, T, T);
-        }
-      }
-      ctx.restore();
     }
     // Folk on the roads.
     for (const f of this.folk) {

@@ -68,7 +68,7 @@ Dagny starts with 8 health (four bars), so the crypt must not drain it faster th
   - As in Zelda II, a single lost life costs no XP; only Game Over takes the unspent XP.
   - The Game Over screen is black and silent. **Bergakungen's shadow** (`bergakungSkugga`), twice his size with ember eyes and arms raised, rises out of the dark and laughs: seven deep "ha"s (sound `laugh`) with the word HA drifting up round him. This is our version of Ganon's shadow laughing in Zelda II. Only then do the text and the choice appear.
 - **Trollberget is the exception:** Game Over there sends her back to the **foot of the mountain**, and every candle on the mountain goes out (as in the Great Palace).
-- **Näverdockor** (birch-bark dolls, tile `+`) give one extra life each and are taken once. There are eight: Björkhagen (early, on a high ledge), Tjuvgrottan, Jättegrytan, Kvarnen, the crypt and Fyren (behind radio walls), Fäbodskogen and Trollgrottan.
+- **Näverdockor** (birch-bark dolls, tile `+`) give one extra life each and are taken once. There are eight: Gamla kyrkogården (early, on a high ledge), Tjuvgrottan, Jättegrytan, Kvarnen, the crypt and Fyren (behind radio walls), Fäbodskogen and Trollgrottan.
 
 Code: `GameOverOverlay` (`src/game/menus.ts`), `retryRoom` and
 `gameOver` (`src/game/flow.ts`). Tests: `tests/lives.test.ts`.
@@ -188,7 +188,7 @@ dialog is the `life` action.
 
 | Place | Where | How it is found | What is in it |
 |---|---|---|---|
-| **Björkhagen** | Beside Mormors by | Open from the start | Murre the cat, johannesört for Sven, a näverdocka, and behind the radio wall a hidden nook |
+| **Björkhagen** | Southeast of Mormors by | Open from the start | Johannesört for Sven – nothing else, so the first errand stays clear (Murre has wandered to Kyrkbyn; the early näverdocka sits on the ledge at Gamla kyrkogården) |
 | **Tjuvgrottan** | Out in the marsh (stövlar) | On the map | Grå-Pelle's stolen silver: the silver fitting and a magic container show in the karbidlampa's light; a life container and a näverdocka |
 | **Jättegrytan** | On the islet in the lake (boat) | On the map | Initials "D. och H." under a little sun (Dagmar and Hulda) in the ficklampa's light, a magic container and a näverdocka |
 | **Fallgrottan** | Behind the waterfall on the mill valley's northern cliff | Seen only from right beside it | A life container on a ledge, a näverdocka, and Dagmar's carving: "Den som gömmer sig bakom fallet hörs inte av berget" |

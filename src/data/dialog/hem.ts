@@ -137,14 +137,14 @@ export const HEM: Record<string, DialogDef> = {
     speaker: 'Karin',
     pages: [
       'Åh, Dagny! Har du sett Murre? Han smet ut i går kväll och har inte kommit hem.',
-      'Han brukar jaga fjärilar i Björkhagen, sydost om byn. Men där har det varit så otäckt nu...',
+      'Han brukar smita bort till Kyrkbyn och tigga strömming. Men vägen dit har varit så otäck nu...',
     ],
     actions: [{ type: 'flag', flag: 'murre_uppdrag' }],
   },
 
   karin_vantar: {
     speaker: 'Karin',
-    pages: ['Björkhagen ligger i skogen sydost om byn. Snälla, titta efter Murre om du går förbi.'],
+    pages: ['Kyrkbyn ligger nordost om byn, vid sjön. Snälla, titta efter Murre om du går förbi.'],
   },
 
   karin_tack: {

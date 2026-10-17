@@ -137,7 +137,8 @@ describe('näverdockor (extra lives)', () => {
   });
 
   it('one can be found before the first temple', () => {
-    expect(dolls.some((d) => d.a.id === 'bjorkhagen')).toBe(true);
+    // On the ledge at the old churchyard, in the home valley.
+    expect(dolls.some((d) => d.a.id === 'kyrkogarden')).toBe(true);
   });
 
   it('rest on something solid', () => {
