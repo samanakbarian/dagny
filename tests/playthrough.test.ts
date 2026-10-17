@@ -214,3 +214,11 @@ describe('the train (chapter 6)', () => {
     }
   });
 });
+
+describe('the village gives the key (chapter 7)', () => {
+  it('Fäbodskogen cannot be done without Hamn from Karna (the key in a crack only a bird gets into)', () => {
+    const r = playthrough({ withholdSpells: ['hamn'], meetings: true });
+    expect(r.flags.has('fabodskogen_klar')).toBe(false);
+    expect(run.flags.has('fabodskogen_klar')).toBe(true);
+  });
+});
