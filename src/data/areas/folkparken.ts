@@ -108,10 +108,12 @@ export const FOLKPARKEN: Record<string, AreaDef> = {
     dark: true,
     darkness: 0.72,
     ambience: ['fireflies'],
-    beat: { period: 75 },
+    // The light strings are dead: Åska, from Oskar in Stationssamhället, wakes the floor.
+    beat: { period: 75, wake: 'dansbanan_vaknat' },
+    needsSpell: [{ spell: 'aska', x0: 10, y0: 0, x1: 49, y1: 11 }],
     left: { to: 'folkparken_2', entry: 'E' },
     right: { to: 'folkparken_4', entry: 'A' },
-    signs: { I: 'park_skylt2' },
+    signs: { I: 'park_skylt2', J: 'park_slingor' },
     tiles: [
       ".........................................................###",
       ".........................................................###",
@@ -122,7 +124,7 @@ export const FOLKPARKEN: Record<string, AreaDef> = {
       ".........................................................###",
       ".........................................................L..",
       "..........%%&&%%&&%%&&%%&&%%&&%%&&%%&&%%&&%%&&%%&&.......L..",
-      "..A..c..g...........................................I.i..L.E",
+      "..A..cJ.g...........................................I.i..L.E",
       "##########........................................##########",
       "##########........................................##########",
     ],

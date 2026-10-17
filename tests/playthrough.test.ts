@@ -182,3 +182,11 @@ describe('tasks done with the hands, not with a menu', () => {
     }
   });
 });
+
+describe('the village gives the key (chapter 6)', () => {
+  it('Folkparken cannot be done without Åska from Oskar (the dead light strings over the dance floor)', () => {
+    const r = playthrough({ withholdSpells: ['aska'], meetings: true });
+    expect(r.flags.has('folkparken_klar')).toBe(false);
+    expect(run.flags.has('folkparken_klar')).toBe(true);
+  });
+});

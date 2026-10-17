@@ -27,6 +27,7 @@ export const STATIONSSAMHALLET: Record<string, DialogDef> = {
       'Telegrafen tystnade i maj, men trådarna sjunger fortfarande. Hör du? Det är åskan som bor i dem.',
       'Min farfar var rallare. Han lärde mig en läsning som han fick av en gammal man vid Torsåsen. Tors vrede.',
       '"Åska i tråd och åska i sten, slå alla onda, skona var en." Så. Använd den sparsamt. Den tar mycket kraft.',
+      'Ljusslingorna i folkparken dog samtidigt som telegrafen. Åskan bor i trådar, kom ihåg det.',
     ],
     actions: [{ type: 'learnSpell', spell: 'aska' }],
     next: 'lart_aska',

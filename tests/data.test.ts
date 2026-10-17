@@ -426,3 +426,12 @@ describe('dialog pages', () => {
     expect(all).not.toMatch(/din mors ögon|fick komma hem till slut|bästa vän/);
   });
 });
+
+describe('spell costs', () => {
+  it('a reading never costs more than Dagny can hold (Åska with no magic levels or containers)', async () => {
+    const { newGame, spellCost, mpMax } = await import('../src/game/state');
+    const s = newGame();
+    expect(spellCost(s, 'aska')).toBeLessThanOrEqual(mpMax(s));
+    expect(spellCost(s, 'lakning')).toBe(SPELLS.lakning.cost[0]);
+  });
+});

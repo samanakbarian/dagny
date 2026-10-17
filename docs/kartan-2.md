@@ -1,6 +1,6 @@
 # Kartan 2.0 – specifikation
 
-*Status: steg 1–3 klara, steg 4 (kapitel 5) påbörjat. Beslut 15 oktober 2026 (se §11).*
+*Status: steg 1–4 klara, steg 5 (kapitel 6) påbörjat. Beslut 15 oktober 2026 (se §11).*
 *Ersätter överblickskartan från oktober 2026 (80 × 56, sju regioner).*
 
 > Granskning 15 oktober 2026 ("Storykartan"): handlingen saknades (nu §4)
@@ -360,13 +360,18 @@ Varje steg går att provspela innan nästa påbörjas.
 - **Gamla stollen, Rasgången** (`stollen_2`): ett andra mörkt rum. När Dagny har gått in en bit rasar taket bakom henne och raset rullar efter (`cavein` på rummet) – stenar faller vid fronten, och den som blir hunnen får ont och knuffas fram. Ut på andra sidan är raset över för gott (flaggan `stollen_rasat`); kommer man från öster händer ingenting.
 - **Vägvalet i Rasgången:** mitt i raset finns en öppning till **Sidoorten** (`stollen_gomd`). Där har Hulda ristat ett H och ett litet D: "Här lärde jag henne lyssna på berget. H.D. 1934" – en ledtråd till vändningen. Sidoorten mynnar vid den igenrasade gruvorten ovanför Gamla gruvan, en genväg tillbaka till Gruvsamhället (karbidlampan behövs).
 
-### Steg 4 – kapitel 5 (påbörjat)
+### Steg 4 – kapitel 5 (gjort)
 
 - **Myrlabyrinten:** myren är nu stigar genom **gungfly** (`v`), som ser ut nästan som resten av myren – bara en bubbla då och då avslöjar det. Kliver Dagny i gungflyet sjunker hon och tar sig upp där hon senast stod på fast mark (utanför dimman). Lösaren och kartans räckvidd räknar gungfly som vägg.
 - **Landmärken genom dimman:** den döda tallen (`p`), myrkorset (`I`) och den övergivna pråmen (`J`) syns som silhuetter långt bortom dimman, liksom irrblossen – som svävar över gungflyet och lockar ut Dagny.
 - **Ramsan:** Sigge i Bruksorten, när kvarnen är förlikad: *"Till döda tallen, sen österut där stigen slingrar. Korset visar söderut, och pråmen visar havet."* och *"Där det bubblar bär det inte."*
 - **Fiskeläget ger nyckeln till fyren:** i Linsrummet ligger nyckeln på en hylla fem rutor upp – för högt för ett vanligt hopp, men inom räckhåll med **Hopp** från Viola (hon antyder det). Rummet säger `needsSpell` till lösaren, som bevisar att fyren inte går utan Hopp.
 - Stigar: norrifrån via tallen till Tjuvgrottans glänta, från tallen västerut till Signalstranden, från gläntan via korset och pråmen söderut mot kusten, och från nordöst ned till gläntan – plus några stigar som slutar i gungfly.
+
+### Steg 5 – kapitel 6 (påbörjat)
+
+- **Stationssamhället ger nyckeln till Folkparken:** ljusslingorna över dansbanan är döda, och golvet finns inte förrän Dagny kastar **Åska** i rummet (`beat.wake`). Oskar antyder det ("Åskan bor i trådar"), och en lapp vid dansbanan säger att strömmen gick i maj. Lösaren bevisar att Folkparken inte går utan Åska.
+- **En läsning kostar aldrig mer än Dagny kan bära** (`spellCost`): Åska och Hamn går alltid att kasta med full magistång, så ett ställe som kräver dem kan aldrig stänga ute den som inte hittat magibehållare.
 
 ## 12. Ursprungliga frågor
 

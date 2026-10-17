@@ -15,7 +15,7 @@ import { TEMPLES } from '../data/temples';
 import type { StatId } from '../data/types';
 import type { Game, Overlay } from './game';
 import { nextCost, raise } from './progression';
-import { hasFlag, hasItem, hpMax, mpMax } from './state';
+import { hasFlag, hasItem, hpMax, mpMax, spellCost } from './state';
 import { exploredBounds, isExplored } from './explored';
 import { ListMenu, drawPanel, drawPostcard, P } from './ui';
 import * as flow from './flow';
@@ -119,7 +119,7 @@ export class SpellsOverlay extends SubOverlay {
         label: () => (s.spells.includes(id) ? SPELLS[id].name : '? ? ?'),
         value: () => {
           if (!s.spells.includes(id)) return '';
-          const c = SPELLS[id].cost[s.levels.magi - 1] ?? SPELLS[id].cost[0];
+          const c = spellCost(s, id);
           return `${s.selectedSpell === id ? '★ ' : ''}${c}`;
         },
         disabled: () => !s.spells.includes(id),
@@ -147,7 +147,7 @@ export class SpellsOverlay extends SubOverlay {
     } else if (s.spells.includes(id)) {
       drawText(ctx, def.name, tx, f.y + 22, 'Y');
       wrap(def.description, f.w - 150).forEach((l, i) => drawText(ctx, l, tx, f.y + 36 + i * LINE_HEIGHT, 'W'));
-      drawText(ctx, `${STR.costMp} ${def.cost[s.levels.magi - 1]} magi`, tx, f.y + 80, 'c');
+      drawText(ctx, `${STR.costMp} ${spellCost(s, id)} magi`, tx, f.y + 80, 'c');
     } else {
       wrap(`Lärs ut i ${def.village}.`, f.w - 150).forEach((l, i) => drawText(ctx, l, tx, f.y + 22 + i * LINE_HEIGHT, 'G'));
     }

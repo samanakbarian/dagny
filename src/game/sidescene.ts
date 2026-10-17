@@ -77,7 +77,13 @@ export class SideScene implements Scene, WorldApi {
   helpers: Array<{ x: number; y: number; vx: number; vy: number; onGround: boolean; w: number; h: number; life: number; cd: number; facing: 1 | -1 }> = [];
   lurCooldown = 0;
   beatCells: Array<{ i: number; tx: number; ty: number; group: '%' | '&' }> = [];
-  private lastBeat = -1;
+  lastBeat = -1;
+
+  /** The dance floor's light strings are lit (always, unless the room waits for Åska). */
+  beatAwake(): boolean {
+    const w = this.area.beat?.wake;
+    return !w || hasFlag(this.s, w);
+  }
   private riding: MovingPlatform | null = null;
   /** A boss gust pushing Dagny: dx per step and steps left. */
   private gustDx = 0;
@@ -381,7 +387,7 @@ export class SideScene implements Scene, WorldApi {
       if (bi !== this.lastBeat) {
         this.lastBeat = bi;
         for (const c of this.beatCells) {
-          this.grid.kinds[c.i] = squareActive(c.group, this.frame, period) ? Kind.OneWay : Kind.Empty;
+          this.grid.kinds[c.i] = this.beatAwake() && squareActive(c.group, this.frame, period) ? Kind.OneWay : Kind.Empty;
         }
         if (this.frame > 1) this.sfx('step');
       }

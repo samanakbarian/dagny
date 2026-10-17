@@ -6,6 +6,9 @@ export const FOLKPARKEN: Record<string, DialogDef> = {
     pages: ['En affisch på planket, blekt av sol:\n"DANS I FOLKPARKEN VARJE LÖRDAG. ORKESTERN SPELAR TILL GRYNINGEN."'],
   },
 
+  park_slingor: {
+    pages: ['Ljusslingorna över dansbanan hänger döda. Någon har skrivit på en lapp:\n"STRÖMMEN GICK I MAJ. ELEKTRIKERN KOMMER I HÖST."'],
+  },
   park_skylt2: {
     pages: ['Ett gammalt fotografi är fastnubbat vid dansbanan. En kvinna med kopparfärgat hår dansar med ett irrbloss. Hon skrattar.'],
   },

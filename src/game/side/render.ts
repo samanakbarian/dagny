@@ -45,7 +45,7 @@ export function renderScene(sc: SideScene, ctx: CanvasRenderingContext2D): void 
       const x = c.tx * TILE - camX;
       const y = c.ty * TILE - camY;
       if (x < -TILE || x > VIEW_W || y < -TILE || y > VIEW_H) continue;
-      const on = squareActive(c.group, sc.frame, period);
+      const on = sc.beatAwake() && squareActive(c.group, sc.frame, period);
       const id = !on ? 'beatOff' : warn && Math.floor(f / 4) % 2 === 0 ? 'beatWarn' : 'beatOn';
       drawSprite(ctx, id, (c.tx + c.ty) % 2, x, y);
     }
@@ -235,7 +235,7 @@ export function renderDarkness(sc: SideScene, ctx: CanvasRenderingContext2D, cam
   if (sc.area.beat) {
     const period = sc.area.beat.period;
     for (const c of sc.beatCells) {
-      if ((c.tx & 1) === 0 || !squareActive(c.group, sc.frame, period)) continue;
+      if ((c.tx & 1) === 0 || !sc.beatAwake() || !squareActive(c.group, sc.frame, period)) continue;
       const x = c.tx * TILE - camX;
       if (x < -30 || x > VIEW_W + 30) continue;
       light(x, c.ty * TILE + 2 - camY, 22);

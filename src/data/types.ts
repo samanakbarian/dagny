@@ -313,8 +313,12 @@ export interface AreaDef {
   props?: Prop[];
   platforms?: PlatformDef[];
   wind?: WindZone[];
-  /** Dance-floor squares ('%' and '&') swap every `period` steps. */
-  beat?: { period: number };
+  /**
+   * Dance-floor squares ('%' and '&') swap every `period` steps. With `wake`, the
+   * light strings are dark – the floor is not there – until Åska is cast in the
+   * room; then the flag is set and it dances for good.
+   */
+  beat?: { period: number; wake?: string };
   /** Dark area – only lit around Dagny, candles and spells. */
   dark?: boolean;
   /** How dark a dark area is, 0–1 (default 0.93). */

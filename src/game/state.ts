@@ -3,6 +3,7 @@ import type { Levels } from './progression';
 import { maxHp, maxMp } from './progression';
 import { CONTAINER_HP, CONTAINER_MP } from '../data/progression';
 import { OVERWORLD } from '../data/overworld';
+import { SPELLS } from '../data/spells';
 
 /** Where Dagny is: a side-view area or the overworld. */
 export interface Location {
@@ -98,6 +99,16 @@ export function hpMax(s: GameState): number {
 /** Max magic: the Magi level plus every magic container found. */
 export function mpMax(s: GameState): number {
   return maxMp(s.levels.magi) + CONTAINER_MP * containerCount(s, 'magi');
+}
+
+/**
+ * What a reading costs Dagny now. Never more than she can hold: a costly
+ * reading (Åska, Hamn) can always be cast on a full bar, so a place that needs
+ * one never shuts her out for want of magic containers.
+ */
+export function spellCost(s: GameState, id: SpellId): number {
+  const c = SPELLS[id].cost;
+  return Math.min(c[s.levels.magi - 1] ?? c[0], mpMax(s));
 }
 
 /**

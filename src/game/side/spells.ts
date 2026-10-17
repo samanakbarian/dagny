@@ -7,7 +7,7 @@ import type { SpellId } from '../../data/types';
 import { Enemy } from '../../entities/enemy';
 import { DialogOverlay } from '../dialog';
 import { swordDamage } from '../progression';
-import { hpMax } from '../state';
+import { hasFlag, hpMax, setFlag, spellCost } from '../state';
 import { tmpA, type SpellTimers } from './shared';
 import type { SideScene } from '../sidescene';
 import { killEnemy } from './combat';
@@ -32,7 +32,7 @@ export function castSpell(sc: SideScene): void {
     return;
   }
   const def = SPELLS[id];
-  const cost = def.cost[s.levels.magi - 1] ?? def.cost[0];
+  const cost = spellCost(s, id);
   if (s.mp < cost) {
     sc.sfx('cancel');
     g.toast(STR.notEnoughMp);
@@ -80,6 +80,13 @@ export function castSpell(sc: SideScene): void {
         if (!onScreen) continue;
         const r = e.takeHit(8 + s.levels.magi * 2, e.x, 'magic', sc);
         if (r === 'dead') killEnemy(sc, e);
+      }
+      // The thunder runs into the dead light strings, and the dance floor wakes.
+      const wake = sc.area.beat?.wake;
+      if (wake && !hasFlag(s, wake)) {
+        setFlag(s, wake);
+        sc.lastBeat = -1;
+        sc.game.toast(STR.lightsWake, 3);
       }
       break;
     }
