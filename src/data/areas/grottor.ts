@@ -143,6 +143,8 @@ export const GROTTOR: Record<string, AreaDef> = {
     showName: true,
     ambience: ['dust'],
     left: { to: 'overworld', ow: { x: 38, y: 7 } },
+    // Through the chamber and out on the far side: the way up Bergsstigen.
+    right: { to: 'overworld', ow: { x: 41, y: 7 } },
     signs: { I: 'vaktarkammaren_bord', J: 'vaktarkammaren_vagg' },
     tiles: [
       "############################",
@@ -152,9 +154,9 @@ export const GROTTOR: Record<string, AreaDef> = {
       "#..................p.......#",
       "#.................===......#",
       "#..........................#",
-      "...........====............#",
-      "...........................#",
-      "..A..I.........J.....T.....#",
+      "...........====.............",
+      "............................",
+      "..A..I.........J.....T...E..",
       "############################",
       "############################",
     ],

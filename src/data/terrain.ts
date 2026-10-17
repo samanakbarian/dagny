@@ -43,6 +43,8 @@ export interface TerrainDef {
   passage?: boolean;
   /** Quagmire: it swallows Dagny, and she crawls out where she last stood on firm ground. */
   sink?: boolean;
+  /** A storm: every so often it shoves Dagny one tile this way (Bergsstigen). */
+  wind?: [number, number];
 }
 
 export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
@@ -55,6 +57,8 @@ export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
   g: { name: 'slaggvarp', sprite: 'owSlag', map: 'K', encounter: 'hed' },
   d: { name: 'sandtag', sprite: 'owSandpit', map: 'M', encounter: 'hed' },
   k: { name: 'kalfjäll', sprite: 'owFell', map: 'w', encounter: 'fjall' },
+  // Bergsstigen's shelves, where the storm blows down the mountain.
+  '%': { name: 'stormfjäll', sprite: 'owStorm', map: 'w', encounter: 'fjall', wind: [0, 1] },
   f: { name: 'skog', sprite: 'owForest', map: 'm', encounter: 'skog' },
   _: { name: 'strand', sprite: 'owSand', map: 't', encounter: 'strand' },
   r: { name: 'vass', sprite: 'owReeds', map: 't', encounter: 'strand' },

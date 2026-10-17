@@ -356,6 +356,11 @@ export interface AreaDef {
    */
   sealed?: { dialog: string; music?: string };
   /**
+   * The door (its character) a vätte called with the näverlur runs to and waits
+   * by when there is nothing to fight: the one way on among several (Vättegången).
+   */
+  lurGuide?: string;
+  /**
    * Parts of the room only a reading gets Dagny up to – a ledge too high for an
    * ordinary jump that Hopp reaches (tile boxes, inclusive). For the
    * playthrough solver; the room's shape is what really keeps her out.
@@ -403,6 +408,12 @@ export interface OverworldPlace {
   radio?: boolean;
   /** Once this flag is set the place's `dialog` is not shown again (a radio voice heard). */
   doneFlag?: string;
+  /**
+   * A passage through rock: going in here, the room leads out onto the map at
+   * this tile (for reachability – game/reach.ts; the rooms' exits are what
+   * really take Dagny there, and tests check the two agree).
+   */
+  leadsTo?: { x: number; y: number };
 }
 
 

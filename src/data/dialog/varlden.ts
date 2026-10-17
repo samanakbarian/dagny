@@ -124,6 +124,16 @@ export const VARLDEN: Record<string, DialogDef> = {
     ],
     actions: [{ type: 'flag', flag: 'bruset_klart' }, { type: 'life', id: 'bruset' }, { type: 'xp', amount: 300 }],
   },
+  // --- Bergsstigen (chapter 8) ---
+  vattegang_skylt: {
+    pages: ['Ristat i berget, med en liten vättehand bredvid:\n"TRE GÅNGAR. EN BÄR UPP. VÄTTARNA VET VILKEN."'],
+  },
+  berg_villse: {
+    pages: ['Gången vindlar och vänder i mörkret ... och Dagny står där hon började. Någonstans fnissar en vätte.'],
+  },
+  rasbranten_skylt: {
+    pages: ['Någon har skrivit med kol på en sten: "HIT BLÅSER STORMEN DEN SOM STÅR STILLA. VÄGEN GÅR BARA NER."'],
+  },
   stollen_gomd_ristning: {
     pages: [
       'Inristat i en gammal stolpe: ett stort H och bredvid det ett litet, vingligt D.',

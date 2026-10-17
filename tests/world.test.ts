@@ -2,28 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { AREAS } from '../src/data/areas';
 import { DIALOG } from '../src/data/dialog';
 import { OVERWORLD } from '../src/data/overworld';
+import { TERRAIN } from '../src/data/terrain';
 import { reachableTiles } from '../src/game/reach';
 import { TEMPLES, VILLAGES } from '../src/data/temples';
 
 const t = OVERWORLD.tiles;
 const at = (x: number, y: number): string | undefined => t[y]?.[x];
 
-/** Tiles Dagny can walk to from the start carrying these items. */
+/** Tiles Dagny can walk to from the start carrying these items (through passages, never onto quagmire). */
 function reach(items: Iterable<string>): Set<string> {
-  const have = new Set(items);
-  const seen = new Set<string>();
-  const stack: Array<[number, number]> = [[OVERWORLD.start.x, OVERWORLD.start.y]];
-  while (stack.length) {
-    const [x, y] = stack.pop()!;
-    const k = `${x},${y}`;
-    const ch = at(x, y);
-    if (!ch || seen.has(k) || OVERWORLD.blocked.includes(ch)) continue;
-    const need = OVERWORLD.needs[ch];
-    if (need && !have.has(need)) continue;
-    seen.add(k);
-    stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
-  }
-  return seen;
+  return reachableTiles([...items]);
 }
 
 const placeOfArea = (area: string) => OVERWORLD.places.find((p) => p.area === area)!;
@@ -163,5 +151,73 @@ describe('the marsh maze (chapter 5)', () => {
       const [x, y] = k.split(',').map(Number);
       expect('svpIJ'.includes(at(x, y)!), k).toBe(false);
     }
+  });
+});
+
+describe('passages are honest (no walking through a door that only leads in)', () => {
+  const ALL = ['eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio'];
+  /** Every tile on the map a room reached from this one leads out onto. */
+  const outExits = (areaId: string): Set<string> => {
+    const out = new Set<string>();
+    const seen = new Set<string>();
+    const stack = [areaId];
+    while (stack.length) {
+      const id = stack.pop()!;
+      if (seen.has(id) || !AREAS[id]) continue;
+      seen.add(id);
+      const a = AREAS[id];
+      for (const e of [a.left, a.right, ...Object.values(a.doors ?? {})]) {
+        if (!e) continue;
+        if (e.to === 'overworld') {
+          if (e.ow) out.add(`${e.ow.x},${e.ow.y}`);
+        } else stack.push(e.to);
+      }
+    }
+    return out;
+  };
+
+  it('every passage comes out where its rooms lead', () => {
+    for (const p of OVERWORLD.places.filter((pl) => pl.leadsTo)) {
+      expect(outExits(p.area!).has(`${p.leadsTo!.x},${p.leadsTo!.y}`), p.name).toBe(true);
+    }
+  });
+
+  it('a place that joins two parts of the map leads out on the far side', () => {
+    const all = reachableTiles(ALL);
+    for (const p of OVERWORLD.places.filter((pl) => pl.area && !pl.leadsTo)) {
+      const k = `${p.x},${p.y}`;
+      if (!all.has(k)) continue;
+      const without = reachableTiles(ALL, new Set([k]));
+      const cut = [...all].filter((t) => t !== k && !without.has(t));
+      if (!cut.length) continue;
+      const exits = [...outExits(p.area!)];
+      expect(exits.some((e) => cut.includes(e)), `${p.name} cuts off ${cut.length} tiles`).toBe(true);
+    }
+  });
+});
+
+describe('Bergsstigen (chapter 8)', () => {
+  it('climbs through Väktarkammaren and caves between ledges – no way round the cliffs', () => {
+    const troll = placeOfArea('troll_1');
+    const all = reachableTiles(['eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio']);
+    expect(all.has(`${troll.x},${troll.y}`)).toBe(true);
+    // Shut the caves and the summit is out of reach.
+    const caves = OVERWORLD.places.filter((p) => ['klyftan', 'vattegangen', 'vattegangen_2'].includes(p.area ?? '')).map((p) => `${p.x},${p.y}`);
+    const shut = reachableTiles(['eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio'], new Set(caves));
+    expect(shut.has(`${troll.x},${troll.y}`)).toBe(false);
+  });
+
+  it('the storm blows down the mountain, toward the wrong way', () => {
+    const wrong = OVERWORLD.places.find((p) => p.area === 'rasbranten')!;
+    const above = at(wrong.x, wrong.y - 1)!;
+    expect(TERRAIN[above].wind).toEqual([0, 1]);
+    expect(AREAS.rasbranten.right?.ow?.y).toBeGreaterThan(wrong.y);
+  });
+
+  it('in Vättegången the vätte runs to the one way that leads on', () => {
+    const a = AREAS.vattegangen;
+    const door = a.doors![a.lurGuide!];
+    expect(door.to).not.toBe('vattegangen');
+    for (const [ch, d] of Object.entries(a.doors!)) if (ch !== a.lurGuide) expect(d.to).toBe('vattegangen');
   });
 });

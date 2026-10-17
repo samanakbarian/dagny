@@ -1,6 +1,6 @@
 # Kartan 2.0 – specifikation
 
-*Status: steg 1–5 klara (kapitel 1–6), kapitel 7 klart. Kvar: kapitel 8 och förvandlingen. Beslut 15 oktober 2026 (se §11).*
+*Status: kapitel 1–8 klara. Kvar: förvandlingen och finputs (steg 7). Beslut 15 oktober 2026 (se §11).*
 *Ersätter överblickskartan från oktober 2026 (80 × 56, sju regioner).*
 
 > Granskning 15 oktober 2026 ("Storykartan"): handlingen saknades (nu §4)
@@ -381,6 +381,14 @@ Varje steg går att provspela innan nästa påbörjas.
 - **Bruset – Dagmars röst:** på fyra ställen i tidigare kapitel (Hemdalen, vid Stenkyrkan, Gruvbygden, kusten) fångar radion en kvinnoröst från berget: *"...mamma... om någon hör det här..."*, *"...jag räknar somrarna..."*, *"...hon har väl fått ett namn nu..."*, *"...det var aldrig ditt fel, mamma..."*. När alla fyra är hörda svarar någon i berget: tre korta, tre långa, tre korta – ett extra liv. Platserna syns ingenstans och gör ingenting utan radion (`radio: true`).
 - **Återkomst på kusten:** gamle Ture spelar fyrens inspelning från midsommarafton 1946: Dagmar ber fyren hälsa Hulda att se efter klockstapeln.
 - **Fäboden ger nyckeln till Fäbodskogen:** nyckeln ligger i en håla i berget med ett hål som bara en fågel kommer in genom. Med **Hamn** från Karna flyger Dagny in, blir sig själv därinne och släpper sig ut genom en springa i golvet (fågeln kan inte bära något). Lösaren bevisar att Fäbodskogen inte går utan Hamn.
+
+### Steg 6b – kapitel 8 (gjort)
+
+- **Buggen som Bergsstigen lagade:** sedan den nya kartan gick Trollberget inte att nå i själva spelet – bergsdörren tog alltid in i Väktarkammaren, och den ledde bara ut samma väg. Lösaren såg det inte, för kartans räckvidd gick rakt genom dörren. Nu har passager ett `leadsTo` (var de mynnar), räckvidden följer bara dem, och ett test kontrollerar att **varje plats som binder ihop två delar av kartan verkligen leder ut på andra sidan**.
+- **Väktarkammaren är porten:** en dörr på var sida av stupet; genom kammaren och ut på den första avsatsen.
+- **Bergsstigen:** avsatser åtskilda av stup, sammanbundna av korta sidovygrottor: **Klyftan** (blåsig ravin), **Vättegången** (tre gångar, en bär upp) och ut på toppplatån under Trollberget.
+- **Stormen:** på stormfjället (`%`) knuffar vinden Dagny en ruta nedför berget då och då. Den som står still blåser ner i **Rasbranten** – fel väg, som bara leder ner och ut nedanför berget.
+- **Näverluren:** i Vättegången springer vätten till den enda gång som bär upp och väntar där (`lurGuide`); de andra leder tillbaka.
 
 ## 12. Ursprungliga frågor
 

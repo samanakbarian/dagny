@@ -8,6 +8,7 @@ import type { AreaDef, DialogAction } from '../src/data/types';
 import { CONTAINER_HP, CONTAINER_MP } from '../src/data/progression';
 import { addContainer, containerCount, hpMax, mpMax, newGame } from '../src/game/state';
 import { deserialize, serialize } from '../src/game/save';
+import { reachableTiles } from '../src/game/reach';
 
 const TREASURES = new Set(TEMPLES.flatMap((t) => (t.treasure ? [t.treasure] : [])));
 const allActions: DialogAction[] = Object.values(DIALOG).flatMap((d) => [...(d.actions ?? []), ...(d.choices ?? []).flatMap((c) => c.actions ?? [])]);
@@ -102,23 +103,9 @@ describe('secrets', () => {
     }
   });
 
-  it('the caves on the map need a treasure to reach (eka or stövlar)', () => {
+  it('the caves on the map need a treasure to reach (eka, stövlar, or the radio for Bergsstigen)', () => {
     const t = OVERWORLD.tiles;
-    const flood = (items: Set<string>): Set<string> => {
-      const seen = new Set<string>();
-      const stack = [[OVERWORLD.start.x, OVERWORLD.start.y]];
-      while (stack.length) {
-        const [x, y] = stack.pop()!;
-        const k = `${x},${y}`;
-        const ch = t[y]?.[x];
-        if (!ch || seen.has(k) || ch === '^') continue;
-        const need = OVERWORLD.needs[ch];
-        if (need && !items.has(need)) continue;
-        seen.add(k);
-        stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
-      }
-      return seen;
-    };
+    const flood = (items: Set<string>): Set<string> => reachableTiles([...items]);
     const caves = OVERWORLD.places.filter((p) => t[p.y][p.x] === 'C');
     expect(caves.length).toBeGreaterThanOrEqual(1);
     const bare = flood(new Set());

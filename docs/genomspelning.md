@@ -148,6 +148,10 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Fäboden**: meets Budejan Anna, stjarna, rosen, Gammelmor Karna, Lill-Per, Britta; learns Hamn
 - **Fäbodskogen**: finds a key
 - **Väktarkammaren**: finds a container
+- **Klyftan**
+- **Vättegången**
+- **Vättegången**
+- **Rasbranten**
 - **Fäbodtorpet**: meets kalla, kalla_ren; finds a container
 
 ## 22

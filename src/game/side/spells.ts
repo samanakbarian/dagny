@@ -1,5 +1,6 @@
 import { moveBody, overlaps } from '../../engine/collision';
 import { VIEW_W, VIEW_H } from '../../engine/screen';
+import { TILE } from '../../engine/collision';
 import { PALETTE } from '../../data/palettes';
 import { SPELLS } from '../../data/spells';
 import { STR } from '../../data/strings';
@@ -120,7 +121,10 @@ export function updateHelpers(sc: SideScene): void {
       const d = Math.abs(e.x + e.w / 2 - (h.x + h.w / 2));
       if (d < best) { best = d; target = e; }
     }
-    const goal = target ? target.x + target.w / 2 : sc.player.x - sc.player.facing * 18;
+    // Nothing to fight: in a room of many ways, it shows the right one.
+    const guide = sc.area.lurGuide ? sc.doors.find((d) => d.ch === sc.area.lurGuide) : undefined;
+    const goal = target ? target.x + target.w / 2 : guide ? guide.tx * TILE + 8 : sc.player.x - sc.player.facing * 18;
+    if (!target && guide && Math.abs(goal - (h.x + h.w / 2)) < 8 && h.life % 20 === 0) sc.sparks(goal, guide.ty * TILE - 4);
     const dx = goal - (h.x + h.w / 2);
     h.facing = dx >= 0 ? 1 : -1;
     h.vx = Math.abs(dx) > 6 ? h.facing * 1.4 : 0;

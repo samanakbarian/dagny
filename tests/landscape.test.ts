@@ -142,7 +142,8 @@ describe('hidden places', () => {
   const caves = ['tjuvgrottan', 'jattegrytan', 'bjorkhagen'].map((a) => OVERWORLD.places.find((p) => p.area === a)!);
 
   it('there are hidden places beyond the three known ones, one found by standing beside it and one with the radio', () => {
-    expect(hidden.map((p) => p.hidden).sort()).toEqual(['near', 'radio']);
+    // Väktarkammaren has a door on each side of the cliff: two places, one room.
+    expect([...new Set(hidden.map((p) => `${p.hidden}:${p.area}`))].sort()).toEqual(['near:fallgrottan', 'radio:vaktarkammaren']);
     for (const p of hidden) expect(AREAS[p.area!], p.area).toBeDefined();
   });
 
@@ -166,8 +167,9 @@ describe('hidden places', () => {
 
   it('every hidden cave leads back out onto the map next to where it lies', () => {
     for (const p of hidden) {
-      const exit = AREAS[p.area!].left!;
-      expect(exit.to).toBe('overworld');
+      const a = AREAS[p.area!];
+      // Out the way it came in – by the door on this side of the cliff.
+      const exit = [a.left, a.right].filter((e) => e?.to === 'overworld').sort((e1, e2) => Math.abs(e1!.ow!.x - p.x) - Math.abs(e2!.ow!.x - p.x))[0]!;
       expect(Math.abs(exit.ow!.x - p.x) + Math.abs(exit.ow!.y - p.y), p.name).toBe(1);
       expect(TERRAIN[at(exit.ow!.x, exit.ow!.y)].blocked, p.name).toBeFalsy();
     }

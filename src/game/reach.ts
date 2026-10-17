@@ -4,8 +4,10 @@ import { TERRAIN } from '../data/terrain';
 import { TEMPLES } from '../data/temples';
 import type { GameState } from './state';
 
-/** Overworld tiles Dagny can walk to from the start with these items. */
-export function reachableTiles(items: readonly string[]): Set<string> {
+const PASSAGES = new Map<string, { x: number; y: number }>(OVERWORLD.places.flatMap((p) => (p.leadsTo ? [[`${p.x},${p.y}`, p.leadsTo]] : [])));
+
+/** Overworld tiles Dagny can walk to from the start with these items (never onto `closed`). */
+export function reachableTiles(items: readonly string[], closed?: ReadonlySet<string>): Set<string> {
   const have = new Set(items);
   const t = OVERWORLD.tiles;
   const seen = new Set<string>();
@@ -15,11 +17,14 @@ export function reachableTiles(items: readonly string[]): Set<string> {
     const k = `${x},${y}`;
     const ch = t[y]?.[x];
     // Quagmire never holds: it is a wall in the marsh maze.
-    if (!ch || seen.has(k) || OVERWORLD.blocked.includes(ch) || TERRAIN[ch]?.sink) continue;
+    if (!ch || seen.has(k) || OVERWORLD.blocked.includes(ch) || TERRAIN[ch]?.sink || closed?.has(k)) continue;
     const need = OVERWORLD.needs[ch];
     if (need && !have.has(need)) continue;
     seen.add(k);
     stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+    // Through a passage to where it comes out.
+    const to = PASSAGES.get(k);
+    if (to) stack.push([to.x, to.y]);
   }
   return seen;
 }

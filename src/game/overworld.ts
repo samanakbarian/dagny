@@ -29,7 +29,7 @@ export const TILE_SPRITE: Readonly<Record<string, string>> = Object.fromEntries(
 /** Water: anything crossed in the boat. */
 const isWater = (ch: string): boolean => TERRAIN[ch]?.needs === 'eka';
 
-const ANIMATED: Readonly<Record<string, string>> = { '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall', v: 'owQuag' };
+const ANIMATED: Readonly<Record<string, string>> = { '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall', v: 'owQuag', '%': 'owStorm' };
 
 interface Walker {
   x: number;
@@ -57,7 +57,8 @@ let staticMap: HTMLCanvasElement | null = null;
 
 /** The flag set when Dagny has found a place only the radio shows. */
 export function radioFound(pl: OverworldPlace): string {
-  return `radiofynd_${pl.x}_${pl.y}`;
+  // A room with a door on each side (Väktarkammaren) is found once, by either door.
+  return pl.area ? `radiofynd_${pl.area}` : `radiofynd_${pl.x}_${pl.y}`;
 }
 
 /** What the radio's static leads to: places it shows, and the hidden path through the spruce. */
@@ -347,6 +348,19 @@ export class OverworldScene implements Scene {
         const wy = (t.y + this.camY) / T - (me.y + 0.5);
         if (Math.abs(wx) > Math.abs(wy)) dx = Math.sign(wx);
         else dy = Math.sign(wy);
+      }
+      // The storm on Bergsstigen shoves her down the mountain now and then.
+      const wind = TERRAIN[this.tile(me.x, me.y)]?.wind;
+      if (wind && this.frame % 40 === 0 && this.passable(me.x + wind[0], me.y + wind[1]) === true) {
+        me.fx = me.x;
+        me.fy = me.y;
+        me.x += wind[0];
+        me.y += wind[1];
+        me.t = 0;
+        this.game.audio.play('wind');
+        this.updateEncounters();
+        this.updateCamera(false);
+        return;
       }
       // A current takes the boat along when Dagny stops rowing.
       const drift = TERRAIN[this.tile(me.x, me.y)]?.drift;
