@@ -195,6 +195,8 @@ export class OverworldScene implements Scene {
   private firm: { x: number; y: number } | null = null;
   /** Frames left of sinking into a quagmire. */
   private sinkT = 0;
+  /** A sound through the night forest: from which way it came, for the little sign at the edge. */
+  private cue: { kind: 'fiddle' | 'whistle'; dx: number; dy: number; t: number } | null = null;
   /** Frames left of the mountain's rumble. */
   private shakeT = 0;
   /** How far the marsh fog and the night forest's dark have closed in (0–1, eased). */
@@ -364,7 +366,25 @@ export class OverworldScene implements Scene {
     }
 
     this.updateEncounters();
+    this.updateSounds();
     this.updateCamera(false);
+  }
+
+  /**
+   * In the night forest there is nothing to see – but the fiddle at the dance
+   * and the train's whistle carry, each from its own way.
+   */
+  private updateSounds(): void {
+    if (this.cue && --this.cue.t <= 0) this.cue = null;
+    if (TERRAIN[this.tile(this.me.x, this.me.y)]?.sight !== 'dark' || this.frame % 210 !== 100) return;
+    const kind = (this.frame / 210) % 2 < 1 ? 'fiddle' : 'whistle';
+    const src = OVERWORLD.places.find((p) => p.area === (kind === 'fiddle' ? 'folkparken_1' : 'stationssamhallet'));
+    if (!src) return;
+    const dx = src.x - this.me.x;
+    const dy = src.y - this.me.y;
+    const dist = Math.hypot(dx, dy);
+    this.game.audio.play(kind, { vol: Math.max(0.15, 1 - dist / 28), pan: dx / 14 });
+    this.cue = { kind, dx: dx / (dist || 1), dy: dy / (dist || 1), t: 100 };
   }
 
   private arrive(): void {
@@ -569,6 +589,45 @@ export class OverworldScene implements Scene {
     ctx.restore();
   }
 
+  /**
+   * The night forest: what lurks there shows only as a pair of eyes, and a
+   * sound that carries leaves a little sign at the edge of sight, the way it came.
+   */
+  private renderInTheDark(ctx: CanvasRenderingContext2D, camX: number, camY: number, cx: number, cy: number): void {
+    ctx.save();
+    ctx.globalAlpha = this.dark;
+    for (const e of this.encounters) {
+      if (this.s.playTime < e.respawnAt || (e.def.goneFlag && this.s.flags.includes(e.def.goneFlag))) continue;
+      if (TERRAIN[this.tile(e.x, e.y)]?.sight !== 'dark') continue;
+      // A blink now and then.
+      if ((this.frame + e.def.x * 37) % 150 < 6) continue;
+      const p = this.pos(e);
+      ctx.fillStyle = PALETTE.Y;
+      ctx.fillRect(Math.round(p.x - camX + 6), Math.round(p.y - camY + 6), 1, 1);
+      ctx.fillRect(Math.round(p.x - camX + 9), Math.round(p.y - camY + 6), 1, 1);
+    }
+    if (this.cue) {
+      const r = 50 + (100 - this.cue.t) * 0.2;
+      const x = Math.round(cx + this.cue.dx * r);
+      const y = Math.round(cy + this.cue.dy * r - (100 - this.cue.t) * 0.1);
+      ctx.globalAlpha = this.dark * Math.min(1, this.cue.t / 30);
+      if (this.cue.kind === 'fiddle') {
+        // A note.
+        ctx.fillStyle = PALETTE.Y;
+        ctx.fillRect(x, y + 3, 3, 2);
+        ctx.fillRect(x + 2, y - 3, 1, 6);
+        ctx.fillRect(x + 3, y - 3, 2, 1);
+      } else {
+        // A puff of steam.
+        ctx.fillStyle = PALETTE.W;
+        ctx.fillRect(x - 2, y, 5, 3);
+        ctx.fillRect(x, y - 2, 4, 3);
+        ctx.fillRect(x + 3, y - 4, 3, 3);
+      }
+    }
+    ctx.restore();
+  }
+
   render(ctx: CanvasRenderingContext2D): void {
     const quake = this.shakeT > 0 ? (this.shakeT--, Math.round((Math.random() - 0.5) * 4)) : 0;
     const camX = Math.round(this.camX) + quake;
@@ -629,6 +688,7 @@ export class OverworldScene implements Scene {
     this.renderMountain(ctx, camX, camY);
     this.renderSight(ctx, p.x + T / 2 - camX, p.y + T / 2 - camY);
     if (this.fog > 0.05) this.renderThroughFog(ctx, camX, camY);
+    if (this.dark > 0.05) this.renderInTheDark(ctx, camX, camY, p.x + T / 2 - camX, p.y + T / 2 - camY);
     this.game.applyTone(ctx, OVERWORLD.tone, true);
 
     // Place name when standing next to / on a place.

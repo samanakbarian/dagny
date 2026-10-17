@@ -119,6 +119,19 @@ export const SFX: Record<string, SfxStep[]> = {
     { wave: 'sawtooth', from: 294, to: 330, dur: 0.7, vol: 0.35, at: 0.45 },
   ],
   wind: [{ wave: 'noise', from: 600, to: 1400, dur: 0.6, vol: 0.25 }],
+  // Heard through the night forest: a fiddle at the dance (an own little run) and the train.
+  fiddle: [
+    { wave: 'triangle', from: 587, dur: 0.18, vol: 0.3 },
+    { wave: 'triangle', from: 740, dur: 0.18, vol: 0.3, at: 0.18 },
+    { wave: 'triangle', from: 659, dur: 0.12, vol: 0.28, at: 0.36 },
+    { wave: 'triangle', from: 587, dur: 0.12, vol: 0.28, at: 0.48 },
+    { wave: 'triangle', from: 494, dur: 0.4, vol: 0.3, at: 0.6 },
+  ],
+  whistle: [
+    { wave: 'sine', from: 520, to: 540, dur: 1.0, vol: 0.3 },
+    { wave: 'sine', from: 655, to: 680, dur: 1.0, vol: 0.22 },
+    { wave: 'noise', from: 3000, dur: 0.9, vol: 0.08 },
+  ],
   land: [{ wave: 'noise', from: 300, to: 100, dur: 0.06, vol: 0.25 }],
   step: [{ wave: 'noise', from: 200, to: 120, dur: 0.03, vol: 0.12 }],
 };

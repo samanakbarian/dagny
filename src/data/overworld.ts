@@ -157,7 +157,10 @@ export const OVERWORLD: OverworldDef = {
     { sprite: 'owShadow', terrain: '_r', x: 89, y: 58 },
     { sprite: 'owShadow', terrain: ':.', x: 44, y: 66 },
     { sprite: 'owShadow', terrain: '.fm', x: 38, y: 62 },
+    // Wolves in the night forest: only their eyes show.
     { sprite: 'owShadow', terrain: 'N', x: 58, y: 58, table: 'skog' },
+    { sprite: 'owShadow', terrain: 'N', x: 58, y: 52, table: 'skog' },
+    { sprite: 'owShadow', terrain: 'N', x: 61, y: 64, table: 'skog' },
     { sprite: 'owWisp', terrain: 's', x: 8, y: 11, table: 'myr' },
     { sprite: 'owShadow', terrain: 'l.', x: 16, y: 6 },
     { sprite: 'owShadow', terrain: 'f', x: 24, y: 18 },

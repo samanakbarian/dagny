@@ -371,6 +371,7 @@ Varje steg går att provspela innan nästa påbörjas.
 ### Steg 5 – kapitel 6 (påbörjat)
 
 - **Stationssamhället ger nyckeln till Folkparken:** ljusslingorna över dansbanan är döda, och golvet finns inte förrän Dagny kastar **Åska** i rummet (`beat.wake`). Oskar antyder det ("Åskan bor i trådar"), och en lapp vid dansbanan säger att strömmen gick i maj. Lösaren bevisar att Folkparken inte går utan Åska.
+- **Nattskogen:** det som lurar där syns bara som ett par ögon som blinkar i mörkret. Fiolen från Folkparken och tågvisslan från Stationssamhället hörs om vartannat, från sitt håll (ljudet panoreras och dämpas med avståndet) – och en liten not eller ett ångmoln vid kanten av ljuskäglan visar varifrån, för den som spelar utan ljud.
 - **En läsning kostar aldrig mer än Dagny kan bära** (`spellCost`): Åska och Hamn går alltid att kasta med full magistång, så ett ställe som kräver dem kan aldrig stänga ute den som inte hittat magibehållare.
 
 ## 12. Ursprungliga frågor

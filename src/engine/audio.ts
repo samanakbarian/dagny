@@ -552,8 +552,11 @@ export class AudioEngine {
     src.stop(when + len + 0.02);
   }
 
-  /** Play a sound effect. Rapid repeats of the same effect are throttled. */
-  play(id: string): void {
+  /**
+   * Play a sound effect. Rapid repeats of the same effect are throttled.
+   * `vol` scales it (distance), `pan` places it left (-1) to right (1).
+   */
+  play(id: string, opts?: { vol?: number; pan?: number }): void {
     const ctx = this.ctx;
     const steps = this.sfx[id];
     if (!ctx || !steps || ctx.state !== 'running' || !this.sfxBus) return;
@@ -561,11 +564,18 @@ export class AudioEngine {
     const last = this.lastSfx.get(id) ?? -1;
     if (now - last < 0.03) return;
     this.lastSfx.set(id, now);
+    let out: AudioNode = this.sfxBus;
+    if (opts?.pan) {
+      const p = ctx.createStereoPanner();
+      p.pan.value = Math.max(-1, Math.min(1, opts.pan));
+      p.connect(this.sfxBus);
+      out = p;
+    }
     for (const s of steps) {
       const when = now + (s.at ?? 0);
       const g = ctx.createGain();
-      g.connect(this.sfxBus);
-      const vol = (s.vol ?? 0.5) * 0.6;
+      g.connect(out);
+      const vol = Math.max(0.002, (s.vol ?? 0.5) * 0.6 * (opts?.vol ?? 1));
       g.gain.setValueAtTime(vol, when);
       g.gain.exponentialRampToValueAtTime(0.001, when + s.dur);
       if (s.wave === 'noise') {
