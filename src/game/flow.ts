@@ -17,6 +17,20 @@ export function goToArea(game: Game, areaId: string, spawn: Spawn): void {
   });
 }
 
+/**
+ * The train: off at another village's station. On the map Dagny is by that
+ * village (where its left way out leads), so leaving it goes on from there.
+ */
+export function takeTrain(game: Game, areaId: string): void {
+  const s = game.state;
+  const area = AREAS[areaId];
+  if (!s || !area) return;
+  if (area.left?.ow) s.ow = { ...area.left.ow };
+  game.audio.play('whistle');
+  game.taken.clear();
+  goToArea(game, areaId, { entry: 'W' });
+}
+
 export function goToOverworld(game: Game): void {
   game.taken.clear();
   game.transition(() => {

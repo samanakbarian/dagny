@@ -72,7 +72,31 @@ export const STATIONSSAMHALLET: Record<string, DialogDef> = {
 
   berg_glad: {
     speaker: 'Stinsen Berg',
-    pages: ['Tåget till Kyrkbyn går klockan tolv. Det är det första på hela sommaren.'],
+    pages: ['Tågen går igen! Kyrkbyn, Gruvsamhället och Fiskeläget. Vart ska fröken?'],
+    next: 'tag_resa',
+  },
+
+  // --- The train: fast travel between the stations, once the whistle is back ---
+  tag_resa: {
+    pages: ['Tåget står och puffar vid perrongen.'],
+    choices: [
+      { text: 'Kyrkbyn', actions: [{ type: 'travel', area: 'kyrkbyn' }] },
+      { text: 'Gruvsamhället', actions: [{ type: 'travel', area: 'gruvsamhallet' }] },
+      { text: 'Stationssamhället', actions: [{ type: 'travel', area: 'stationssamhallet' }] },
+      { text: 'Fiskeläget', actions: [{ type: 'travel', area: 'fiskelaget' }] },
+      { text: 'Stanna här' },
+    ],
+  },
+
+  banvakt_vantar: {
+    speaker: 'Banvakten',
+    pages: ['Inga tåg i sommar. Stinsen i Stationssamhället har tappat sin visselpipa, och utan den går ingenting. Det står i reglementet.'],
+  },
+
+  banvakt_resa: {
+    speaker: 'Banvakten',
+    pages: ['Hör du? Tåget visslar igen! Hoppa på, fröken.'],
+    next: 'tag_resa',
   },
 
   hittade_visselpipa: {

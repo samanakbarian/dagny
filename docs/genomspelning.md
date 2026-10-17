@@ -9,7 +9,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 ## 1
 
 - **Mormors by**: meets Mormor Hulda, Telefonist-Greta, Handlarn, Karin, Olle, Gamle Sven, Smeden Algot; gets Klingan
-- **Kyrkbyn**: meets Signe i prästgården, Prosten, Ingrid, Bosse, Gamla Tyra
+- **Kyrkbyn**: meets Signe i prästgården, Prosten, Ingrid, Bosse, Gamla Tyra, Banvakten
 - **Stenkyrkans krypta**: finds a key
 - **Björkhagen**: finds a näverdocka; gets Johannesört; gets Murre
 - **Gamla kyrkogården**: meets sten_anna, sten_per, sten_karin, sten_karin_rubbad, sten_johan; finds a container

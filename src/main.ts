@@ -11,7 +11,7 @@ import { PauseOverlay } from './game/menus';
 import { RotateScreen } from './game/rotate';
 import { SPELL_ORDER } from './data/spells';
 import { mpMax } from './game/state';
-import { playCredits, playEnding } from './game/flow';
+import { playCredits, playEnding, takeTrain } from './game/flow';
 
 /** Boot: build the sprite cache, wire up the shell and start the 60 Hz loop. */
 function boot(): void {
@@ -46,6 +46,7 @@ function boot(): void {
   }
 
   game.onScene = (scene) => (scene === 'ending' ? playEnding(game) : playCredits(game));
+  game.onTravel = (area) => takeTrain(game, area);
 
   game.setScene(new TitleScene(game));
   audio.tryAutoplay('titel');

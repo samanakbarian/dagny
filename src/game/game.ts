@@ -247,6 +247,7 @@ export class Game {
   onAction: ((a: DialogAction) => void) | null = null;
   /** Story scenes (the ending, the credits), wired up in main.ts. */
   onScene: ((scene: 'ending' | 'credits') => void) | null = null;
+  onTravel: ((area: string) => void) | null = null;
 
   runAction(a: DialogAction): void {
     const s = this.state;
@@ -290,6 +291,9 @@ export class Game {
         break;
       case 'scene':
         this.onScene?.(a.scene);
+        break;
+      case 'travel':
+        this.onTravel?.(a.area);
         break;
       case 'container':
         if (addContainer(s, a.kind, a.id)) this.audio.jingle('fynd');

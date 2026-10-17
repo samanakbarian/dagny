@@ -1,6 +1,6 @@
 # Kartan 2.0 – specifikation
 
-*Status: steg 1–4 klara, steg 5 (kapitel 6) påbörjat. Beslut 15 oktober 2026 (se §11).*
+*Status: steg 1–5 klara (kapitel 1–6). Kvar: kapitel 7–8 och förvandlingen. Beslut 15 oktober 2026 (se §11).*
 *Ersätter överblickskartan från oktober 2026 (80 × 56, sju regioner).*
 
 > Granskning 15 oktober 2026 ("Storykartan"): handlingen saknades (nu §4)
@@ -335,7 +335,7 @@ Varje steg går att provspela innan nästa påbörjas.
 ## 11. Beslut (15 oktober 2026)
 
 1. **Dygnet:** nej – inga tider som styr hemligheter (§6.4 struket).
-2. **Snabbresa:** tåget mellan stationerna i Hemdalen, Gruvbygden och vid kusten, öppnat i kapitel 6. Avgörs när kapitel 6 byggs.
+2. **Snabbresa:** tåget mellan stationerna i Hemdalen, Gruvbygden och vid kusten, öppnat i kapitel 6. **Byggt** (steg 5): Kyrkbyn, Gruvsamhället, Stationssamhället och Fiskeläget.
 3. **Kartans storlek:** 96 × 72.
 4. **Ekan:** fri segling bara om den tillför något – provas i steg 2, annars bryggor att hoppa mellan.
 5. **Byn ger nyckeln:** tabellen i §6.8 gäller tills vidare.
@@ -368,10 +368,11 @@ Varje steg går att provspela innan nästa påbörjas.
 - **Fiskeläget ger nyckeln till fyren:** i Linsrummet ligger nyckeln på en hylla fem rutor upp – för högt för ett vanligt hopp, men inom räckhåll med **Hopp** från Viola (hon antyder det). Rummet säger `needsSpell` till lösaren, som bevisar att fyren inte går utan Hopp.
 - Stigar: norrifrån via tallen till Tjuvgrottans glänta, från tallen västerut till Signalstranden, från gläntan via korset och pråmen söderut mot kusten, och från nordöst ned till gläntan – plus några stigar som slutar i gungfly.
 
-### Steg 5 – kapitel 6 (påbörjat)
+### Steg 5 – kapitel 6 (gjort)
 
 - **Stationssamhället ger nyckeln till Folkparken:** ljusslingorna över dansbanan är döda, och golvet finns inte förrän Dagny kastar **Åska** i rummet (`beat.wake`). Oskar antyder det ("Åskan bor i trådar"), och en lapp vid dansbanan säger att strömmen gick i maj. Lösaren bevisar att Folkparken inte går utan Åska.
 - **Nattskogen:** det som lurar där syns bara som ett par ögon som blinkar i mörkret. Fiolen från Folkparken och tågvisslan från Stationssamhället hörs om vartannat, från sitt håll (ljudet panoreras och dämpas med avståndet) – och en liten not eller ett ångmoln vid kanten av ljuskäglan visar varifrån, för den som spelar utan ljud.
+- **Tåget:** när stinsen Berg har fått tillbaka sin visselpipa går tågen igen. Han – och en banvakt vid hållplatsen i Kyrkbyn, Gruvsamhället och Fiskeläget – låter Dagny åka mellan de fyra stationerna (`travel`). Före dess säger banvakterna varför inga tåg går, så spelaren vet vad som väntar. Tåget tar henne aldrig någonstans hon inte redan kan gå (testat).
 - **En läsning kostar aldrig mer än Dagny kan bära** (`spellCost`): Åska och Hamn går alltid att kasta med full magistång, så ett ställe som kräver dem kan aldrig stänga ute den som inte hittat magibehållare.
 
 ## 12. Ursprungliga frågor

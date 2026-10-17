@@ -9,6 +9,7 @@ import { SKILLS, SPELLS } from '../src/data/spells';
 import { TEMPLES } from '../src/data/temples';
 import type { Condition } from '../src/data/types';
 import { playthrough, walkthroughMarkdown } from '../src/tools/playthrough';
+import { placeOfArea, reachableTiles } from '../src/game/reach';
 
 /**
  * The whole game, played logically from a new game to the credits (see
@@ -188,5 +189,28 @@ describe('the village gives the key (chapter 6)', () => {
     const r = playthrough({ withholdSpells: ['aska'], meetings: true });
     expect(r.flags.has('folkparken_klar')).toBe(false);
     expect(run.flags.has('folkparken_klar')).toBe(true);
+  });
+});
+
+describe('the train (chapter 6)', () => {
+  const targets = (DIALOG.tag_resa.choices ?? []).flatMap((c) => (c.actions ?? []).flatMap((a) => (a.type === 'travel' ? [a.area] : [])));
+
+  it('runs between four stations, each with someone to take the train back from', () => {
+    expect(targets.length).toBe(4);
+    for (const id of targets) {
+      const npcs = Object.values(AREAS[id].npcs ?? {});
+      expect(npcs.some((n) => n === 'banvakt' || n === 'berg'), id).toBe(true);
+    }
+  });
+
+  it('never takes Dagny anywhere she could not already walk to when the whistle is back', () => {
+    const at = run.steps.findIndex((s) => s.kind === 'flag' && s.what === 'visselpipa_klar');
+    expect(at).toBeGreaterThan(0);
+    const items = run.steps.slice(0, at).filter((s) => s.kind === 'item').map((s) => s.what);
+    const ok = reachableTiles(items);
+    for (const id of targets) {
+      const p = placeOfArea(id)!;
+      expect(ok.has(`${p.x},${p.y}`), id).toBe(true);
+    }
   });
 });

@@ -163,7 +163,9 @@ export type DialogAction =
   /** Gives one extra life (a quest reward), once per id. */
   | { type: 'life'; id: string }
   /** Hands over to a story scene (the ending, the credits). */
-  | { type: 'scene'; scene: 'ending' | 'credits' };
+  | { type: 'scene'; scene: 'ending' | 'credits' }
+  /** Takes the train to a village with a station (the stationmaster's whistle found). */
+  | { type: 'travel'; area: string };
 
 export interface DialogChoice {
   text: string;

@@ -153,6 +153,7 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
   karlsson: { id: 'karlsson', sprite: 'forman', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notFlag: 'karlsson_lart' }], dialog: 'karlsson_lar' }, { dialog: 'karlsson_igen' }] },
   rosa: { id: 'rosa', sprite: 'resenar', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'medaljong' }, { notFlag: 'medaljong_klar' }], dialog: 'rosa_tack' }, { if: [{ flag: 'medaljong_klar' }], dialog: 'rosa_glad' }, { if: [{ flag: 'medaljong_uppdrag' }], dialog: 'rosa_vantar' }, { dialog: 'rosa_uppdrag' }] },
   sigge: { id: 'sigge', sprite: 'kid4', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'kvarnen_klar' }], dialog: 'sigge_efter' }, { dialog: 'sigge' }] },
+  banvakt: { id: 'banvakt', sprite: 'stins', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ flag: 'visselpipa_klar' }], dialog: 'banvakt_resa' }, { dialog: 'banvakt_vantar' }] },
   // --- Fiskeläget ---
   hilma: { id: 'hilma', sprite: 'maj', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'hilma_vila' }] },
   viola: { id: 'viola', sprite: 'natlagerska', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notSpell: 'hopp' }], dialog: 'viola_lar' }, { dialog: 'viola_igen' }] },
