@@ -135,6 +135,8 @@ export interface VillageDef {
   /** Entry point in that area used when waking up after a defeat. */
   wakeEntry: string;
   teaches: SpellId | SkillId | null;
+  /** The temple near it: once reconciled, the village's tune turns brighter. */
+  place?: string;
 }
 
 // --- Dialog -----------------------------------------------------------------

@@ -7,7 +7,8 @@ import { kindOf } from '../data/legend';
 import { NPCS } from '../data/npcs';
 import { PALETTE } from '../data/palettes';
 import { STR } from '../data/strings';
-import { templeById } from '../data/temples';
+import { VILLAGES, templeById } from '../data/temples';
+import { SONGS } from '../audio/songs';
 import type { AreaDef, Exit, PuffKind } from '../data/types';
 import { Player, STAND_H, type PlayerControls } from '../entities/player';
 import { Enemy } from '../entities/enemy';
@@ -187,6 +188,9 @@ export class SideScene implements Scene, WorldApi {
       return templeById(this.area.temple ?? '')?.bossMusic ?? 'boss';
     }
     if (this.seal === 2 && this.area.sealed?.music) return this.area.sealed.music;
+    // A village whose place has woken plays its tune brighter.
+    const village = VILLAGES.find((v) => v.area === this.area.id);
+    if (village?.place && this.area.music && hasFlag(this.s, `${village.place}_klar`) && SONGS[`${this.area.music}_ljus`]) return `${this.area.music}_ljus`;
     return this.area.music;
   }
 

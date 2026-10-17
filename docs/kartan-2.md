@@ -1,6 +1,6 @@
 # Kartan 2.0 – specifikation
 
-*Status: kapitel 1–8 klara. Kvar: förvandlingen och finputs (steg 7). Beslut 15 oktober 2026 (se §11).*
+*Status: steg 1–7 byggda (kapitel 1–8 och förvandlingen). Kvar: provspel och balans. Beslut 15 oktober 2026 (se §11).*
 *Ersätter överblickskartan från oktober 2026 (80 × 56, sju regioner).*
 
 > Granskning 15 oktober 2026 ("Storykartan"): handlingen saknades (nu §4)
@@ -389,6 +389,14 @@ Varje steg går att provspela innan nästa påbörjas.
 - **Bergsstigen:** avsatser åtskilda av stup, sammanbundna av korta sidovygrottor: **Klyftan** (blåsig ravin), **Vättegången** (tre gångar, en bär upp) och ut på toppplatån under Trollberget.
 - **Stormen:** på stormfjället (`%`) knuffar vinden Dagny en ruta nedför berget då och då. Den som står still blåser ner i **Rasbranten** – fel väg, som bara leder ner och ut nedanför berget.
 - **Näverluren:** i Vättegången springer vätten till den enda gång som bär upp och väntar där (`lurGuide`); de andra leder tillbaka.
+
+### Steg 7 – förvandlingen (gjort)
+
+- **Gråt blir sommar:** varje region är urlakad (mättnaden dras ner) tills dess tempel är förlikat; vid gränserna glider det över några rutor. Regionerna öppnas i templens ordning: Hemdalen–kryptan, Gruvbygden–gruvan, kvarndalen–kvarnen, kusten–fyren, folkparksslätten–folkparken, höglandet–Fäbodskogen.
+- **Färre skuggor:** vartannat möte i en region håller sig borta när dess plats har vaknat.
+- **Folk på vägarna:** två vandrare promenerar längs vägarna i varje vaknad region.
+- **Ljusare bymusik:** varje bys låt får en ljusare version (lite snabbare, med en klocka som dubblar melodin en oktav upp) när närmaste tempel är förlikat.
+- Kvar: provspel från början till slut och balans (svårighet, XP, avstånd).
 
 ## 12. Ursprungliga frågor
 

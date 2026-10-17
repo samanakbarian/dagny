@@ -396,7 +396,16 @@ describe('music and sound', () => {
   it('every song is used somewhere', () => {
     const used = new Set([...Object.values(AREAS).flatMap((a) => [a.music, a.sealed?.music]), ...TEMPLES.flatMap((t) => [t.music, t.bossMusic])]);
     const elsewhere = ['titel', 'karta', 'seger', 'somnar', 'soluppgang', 'midsommar', 'fynd', 'lara'];
-    for (const id of Object.keys(SONGS)) expect(used.has(id) || elsewhere.includes(id), id).toBe(true);
+    // A village's brighter tune plays once its place has woken (SideScene.music).
+    const bright = (id: string): boolean => id.endsWith('_ljus') && used.has(id.slice(0, -5));
+    for (const id of Object.keys(SONGS)) expect(used.has(id) || elsewhere.includes(id) || bright(id), id).toBe(true);
+  });
+
+  it('every village plays brighter once its place has woken', () => {
+    for (const v of VILLAGES) {
+      expect(TEMPLES.some((x) => x.id === v.place), v.name).toBe(true);
+      expect(SONGS[`${AREAS[v.area!].music}_ljus`], v.name).toBeDefined();
+    }
   });
 
   it('has the sound effects the spec asks for', () => {

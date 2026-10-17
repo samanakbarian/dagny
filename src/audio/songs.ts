@@ -426,3 +426,18 @@ export const SONGS: Record<string, SongDef> = {
     ],
   },
 };
+
+/**
+ * Each village's tune in a brighter version, for when its place has woken: a
+ * touch quicker, with a bell doubling the melody an octave up.
+ */
+for (const id of ['by', 'kyrkby', 'gruvby', 'bruk', 'fiske', 'station', 'fabodby']) {
+  const s = SONGS[id];
+  if (!s) continue;
+  SONGS[`${id}_ljus`] = {
+    bpm: Math.round(s.bpm * 1.06),
+    loop: s.loop,
+    tracks: [...s.tracks, { inst: 'bell', vol: 0.22, notes: s.tracks[0].notes, shift: 12 }],
+  };
+}
+

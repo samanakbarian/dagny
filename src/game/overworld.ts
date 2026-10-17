@@ -186,8 +186,11 @@ const REGION_TINT: ReadonlyArray<[number, number, number]> = [
 /** The treasures in the order they open the regions. */
 const REGION_KEYS = ['eka', 'karbidlampa', 'stovlar', 'ficklampa', 'radio'];
 
+let regionGrid: number[][] | null = null;
+
 /** For every tile, the region it belongs to (index into REGION_TINT), or -1. */
 function regionOfTiles(): number[][] {
+  if (regionGrid) return regionGrid;
   const out = OVERWORLD.tiles.map((row) => [...row].map(() => -1));
   for (let k = 0; k <= REGION_KEYS.length; k++) {
     for (const key of reachableTiles(REGION_KEYS.slice(0, k))) {
@@ -195,7 +198,13 @@ function regionOfTiles(): number[][] {
       if (out[y][x] < 0) out[y][x] = k;
     }
   }
+  regionGrid = out;
   return out;
+}
+
+/** The temple whose waking turns a region from grey to summer (regions open in temple order). */
+function regionTemple(k: number): string | undefined {
+  return TEMPLES.filter((t) => t.id !== 'trollberget')[k]?.id;
 }
 
 export class OverworldScene implements Scene {
@@ -228,6 +237,12 @@ export class OverworldScene implements Scene {
   private animated: Array<{ x: number; y: number; sprite: string }> = [];
   /** Hidden ways (the path through the thicket, the door in the cliff), shown with the radio. */
   private secrets: Array<{ x: number; y: number; sprite: string }> = [];
+  /** Meetings that stay away once their region's place has woken (every other one there). */
+  private thin = new Map<EncounterRuntime, string>();
+  /** How grey each tile still is (0–1): regions whose place sleeps are drained of colour. */
+  private grey: Float32Array | null = null;
+  /** Folk walking the roads of the regions that have woken. */
+  private folk: Walker[] = [];
 
   constructor(private readonly game: Game) {
     const s = this.s;
@@ -249,8 +264,99 @@ export class OverworldScene implements Scene {
         else if (ch === 'H' || ch === 'E') this.secrets.push({ x, y, sprite: ch === 'H' ? 'owHiddenPath' : 'owCliffDoor' });
       }
     }
+    // Every other meeting in a region keeps away once its place has woken.
+    const region = regionOfTiles();
+    const count = new Map<number, number>();
+    for (const e of this.encounters) {
+      const k = region[e.def.y]?.[e.def.x] ?? -1;
+      const n = count.get(k) ?? 0;
+      count.set(k, n + 1);
+      const temple = regionTemple(k);
+      if (temple && n % 2 === 1) this.thin.set(e, `${temple}_klar`);
+    }
+    this.transform();
     markExplored(s, s.ow.x, s.ow.y);
     this.updateCamera(true);
+  }
+
+  /** A meeting that is not there (beaten for good, or kept away by a woken place). */
+  private gone(e: EncounterRuntime): boolean {
+    const f = e.def.goneFlag ?? this.thin.get(e);
+    return !!f && this.s.flags.includes(f);
+  }
+
+  /**
+   * The land wakes with its place: grey drains out of a region once its temple
+   * is reconciled (blending over a few tiles at the borders), and folk come out
+   * on its roads again.
+   */
+  private transform(): void {
+    const region = regionOfTiles();
+    const tiles = OVERWORLD.tiles;
+    const h = tiles.length;
+    const w = tiles[0].length;
+    const asleep = (k: number): number => {
+      const t = regionTemple(k);
+      return t && !hasFlag(this.s, `${t}_klar`) ? 1 : 0;
+    };
+    this.grey = new Float32Array(w * h);
+    const R = 2;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        let sum = 0;
+        let n = 0;
+        for (let dy = -R; dy <= R; dy++) {
+          for (let dx = -R; dx <= R; dx++) {
+            const k = region[y + dy]?.[x + dx];
+            if (k === undefined || k < 0) continue;
+            sum += asleep(k);
+            n++;
+          }
+        }
+        this.grey[y * w + x] = n ? sum / n : 0;
+      }
+    }
+    // Two walkers on the roads of each woken region.
+    this.folk = [];
+    const roads = new Map<number, Array<[number, number]>>();
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        if (!'|-+'.includes(tiles[y][x]) || this.placeAt(x, y)) continue;
+        const k = region[y][x];
+        if (k < 0 || asleep(k)) continue;
+        if (!roads.has(k)) roads.set(k, []);
+        roads.get(k)!.push([x, y]);
+      }
+    }
+    for (const list of roads.values()) {
+      for (let i = 0; i < 2 && list.length; i++) {
+        const [x, y] = list[Math.floor(((i + 1) * list.length) / 3) % list.length];
+        this.folk.push({ x, y, fx: x, fy: y, t: 1 });
+      }
+    }
+  }
+
+  /** The walkers amble along the roads, never off them. */
+  private updateFolk(): void {
+    for (const f of this.folk) {
+      if (f.t < 1) {
+        f.t = Math.min(1, f.t + 1 / 26);
+        continue;
+      }
+      if (Math.random() > 0.03) continue;
+      const dirs: Array<[number, number]> = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+      const ok = dirs.filter(([dx, dy]) => '|-+'.includes(this.tile(f.x + dx, f.y + dy)) && !(f.x + dx === f.fx && f.y + dy === f.fy) && !this.placeAt(f.x + dx, f.y + dy));
+      const pick = ok.length ? ok[Math.floor(Math.random() * ok.length)] : null;
+      if (!pick) {
+        [f.fx, f.fy] = [f.x, f.y];
+        continue;
+      }
+      f.fx = f.x;
+      f.fy = f.y;
+      f.x += pick[0];
+      f.y += pick[1];
+      f.t = 0;
+    }
   }
 
   private get s(): GameState {
@@ -394,6 +500,7 @@ export class OverworldScene implements Scene {
     }
 
     this.updateEncounters();
+    this.updateFolk();
     this.updateSounds();
     this.signal = this.radioSignal();
     if (this.signal > 0 && this.frame % [0, 90, 50, 26, 12][this.signal] === 0) this.game.audio.play('static', { vol: 0.4 + this.signal * 0.15 });
@@ -517,7 +624,7 @@ export class OverworldScene implements Scene {
     const me = this.me;
     const mp = this.pos(me);
     for (const e of this.encounters) {
-      if (e.def.goneFlag && s.flags.includes(e.def.goneFlag)) continue;
+      if (this.gone(e)) continue;
       if (s.playTime < e.respawnAt) continue;
       if (e.t < 1) {
         e.t = Math.min(1, e.t + 1 / 22);
@@ -639,7 +746,7 @@ export class OverworldScene implements Scene {
     }
     ctx.globalAlpha = this.fog;
     for (const e of this.encounters) {
-      if (e.def.sprite !== 'owWisp' || this.s.playTime < e.respawnAt) continue;
+      if (e.def.sprite !== 'owWisp' || this.s.playTime < e.respawnAt || this.gone(e)) continue;
       const p = this.pos(e);
       const bob = Math.round(Math.sin(this.frame / 10 + e.def.x) * 2);
       drawSprite(ctx, 'owWisp', Math.floor(this.frame / 16) % 2, p.x - camX, p.y - camY + bob);
@@ -655,7 +762,7 @@ export class OverworldScene implements Scene {
     ctx.save();
     ctx.globalAlpha = this.dark;
     for (const e of this.encounters) {
-      if (this.s.playTime < e.respawnAt || (e.def.goneFlag && this.s.flags.includes(e.def.goneFlag))) continue;
+      if (this.s.playTime < e.respawnAt || this.gone(e)) continue;
       if (TERRAIN[this.tile(e.x, e.y)]?.sight !== 'dark') continue;
       // A blink now and then.
       if ((this.frame + e.def.x * 37) % 150 < 6) continue;
@@ -734,10 +841,33 @@ export class OverworldScene implements Scene {
       const y = pl.y * T - camY;
       if (visible(x, y)) drawSprite(ctx, 'owFallCave', Math.floor(this.frame / 8), x, y);
     }
+    // Regions whose place still sleeps are drained of colour.
+    if (this.grey) {
+      const w = OVERWORLD.tiles[0].length;
+      const x0 = Math.floor(camX / T);
+      const y0 = Math.floor(camY / T);
+      ctx.save();
+      ctx.globalCompositeOperation = 'saturation';
+      ctx.fillStyle = '#808080';
+      for (let y = y0; y <= y0 + VIEW_H / T + 1; y++) {
+        for (let x = x0; x <= x0 + VIEW_W / T + 1; x++) {
+          const g = this.grey[y * w + x] ?? 0;
+          if (g <= 0) continue;
+          ctx.globalAlpha = 0.55 * g;
+          ctx.fillRect(x * T - camX, y * T - camY, T, T);
+        }
+      }
+      ctx.restore();
+    }
+    // Folk on the roads.
+    for (const f of this.folk) {
+      const p = this.pos(f);
+      if (visible(p.x - camX, p.y - camY)) drawSprite(ctx, 'owFolk', f.t < 1 ? Math.floor(this.frame / 8) % 2 : 0, p.x - camX, p.y - camY, f.x < f.fx);
+    }
     // Encounters.
     for (const e of this.encounters) {
       if (s.playTime < e.respawnAt) continue;
-      if (e.def.goneFlag && s.flags.includes(e.def.goneFlag)) continue;
+      if (this.gone(e)) continue;
       const p = this.pos(e);
       const bob = e.def.sprite === 'owWisp' ? Math.round(Math.sin(this.frame / 10 + e.def.x) * 2) : 0;
       drawSprite(ctx, e.def.sprite, Math.floor(this.frame / 16) % 2, p.x - camX, p.y - camY + bob);

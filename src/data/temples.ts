@@ -61,11 +61,11 @@ export function templeById(id: string): TempleDef | undefined {
 }
 
 export const VILLAGES: readonly VillageDef[] = [
-  { id: 'mormors_by', name: 'Mormors by', area: 'mormors_by', wakeEntry: 'H', teaches: 'lakning' },
-  { id: 'bruksorten', name: 'Bruksorten', area: 'bruksorten', wakeEntry: 'H', teaches: 'skydd' },
-  { id: 'fiskelaget', name: 'Fiskeläget', area: 'fiskelaget', wakeEntry: 'H', teaches: 'hopp' },
-  { id: 'gruvsamhallet', name: 'Gruvsamhället', area: 'gruvsamhallet', wakeEntry: 'H', teaches: 'lyse' },
-  { id: 'kyrkbyn', name: 'Kyrkbyn', area: 'kyrkbyn', wakeEntry: 'H', teaches: 'eld' },
-  { id: 'faboden', name: 'Fäboden', area: 'faboden', wakeEntry: 'H', teaches: 'hamn' },
-  { id: 'stationssamhallet', name: 'Stationssamhället', area: 'stationssamhallet', wakeEntry: 'H', teaches: 'aska' },
+  { id: 'mormors_by', name: 'Mormors by', area: 'mormors_by', wakeEntry: 'H', teaches: 'lakning', place: 'krypta' },
+  { id: 'bruksorten', name: 'Bruksorten', area: 'bruksorten', wakeEntry: 'H', teaches: 'skydd', place: 'kvarnen' },
+  { id: 'fiskelaget', name: 'Fiskeläget', area: 'fiskelaget', wakeEntry: 'H', teaches: 'hopp', place: 'fyren' },
+  { id: 'gruvsamhallet', name: 'Gruvsamhället', area: 'gruvsamhallet', wakeEntry: 'H', teaches: 'lyse', place: 'gruvan' },
+  { id: 'kyrkbyn', name: 'Kyrkbyn', area: 'kyrkbyn', wakeEntry: 'H', teaches: 'eld', place: 'krypta' },
+  { id: 'faboden', name: 'Fäboden', area: 'faboden', wakeEntry: 'H', teaches: 'hamn', place: 'fabodskogen' },
+  { id: 'stationssamhallet', name: 'Stationssamhället', area: 'stationssamhallet', wakeEntry: 'H', teaches: 'aska', place: 'folkparken' },
 ];
