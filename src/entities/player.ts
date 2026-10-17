@@ -35,6 +35,8 @@ const SWORD_BUFFER = 10;
  */
 const MIN_JUMP = 7;
 const ATTACK_FRAMES = 15;
+/** Frames into a strike during which Dagny can still turn round (before the blade is far out). */
+const TURN_IN_STRIKE = 4;
 const ATTACK_ACTIVE: [number, number] = [2, 10];
 const INVULN = 60;
 
@@ -262,8 +264,13 @@ export class Player implements Body {
     }
     if (this.downThrust && this.animT % 12 === 0) this.hitIds.clear();
 
-    // Facing (not while striking).
+    // Facing (not while striking – except in the wind-up: a strike started a
+    // moment before the thumb reaches the other way still turns to meet it).
     if (move !== 0 && this.state === 'normal') this.facing = move > 0 ? 1 : -1;
+    else if (move !== 0 && this.state === 'attack' && this.attackT < TURN_IN_STRIKE && (move > 0 ? 1 : -1) !== this.facing) {
+      this.facing = move > 0 ? 1 : -1;
+      this.hitIds.clear();
+    }
 
     // Horizontal movement.
     const canWalk = this.state !== 'hurt' && !(this.ducking && this.onGround) && !(this.state === 'attack' && this.onGround);

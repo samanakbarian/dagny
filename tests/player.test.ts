@@ -43,6 +43,26 @@ describe('Dagny movement', () => {
     expect(jumpHeight(1)).toBe(jumpHeight(4));
   });
 
+  it('a strike started a moment before turning still turns to meet the other way', () => {
+    const g = flat();
+    const p = new Player();
+    p.place(100, 100);
+    settle(p, g);
+    expect(p.facing).toBe(1);
+    p.update({ ...none, swordPressed: true }, g);
+    p.update({ ...none, left: true }, g);
+    expect(p.attacking).toBe(true);
+    expect(p.facing).toBe(-1);
+    // But once the blade is out, the strike holds its direction.
+    const q = new Player();
+    q.place(100, 100);
+    settle(q, g);
+    q.update({ ...none, swordPressed: true }, g);
+    for (let i = 0; i < 5; i++) q.update(none, g);
+    q.update({ ...none, left: true }, g);
+    expect(q.facing).toBe(1);
+  });
+
   it('a sword press during a swing is kept and strikes again', () => {
     const g = flat();
     const p = new Player();

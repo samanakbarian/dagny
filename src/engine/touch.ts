@@ -96,31 +96,59 @@ export class TouchControls {
     return d;
   }
 
+  /** The action buttons, and which fingers hold each (a thumb may slide from one to the next). */
+  private buttons = new Map<HTMLElement, { action: Action; pointers: Set<number> }>();
+  /** Which button each finger is on now. */
+  private fingers = new Map<number, HTMLElement>();
+
   private button(cls: string, label: string, action: Action): void {
     const d = this.el(`ctl ${cls}`, label);
-    const pointers = new Set<number>();
-    const down = (e: PointerEvent): void => {
+    this.buttons.set(d, { action, pointers: new Set() });
+    d.addEventListener('pointerdown', (e: PointerEvent) => {
       e.preventDefault();
-      pointers.add(e.pointerId);
       try {
         d.setPointerCapture(e.pointerId);
       } catch {
         /* ignore */
       }
-      d.classList.add('pressed');
-      this.input.press(action);
-    };
-    const up = (e: PointerEvent): void => {
-      pointers.delete(e.pointerId);
-      if (pointers.size === 0) {
-        d.classList.remove('pressed');
-        this.input.release(action);
-      }
-    };
-    d.addEventListener('pointerdown', down);
+      this.input.setSource('touch');
+      this.hold(e.pointerId, d);
+    });
+    // A thumb that slides off one button onto another lets go of the first and
+    // presses the second – jump, then roll onto the sword, without lifting.
+    d.addEventListener('pointermove', (e: PointerEvent) => {
+      if (!this.fingers.has(e.pointerId)) return;
+      const hit = document.elementFromPoint(e.clientX, e.clientY)?.closest('.ctl-btn') as HTMLElement | null;
+      if (hit && hit !== this.fingers.get(e.pointerId) && this.buttons.has(hit)) this.hold(e.pointerId, hit);
+    });
+    const up = (e: PointerEvent): void => this.hold(e.pointerId, null);
     d.addEventListener('pointerup', up);
     d.addEventListener('pointercancel', up);
     d.addEventListener('lostpointercapture', up);
+  }
+
+  /** Moves a finger onto a button (or off all of them), pressing and releasing as it goes. */
+  private hold(pointer: number, el: HTMLElement | null): void {
+    const was = this.fingers.get(pointer);
+    if (was === el) return;
+    if (was) {
+      const b = this.buttons.get(was)!;
+      b.pointers.delete(pointer);
+      if (b.pointers.size === 0) {
+        was.classList.remove('pressed');
+        this.input.release(b.action);
+      }
+      this.fingers.delete(pointer);
+    }
+    if (el) {
+      const b = this.buttons.get(el)!;
+      if (b.pointers.size === 0) {
+        el.classList.add('pressed');
+        this.input.press(b.action);
+      }
+      b.pointers.add(pointer);
+      this.fingers.set(pointer, el);
+    }
   }
 
   private buildStick(): void {

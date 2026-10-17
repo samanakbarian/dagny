@@ -41,7 +41,8 @@ give (`src/entities/player.ts`, `src/engine/touch.ts`):
 - **Knockback:** a hit throws Dagny back about one tile (as in Zelda II), with drag, not across the room.
 - **Carts and logs** that move only while ridden come back for her when she waits at the other end, so a fall never strands her on the wrong side.
 
-Next up: buttons a thumb can roll between (and press two at once), and letting Dagny drift and turn early in a ground strike.
+- **A thumb rolls between buttons:** sliding a finger off one button onto another lets go of the first and presses the second – jump, then roll onto the sword, without lifting. Two fingers on two buttons press both.
+- **Turning in the wind-up:** for the first 4 frames of a strike, the stick can still turn Dagny round, so a strike pressed a moment before the thumb reaches the other way meets what is behind her.
 
 ## The first temple's creatures
 
