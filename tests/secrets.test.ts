@@ -212,13 +212,23 @@ function rides(a: AreaDef): Array<Set<string>> {
  * moving platforms anywhere along their way. Rooms with wind or dance
  * squares are left out (they need timing).
  */
-function softlocks(a: AreaDef, radio: boolean): string[] {
+interface JumpModel {
+  w: number;
+  h: number;
+  stand: (x: number, y: number) => boolean;
+  land: (x: number, y: number) => [number, number] | null;
+  moves: (x: number, y: number) => Array<[number, number]>;
+  free: (x: number, y: number) => boolean;
+}
+
+/** The coarse platformer model of one room (see softlocks); `up` is how many tiles a jump rises. */
+function jumpModel(a: AreaDef, radio: boolean, opts: { up?: number; hatches?: boolean; keys?: boolean } = {}): JumpModel {
   const t = a.tiles;
   const h = t.length;
   const w = t[0].length;
   const groups = rides(a);
   const onRide = (x: number, y: number): boolean => groups.some((g) => g.has(`${x},${y}`));
-  const solid = (x: number, y: number): boolean => y >= h || (x >= 0 && x < w && y >= 0 && (t[y][x] === '#' || t[y][x] === 'L' || t[y][x] === '!' || (t[y][x] === '?' && !radio)));
+  const solid = (x: number, y: number): boolean => y >= h || (x >= 0 && x < w && y >= 0 && (t[y][x] === '#' || (t[y][x] === 'L' && !opts.keys) || (t[y][x] === '!' && !opts.hatches) || (t[y][x] === '?' && !radio)));
   const free = (x: number, y: number): boolean => x >= 0 && x < w && y < h && (y < 0 || (!solid(x, y) && !'^~n'.includes(t[y][x])));
   const floor = (x: number, y: number): boolean => y + 1 < h && y + 1 >= 0 && (solid(x, y + 1) || '=%&'.includes(t[y + 1][x] ?? '') || onRide(x, y));
   const stand = (x: number, y: number): boolean => free(x, y) && free(x, y - 1) && floor(x, y);
@@ -235,7 +245,7 @@ function softlocks(a: AreaDef, radio: boolean): string[] {
         if (l) out.push(l);
       }
     }
-    for (let up = 1; up <= 3 && free(x, y - up); up++) {
+    for (let up = 1; up <= (opts.up ?? 3) && free(x, y - up); up++) {
       for (let dx = -3; dx <= 3; dx++) {
         let ok = true;
         for (let cx = x; cx !== x + dx + Math.sign(dx || 1) && ok; cx += Math.sign(dx || 1)) if (!free(cx, y - up)) ok = false;
@@ -253,6 +263,12 @@ function softlocks(a: AreaDef, radio: boolean): string[] {
     }
     return out;
   };
+  return { w, h, stand, land, moves, free };
+}
+
+function softlocks(a: AreaDef, radio: boolean): string[] {
+  const t = a.tiles;
+  const { w, h, land, moves, free } = jumpModel(a, radio);
   const exits = new Set<string>();
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
@@ -295,6 +311,69 @@ describe('no pits to get stuck in', () => {
         const stuck = softlocks(a, radio);
         if (stuck.length) bad.push(`${a.id} radio=${radio}: ${stuck.join(' ')}`);
       }
+    }
+    expect(bad).toEqual([]);
+  });
+});
+
+describe('everything in a room can be reached by jumping, not only by the solver', () => {
+  /** Standing cells Dagny reaches from where she comes in (every way in, so rooms entered from either end count). */
+  const reachable = (a: AreaDef, m: JumpModel): Set<string> => {
+    const t = a.tiles;
+    const starts: Array<[number, number]> = [];
+    for (let y = 0; y < m.h; y++) {
+      for (let x = 0; x < m.w; x++) {
+        const ch = t[y][x];
+        if ('@AW'.includes(ch) || (/[B-Z]/.test(ch) && !'LXBMT'.includes(ch) && !a.doors?.[ch])) {
+          const l = m.land(x, y);
+          if (l) starts.push(l);
+        }
+      }
+      // The room's edges, where Dagny walks in from a neighbour.
+      if (a.left && m.free(0, y)) { const l = m.land(0, y); if (l) starts.push(l); }
+      if (a.right && m.free(m.w - 1, y)) { const l = m.land(m.w - 1, y); if (l) starts.push(l); }
+    }
+    const seen = new Set<string>();
+    const stack = [...starts];
+    while (stack.length) {
+      const c = stack.pop()!;
+      const k = `${c[0]},${c[1]}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      stack.push(...m.moves(c[0], c[1]));
+    }
+    return seen;
+  };
+  /** Dagny standing at (x, y) can touch (tx, ty): beside or on it, or by jumping up to it. */
+  const touches = (seen: Set<string>, m: JumpModel, tx: number, ty: number, up: number): boolean => {
+    for (const k of seen) {
+      const [x, y] = k.split(',').map(Number);
+      if (Math.abs(x - tx) > 1 || ty > y || y - ty > up + 1) continue;
+      let clear = true;
+      for (let yy = y - 1; yy > ty && clear; yy--) if (!m.free(x, yy)) clear = false;
+      if (clear) return true;
+    }
+    return false;
+  };
+
+  it('keys, treasures, quest things, containers, dolls, doors, people and the boss', () => {
+    const bad: string[] = [];
+    for (const a of Object.values(AREAS)) {
+      if (a.wind || a.beat) continue;
+      const hopp = a.needsSpell?.some((n) => n.spell === 'hopp');
+      const up = hopp ? 5 : 3;
+      const m = jumpModel(a, true, { up, hatches: true, keys: true });
+      const seen = reachable(a, m);
+      a.tiles.forEach((row, ty) =>
+        [...row].forEach((ch, tx) => {
+          // (The boss starts where it lives – in the water, up in the air; a door that only loops back is a decoy.)
+          const wanted = 'kXqhp+'.includes(ch) || (!!a.doors?.[ch] && a.doors[ch].to !== a.id && !a.doors[ch].dialog) || /[1-9]/.test(ch);
+          if (!wanted) return;
+          // A place only the bird gets into (Hamn): not for this model.
+          if (a.needsSpell?.some((n) => n.spell === 'hamn' && tx >= n.x0 && tx <= n.x1 && ty >= n.y0 && ty <= n.y1)) return;
+          if (!touches(seen, m, tx, ty, up)) bad.push(`${a.id}: '${ch}' at ${tx},${ty}`);
+        }),
+      );
     }
     expect(bad).toEqual([]);
   });

@@ -61,14 +61,14 @@ export const HEM: Record<string, DialogDef> = {
     pages: [
       'Så Hulda har skickat dig. Hmm. Du har ögon som... nej. Glöm det. Gamla gubbar pratar för mycket.',
       'Jag kan en gammal läsning mot värk. Men den biter inte utan johannesört – och mina knän tar mig inte till skogen längre.',
-      'Den växer i Björkhagen, väster om byn, högt uppe där solen når. Akta dig för nässlorna. Hämta en kvist, så lär jag dig.',
+      'Den växer i Björkhagen, sydost om byn, högt uppe där solen når. Akta dig för nässlorna. Hämta en kvist, så lär jag dig.',
     ],
     actions: [{ type: 'flag', flag: 'sven_uppdrag' }],
   },
 
   sven_vantar: {
     speaker: 'Gamle Sven',
-    pages: ['Johannesörten växer högt uppe i Björkhagen, väster om byn. Hoppa på hyllorna – och akta nässlorna.'],
+    pages: ['Johannesörten växer högt uppe i Björkhagen, sydost om byn. Hoppa på hyllorna – och akta nässlorna.'],
   },
 
   sven_lar: {
@@ -137,14 +137,14 @@ export const HEM: Record<string, DialogDef> = {
     speaker: 'Karin',
     pages: [
       'Åh, Dagny! Har du sett Murre? Han smet ut i går kväll och har inte kommit hem.',
-      'Han brukar jaga fjärilar i Björkhagen, väster om byn. Men där har det varit så otäckt nu...',
+      'Han brukar jaga fjärilar i Björkhagen, sydost om byn. Men där har det varit så otäckt nu...',
     ],
     actions: [{ type: 'flag', flag: 'murre_uppdrag' }],
   },
 
   karin_vantar: {
     speaker: 'Karin',
-    pages: ['Björkhagen ligger i skogen väster om byn. Snälla, titta efter Murre om du går förbi.'],
+    pages: ['Björkhagen ligger i skogen sydost om byn. Snälla, titta efter Murre om du går förbi.'],
   },
 
   karin_tack: {
