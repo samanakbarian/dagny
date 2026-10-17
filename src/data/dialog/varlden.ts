@@ -88,6 +88,42 @@ export const VARLDEN: Record<string, DialogDef> = {
   fallgrottan_ristning: {
     pages: ['Inristat i berget bakom vattenridån:\n"DEN SOM GÖMMER SIG BAKOM FALLET HÖRS INTE AV BERGET. – D."'],
   },
+  // --- Bruset: Dagmar's voice in the radio's static (chapter 7) ---
+  bruset_1: {
+    pages: [
+      'Radion sprakar till. Mellan bruset, mycket svagt, en kvinnoröst:',
+      '"...mamma... om någon hör det här... berget är så tyst om nätterna..."',
+    ],
+    actions: [{ type: 'flag', flag: 'bruset_1' }, { type: 'xp', amount: 100 }],
+  },
+  bruset_2: {
+    pages: [
+      'Radion sprakar till. Rösten igen, längre bort nu:',
+      '"...jag räknar somrarna. Tre korta, tre långa, tre korta. Ingen svarar härinne..."',
+    ],
+    actions: [{ type: 'flag', flag: 'bruset_2' }, { type: 'xp', amount: 100 }],
+  },
+  bruset_3: {
+    pages: [
+      'Radion sprakar till. Rösten är nästan glad:',
+      '"...hon har väl fått ett namn nu. Jag hoppas att det är ett ljust namn..."',
+    ],
+    actions: [{ type: 'flag', flag: 'bruset_3' }, { type: 'xp', amount: 100 }],
+  },
+  bruset_4: {
+    pages: [
+      'Radion sprakar till. Rösten är alldeles nära:',
+      '"...det var aldrig ditt fel, mamma. Jag valde själv. Glöm oss inte..."',
+    ],
+    actions: [{ type: 'flag', flag: 'bruset_4' }, { type: 'xp', amount: 100 }],
+  },
+  bruset_klart: {
+    pages: [
+      'Bruset tystnar. Länge är det helt stilla i radion.',
+      'Sedan, alldeles tydligt, tre korta, tre långa, tre korta. Någon i berget har hört att någon lyssnar.',
+    ],
+    actions: [{ type: 'flag', flag: 'bruset_klart' }, { type: 'life', id: 'bruset' }, { type: 'xp', amount: 300 }],
+  },
   stollen_gomd_ristning: {
     pages: [
       'Inristat i en gammal stolpe: ett stort H och bredvid det ett litet, vingligt D.',

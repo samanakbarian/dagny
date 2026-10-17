@@ -119,6 +119,8 @@ export const SFX: Record<string, SfxStep[]> = {
     { wave: 'sawtooth', from: 294, to: 330, dur: 0.7, vol: 0.35, at: 0.45 },
   ],
   wind: [{ wave: 'noise', from: 600, to: 1400, dur: 0.6, vol: 0.25 }],
+  // The radio's static, louder the closer a secret is.
+  static: [{ wave: 'noise', from: 2400, to: 900, dur: 0.12, vol: 0.18 }],
   // Heard through the night forest: a fiddle at the dance (an own little run) and the train.
   fiddle: [
     { wave: 'triangle', from: 587, dur: 0.18, vol: 0.3 },

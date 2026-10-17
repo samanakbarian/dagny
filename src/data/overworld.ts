@@ -122,6 +122,11 @@ export const OVERWORLD: OverworldDef = {
     },
     { x: 88, y: 2, name: 'Fallgrottan', area: 'fallgrottan', entry: 'A', hidden: 'near' },
     { x: 39, y: 7, name: 'Väktarkammaren', area: 'vaktarkammaren', entry: 'A', hidden: 'radio' },
+    // Bruset (chapter 7): spots where the radio catches Dagmar's voice from the mountain.
+    { x: 14, y: 62, name: 'Bruset', dialog: 'bruset_1', radio: true, doneFlag: 'bruset_1' },
+    { x: 20, y: 41, name: 'Bruset', dialog: 'bruset_2', radio: true, doneFlag: 'bruset_2' },
+    { x: 48, y: 24, name: 'Bruset', dialog: 'bruset_3', radio: true, doneFlag: 'bruset_3' },
+    { x: 80, y: 56, name: 'Bruset', dialog: 'bruset_4', radio: true, doneFlag: 'bruset_4' },
     { x: 22, y: 33, name: 'Gamla kyrkogården', area: 'kyrkogarden', entry: 'A' },
     { x: 37, y: 23, name: 'Kolartorpet', area: 'kolartorpet', entry: 'A' },
     { x: 80, y: 24, name: 'Pestkorset', area: 'pestkorset', entry: 'A' },

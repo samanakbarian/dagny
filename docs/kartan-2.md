@@ -1,6 +1,6 @@
 # Kartan 2.0 – specifikation
 
-*Status: steg 1–5 klara (kapitel 1–6). Kvar: kapitel 7–8 och förvandlingen. Beslut 15 oktober 2026 (se §11).*
+*Status: steg 1–5 klara (kapitel 1–6), kapitel 7 klart. Kvar: kapitel 8 och förvandlingen. Beslut 15 oktober 2026 (se §11).*
 *Ersätter överblickskartan från oktober 2026 (80 × 56, sju regioner).*
 
 > Granskning 15 oktober 2026 ("Storykartan"): handlingen saknades (nu §4)
@@ -374,6 +374,13 @@ Varje steg går att provspela innan nästa påbörjas.
 - **Nattskogen:** det som lurar där syns bara som ett par ögon som blinkar i mörkret. Fiolen från Folkparken och tågvisslan från Stationssamhället hörs om vartannat, från sitt håll (ljudet panoreras och dämpas med avståndet) – och en liten not eller ett ångmoln vid kanten av ljuskäglan visar varifrån, för den som spelar utan ljud.
 - **Tåget:** när stinsen Berg har fått tillbaka sin visselpipa går tågen igen. Han – och en banvakt vid hållplatsen i Kyrkbyn, Gruvsamhället och Fiskeläget – låter Dagny åka mellan de fyra stationerna (`travel`). Före dess säger banvakterna varför inga tåg går, så spelaren vet vad som väntar. Tåget tar henne aldrig någonstans hon inte redan kan gå (testat).
 - **En läsning kostar aldrig mer än Dagny kan bära** (`spellCost`): Åska och Hamn går alltid att kasta med full magistång, så ett ställe som kräver dem kan aldrig stänga ute den som inte hittat magibehållare.
+
+### Steg 6 – kapitel 7 (gjort)
+
+- **Radion knastrar:** med radion syns en liten mottagare i hörnet med fyra staplar, och det knastrar allt tätare ju närmare Dagny är något dolt hon inte hittat än – Väktarkammaren, den dolda stigen genom granskogen och rösterna nedan (`radioTargets`).
+- **Bruset – Dagmars röst:** på fyra ställen i tidigare kapitel (Hemdalen, vid Stenkyrkan, Gruvbygden, kusten) fångar radion en kvinnoröst från berget: *"...mamma... om någon hör det här..."*, *"...jag räknar somrarna..."*, *"...hon har väl fått ett namn nu..."*, *"...det var aldrig ditt fel, mamma..."*. När alla fyra är hörda svarar någon i berget: tre korta, tre långa, tre korta – ett extra liv. Platserna syns ingenstans och gör ingenting utan radion (`radio: true`).
+- **Återkomst på kusten:** gamle Ture spelar fyrens inspelning från midsommarafton 1946: Dagmar ber fyren hälsa Hulda att se efter klockstapeln.
+- **Fäboden ger nyckeln till Fäbodskogen:** nyckeln ligger i en håla i berget med ett hål som bara en fågel kommer in genom. Med **Hamn** från Karna flyger Dagny in, blir sig själv därinne och släpper sig ut genom en springa i golvet (fågeln kan inte bära något). Lösaren bevisar att Fäbodskogen inte går utan Hamn.
 
 ## 12. Ursprungliga frågor
 

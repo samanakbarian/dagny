@@ -159,7 +159,7 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
   viola: { id: 'viola', sprite: 'natlagerska', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notSpell: 'hopp' }], dialog: 'viola_lar' }, { dialog: 'viola_igen' }] },
   johan: { id: 'johan', sprite: 'fiskare', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'kompass' }, { notFlag: 'kompass_klar' }], dialog: 'johan_tack' }, { if: [{ flag: 'kompass_klar' }], dialog: 'johan_glad' }, { if: [{ flag: 'kompass_uppdrag' }], dialog: 'johan_vantar' }, { dialog: 'johan_uppdrag' }] },
   stina: { id: 'stina', sprite: 'kid2', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'fyren_klar' }], dialog: 'stina_efter' }, { dialog: 'stina' }] },
-  ture: { id: 'ture', sprite: 'shopkeeper', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ flag: 'fyren_klar' }], dialog: 'ture_efter' }, { dialog: 'ture' }] },
+  ture: { id: 'ture', sprite: 'shopkeeper', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'radio' }, { notFlag: 'ture_sandare' }], dialog: 'ture_sandare' }, { if: [{ flag: 'fyren_klar' }], dialog: 'ture_efter' }, { dialog: 'ture' }] },
   // --- Fäboden ---
   anna: { id: 'anna', sprite: 'budeja', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ dialog: 'anna_vila' }] },
   karna: { id: 'karna', sprite: 'karna', idle: { frames: [0, 0, 0, 2, 0, 1, 1, 0], every: 0.7 }, talk: [{ if: [{ notSpell: 'hamn' }, { flag: 'gruvan_klar' }], dialog: 'karna_lar' }, { if: [{ notSpell: 'hamn' }], dialog: 'karna_vanta' }, { dialog: 'karna_igen' }] },

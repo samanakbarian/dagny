@@ -268,7 +268,7 @@ export class MapOverlay extends SubOverlay {
     // Places Dagny has seen: temples yellow, villages red, small places pale (hidden places stay hidden).
     const m = Math.max(3, cell);
     for (const pl of OVERWORLD.places) {
-      if (pl.hidden || !isExplored(s, pl.x, pl.y) || pl.x < x0 || pl.y < y0 || pl.x >= x0 + bw || pl.y >= y0 + bh) continue;
+      if (pl.hidden || pl.radio || !isExplored(s, pl.x, pl.y) || pl.x < x0 || pl.y < y0 || pl.x >= x0 + bw || pl.y >= y0 + bh) continue;
       const temple = TEMPLES.find((tt) => tt.entryArea === pl.area);
       const village = AREAS[pl.area ?? '']?.kind === 'village';
       const col = temple ? (hasFlag(s, `${temple.id}_klar`) ? P.W : P.Y) : village ? P.R : P.C;

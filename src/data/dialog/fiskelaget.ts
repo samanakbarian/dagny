@@ -101,6 +101,18 @@ export const FISKELAGET: Record<string, DialogDef> = {
     ],
   },
 
+  // Return with the radio (chapter 7): the old coast transmitter and a recording of Dagmar.
+  ture_sandare: {
+    speaker: 'Gamle Ture',
+    pages: [
+      'Är det en transistorradio du har där? Då ska du få höra något. Jag har kvar fyrens gamla sändare och trådspelaren.',
+      'Midsommarafton 1946 ropade någon upp fyren från stranden mitt emot Kyrkbyn. Jag spelade in det. Lyssna.',
+      'Bandet knastrar. En kvinnoröst: "Fyren, fyren. Hälsa Hulda i Kyrkbyn att jag inte kommer i kväll. Säg att hon ska se efter klockstapeln."',
+      'Jag förstod aldrig vad hon menade. Men du gör det, ser jag.',
+    ],
+    actions: [{ type: 'flag', flag: 'ture_sandare' }, { type: 'xp', amount: 150 }],
+  },
+
   ture_efter: {
     speaker: 'Gamle Ture',
     pages: ['Har du läst min loggbok? Då vet du att jag inte ljög. Tack för att du tände fyren igen.'],

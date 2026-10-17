@@ -11,7 +11,7 @@ import type { EncounterDef, OverworldPlace } from '../data/types';
 import { DialogOverlay } from './dialog';
 import type { Game, Scene } from './game';
 import { drawHud } from './hud';
-import { hasFlag, hasItem, type GameState } from './state';
+import { hasFlag, hasItem, setFlag, type GameState } from './state';
 import * as flow from './flow';
 import { ENCOUNTER_TABLES, TERRAIN_TYPE } from '../data/encounters';
 import { pickEncounter } from './encounters';
@@ -54,6 +54,18 @@ let lastEncounter: string | null = null;
 const encounterMemory = new Map<number, EncounterRuntime>();
 
 let staticMap: HTMLCanvasElement | null = null;
+
+/** The flag set when Dagny has found a place only the radio shows. */
+export function radioFound(pl: OverworldPlace): string {
+  return `radiofynd_${pl.x}_${pl.y}`;
+}
+
+/** What the radio's static leads to: places it shows, and the hidden path through the spruce. */
+export function radioTargets(): Array<{ x: number; y: number; flag: string }> {
+  const out = OVERWORLD.places.filter((p) => p.hidden === 'radio' || p.radio).map((p) => ({ x: p.x, y: p.y, flag: radioFound(p) }));
+  OVERWORLD.tiles.forEach((row, y) => [...row].forEach((ch, x) => ch === 'H' && out.push({ x, y, flag: 'radiofynd_stigen' })));
+  return out;
+}
 
 /** Landmark shapes without their ground, to show through the marsh fog. */
 const cutouts = new Map<string, HTMLCanvasElement | null>();
@@ -197,6 +209,8 @@ export class OverworldScene implements Scene {
   private sinkT = 0;
   /** A sound through the night forest: from which way it came, for the little sign at the edge. */
   private cue: { kind: 'fiddle' | 'whistle'; dx: number; dy: number; t: number } | null = null;
+  /** The radio's static: 0–4 bars. */
+  private signal = 0;
   /** Frames left of the mountain's rumble. */
   private shakeT = 0;
   /** How far the marsh fog and the night forest's dark have closed in (0–1, eased). */
@@ -367,6 +381,8 @@ export class OverworldScene implements Scene {
 
     this.updateEncounters();
     this.updateSounds();
+    this.signal = this.radioSignal();
+    if (this.signal > 0 && this.frame % [0, 90, 50, 26, 12][this.signal] === 0) this.game.audio.play('static', { vol: 0.4 + this.signal * 0.15 });
     this.updateCamera(false);
   }
 
@@ -408,6 +424,12 @@ export class OverworldScene implements Scene {
       this.game.toast(STR.viewpoint, 3);
       this.game.audio.play('key');
     }
+    // A place the radio finds is nothing at all without it.
+    const byRadio = place?.hidden === 'radio' || place?.radio;
+    if (place && byRadio && !hasItem(this.s, 'radio')) return;
+    if (place && byRadio) setFlag(this.s, radioFound(place));
+    if (ground && this.tile(me.x, me.y) === 'H') setFlag(this.s, 'radiofynd_stigen');
+    if (place?.doneFlag && hasFlag(this.s, place.doneFlag)) return;
     if (place) {
       const locked = place.requires && !place.requires.every((f) => hasFlag(this.s, f));
       if (place.area && !locked) {
@@ -415,9 +437,31 @@ export class OverworldScene implements Scene {
         this.game.audio.play('door');
         flow.goToArea(this.game, place.area, { entry: place.entry });
       } else if (place.dialog) {
-        this.game.pushOverlay(new DialogOverlay(this.game, place.dialog));
+        this.game.pushOverlay(new DialogOverlay(this.game, place.dialog, () => this.afterRadioVoice()));
       }
     }
+  }
+
+  /** All four fragments of Dagmar's voice heard: someone in the mountain answers. */
+  private afterRadioVoice(): void {
+    const s = this.s;
+    if (hasFlag(s, 'bruset_klart') || ![1, 2, 3, 4].every((n) => hasFlag(s, `bruset_${n}`))) return;
+    this.game.pushOverlay(new DialogOverlay(this.game, 'bruset_klart'));
+  }
+
+  /**
+   * Chapter 7: with the radio, the static grows the closer Dagny comes to
+   * something hidden on the map she has not found yet (0 = nothing near, 4 = here).
+   */
+  private radioSignal(): number {
+    const s = this.s;
+    if (!hasItem(s, 'radio')) return 0;
+    let best = Infinity;
+    for (const t of radioTargets()) {
+      if (hasFlag(s, t.flag)) continue;
+      best = Math.min(best, Math.abs(t.x - this.me.x) + Math.abs(t.y - this.me.y));
+    }
+    return best <= 2 ? 4 : best <= 6 ? 3 : best <= 11 ? 2 : best <= 18 ? 1 : 0;
   }
 
   /** Out of the quagmire, back where the ground last held. */
@@ -628,6 +672,26 @@ export class OverworldScene implements Scene {
     ctx.restore();
   }
 
+  /** The radio in the corner, its bars crackling the closer a secret is. */
+  private renderRadio(ctx: CanvasRenderingContext2D): void {
+    const x = VIEW_W - 30;
+    const y = VIEW_H - 16;
+    ctx.fillStyle = PALETTE.k;
+    ctx.fillRect(x - 2, y - 10, 28, 14);
+    ctx.fillStyle = PALETTE.B;
+    ctx.fillRect(x, y - 6, 9, 8);
+    ctx.fillStyle = PALETTE.y;
+    ctx.fillRect(x + 1, y - 5, 4, 3);
+    ctx.fillStyle = PALETTE.W;
+    ctx.fillRect(x + 7, y - 9, 1, 3);
+    for (let i = 0; i < 4; i++) {
+      const on = i < this.signal;
+      const jitter = on && this.signal === 4 && (this.frame >> 2) % 2 ? 1 : 0;
+      ctx.fillStyle = on ? PALETTE.Y : PALETTE.K;
+      ctx.fillRect(x + 12 + i * 3, y + 1 - (i + 1) * 2 - jitter, 2, (i + 1) * 2 + jitter);
+    }
+  }
+
   render(ctx: CanvasRenderingContext2D): void {
     const quake = this.shakeT > 0 ? (this.shakeT--, Math.round((Math.random() - 0.5) * 4)) : 0;
     const camX = Math.round(this.camX) + quake;
@@ -693,7 +757,7 @@ export class OverworldScene implements Scene {
 
     // Place name when standing next to / on a place.
     const near = OVERWORLD.places.find(
-      (pl) => Math.abs(pl.x - this.me.x) + Math.abs(pl.y - this.me.y) <= 1 && (pl.hidden !== 'radio' || hasItem(this.s, 'radio')),
+      (pl) => Math.abs(pl.x - this.me.x) + Math.abs(pl.y - this.me.y) <= 1 && ((pl.hidden !== 'radio' && !pl.radio) || hasItem(this.s, 'radio')),
     );
     if (near) {
       const w = measure(near.name) + 12;
@@ -706,6 +770,7 @@ export class OverworldScene implements Scene {
       drawText(ctx, near.name, VIEW_W / 2, y + 2, 'W', { align: 'center' });
     }
     if (!this.game.hudHidden) drawHud(ctx, s, { frame: this.frame });
+    if (!this.game.hudHidden && hasItem(s, 'radio')) this.renderRadio(ctx);
     void STR;
   }
 }

@@ -416,11 +416,14 @@ export function playthrough(opts: Options = {}): Playthrough {
       const tiles = reachableTiles([...items]);
       for (const p of OVERWORLD.places) {
         if (!tiles.has(`${p.x},${p.y}`)) continue;
-        if (p.hidden === 'radio' && !items.has('radio')) continue;
+        if ((p.hidden === 'radio' || p.radio) && !items.has('radio')) continue;
+        if (p.doneFlag && flags.has(p.doneFlag)) continue;
         if (p.requires && !p.requires.every((f) => flags.has(f))) continue;
         if (p.area) explore({ area: p.area, entry: p.entry });
         else if (p.dialog) talk(p.dialog);
       }
+      // All of Dagmar's voice heard in the radio: someone in the mountain answers (game/overworld.ts).
+      if (!flags.has('bruset_klart') && [1, 2, 3, 4].every((n) => flags.has(`bruset_${n}`))) talk('bruset_klart');
       if (opts.meetings) {
         const types = new Set<string>();
         for (const k of tiles) {

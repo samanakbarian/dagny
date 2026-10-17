@@ -128,3 +128,4 @@ hälsade. Jag ser det på dig."* Platserna vårdas igen. Dagny är Väktare nu.
 - Epilogen: den ordlösa scenen med anteckningsboken.
 - Byn röjer inget: Sven och Tyra hejdar sig.
 - **Berget syns:** Trollberget glöder svagt på kartan och flämtar oroligare för varje plats som vaknat, och första gången Dagny går ut efter ett tempel mullrar berget (skärmen skakar).
+- **Radion (kapitel 7):** fyra brottstycken av Dagmars röst från berget, det sista "det var aldrig ditt fel, mamma"; Ture spelar fyrens inspelning från 1946 där Dagmar ber fyren hälsa Hulda att se efter klockstapeln.

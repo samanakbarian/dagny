@@ -396,6 +396,13 @@ export interface OverworldPlace {
   hidden?: 'near' | 'radio';
   /** A viewpoint: standing here maps this many tiles round about (Kyrkbacken). */
   view?: number;
+  /**
+   * Something only the radio picks up, out in the open (no cave): the place does
+   * nothing, and shows nowhere, without it.
+   */
+  radio?: boolean;
+  /** Once this flag is set the place's `dialog` is not shown again (a radio voice heard). */
+  doneFlag?: string;
 }
 
 

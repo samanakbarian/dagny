@@ -137,6 +137,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Dansbanan**: unlocks a door
 - **Scenen**: reconciles Spelmannen; gets Transistorradion
 - **Gamla stollen**: finds a näverdocka
+- **Rasgången**: finds a näverdocka
 
 ## 21
 

@@ -222,3 +222,16 @@ describe('the village gives the key (chapter 7)', () => {
     expect(run.flags.has('fabodskogen_klar')).toBe(true);
   });
 });
+
+describe('the radio hunt (chapter 7)', () => {
+  it('hears all four fragments of Dagmar’s voice, and only with the radio', () => {
+    for (const n of [1, 2, 3, 4]) expect(run.flags.has(`bruset_${n}`), `bruset_${n}`).toBe(true);
+    expect(run.flags.has('bruset_klart')).toBe(true);
+    const noRadio = playthrough({ withhold: ['radio'] });
+    expect(noRadio.flags.has('bruset_1')).toBe(false);
+  });
+
+  it('Ture plays the recording of Dagmar from 1946 once Dagny has the radio', () => {
+    expect(run.flags.has('ture_sandare')).toBe(true);
+  });
+});
