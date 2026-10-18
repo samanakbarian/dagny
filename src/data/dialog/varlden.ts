@@ -124,6 +124,14 @@ export const VARLDEN: Record<string, DialogDef> = {
     ],
     actions: [{ type: 'flag', flag: 'bruset_klart' }, { type: 'life', id: 'bruset' }, { type: 'xp', amount: 300 }],
   },
+  kyrkbacken_utsikt: {
+    pages: [
+      'Dagny klättrar upp på det gamla stenröset på Kyrkbacken. Härifrån ser hon ut över hela sjön.',
+      'Kyrkbyn och klockstapeln nedanför, holmarna mitt i sjön – och långt borta, på andra sidan, en strand med en ensam sten.',
+      'Allt hon ser härifrån ritas in på kartan i pausmenyn.',
+    ],
+    actions: [{ type: 'flag', flag: 'kyrkbacken_sedd' }],
+  },
   // --- Bergsstigen (chapter 8) ---
   vattegang_skylt: {
     pages: ['Ristat i berget, med en liten vättehand bredvid:\n"TRE GÅNGAR. EN BÄR UPP. VÄTTARNA VET VILKEN."'],

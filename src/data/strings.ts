@@ -90,7 +90,6 @@ export const STR = {
   mapKeyVillage: 'By',
   mapKeyPlace: 'Plats',
   mapKeyRumour: 'Hört talas om',
-  viewpoint: 'utsikt. Kartan fylls i.',
   lightsWake: 'Åskan rinner in i ljusslingorna. Dansbanan vaknar!',
   sank: 'Gungflyet sväljer Dagny. Hon tar sig upp där marken bar.',
   mountainRumble: 'Det mullrar i Trollberget.',

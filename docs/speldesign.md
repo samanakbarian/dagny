@@ -175,6 +175,8 @@ About 10–15 % of each table is a friendly meeting instead of a fight. Every
 region has its own creatures wandering the map, each tied to its ground, so the
 same meeting doesn't turn up everywhere.
 
+Meetings hunt Dagny: off the road, a creature within about nine tiles walks towards her and starts the fight when it reaches her. Roads and paths are safe. Nothing steps onto them, so a chase ends where the path begins.
+
 ### Small places: one per region, each with a task
 
 Nothing on the map looks like a place without being one: every croft, cross,

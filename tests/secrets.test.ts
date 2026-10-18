@@ -394,3 +394,26 @@ describe('everything in a room can be reached by jumping, not only by the solver
     expect(bad).toEqual([]);
   });
 });
+
+describe('nobody comes into a room standing in water or on spikes', () => {
+  it('every way in has firm ground under it', () => {
+    const bad: string[] = [];
+    for (const a of Object.values(AREAS)) {
+      const t = a.tiles;
+      t.forEach((row, y) =>
+        [...row].forEach((ch, x) => {
+          // Entry markers: A–Z (not doors, nor the letters that mean something else), @ and W.
+          const entry = ch === '@' || (/[A-Z]/.test(ch) && !'LXBMT'.includes(ch) && !a.doors?.[ch] && !a.signs?.[ch]);
+          if (!entry) return;
+          // Falling from the marker to the first thing below it.
+          let yy = y + 1;
+          while (yy < t.length && t[yy][x] === '.') yy++;
+          const under = t[yy]?.[x] ?? '';
+          const beside = [t[yy]?.[x - 1], t[yy]?.[x + 1]];
+          if ('~^n'.includes(under) || !under || beside.some((c) => c !== undefined && '~^n'.includes(c))) bad.push(`${a.id}: '${ch}' at ${x},${y} over '${under}'`);
+        }),
+      );
+    }
+    expect(bad).toEqual([]);
+  });
+});

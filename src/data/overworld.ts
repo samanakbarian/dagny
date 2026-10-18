@@ -142,7 +142,7 @@ export const OVERWORLD: OverworldDef = {
     { x: 12, y: 19, name: 'Fäbodtorpet', area: 'fabodtorpet', entry: 'A' },
     // Passages: the way through is a side-view stretch, entered from either end.
     // The lake (kapitel 1–2): a viewpoint, two islands and the far shore.
-    { x: 19, y: 30, name: 'Kyrkbacken', view: 24 },
+    { x: 19, y: 30, name: 'Kyrkbacken', view: 24, dialog: 'kyrkbacken_utsikt', doneFlag: 'kyrkbacken_sedd' },
     { x: 40, y: 30, name: 'Eremitholmen', area: 'eremitholmen', entry: 'A' },
     { x: 57, y: 46, name: 'Måsskäret', area: 'masskaret', entry: 'A' },
     { x: 62, y: 37, name: 'Signalstranden', area: 'signalstranden', entry: 'A' },

@@ -252,7 +252,6 @@ kapitel 6 är platsens egenskap (nattskogen), inte en klocka.
 - Antalet skuggmöten på kartan halveras.
 - Byns musik får en ljusare variant.
 - Bybor får nya repliker (finns delvis i dag via `hulda_efter_*`).
-- På kartan syns folk ute på vägarna, ett par vandrande figurer per förlikat område.
 
 ### 6.8 Byn ger nyckeln
 
@@ -394,7 +393,6 @@ Varje steg går att provspela innan nästa påbörjas.
 
 - **Gråt blir sommar:** varje region är urlakad (mättnaden dras ner) tills dess tempel är förlikat; vid gränserna glider det över några rutor. Regionerna öppnas i templens ordning: Hemdalen–kryptan, Gruvbygden–gruvan, kvarndalen–kvarnen, kusten–fyren, folkparksslätten–folkparken, höglandet–Fäbodskogen.
 - **Färre skuggor:** vartannat möte i en region håller sig borta när dess plats har vaknat.
-- **Folk på vägarna:** två vandrare promenerar längs vägarna i varje vaknad region.
 - **Ljusare bymusik:** varje bys låt får en ljusare version (lite snabbare, med en klocka som dubblar melodin en oktav upp) när närmaste tempel är förlikat.
 - Kvar: provspel från början till slut och balans (svårighet, XP, avstånd).
 

@@ -54,6 +54,8 @@ let lastEncounter: string | null = null;
 const encounterMemory = new Map<number, EncounterRuntime>();
 
 let staticMap: HTMLCanvasElement | null = null;
+/** Roads and bridges: no meeting sets foot on them. */
+const ROAD = '|-+=';
 /** The map with the sleeping regions drained of colour, built once per set of woken places. */
 let wokenMap: { key: string; canvas: HTMLCanvasElement } | null = null;
 
@@ -246,8 +248,6 @@ export class OverworldScene implements Scene {
   private thin = new Map<EncounterRuntime, string>();
   /** The map as drawn: the static map with sleeping regions greyed (see transform). */
   private map: HTMLCanvasElement | null = null;
-  /** Folk walking the roads of the regions that have woken. */
-  private folk: Walker[] = [];
 
   constructor(private readonly game: Game) {
     const s = this.s;
@@ -292,8 +292,7 @@ export class OverworldScene implements Scene {
 
   /**
    * The land wakes with its place: grey drains out of a region once its temple
-   * is reconciled (blending over a few tiles at the borders), and folk come out
-   * on its roads again.
+   * is reconciled (blending over a few tiles at the borders).
    */
   private transform(): void {
     const region = regionOfTiles();
@@ -336,47 +335,6 @@ export class OverworldScene implements Scene {
       wokenMap = { key, canvas: c };
     }
     this.map = wokenMap?.canvas ?? staticMap;
-    // Two walkers on the roads of each woken region.
-    this.folk = [];
-    const roads = new Map<number, Array<[number, number]>>();
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
-        if (!'|-+'.includes(tiles[y][x]) || this.placeAt(x, y)) continue;
-        const k = region[y][x];
-        if (k < 0 || asleep(k)) continue;
-        if (!roads.has(k)) roads.set(k, []);
-        roads.get(k)!.push([x, y]);
-      }
-    }
-    for (const list of roads.values()) {
-      for (let i = 0; i < 2 && list.length; i++) {
-        const [x, y] = list[Math.floor(((i + 1) * list.length) / 3) % list.length];
-        this.folk.push({ x, y, fx: x, fy: y, t: 1 });
-      }
-    }
-  }
-
-  /** The walkers amble along the roads, never off them. */
-  private updateFolk(): void {
-    for (const f of this.folk) {
-      if (f.t < 1) {
-        f.t = Math.min(1, f.t + 1 / 26);
-        continue;
-      }
-      if (Math.random() > 0.03) continue;
-      const dirs: Array<[number, number]> = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-      const ok = dirs.filter(([dx, dy]) => '|-+'.includes(this.tile(f.x + dx, f.y + dy)) && !(f.x + dx === f.fx && f.y + dy === f.fy) && !this.placeAt(f.x + dx, f.y + dy));
-      const pick = ok.length ? ok[Math.floor(Math.random() * ok.length)] : null;
-      if (!pick) {
-        [f.fx, f.fy] = [f.x, f.y];
-        continue;
-      }
-      f.fx = f.x;
-      f.fy = f.y;
-      f.x += pick[0];
-      f.y += pick[1];
-      f.t = 0;
-    }
   }
 
   private get s(): GameState {
@@ -520,7 +478,6 @@ export class OverworldScene implements Scene {
     }
 
     this.updateEncounters();
-    this.updateFolk();
     this.updateSounds();
     this.signal = this.radioSignal();
     if (this.signal > 0 && this.frame % [0, 90, 50, 26, 12][this.signal] === 0) this.game.audio.play('static', { vol: 0.4 + this.signal * 0.15 });
@@ -561,11 +518,8 @@ export class OverworldScene implements Scene {
     if (this.frame % 2 === 0) this.game.audio.play('step');
     const place = this.placeAt(me.x, me.y);
     // A viewpoint: from up here Dagny sees far, and the map fills in.
-    // (Every time, so it is clear what the place is: nothing to go into, a view.)
-    if (place?.view) {
-      if (markExplored(this.s, me.x, me.y, place.view, Math.round(place.view * 0.7))) this.game.audio.play('key');
-      this.game.toast(`${place.name} – ${STR.viewpoint}`, 3.5);
-    }
+    // (The first time, the place's dialog says what Dagny sees and that it goes on the map.)
+    if (place?.view && markExplored(this.s, me.x, me.y, place.view, Math.round(place.view * 0.7))) this.game.audio.play('key');
     // A place the radio finds is nothing at all without it.
     const byRadio = place?.hidden === 'radio' || place?.radio;
     if (place && byRadio && !hasItem(this.s, 'radio')) return;
@@ -647,31 +601,41 @@ export class OverworldScene implements Scene {
     for (const e of this.encounters) {
       if (this.gone(e)) continue;
       if (s.playTime < e.respawnAt) continue;
+      // Off the road, a meeting that has seen Dagny comes after her – quicker
+      // than it wanders, though not as quick as she walks. On the road she is
+      // safe: they never set foot on it, and lose interest while she keeps to it.
+      const dist = Math.abs(e.x - me.x) + Math.abs(e.y - me.y);
+      const onRoad = ROAD.includes(this.tile(me.x, me.y));
+      const chasing = !onRoad && dist < 9;
       if (e.t < 1) {
-        e.t = Math.min(1, e.t + 1 / 22);
+        e.t = Math.min(1, e.t + 1 / (chasing ? 14 : 22));
       } else if (--e.wait <= 0) {
-        e.wait = 25 + Math.floor(Math.random() * 35);
-        const dist = Math.abs(e.x - me.x) + Math.abs(e.y - me.y);
+        e.wait = chasing ? 6 + Math.floor(Math.random() * 6) : 25 + Math.floor(Math.random() * 35);
         const dirs: Array<[number, number]> = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-        let choice: [number, number];
-        if (dist < 7 && Math.random() < 0.75) {
-          // Drift toward Dagny.
-          const sx = Math.sign(me.x - e.x);
-          const sy = Math.sign(me.y - e.y);
-          choice = Math.abs(me.x - e.x) > Math.abs(me.y - e.y) ? [sx, 0] : [0, sy];
-        } else {
-          choice = dirs[Math.floor(Math.random() * 4)];
-        }
-        const nx = e.x + choice[0];
-        const ny = e.y + choice[1];
-        const ch = this.tile(nx, ny);
-        const homeDist = Math.abs(nx - e.def.x) + Math.abs(ny - e.def.y);
-        if (e.def.terrain.includes(ch) && !this.placeAt(nx, ny) && homeDist <= 6) {
+        const sx = Math.sign(me.x - e.x);
+        const sy = Math.sign(me.y - e.y);
+        // Toward her along the longer way first, then the other, then anywhere.
+        const tries: Array<[number, number]> = chasing
+          ? Math.abs(me.x - e.x) > Math.abs(me.y - e.y)
+            ? [[sx, 0], [0, sy || 1], [0, -(sy || 1)]]
+            : [[0, sy], [sx || 1, 0], [-(sx || 1), 0]]
+          : [dirs[Math.floor(Math.random() * 4)]];
+        for (const [cx, cy] of tries) {
+          if (!cx && !cy) continue;
+          const nx = e.x + cx;
+          const ny = e.y + cy;
+          const homeDist = Math.abs(nx - e.def.x) + Math.abs(ny - e.def.y);
+          const ch = this.tile(nx, ny);
+          const g = TERRAIN[ch];
+          // A shadow on the hunt crosses any open ground – but never the road, water or the fog and dark.
+          const open = chasing && e.def.sprite === 'owShadow' && !!g && !g.blocked && !g.needs && !g.sight && !ROAD.includes(ch);
+          if (!(e.def.terrain.includes(ch) || open) || this.placeAt(nx, ny) || homeDist > (chasing ? 10 : 6)) continue;
           e.fx = e.x;
           e.fy = e.y;
           e.x = nx;
           e.y = ny;
           e.t = 0;
+          break;
         }
       }
       // Collision → short side-view encounter.
@@ -861,11 +825,6 @@ export class OverworldScene implements Scene {
       const x = pl.x * T - camX;
       const y = pl.y * T - camY;
       if (visible(x, y)) drawSprite(ctx, 'owFallCave', Math.floor(this.frame / 8), x, y);
-    }
-    // Folk on the roads.
-    for (const f of this.folk) {
-      const p = this.pos(f);
-      if (visible(p.x - camX, p.y - camY)) drawSprite(ctx, 'owFolk', f.t < 1 ? Math.floor(this.frame / 8) % 2 : 0, p.x - camX, p.y - camY, f.x < f.fx);
     }
     // Encounters.
     for (const e of this.encounters) {
