@@ -1,6 +1,8 @@
 import { overlaps } from '../../engine/collision';
 import { spriteSize } from '../../engine/sprites';
 import { PALETTE } from '../../data/palettes';
+import { STR } from '../../data/strings';
+import { VASEN } from '../../data/vasen';
 import { Enemy, type HitHeight } from '../../entities/enemy';
 import { Pickup, Projectile } from '../../entities/misc';
 import { damageTaken, swordDamage } from '../progression';
@@ -95,6 +97,11 @@ export function killEnemy(sc: SideScene, e: Enemy): void {
   sc.puff(e.x + e.w / 2, e.y + e.h / 2, e.def.puff);
   s.xp += e.def.xp;
   sc.particles.spawn({ x: e.x + e.w / 2 - 6, y: e.y - 4, vy: -0.5, life: 50, text: `+${e.def.xp}`, color: PALETTE.Y });
+  // The first time: a page opens in Väsensboken.
+  if (VASEN[e.def.id] && !hasFlag(s, `vasen_${e.def.id}`)) {
+    setFlag(s, `vasen_${e.def.id}`);
+    sc.game.toast(`${STR.vasenNew} ${e.def.name}`, 3);
+  }
   if (e === sc.boss) {
     sc.bossOutro = 1;
     sc.shake(40, 3);

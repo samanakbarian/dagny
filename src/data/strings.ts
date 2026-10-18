@@ -20,6 +20,12 @@ export const STR = {
   spells: 'Läsningar',
   items: 'Föremål',
   map: 'Karta',
+  vasen: 'Väsensboken',
+  vasenNew: 'Ny sida i Väsensboken:',
+  vasenEmpty: 'Här skrivs varje väsen in när Dagny har besegrat eller förlikat det.',
+  vasenFolktro: 'Folktron',
+  vasenBerattelse: 'I berättelsen',
+  tagline: 'Ett äventyr genom den svenska folktron',
   saveQuit: 'Spara och avsluta',
   back: 'Tillbaka',
   noSpells: 'Du kan inga läsningar ännu. Byarnas äldre lär ut dem.',
@@ -120,7 +126,7 @@ export const STR = {
   ],
   // The credits after the epilogue.
   credits: [
-    'Co-Dawn Studio presenterar\n\nDagnys äventyr\nEtt spel om att minnas.',
+    'Co-Dawn Studio presenterar\n\nDagnys äventyr\nEtt äventyr genom den svenska folktron.',
     'Idé och manus\nSaman Akbarian och Claude\n\nProgrammering, grafik och musik\nSaman Akbarian och Claude',
     'Tack till alla väsen som lät sig förlikas, och till alla som spelade ända hit.',
   ],

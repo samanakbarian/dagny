@@ -44,6 +44,24 @@ give (`src/entities/player.ts`, `src/engine/touch.ts`):
 - **A thumb rolls between buttons:** sliding a finger off one button onto another lets go of the first and presses the second – jump, then roll onto the sword, without lifting. Two fingers on two buttons press both.
 - **Turning in the wind-up:** for the first 4 frames of a strike, the stick can still turn Dagny round, so a strike pressed a moment before the thumb reaches the other way meets what is behind her.
 
+## Väsensboken: an adventure through Swedish folk belief
+
+The game's line is **"Ett äventyr genom den svenska folktron"** (title screen,
+credits, store text). Almost every creature comes from Swedish folk belief, and
+the pause menu has **Väsensboken**: the first time Dagny beats or reconciles a
+creature, a page opens (with a toast). Each page has two leaves:
+
+- **Folktron** – what was really told about it: the kyrkogrim buried alive under
+  the church, the vättar warned before hot water was poured out, the
+  lyktgubbar who moved boundary stones, Bäckahästen's growing back. Where a
+  creature is the game's own (stenknekten, myrkatten), the page says so and
+  tells the belief it grows from.
+- **I berättelsen** – how it belongs to Dagny's story (Hulda's candles in the
+  crypt, the lamp marked H.D., Dagmar's boots by the pond …).
+
+The texts are in `src/data/vasen.ts`; a test checks that every creature and
+guardian has a page and that every page fits its panel.
+
 ## The first temple's creatures
 
 Dagny starts with 8 health (four bars), so the crypt must not drain it faster than skill can keep up:

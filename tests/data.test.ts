@@ -445,3 +445,18 @@ describe('spell costs', () => {
     expect(spellCost(s, 'lakning')).toBe(SPELLS.lakning.cost[0]);
   });
 });
+
+describe('Väsensboken', () => {
+  it('has a page for every creature and guardian, and every page fits its panel', async () => {
+    const { VASEN } = await import('../src/data/vasen');
+    const { LINE_HEIGHT } = await import('../src/engine/text');
+    for (const id of [...Object.keys(ENEMIES), ...Object.keys(BOSSES)]) expect(VASEN[id], id).toBeDefined();
+    for (const id of Object.keys(VASEN)) expect(ENEMIES[id] ?? BOSSES[id], id).toBeDefined();
+    // The text panel: 170 px wide, from y 48 to the panel's bottom edge (156 - 6).
+    const lines = Math.floor((156 - 48 - 6) / LINE_HEIGHT);
+    for (const [id, e] of Object.entries(VASEN)) {
+      expect(wrap(e.folktro, 170).length, `${id} folktro`).toBeLessThanOrEqual(lines);
+      expect(wrap(e.berattelse, 170).length, `${id} berättelse`).toBeLessThanOrEqual(lines);
+    }
+  });
+});

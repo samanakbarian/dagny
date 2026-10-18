@@ -12,6 +12,8 @@ import { MAX_LEVEL, STAT_NAMES } from '../data/progression';
 import { SKILLS, SPELLS, SPELL_ORDER } from '../data/spells';
 import { STR } from '../data/strings';
 import { TEMPLES } from '../data/temples';
+import { VASEN } from '../data/vasen';
+import { BOSSES, ENEMIES } from '../data/enemies';
 import type { StatId } from '../data/types';
 import type { Game, Overlay } from './game';
 import { nextCost, raise } from './progression';
@@ -41,6 +43,7 @@ export class PauseOverlay implements Overlay {
         { label: STR.spells, onSelect: () => g.pushOverlay(new SpellsOverlay(g)) },
         { label: STR.items, onSelect: () => g.pushOverlay(new ItemsOverlay(g)) },
         { label: STR.map, onSelect: () => g.pushOverlay(new MapOverlay(g)) },
+        { label: STR.vasen, onSelect: () => g.pushOverlay(new VasenOverlay(g)) },
         { label: STR.settings, onSelect: () => g.pushOverlay(new SettingsOverlay(g)) },
         {
           label: STR.saveQuit,
@@ -210,6 +213,87 @@ export class ItemsOverlay extends SubOverlay {
     drawText(ctx, `Liv ${s.hp}/${hpMax(s)}   Magi ${s.mp}/${mpMax(s)}   XP ${s.xp}`, f.x + 14, y + 12, 'w');
   }
 }
+
+/**
+ * Väsensboken: every creature Dagny has beaten or reconciled, with what folk
+ * belief said about it and how it fits her story. Up/down picks, left/right
+ * (or a tap on the text) turns between the two pages.
+ */
+export class VasenOverlay extends SubOverlay {
+  private cursor = 0;
+  private page = 0;
+  private scroll = 0;
+  private readonly ids = Object.keys(VASEN);
+  private known(id: string): boolean {
+    return hasFlag(this.game.state!, `vasen_${id}`);
+  }
+  protected tick(): void {
+    const i = this.game.input;
+    const n = this.ids.length;
+    const move = (d: number): void => {
+      this.cursor = (this.cursor + d + n) % n;
+      this.page = 0;
+      this.game.audio.play('menu');
+    };
+    if (i.pressed(Act.Down)) move(1);
+    if (i.pressed(Act.Up)) move(-1);
+    if (i.pressed(Act.Left) || i.pressed(Act.Right) || i.pressed(Act.Jump)) {
+      this.page = 1 - this.page;
+      this.game.audio.play('menu');
+    }
+    for (const t of i.taps) {
+      if (t.x < 16 + 104) {
+        const row = Math.floor((t.y - 34) / ROW);
+        if (row >= 0 && row < VISIBLE && this.scroll + row < n) {
+          this.cursor = this.scroll + row;
+          this.page = 0;
+        }
+      } else this.page = 1 - this.page;
+    }
+    if (this.cursor < this.scroll) this.scroll = this.cursor;
+    if (this.cursor >= this.scroll + VISIBLE) this.scroll = this.cursor - VISIBLE + 1;
+  }
+  render(ctx: CanvasRenderingContext2D): void {
+    const f = this.frame(ctx, STR.vasen);
+    const found = this.ids.filter((id) => this.known(id)).length;
+    drawText(ctx, `${found}/${this.ids.length}`, f.x + 74, f.y + 6, 'G');
+    for (let r = 0; r < VISIBLE; r++) {
+      const k = this.scroll + r;
+      const id = this.ids[k];
+      if (!id) break;
+      const y = f.y + 22 + r * ROW;
+      if (k === this.cursor) {
+        ctx.fillStyle = P.K;
+        ctx.fillRect(f.x + 6, y - 1, 96, ROW);
+      }
+      drawText(ctx, this.known(id) ? vasenName(id) : '? ? ?', f.x + 10, y, this.known(id) ? (k === this.cursor ? 'Y' : 'W') : 'G');
+    }
+    const tx = f.x + 110;
+    const tw = f.w - 118;
+    const id = this.ids[this.cursor];
+    if (!found) {
+      wrap(STR.vasenEmpty, tw).forEach((l, i) => drawText(ctx, l, tx, f.y + 22 + i * LINE_HEIGHT, 'G'));
+      return;
+    }
+    if (!this.known(id)) {
+      drawText(ctx, '? ? ?', tx, f.y + 22, 'G');
+      return;
+    }
+    const e = VASEN[id];
+    drawText(ctx, vasenName(id), tx, f.y + 22, 'Y');
+    drawText(ctx, `${this.page ? STR.vasenBerattelse : STR.vasenFolktro}  (${this.page + 1}/2)`, tx, f.y + 34, 'c');
+    wrap(this.page ? e.berattelse : e.folktro, tw).forEach((l, i) => drawText(ctx, l, tx, f.y + 48 + i * LINE_HEIGHT, 'W'));
+  }
+}
+
+/** A creature's name, guardians included. */
+function vasenName(id: string): string {
+  return (ENEMIES[id] ?? BOSSES[id])?.name ?? id;
+}
+
+/** Rows in Väsensboken's list. */
+const ROW = 11;
+const VISIBLE = 12;
 
 /** Overworld map with the places and the temples' state. */
 export class MapOverlay extends SubOverlay {
