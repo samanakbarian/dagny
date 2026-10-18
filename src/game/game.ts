@@ -92,6 +92,10 @@ export class Game {
     // Taps on the canvas (menus, NPCs). Also unlock audio and show touch controls.
     canvas.addEventListener('pointerdown', (e) => {
       e.preventDefault();
+      // preventDefault also stops the browser moving keyboard focus here – and
+      // when the game runs inside a frame (a web page, the demo), the keys would
+      // keep going to the page around it. Take focus ourselves.
+      window.focus();
       this.audio.unlock();
       if (e.pointerType === 'touch') {
         this.input.setSource('touch');
@@ -101,6 +105,9 @@ export class Game {
       this.input.addTap(p.x, p.y);
     });
     controlsRoot.addEventListener('pointerdown', () => this.audio.unlock(), { capture: true });
+    // Any click or touch anywhere gives the game the keyboard (see above).
+    document.addEventListener('pointerdown', () => window.focus(), { capture: true });
+    window.focus();
     for (const ev of ['touchstart', 'touchend', 'gesturestart', 'dblclick', 'contextmenu'] as const) {
       document.addEventListener(ev, (e) => {
         if (ev === 'touchstart' || ev === 'touchend') this.audio.unlock();
