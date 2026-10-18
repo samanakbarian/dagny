@@ -158,7 +158,7 @@ export function build(sc: SideScene): void {
     const heap = new Set((a.cavein.rubble ?? []).map(([x, y]) => y * w + x));
     for (const i of heap) {
       sc.grid.kinds[i] = Kind.Solid;
-      sc.tileSprite[i] = heap.has(i - w) ? theme.fill : theme.top;
+      sc.tileSprite[i] = heap.has(i - w) ? 'rubbleFill' : 'rubble';
     }
   }
   // Without the radio, rooms behind a hidden wall look like solid rock.
