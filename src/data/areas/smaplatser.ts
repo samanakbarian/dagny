@@ -66,6 +66,37 @@ export const SMAPLATSER: Record<string, AreaDef> = {
     ],
   },
 
+  /** Gamla smedjan east of Mormors by: Algot's tongs, left behind when the väsen moved in. */
+  gamla_smedjan: {
+    id: 'gamla_smedjan',
+    name: 'Gamla smedjan',
+    kind: 'path',
+    tone: 'sommarkvall',
+    music: 'stig',
+    backdrop: 'forest',
+    theme: 'meadow',
+    showName: true,
+    ambience: ['leaves'],
+    questItem: 'tang',
+    signs: { I: 'smedjan_skylt' },
+    props: [{ sprite: 'birch', tx: 3, ty: 9 }, { sprite: 'spruce', tx: 27, ty: 9 }],
+    left: { to: 'overworld', ow: { x: 16, y: 57 } },
+    tiles: [
+      "................................",
+      "................................",
+      "................................",
+      "................................",
+      "................................",
+      "....................r...........",
+      "..................====..........",
+      "................................",
+      "...........===.........q........",
+      "..A.I..v...........v..####.....#",
+      "################################",
+      "################################",
+    ],
+  },
+
   /** Pestkorset in the mill valley: den grå frun wants flowers for those who rest here. */
   pestkorset: {
     id: 'pestkorset',

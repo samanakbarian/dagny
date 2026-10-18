@@ -262,6 +262,7 @@ export const villageSprites: Record<string, SpriteDef> = {
 
   // Side-quest items.
   /** Johannesört – a sprig of yellow star flowers. */
+  tang: item(['k.....k.', 'gk...kg.', '.gk.kg..', '..gkg...', '..kgk...', '.k...k..', 'b.....b.', 'b.....b.']),
   johannesort: item(['.Y...Y..', 'YyY.YyY.', '.Y.M.Y..', '..MMM...', '...M..Y.', '...M.YyY', '...MM.Y.', '...M....']),
   psalmbok: item(['.kkkkkk.', 'kbbbbbbk', 'kbbYbbbk', 'kbYYYbbk', 'kbbYbbbk', 'kbbYbbbk', 'kbbbbbbW', '.kkkkkkW']),
   medaljong: item(['...yy...', '..y..y..', '...yy...', '..yYYy..', '.yYWWYy.', '.yYWiYy.', '..yYYy..', '...yy...']),

@@ -13,10 +13,11 @@ what is checked is that every door, gate, condition and dialog fits together.
 - **Stenkyrkans krypta**: finds a key
 - **Björkhagen**: gets Johannesört
 - **Gamla kyrkogården**: meets sten_anna, sten_per, sten_karin, sten_karin_rubbad, sten_johan; finds a näverdocka; finds a container
+- **Gamla smedjan**: gets Smedtången
 
 ## 2
 
-- **Mormors by**: meets murre; hands over Murre; hands over Johannesört; learns Läkning
+- **Mormors by**: meets murre; hands over Murre; hands over Johannesört; learns Läkning; hands over Smedtången; learns Nedåtstöt
 - **Stenkyrkans krypta**: unlocks a door
 - **Valvgången**: finds a key
 
@@ -33,7 +34,6 @@ what is checked is that every door, gate, condition and dialog fits together.
 
 ## 5
 
-- **Mormors by**: learns Nedåtstöt
 - **Kyrkbyn**: learns Eld
 - **Gruvsamhället**: meets Maj på pensionatet, Gamla Elin, Lisa, Gruvarbetaren Nils, Gruvarbetaren Anders; learns Lyse
 - **Den gamla gruvan**: finds a key

@@ -34,8 +34,11 @@ describe('nothing is handed out for free at the start', () => {
     expect(AREAS.bjorkhagen.tiles.join('')).toContain('q');
   });
 
-  it('Algot teaches Nedåtstöt only after the crypt', () => {
+  it('Algot teaches Nedåtstöt once Dagny brings his tongs from the old smithy – before the crypt, which he warns about', () => {
     expect(teaches(talk(NPCS.algot, {}), 'nedatstot')).toBe(false);
-    expect(teaches(talk(NPCS.algot, { flags: ['krypta_klar'] }), 'nedatstot')).toBe(true);
+    expect(DIALOG[talk(NPCS.algot, {})].pages.join(' ')).toMatch(/kryptan/);
+    expect(teaches(talk(NPCS.algot, { flags: ['tang_uppdrag'] }), 'nedatstot')).toBe(false);
+    expect(teaches(talk(NPCS.algot, { flags: ['tang_uppdrag'], items: ['tang'] }), 'nedatstot')).toBe(true);
+    expect(AREAS.gamla_smedjan.questItem).toBe('tang');
   });
 });

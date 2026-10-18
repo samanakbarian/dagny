@@ -25,11 +25,15 @@ export function drawHud(ctx: CanvasRenderingContext2D, s: GameState, opts: { key
   }
   // Levels and XP
   const lx = 120;
-  const L = STR.levelShort;
+  // Levels as the same pictures as the bars: a blade for strength, the cup for
+  // magic, the heart for life – clearer than letters.
   let x = lx;
-  x += drawText(ctx, `${L.styrka}${s.levels.styrka}`, x, 4, 'Y', { shadow: 'k' }) + 5;
-  x += drawText(ctx, `${L.magi}${s.levels.magi}`, x, 4, 'c', { shadow: 'k' }) + 5;
-  x += drawText(ctx, `${L.liv}${s.levels.liv}`, x, 4, 'i', { shadow: 'k' }) + 8;
+  drawBlade(ctx, x, 5);
+  x += 9 + drawText(ctx, `${s.levels.styrka}`, x + 9, 4, 'Y', { shadow: 'k' }) + 5;
+  drawSprite(ctx, 'hudCup', 0, x, 5);
+  x += 9 + drawText(ctx, `${s.levels.magi}`, x + 9, 4, 'c', { shadow: 'k' }) + 5;
+  drawSprite(ctx, 'hudHeart', 0, x, 5);
+  x += 9 + drawText(ctx, `${s.levels.liv}`, x + 9, 4, 'i', { shadow: 'k' }) + 8;
   const target = nextTarget(s.levels);
   const xpText = target === null ? `${STR.xp} ${s.xp}` : `${STR.xp} ${s.xp}/${target}`;
   drawText(ctx, xpText, x, 4, target !== null && s.xp >= target ? 'Y' : 'W', { shadow: 'k' });
@@ -40,4 +44,17 @@ export function drawHud(ctx: CanvasRenderingContext2D, s: GameState, opts: { key
     drawSprite(ctx, 'key', 0, lx + 26, 16);
     drawText(ctx, `×${opts.keys}`, lx + 36, 15, 'W', { shadow: 'k' });
   }
+}
+
+/** A small blade, the picture for strength in the HUD. */
+function drawBlade(ctx: CanvasRenderingContext2D, x: number, y: number): void {
+  // A dark shadow under it, like the text's.
+  ctx.fillStyle = '#2b2233';
+  for (let i = 0; i < 5; i++) ctx.fillRect(x + 3 + i, y + 5 - i, 1, 1);
+  ctx.fillRect(x + 2, y + 5, 3, 1);
+  ctx.fillStyle = '#f3e6c8';
+  for (let i = 0; i < 5; i++) ctx.fillRect(x + 2 + i, y + 4 - i, 1, 1);
+  ctx.fillStyle = '#d6a046';
+  ctx.fillRect(x + 1, y + 4, 2, 1);
+  ctx.fillRect(x + 2, y + 3, 1, 3);
 }

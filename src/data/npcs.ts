@@ -36,8 +36,9 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
     idle: { frames: [0, 2, 0, 0], every: 0.9 },
     talk: [
       { if: [{ flag: 'algot_lart' }], dialog: 'algot_igen' },
-      { if: [{ flag: 'krypta_klar' }], dialog: 'algot_lar' },
-      { dialog: 'algot_vantar' },
+      { if: [{ item: 'tang' }], dialog: 'algot_tack' },
+      { if: [{ flag: 'tang_uppdrag' }], dialog: 'algot_vantar' },
+      { dialog: 'algot_uppdrag' },
     ],
   },
   karin: {

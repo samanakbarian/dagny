@@ -14,7 +14,7 @@ or a hidden place. At the start she has only the blade Mormor gives her.
 | What | Who | Where | What it costs |
 |---|---|---|---|
 | Läkning | Gamle Sven | Mormors by | Fetch **johannesört** from the high ledges in Björkhagen (nettles, crows, jumps) |
-| Nedåtstöt | Smeden Algot | Mormors by | Clear the **crypt** (temple 1) first |
+| Nedåtstöt | Smeden Algot | Mormors by | Fetch his **tongs** from Gamla smedjan, east of the village – before the crypt, which he warns against entering without it (Grimmen hovers high) |
 | Lyse | Gamla Elin | Gruvsamhället | The village is reached by boat (treasure of temple 1) |
 | Eld | Prosten | Kyrkbyn | After the crypt |
 | Skydd | Smeden Holm | Bruksorten | Region gated by the karbidlampa |

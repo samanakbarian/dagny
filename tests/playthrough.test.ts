@@ -235,3 +235,12 @@ describe('the radio hunt (chapter 7)', () => {
     expect(run.flags.has('ture_sandare')).toBe(true);
   });
 });
+
+describe('the first temple is not entered unprepared', () => {
+  it('Nedåtstöt (Algot, for his tongs from the old smithy) can be had before the crypt’s Grimmen', () => {
+    const skill = run.steps.findIndex((s) => s.kind === 'skill' && s.what === 'nedatstot');
+    const boss = run.steps.findIndex((s) => s.kind === 'boss' && s.where.startsWith('krypta'));
+    expect(skill).toBeGreaterThanOrEqual(0);
+    expect(skill).toBeLessThan(boss);
+  });
+});

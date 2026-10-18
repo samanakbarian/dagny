@@ -14,7 +14,7 @@ export const HEM: Record<string, DialogDef> = {
       'Bredvid dig låg en klinga utan fäste. Jag har smitt ihop den åt dig, med kläppen från kyrkklockan.',
       'Ta den. Inte för att förinta väsendena, mitt barn – utan för att förlika världarna.',
       'Gå först till Stenkyrkan i norr. Kryptan där nere har börjat ringa igen om nätterna.',
-      'Och prata med gamle Sven innan du går. Han kan en läsning eller två.',
+      'Och prata med gamle Sven och smeden Algot innan du går. De kan ett och annat.',
     ],
     actions: [
       { type: 'giveItem', item: 'svard' },
@@ -100,13 +100,25 @@ export const HEM: Record<string, DialogDef> = {
     pages: ['Det har inte varit så här ljust på år och dag. Min farmor hade varit stolt över dig, jäntan.'],
   },
 
-  algot_lar: {
+  algot_uppdrag: {
     speaker: 'Smeden Algot',
     pages: [
-      'Solen över Stenkyrkan i morse – det var du, va? Då har du gjort dig förtjänt av ett smedknep.',
-      'Ett råd från en gammal smed: när du hoppar, håll NER och låt tyngden göra jobbet.',
+      'Så det är du som bär klockans kläpp nu. Ska du ner i kryptan? Inte utan att kunna stöta nedåt, säger jag.',
+      'Grimmen svävar högt och hugger ovanifrån. Den som inte kan slå neråt i luften kommer inte åt honom.',
+      'Jag lär dig. Men först vill jag ha tillbaka min gamla tång. Den ligger kvar i gamla smedjan, öster om byn.',
+    ],
+    actions: [{ type: 'flag', flag: 'tang_uppdrag' }],
+  },
+
+  algot_tack: {
+    speaker: 'Smeden Algot',
+    pages: [
+      'Min tång! Den har hållit mer järn än du har ätit gröt, jäntan. Tack.',
+      'Nu ska du få ditt knep: när du hoppar, håll NER och låt tyngden göra jobbet.',
     ],
     actions: [
+      { type: 'takeItem', item: 'tang' },
+      { type: 'flag', flag: 'tang_klar' },
       { type: 'learnSkill', skill: 'nedatstot' },
       { type: 'flag', flag: 'algot_lart' },
     ],
@@ -116,8 +128,7 @@ export const HEM: Record<string, DialogDef> = {
   algot_vantar: {
     speaker: 'Smeden Algot',
     pages: [
-      'Så det är du som bär klockans kläpp nu. Den har slagit tolv slag varje midsommar i hundra år.',
-      'Jag har ett knep att lära dig. Men först vill jag se att du klarar dig där nere i kryptan. Kom tillbaka när grimmen fått frid.',
+      'Tången ligger i gamla smedjan, öster om byn. Och gå inte ner i kryptan förrän du kan stöta nedåt.',
     ],
   },
 
@@ -278,6 +289,14 @@ export const HEM: Record<string, DialogDef> = {
 
   bjorkhagen_nasslor: {
     pages: ['En lapp på en pinne, skriven med barnhandstil:\n"AKTA BRÄNNÄSSLORNA I GROPEN! HOPPA ÖVER! /OLLE"'],
+  },
+
+  hittade_tang: {
+    pages: ['Dagny hittade SMEDTÅNGEN! Den är tung och sotig. Smeden Algot väntar på den.'],
+  },
+
+  smedjan_skylt: {
+    pages: ['Gamla smedjan. Ässjan är kall sedan länge, och skorstenen har rasat. Här bodde väsen förr, säger folk.'],
   },
 
   hittade_johannesort: {

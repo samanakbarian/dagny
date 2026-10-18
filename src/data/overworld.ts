@@ -78,7 +78,7 @@ export const OVERWORLD: OverworldDef = {
     '^^^......:|::::mm...fffffff.....ww^^mm..........m...N^^^^NNNNNNNNff.....B...mmmm....mfmm_~~~^^^^',
     '^^^^......|::::mm..ffffffff....^wwmmm..i............NNNNNNNNNNNNNff.........mmmm....fff.._~~~^^^',
     '^^^.......|:::......ffffffu.....ww.....---+-----B...NNNNNNeNNNNNNNm........mmmmmmm......._~~~^^^',
-    '^^^m......|.:...................ww........|.mm......NNNNNNNNNNNNNNmm......mmmmmmmmm......_~~~^^^',
+    '^^^m......|.:....t..............ww........|.mm......NNNNNNNNNNNNNNmm......mmmmmmmmm......_~~~^^^',
     '^^^mm....mV.....................bb^....mmm|.mm......NNNNNNNNNNNNNNmm....mmmmmmmmmmm.....u__~^^^^',
     '^^^^mmmmmm|...mmm............ffwww....mmmm|..m......NNNNNNNNNNNNN.......mmmmmmmmff......._~~~^^^',
     '^^^mmmmmmm|...mfm.......mm...ffwww....mmmm|..m.......NNNNNNNNNNNN.........mmmmmmff.mm...__~~~^^^',
@@ -148,6 +148,7 @@ export const OVERWORLD: OverworldDef = {
     { x: 62, y: 37, name: 'Signalstranden', area: 'signalstranden', entry: 'A' },
     { x: 62, y: 18, name: 'Gamla stollen', area: 'stollen', entry: 'A' },
     { x: 63, y: 18, name: 'Gamla stollen', area: 'stollen_2', entry: 'E' },
+    { x: 17, y: 57, name: 'Gamla smedjan', area: 'gamla_smedjan', entry: 'A' },
     { x: 59, y: 15, name: 'Sidoorten', area: 'stollen_gomd', entry: 'E' },
   ],
   encounters: [
