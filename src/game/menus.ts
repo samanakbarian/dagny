@@ -223,7 +223,8 @@ export class VasenOverlay extends SubOverlay {
   private cursor = 0;
   private page = 0;
   private scroll = 0;
-  private readonly ids = Object.keys(VASEN);
+  /** Pages Dagny has opened first, so a new one is never hidden below the fold. */
+  private readonly ids = [...Object.keys(VASEN)].sort((a, b) => Number(this.known(b)) - Number(this.known(a)));
   private known(id: string): boolean {
     return hasFlag(this.game.state!, `vasen_${id}`);
   }

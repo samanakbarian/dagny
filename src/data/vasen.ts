@@ -65,7 +65,7 @@ export const VASEN: Readonly<Record<string, VasenEntry>> = {
   },
   vatteGra: {
     folktro:
-      'Gravvätten finns inte i folktron under just det namnet, men kyrkogårdarna var fulla av väsen: kyrkogrimmen, gastar och de dödas egna skuggor. Den som tog något från en grav, eller trampade på den, sades kunna få besök om natten.',
+      'Gravvättar kallar man i Kyrkbyn de små väsen som håller till bland gravarna. Kyrkogårdarna var fulla av väsen: kyrkogrimmen, gastar och de dödas egna skuggor. Den som tog något från en grav, eller trampade på den, sades kunna få besök om natten.',
     berattelse:
       'Gravvättarna i kryptan tjänar Kyrkogrimmen. De vaknade när ljusen slutade tändas.',
   },
@@ -83,7 +83,7 @@ export const VASEN: Readonly<Record<string, VasenEntry>> = {
   },
   myrkatt: {
     folktro:
-      'Myrkatten är spelets eget väsen, men den är släkt med trollkatten, eller bjäran: ett djur som trollkunniga kvinnor sades skapa av ullgarn och blod för att stjäla mjölk från grannarnas kor och spy upp den i matmors kärna.',
+      'Myrkatt kallar folket i Hemdalen katten som hoppar på myrarna. De gamla säger att den är släkt med trollkatten, eller bjäran: ett djur som trollkunniga kvinnor sades skapa av ullgarn och blod för att stjäla mjölk från grannarnas kor och spy upp den i matmors kärna.',
     berattelse:
       'Myrkatterna hoppar på myren och i sanka marker. Ingen vet vems de är.',
   },
@@ -95,7 +95,7 @@ export const VASEN: Readonly<Record<string, VasenEntry>> = {
   },
   stenknekt: {
     folktro:
-      'Stenknekten är spelets eget väsen. Men folktron förklarade gärna stora stenblock: de var troll som solen hunnit ifatt, eller stenar som jättar kastat efter kyrkorna när klockorna störde dem.',
+      'Stenknektar kallas stenväktarna i Stenkyrkans krypta. Folktron förklarade gärna stora stenblock: de var troll som solen hunnit ifatt, eller stenar som jättar kastat efter kyrkorna när klockorna störde dem.',
     berattelse:
       'Stenknektarna är kryptans gamla stenväktare. I mörkret är de svåra att se – och svåra att stoppa.',
   },
