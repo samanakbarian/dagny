@@ -261,7 +261,10 @@ export function playthrough(opts: Options = {}): Playthrough {
     // First the people and the signs – a player talks before picking things up –
     for (const [x, , ch] of cells) {
       if (x === 0 && a.left) exits.push(a.left);
-      if (x === w - 1 && a.right) exits.push(a.right);
+      if (x === w - 1 && a.right) {
+        exits.push(a.right);
+        for (const f of [a.cavein?.flag, a.opens]) if (f && !flags.has(f)) setFlag(f);
+      }
       if (ch >= '1' && ch <= '9' && a.npcs?.[ch]) meet(a.npcs[ch]);
       else if (/[A-Z@]/.test(ch)) {
         if (a.doors?.[ch]) exits.push(a.doors[ch]);

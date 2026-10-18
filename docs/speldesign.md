@@ -225,8 +225,13 @@ Two dark side-view rooms instead of a map tile. The first has a cart over a
 spike gutter and a radio gallery; in the second, **Rasgången**, the roof caves
 in behind Dagny once she is a few steps in and the rubble rolls after her
 (`cavein` on the room). Stones fall at its front; being caught hurts and shoves
-her ahead. Reaching the far side ends it for good; from the east it never
-starts.
+her ahead. Reaching the far side ends it for good, and the heaps it left
+(`cavein.rubble`) lie on the floor from then on, to climb over either way.
+
+There is one way in: the west mouth. The east mouth is boarded up and the side
+gallery (Sidoorten) is blocked by rubble from outside. Both open only once
+Dagny has come out through them from inside (`requires` on the place: the
+cave-in's flag, and `opens` on Sidoorten's room).
 
 ## Trollberget – the last temple
 

@@ -73,9 +73,13 @@ export const PASSAGER: Record<string, AreaDef> = {
     ambience: ['dust'],
     showName: true,
     signs: { I: 'stollen_ras_skylt' },
-    cavein: { at: 6, speed: 1.15, flag: 'stollen_rasat' },
+    cavein: {
+      at: 6, speed: 1.15, flag: 'stollen_rasat',
+      // What the roof left on the floor: heaps to climb over, there for good.
+      rubble: [[9, 9], [18, 9], [19, 9], [19, 8], [26, 9], [36, 9], [37, 9], [48, 9], [61, 9]],
+    },
     left: { to: 'stollen', entry: 'E' },
-    right: { to: 'overworld', ow: { x: 64, y: 18 } },
+    right: { to: 'overworld', ow: { x: 67, y: 18 } },
     // A side gallery off the cave-in: Hulda's old pocket, and a way out by the mine.
     doors: { U: { to: 'stollen_gomd', entry: 'A' } },
     tiles: [
@@ -128,6 +132,7 @@ export const PASSAGER: Record<string, AreaDef> = {
     signs: { I: 'stollen_gomd_ristning' },
     left: { to: 'stollen_2', entry: 'U' },
     right: { to: 'overworld', ow: { x: 58, y: 15 } },
+    opens: 'sidoorten_oppen',
     tiles: [
       "##################################",
       "##################################",

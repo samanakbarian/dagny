@@ -825,6 +825,7 @@ export class SideScene implements Scene, WorldApi {
     this.exiting = true;
     // Out ahead of the cave-in: it is over for good.
     if (this.area.cavein && exit === this.area.right) setFlag(this.s, this.area.cavein.flag);
+    if (this.area.opens && exit === this.area.right) setFlag(this.s, this.area.opens);
     const g = this.game;
     if (exit.to === 'overworld') {
       if (exit.ow) this.s.ow = { ...exit.ow };

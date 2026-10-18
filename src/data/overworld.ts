@@ -39,7 +39,7 @@ export const OVERWORLD: OverworldDef = {
     '^^lllllllffff|...lllll..ffff.lkk^^^^kkk^XXXXX^^^....XffffX.Da^^^^^....|ggggff....hh.........^^^^',
     '^^lllllllfff++..lllllll.fff..^^^^^^^^^^^^^^^^.......ffffff......^^....|.gggf.........u.......^^^',
     '^^lllllllfff|ff.llllllllfff..^^^^^^^^^^^h.^^.hhhh....fff.hhhh.^^^^^..h|..g...................^^^',
-    '^^llll...fff|fffflllllllfff..^^^^^.hh^^hh.+------------+M+---.DD....--B.....................hh^^',
+    '^^llll...fff|fffflllllllfff..^^^^^.hh^^hh.+------------+M+---.D^^^D.--B.....................hh^^',
     '^^lllll..ff.t.fffllllllllfl.l^^^^..hhhhhh.|.hhhhhh..hhh+-+hhh.^^^^^..h|......................h^^',
     '^^llllll.fff.ffffllll.lllfll^^^^^hhhh+----B.hhhh..fhhhh......^^^^^^^.h|.....................u.^^',
     '^^^lllll..fffffffllll..lllll^^^^hhhhh|hh....hhh...hhhhh......^^^^^^^.h|.............h.........^^',
@@ -146,10 +146,11 @@ export const OVERWORLD: OverworldDef = {
     { x: 40, y: 30, name: 'Eremitholmen', area: 'eremitholmen', entry: 'A' },
     { x: 57, y: 46, name: 'Måsskäret', area: 'masskaret', entry: 'A' },
     { x: 62, y: 37, name: 'Signalstranden', area: 'signalstranden', entry: 'A' },
-    { x: 62, y: 18, name: 'Gamla stollen', area: 'stollen', entry: 'A' },
-    { x: 63, y: 18, name: 'Gamla stollen', area: 'stollen_2', entry: 'E' },
+    { x: 62, y: 18, name: 'Gamla stollen', area: 'stollen', entry: 'A', leadsTo: { x: 67, y: 18 } },
+    // The far mouth and the side gallery open only from inside: one way in, through the cave-in.
+    { x: 66, y: 18, name: 'Gamla stollen', area: 'stollen_2', entry: 'E', requires: ['stollen_rasat'], dialog: 'stollen_ost_stangd', leadsTo: { x: 61, y: 18 } },
     { x: 17, y: 57, name: 'Gamla smedjan', area: 'gamla_smedjan', entry: 'A' },
-    { x: 59, y: 15, name: 'Sidoorten', area: 'stollen_gomd', entry: 'E' },
+    { x: 59, y: 15, name: 'Sidoorten', area: 'stollen_gomd', entry: 'E', requires: ['sidoorten_oppen'], dialog: 'sidoorten_stangd' },
   ],
   encounters: [
     { sprite: 'owShadow', terrain: '.:m', x: 22, y: 43 },

@@ -5,6 +5,12 @@ export const VARLDEN: Record<string, DialogDef> = {
   stollen_ras_skylt: {
     pages: ['Ett kors av två bjälkar, och en lapp i en spik:\n"HÄR GICK TAKET 1931. TRE KOM UT. LYSSNA PÅ BERGET – OCH SPRING."'],
   },
+  stollen_ost_stangd: {
+    pages: ['Ortmynningen är spikad igen med grova plankor, och bakom dem ligger sten. Härifrån kommer ingen in.'],
+  },
+  sidoorten_stangd: {
+    pages: ['Ett hål i berget, igenrasat. Det drar kallt ur springorna mellan stenarna, så någonstans därinne går det vidare.'],
+  },
   stollen_skylt: {
     pages: ['Ett murket plank vid ortmynningen:\n"GAMLA STOLLEN. STÄNGD 1931 EFTER RASET. TRÄD EJ IN."', 'Någon har ristat under, med kniv: "Lampan visar vägen. Håll dig från taket."'],
   },

@@ -372,9 +372,11 @@ export interface AreaDef {
    * A cave-in that chases Dagny: once she passes tile column `at` (coming in
    * from the left), the roof comes down behind her and the rubble moves right
    * at `speed` px per step until she gets out. Escaped once, `flag` is set and
-   * it never happens again.
+   * it never happens again – and the `rubble` heaps (tiles) lie on the floor from then on.
    */
-  cavein?: { at: number; speed: number; flag: string };
+  cavein?: { at: number; speed: number; flag: string; rubble?: Array<[number, number]> };
+  /** Leaving by the right exit sets this flag: a way that opens only from inside. */
+  opens?: string;
   /** Tougher creatures (the last temple): more health and harder blows. */
   hard?: boolean;
   /** Dialog started automatically the first time (needs flag to not repeat). */

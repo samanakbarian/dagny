@@ -342,7 +342,7 @@ Varje steg går att provspela innan nästa påbörjas.
 
 ### Steg 1 (gjort)
 
-- **Gamla stollen** (`data/areas/passager.ts`): gruvorten är nu en mörk sidovybana genom fjället, inträde från båda håll, med vagn över en taggränna, ett ras att hoppa över och ett galleri under taket där radion avslöjar en näverdocka (återkomst). Gruvorten är markerad `passage` i terrängtabellen.
+- **Gamla stollen** (`data/areas/passager.ts`): gruvorten är nu en mörk sidovybana genom fjället, inträde från väster, med vagn över en taggränna, ett ras att hoppa över och ett galleri under taket där radion avslöjar en näverdocka (återkomst). Gruvorten är markerad `passage` i terrängtabellen.
 - **Dimma på myren och mörker i nattskogen** (`sight` i terrängtabellen): bara några rutor runt Dagny syns, i skogen bara ficklampans sken framför henne, och pausmenyns karta fylls bara i nära henne.
 
 ### Steg 2 (gjort)
@@ -356,7 +356,7 @@ Varje steg går att provspela innan nästa påbörjas.
 ### Steg 3 – kapitel 4 (gjort)
 
 - **Bruksorten lär ut det kvarnen kräver:** nyckeln i kvarnen ligger i en stängd kammare ovanför en lucka (`!`) som bara Uppåtstöt slår upp. Karlsson nämner luckan, och lösaren bevisar att kvarnen inte går utan Uppåtstöt.
-- **Gamla stollen, Rasgången** (`stollen_2`): ett andra mörkt rum. När Dagny har gått in en bit rasar taket bakom henne och raset rullar efter (`cavein` på rummet) – stenar faller vid fronten, och den som blir hunnen får ont och knuffas fram. Ut på andra sidan är raset över för gott (flaggan `stollen_rasat`); kommer man från öster händer ingenting.
+- **Gamla stollen, Rasgången** (`stollen_2`): ett andra mörkt rum. När Dagny har gått in en bit rasar taket bakom henne och raset rullar efter (`cavein` på rummet) – stenar faller vid fronten, och den som blir hunnen får ont och knuffas fram. Ut på andra sidan är raset över för gott (flaggan `stollen_rasat`), och stenhögarna ligger kvar på golvet sedan dess. Stollen har bara en ingång, i väster. Östra mynningen är igenspikad och Sidoorten igenrasad utifrån; de öppnas först när Dagny har gått ut genom dem inifrån.
 - **Vägvalet i Rasgången:** mitt i raset finns en öppning till **Sidoorten** (`stollen_gomd`). Där har Hulda ristat ett H och ett litet D: "Här lärde jag henne lyssna på berget. H.D. 1934" – en ledtråd till vändningen. Sidoorten mynnar vid den igenrasade gruvorten ovanför Gamla gruvan, en genväg tillbaka till Gruvsamhället (karbidlampan behövs).
 
 ### Steg 4 – kapitel 5 (gjort)

@@ -153,6 +153,14 @@ export function build(sc: SideScene): void {
       sc.grid.kinds[i] = kind;
     }
   }
+  // After a cave-in, what came down stays: heaps of rock on the floor.
+  if (a.cavein && hasFlag(s, a.cavein.flag)) {
+    const heap = new Set((a.cavein.rubble ?? []).map(([x, y]) => y * w + x));
+    for (const i of heap) {
+      sc.grid.kinds[i] = Kind.Solid;
+      sc.tileSprite[i] = heap.has(i - w) ? theme.fill : theme.top;
+    }
+  }
   // Without the radio, rooms behind a hidden wall look like solid rock.
   if (!hasItem(s, 'radio') && a.tiles.some((r) => r.includes('?'))) sealHiddenRooms(sc, theme.fill);
   // The treasure appears on the altar once the guardian is reconciled.
