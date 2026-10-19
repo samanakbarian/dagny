@@ -4,6 +4,7 @@ import { drawSprite, spriteSize } from '../../engine/sprites';
 import { ring } from '../../engine/draw';
 import { drawText, measure } from '../../engine/text';
 import { PALETTE } from '../../data/palettes';
+import { FURNITURE } from '../../data/furniture';
 import { SPELLS } from '../../data/spells';
 import type { SpellId } from '../../data/types';
 import { Particles } from '../../entities/misc';
@@ -16,6 +17,19 @@ import type { SideScene } from '../sidescene';
 
 /** Drawing a side-view scene: backdrop, tiles, creatures, Dagny, light and darkness, and the overlays on top. */
 
+
+/** Furniture that gives light: where the light sits in the sprite (px) and its radius. */
+const GLOWS: Readonly<Record<string, [number, number, number]>> = {
+  kryptaLamm: [16, 24, 30],
+  gruvOffer: [5, 3, 26],
+  fyrLogg: [11, 3, 22],
+  fyrLins: [16, 16, 46],
+  skogOffersten: [24, 4, 24],
+  skogHaltrad: [16, 24, 14],
+  trollKittel: [16, 28, 36],
+  trollSkatt: [15, 10, 22],
+  trollAnsikte: [16, 14, 20],
+};
 export function renderScene(sc: SideScene, ctx: CanvasRenderingContext2D): void {
   let camX = sc.camX;
   let camY = sc.camY;
@@ -142,7 +156,7 @@ export function renderGrass(sc: SideScene, ctx: CanvasRenderingContext2D, camX: 
 }
 
 export function renderProps(sc: SideScene, ctx: CanvasRenderingContext2D, camX: number, camY: number, front: boolean): void {
-  for (const pr of sc.area.props ?? []) {
+  for (const pr of [...(sc.area.props ?? []), ...(FURNITURE[sc.area.id] ?? [])]) {
     if (!pr.sprite || !!pr.front !== front) continue;
     const sz = spriteSize(pr.sprite);
     const x = pr.tx * TILE + (pr.dx ?? 0);
@@ -240,6 +254,11 @@ export function renderDarkness(sc: SideScene, ctx: CanvasRenderingContext2D, cam
       if (x < -30 || x > VIEW_W + 30) continue;
       light(x, c.ty * TILE + 2 - camY, 22);
     }
+  }
+  // Furniture with a flame or a glow of its own lights its corner of a dark room.
+  for (const pr of FURNITURE[sc.area.id] ?? []) {
+    const glow = GLOWS[pr.sprite ?? ''];
+    if (glow) light(pr.tx * TILE + glow[0] - camX, (pr.ty + 1) * TILE - spriteSize(pr.sprite!).h + glow[1] + (pr.dy ?? 0) - camY, glow[2] + flicker);
   }
   for (const pr of sc.area.props ?? []) if (pr.sprite === 'irrbloss') light(pr.tx * TILE + 4 + (pr.dx ?? 0) - camX, (pr.ty + 1) * TILE - 4 + (pr.dy ?? 0) - camY, 34 + flicker);
   for (const pr of sc.projectiles) if (pr.sprite === 'noteShot') light(pr.x + 4 - camX, pr.y + 4 - camY, 12);

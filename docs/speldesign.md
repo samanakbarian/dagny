@@ -244,6 +244,26 @@ the wheel, and the house is built of stone (`themeBoxes` on the room). Above
 the hatch the key to the barred door can be seen: that is what the hatch is for,
 and Karlsson's Uppåtstöt is what opens it.
 
+### Every temple its own place
+
+On the map every temple is a landmark two tiles by two with something moving
+(`BIG` in game/overworld.ts; the tiles under it are `'0'`, ground nobody walks
+on): the stone church with its bell tower and graves, the headframe with its
+turning wheel, the mill with its wheel in the fors, the lighthouse with its
+sweeping light, the folk park's gate and pavilion with blinking bulbs, the
+summer cottage between old spruces with smoke rising, and Trollberget's face
+with glowing eyes.
+
+Inside, each temple has its own furniture (`data/furniture.ts`, sprites in
+`art/templeprops.ts`): burial niches, a bone house and the lamb relief in the
+crypt (the church grim is the lamb buried under the choir); a winch, tool racks,
+glinting ore and gifts to Gruvrået in the mine; barrels, the keeper's desk, a
+wreck and the great lens at the lighthouse; a carousel, a wheel of fortune,
+posters and the stage in the folk park; mossy boulders, an offering stone with
+milk for the rå, a fairy ring and a hollow tree in Fäbodskogen; and gold, a
+cauldron, carved faces and a stone throne inside Trollberget. Pieces with a
+flame light their corner of a dark room.
+
 ## Trollberget – the last temple
 
 It should be really hard, like the last palace in Zelda II:
