@@ -500,8 +500,12 @@ export class OverworldScene implements Scene {
           me.t = 0;
           if (isWater(this.tile(nx, ny)) && !isWater(this.tile(me.fx, me.fy))) this.game.audio.play('water');
         } else if (typeof ok === 'string' && this.blockedMsgT === 0) {
+          // What stops her is described once; after that she just can't go on.
           this.blockedMsgT = 90;
-          this.game.pushOverlay(new DialogOverlay(this.game, `behover_${ok}`));
+          if (!hasFlag(this.s, `hinder_${ok}`)) {
+            setFlag(this.s, `hinder_${ok}`);
+            this.game.pushOverlay(new DialogOverlay(this.game, `behover_${ok}`));
+          } else this.game.audio.play('cancel');
         }
       }
     }
@@ -599,7 +603,11 @@ export class OverworldScene implements Scene {
     this.s.ow = { x: me.x, y: me.y };
     this.grace = 60;
     this.updateCamera(true);
-    this.game.toast(STR.sank, 3);
+    // Said once: after that the sinking speaks for itself.
+    if (!hasFlag(this.s, 'sjonk_i_gungfly')) {
+      setFlag(this.s, 'sjonk_i_gungfly');
+      this.game.toast(STR.sank, 3);
+    }
   }
 
   /** The closest open ground outside the fog (after a meeting dropped Dagny back in the marsh). */

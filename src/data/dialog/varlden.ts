@@ -34,7 +34,7 @@ export const VARLDEN: Record<string, DialogDef> = {
 
   mote_vandrare_vag: {
     speaker: 'Vandraren',
-    pages: ['En skogsarbetare vilar på en stubbe. "Ska du ner till kusten? Då behöver du stövlar, tidvattenkärret tar annars den som går dit. Kvarnen vid forsen säljer inga, men något säger mig att du hittar ett par där."'],
+    pages: ['En skogsarbetare vilar på en stubbe. "Ska du ner mot kusten? Akta dig för tidvattenkärret. Det har tagit fler än en, och det släpper inte taget om skorna."'],
   },
 
   mote_vandrare_fyr: {
@@ -59,7 +59,7 @@ export const VARLDEN: Record<string, DialogDef> = {
   },
 
   jattegrytan_skylt: {
-    pages: ['Vattnet har svarvat ut en jättegryta i berget. Längre in är det beckmörkt. Med en riktigt stark lampa skulle man kanske se vad som döljer sig på väggarna.'],
+    pages: ['Vattnet har svarvat ut en jättegryta i berget. Längre in är det beckmörkt. Det skymtar något på väggarna, men det går inte att se vad.'],
   },
 
   jattegrytan_ristning: {
@@ -71,23 +71,23 @@ export const VARLDEN: Record<string, DialogDef> = {
   },
 
   behover_eka: {
-    pages: ['Vattnet är för djupt att vada i. Med en båt skulle det gå.'],
+    pages: ['Vattnet är svart och djupt. Botten syns inte.'],
   },
 
   behover_karbidlampa: {
-    pages: ['En gammal gruvgång leder rakt in i berget. Det är beckmörkt där inne. Utan en riktig lampa skulle man gå vilse direkt.'],
+    pages: ['En gammal gruvgång leder rakt in i berget. Mörkret där inne är så tätt att det nästan går att ta på.'],
   },
 
   behover_ficklampa: {
-    pages: ['Granarna står så tätt att det är natt här mitt på dagen. Man ser inte handen framför sig. Med en stark lampa kanske man hittar stigen.'],
+    pages: ['Granarna står så tätt att det är natt här mitt på dagen. Man ser inte handen framför sig.'],
   },
 
   behover_radio: {
-    pages: ['Berget ser ut att vara massivt här. Men det susar konstigt i vinden, som brus mellan två radiostationer.'],
+    pages: ['Berget ser ut att vara massivt här. Men det susar konstigt i vinden.'],
   },
 
   behover_stovlar: {
-    pages: ['Myren suger tag i skorna. Utan stövlar kommer man inte långt.'],
+    pages: ['Myren suger tag i skorna och vill inte släppa.'],
   },
 
   // --- The hidden caves -----------------------------------------------------------------

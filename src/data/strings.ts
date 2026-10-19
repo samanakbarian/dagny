@@ -91,7 +91,7 @@ export const STR = {
   mapKeyPlace: 'Plats',
   mapKeyRumour: 'Hört talas om',
   lightsWake: 'Åskan rinner in i ljusslingorna. Dansbanan vaknar!',
-  sank: 'Gungflyet sväljer Dagny. Hon tar sig upp där marken bar.',
+  sank: 'Mossan ger vika – under den är det bara vatten. Dagny tar sig upp där marken bar.',
   mountainRumble: 'Det mullrar i Trollberget.',
   wakeHome: 'Vakna hos mormor',
   wakeIn: 'Vakna i',
