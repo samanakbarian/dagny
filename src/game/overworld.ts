@@ -1,6 +1,6 @@
 import { Act } from '../engine/input';
 import { VIEW_W, VIEW_H } from '../engine/screen';
-import { drawSprite } from '../engine/sprites';
+import { drawSprite, spriteSize } from '../engine/sprites';
 import { drawText, measure } from '../engine/text';
 import { OVERWORLD } from '../data/overworld';
 import { TEMPLES } from '../data/temples';
@@ -29,7 +29,7 @@ export const TILE_SPRITE: Readonly<Record<string, string>> = Object.fromEntries(
 /** Water: anything crossed in the boat. */
 const isWater = (ch: string): boolean => TERRAIN[ch]?.needs === 'eka';
 
-const ANIMATED: Readonly<Record<string, string>> = { '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall', v: 'owQuag', '%': 'owStorm' };
+const ANIMATED: Readonly<Record<string, string>> = { Q: 'owMill', '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall', v: 'owQuag', '%': 'owStorm' };
 
 interface Walker {
   x: number;
@@ -109,9 +109,9 @@ function buildStatic(): HTMLCanvasElement {
   for (let y = 0; y < tiles.length; y++) {
     for (let x = 0; x < tiles[y].length; x++) {
       const ch = tiles[y][x];
-      if (ANIMATED[ch]) continue;
       // Places sit on grass.
       if (PLACE_CHARS.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
+      if (ANIMATED[ch]) continue;
       drawSprite(ctx, TILE_SPRITE[ch] ?? 'owGrass', 0, x * T, y * T);
     }
   }
@@ -269,6 +269,8 @@ export class OverworldScene implements Scene {
         else if (ch === 'H' || ch === 'E') this.secrets.push({ x, y, sprite: ch === 'H' ? 'owHiddenPath' : 'owCliffDoor' });
       }
     }
+    // Big sprites last, over the water they stand in.
+    this.animated.sort((p, q) => spriteSize(p.sprite).w - spriteSize(q.sprite).w);
     // Every other meeting in a region keeps away once its place has woken.
     const region = regionOfTiles();
     const count = new Map<number, number>();
@@ -808,7 +810,10 @@ export class OverworldScene implements Scene {
     for (const w of this.animated) {
       const x = w.x * T - camX;
       const y = w.y * T - camY;
-      if (visible(x, y)) drawSprite(ctx, w.sprite, (w.sprite === 'owWater' ? wf : Math.floor(this.frame / 8)) + w.x, x, y);
+      // A sprite bigger than a tile (the mill) stands on its tile and reaches up and to the right.
+      const sz = spriteSize(w.sprite);
+      const f = w.sprite === 'owWater' ? wf : Math.floor(this.frame / (sz.w > T ? 14 : 8));
+      if (visible(x, y - sz.h + T) || visible(x + sz.w - T, y)) drawSprite(ctx, w.sprite, f + w.x, x, y - sz.h + T);
     }
     const s = this.s;
     // With the radio, the hidden ways show.

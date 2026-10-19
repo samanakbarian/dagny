@@ -375,6 +375,8 @@ export interface AreaDef {
    * it never happens again – and the `rubble` heaps (tiles) lie on the floor from then on.
    */
   cavein?: { at: number; speed: number; flag: string; rubble?: Array<[number, number]> };
+  /** Parts of the room built of something else (the mill's stone house by the rapids): tiles inside use that theme. */
+  themeBoxes?: Array<{ x0: number; y0: number; x1: number; y1: number; theme: string }>;
   /** Leaving by the right exit sets this flag: a way that opens only from inside. */
   opens?: string;
   /** Tougher creatures (the last temple): more health and harder blows. */

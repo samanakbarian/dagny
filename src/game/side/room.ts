@@ -18,6 +18,7 @@ export function build(sc: SideScene): void {
   const s = sc.s;
   const { w, h } = sc.grid;
   const at = (x: number, y: number): string => (y < 0 || y >= h || x < 0 || x >= w ? '.' : a.tiles[y][x]);
+  const themeAt = (x: number, y: number) => THEMES[a.themeBoxes?.find((bx) => x >= bx.x0 && x <= bx.x1 && y >= bx.y0 && y <= bx.y1)?.theme ?? ''] ?? theme;
   sc.tileSprite = new Array(w * h).fill(null);
   for (let ty = 0; ty < h; ty++) {
     for (let tx = 0; tx < w; tx++) {
@@ -29,7 +30,7 @@ export function build(sc: SideScene): void {
       switch (ch) {
         case '#': {
           const above = at(tx, ty - 1);
-          sc.tileSprite[i] = above === '#' || above === 'L' || above === '?' ? theme.fill : theme.top;
+          sc.tileSprite[i] = above === '#' || above === 'L' || above === '?' ? themeAt(tx, ty).fill : themeAt(tx, ty).top;
           break;
         }
         case '?': {
@@ -39,7 +40,7 @@ export function build(sc: SideScene): void {
             sc.tileSprite[i] = 'secretOpen';
           } else {
             const above = at(tx, ty - 1);
-            sc.tileSprite[i] = above === '#' || above === 'L' || above === '?' ? theme.fill : theme.top;
+            sc.tileSprite[i] = above === '#' || above === 'L' || above === '?' ? themeAt(tx, ty).fill : themeAt(tx, ty).top;
           }
           break;
         }
@@ -162,7 +163,7 @@ export function build(sc: SideScene): void {
     }
   }
   // Without the radio, rooms behind a hidden wall look like solid rock.
-  if (!hasItem(s, 'radio') && a.tiles.some((r) => r.includes('?'))) sealHiddenRooms(sc, theme.fill);
+  if (!hasItem(s, 'radio') && a.tiles.some((r) => r.includes('?'))) sealHiddenRooms(sc, (x, y) => themeAt(x, y).fill);
   // The treasure appears on the altar once the guardian is reconciled.
   if (sc.altar && a.treasure && !hasItem(s, a.treasure) && (!sc.boss)) spawnTreasure(sc);
   if (a.afterBoss && a.temple && hasFlag(s, `${a.temple}_boss`)) spawnAfterBoss(sc);
@@ -198,10 +199,11 @@ export function build(sc: SideScene): void {
  * Paints every open cell that can't be reached without passing a hidden
  * wall ('?') as rock, and hides what lies there, so the room stays secret.
  */
-export function sealHiddenRooms(sc: SideScene, fill: string): void {
+export function sealHiddenRooms(sc: SideScene, fill: (x: number, y: number) => string): void {
   const { w, h } = sc.grid;
   const tiles = sc.area.tiles;
-  const open = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < w && y < h && sc.grid.kinds[y * w + x] !== Kind.Solid;
+  // A hatch is a way through, not a hidden wall: what lies above it shows.
+  const open = (x: number, y: number): boolean => x >= 0 && y >= 0 && x < w && y < h && (sc.grid.kinds[y * w + x] !== Kind.Solid || tiles[y][x] === '!');
   const seen = new Uint8Array(w * h);
   const stack: number[] = [];
   for (let y = 0; y < h; y++) {
@@ -220,10 +222,12 @@ export function sealHiddenRooms(sc: SideScene, fill: string): void {
   }
   for (let i = 0; i < w * h; i++) {
     if (seen[i] || sc.grid.kinds[i] === Kind.Solid) continue;
-    sc.tileSprite[i] = fill;
+    const fx = i % w;
+    const fy = Math.floor(i / w);
+    sc.tileSprite[i] = fill(fx, fy);
     // The hidden room's floor would show as a ledge inside the rock: plain rock too.
     const below = i + w;
-    if (below < w * h && tiles[Math.floor(below / w)][below % w] === '#') sc.tileSprite[below] = fill;
+    if (below < w * h && tiles[fy + 1][fx] === '#') sc.tileSprite[below] = fill(fx, fy + 1);
     const x = (i % w) * TILE;
     const y = Math.floor(i / w) * TILE;
     sc.pickups = sc.pickups.filter((pk) => !(pk.x + pk.w / 2 >= x && pk.x + pk.w / 2 < x + TILE && pk.y + pk.h / 2 >= y && pk.y + pk.h / 2 < y + TILE));

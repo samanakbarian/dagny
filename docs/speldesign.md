@@ -233,6 +233,17 @@ gallery (Sidoorten) is blocked by rubble from outside. Both open only once
 Dagny has come out through them from inside (`requires` on the place: the
 cave-in's flag, and `opens` on Sidoorten's room).
 
+### Kvarnen vid forsen: a temple that looks like one
+
+A temple must stand out from the villages, on the map and when Dagny gets
+there. On the map the mill is two tiles by two: a stone house on the bank and
+its wheel out in the fors, turning under the flume. The fors runs from the
+waterfall in the north past the mill into a pond, with footbridges at the foot
+of the fall and below the mill. Arriving, the fors falls past the house onto
+the wheel, and the house is built of stone (`themeBoxes` on the room). Above
+the hatch the key to the barred door can be seen: that is what the hatch is for,
+and Karlsson's Uppåtstöt is what opens it.
+
 ## Trollberget – the last temple
 
 It should be really hard, like the last palace in Zelda II:
