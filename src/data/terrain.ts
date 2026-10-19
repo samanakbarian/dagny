@@ -92,6 +92,8 @@ export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
   // --- Borders that never open ---------------------------------------------------------
   '^': { name: 'berg', sprite: 'owMountain', map: 'G', blocked: true },
   F: { name: 'tät granskog', sprite: 'owDenseForest', map: 'K', blocked: true },
+  // Ground a temple's landmark stands on (it is drawn over two by two tiles): never walked.
+  '0': { name: 'under ett tempel', sprite: 'owGrass', map: 'M', blocked: true },
   w: { name: 'fors', sprite: 'owRapids', map: 'c', blocked: true },
   b: { name: 'bortspolad bro', sprite: 'owBrokenBridge', map: 'B', blocked: true },
   X: { name: 'stup', sprite: 'owCliff', map: 'g', blocked: true },

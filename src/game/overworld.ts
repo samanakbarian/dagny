@@ -25,11 +25,36 @@ const STEP_FRAMES = 9;
 /** Sprite per map character (from data/terrain.ts). */
 export const TILE_SPRITE: Readonly<Record<string, string>> = Object.fromEntries(Object.entries(TERRAIN).map(([c, d]) => [c, d.sprite]));
 
+/** Under a landmark ('0'): the ground of the nearest tile beside it that is plain ground. */
+function groundBeside(tiles: readonly string[], x: number, y: number): string {
+  for (const [dx, dy] of [[-1, 0], [1, 0], [0, 1], [0, -1], [-2, 0], [2, 0]]) {
+    const c = tiles[y + dy]?.[x + dx];
+    if (c && c !== '0' && !PLACE_CHARS.includes(c) && !ANIMATED_GROUND.includes(c)) return c;
+  }
+  return '.';
+}
+const ANIMATED_GROUND = '~Rznw';
+
 /** Animated ground: drawn every frame on top of the static map. */
 /** Water: anything crossed in the boat. */
 const isWater = (ch: string): boolean => TERRAIN[ch]?.needs === 'eka';
 
-const ANIMATED: Readonly<Record<string, string>> = { Q: 'owMill', '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall', v: 'owQuag', '%': 'owStorm' };
+/**
+ * The temples as landmarks bigger than a tile, and where each stands: the
+ * sprite's top-left corner in tiles from the place (the tiles it covers are
+ * '0' on the map – ground nobody walks on).
+ */
+const BIG: Readonly<Record<string, { sprite: string; dx: number; dy: number }>> = {
+  K: { sprite: 'owKyrka', dx: -1, dy: -1 },
+  M: { sprite: 'owGruva', dx: 0, dy: -1 },
+  Q: { sprite: 'owMill', dx: 0, dy: -1 },
+  Y: { sprite: 'owFyr', dx: 0, dy: -1 },
+  P: { sprite: 'owFolkpark', dx: -1, dy: 0 },
+  Z: { sprite: 'owFabodBig', dx: -1, dy: -1 },
+  T: { sprite: 'owTrollBig', dx: -1, dy: -1 },
+};
+
+const ANIMATED: Readonly<Record<string, string>> = { ...Object.fromEntries(Object.entries(BIG).map(([c, b]) => [c, b.sprite])), '~': 'owWater', R: 'owWater', z: 'owCurrent', n: 'owCurrent', w: 'owRapids', A: 'owWaterfall', v: 'owQuag', '%': 'owStorm' };
 
 interface Walker {
   x: number;
@@ -110,9 +135,9 @@ function buildStatic(): HTMLCanvasElement {
     for (let x = 0; x < tiles[y].length; x++) {
       const ch = tiles[y][x];
       // Places sit on grass.
-      if (PLACE_CHARS.includes(ch)) drawSprite(ctx, 'owGrass', 0, x * T, y * T);
+      if (PLACE_CHARS.includes(ch)) drawSprite(ctx, BIG[ch] ? TILE_SPRITE[groundBeside(tiles, x, y)] ?? 'owGrass' : 'owGrass', 0, x * T, y * T);
       if (ANIMATED[ch]) continue;
-      drawSprite(ctx, TILE_SPRITE[ch] ?? 'owGrass', 0, x * T, y * T);
+      drawSprite(ctx, TILE_SPRITE[ch === '0' ? groundBeside(tiles, x, y) : ch] ?? 'owGrass', 0, x * T, y * T);
     }
   }
   tintGround(ctx);
@@ -153,7 +178,9 @@ function tintGround(ctx: CanvasRenderingContext2D): void {
   const R = 2;
   for (let y = 0; y < tiles.length; y++) {
     for (let x = 0; x < tiles[y].length; x++) {
-      if (region[y][x] < 0 || !TINTED.includes(tiles[y][x])) continue;
+      // A temple's tile and the ground under its landmark take the colour of the ground around.
+      const ch = tiles[y][x] === '0' || BIG[tiles[y][x]] ? groundBeside(tiles, x, y) : tiles[y][x];
+      if (region[y][x] < 0 || !TINTED.includes(ch)) continue;
       let r = 0;
       let g = 0;
       let b = 0;
@@ -810,10 +837,13 @@ export class OverworldScene implements Scene {
     for (const w of this.animated) {
       const x = w.x * T - camX;
       const y = w.y * T - camY;
-      // A sprite bigger than a tile (the mill) stands on its tile and reaches up and to the right.
+      // A temple is bigger than its tile: drawn from its anchor (BIG).
+      const big = BIG[this.tile(w.x, w.y)];
       const sz = spriteSize(w.sprite);
-      const f = w.sprite === 'owWater' ? wf : Math.floor(this.frame / (sz.w > T ? 14 : 8));
-      if (visible(x, y - sz.h + T) || visible(x + sz.w - T, y)) drawSprite(ctx, w.sprite, f + w.x, x, y - sz.h + T);
+      const f = w.sprite === 'owWater' ? wf : Math.floor(this.frame / (big ? 20 : 8));
+      const bx = x + (big?.dx ?? 0) * T;
+      const by = y + (big?.dy ?? 0) * T;
+      if (visible(bx, by) || visible(bx + sz.w - T, by + sz.h - T)) drawSprite(ctx, w.sprite, f + w.x, bx, by);
     }
     const s = this.s;
     // With the radio, the hidden ways show.

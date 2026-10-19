@@ -10,6 +10,7 @@ import { smallPlaceSprites } from './smallplaces';
 import { mineSprites } from './mine';
 import { gruvbySprites } from './gruvby';
 import { millSprites } from './mill';
+import { landmarkSprites } from './landmarks';
 import { lighthouseSprites } from './lighthouse';
 import { parkSprites } from './park';
 import { forestSprites } from './forest';
@@ -29,6 +30,7 @@ export const SPRITES: Record<string, SpriteDef> = {
   ...mineSprites,
   ...gruvbySprites,
   ...millSprites,
+  ...landmarkSprites,
   ...lighthouseSprites,
   ...parkSprites,
   ...forestSprites,
