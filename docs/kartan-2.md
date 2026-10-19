@@ -361,7 +361,7 @@ Varje steg går att provspela innan nästa påbörjas.
 
 ### Steg 4 – kapitel 5 (gjort)
 
-- **Myrlabyrinten:** myren är nu stigar genom **gungfly** (`v`), som ser ut nästan som resten av myren – bara en bubbla då och då avslöjar det. Kliver Dagny i gungflyet sjunker hon och tar sig upp där hon senast stod på fast mark (utanför dimman). Lösaren och kartans räckvidd räknar gungfly som vägg.
+- **Myrlabyrinten:** myren är nu stigar genom **gungfly** (`v`), ljusgrön vitmossa över öppet vatten med svarta hål som bubblar. Det ser fastare ut än myren runt omkring, och stövlarna hjälper inte där. Kliver Dagny i gungflyet sjunker hon och tar sig upp där hon senast stod på fast mark (utanför dimman). Lösaren och kartans räckvidd räknar gungfly som vägg.
 - **Landmärken genom dimman:** den döda tallen (`p`), myrkorset (`I`) och den övergivna pråmen (`J`) syns som silhuetter långt bortom dimman, liksom irrblossen – som svävar över gungflyet och lockar ut Dagny.
 - **Ramsan:** Sigge i Bruksorten, när kvarnen är förlikad: *"Till döda tallen, sen österut där stigen slingrar. Korset visar söderut, och pråmen visar havet."* och *"Där det bubblar bär det inte."*
 - **Fiskeläget ger nyckeln till fyren:** i Linsrummet ligger nyckeln på en hylla fem rutor upp – för högt för ett vanligt hopp, men inom räckhåll med **Hopp** från Viola (hon antyder det). Rummet säger `needsSpell` till lösaren, som bevisar att fyren inte går utan Hopp.

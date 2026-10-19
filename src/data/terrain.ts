@@ -75,8 +75,8 @@ export const TERRAIN: Readonly<Record<string, TerrainDef>> = {
   n: { name: 'ström västerut', sprite: 'owCurrent', map: 'U', needs: 'eka', encounter: 'strand', drift: [-1, 0] },
   R: { name: 'dimbank', sprite: 'owWater', map: 'U', needs: 'eka', encounter: 'strand', sight: 'fog' },
   s: { name: 'myr', sprite: 'owSwamp', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog' },
-  // The marsh maze (chapter 5): quagmire that looks almost like the rest – only the bubbles
-  // give it away – and the landmarks to steer by, which show through the fog.
+  // The marsh maze (chapter 5): quagmire of bright sphagnum over open water – greener and firmer-looking
+  // than the marsh around it, its black holes bubbling – and the landmarks to steer by, which show through the fog.
   v: { name: 'gungfly', sprite: 'owQuag', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog', sink: true },
   p: { name: 'död tall', sprite: 'owDeadPine', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog', landmark: true },
   I: { name: 'myrkors', sprite: 'owCross', map: 'v', needs: 'stovlar', encounter: 'myr', sight: 'fog', landmark: true },
