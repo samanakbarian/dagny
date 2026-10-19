@@ -151,7 +151,7 @@ export const NPCS: Readonly<Record<string, NpcDef>> = {
       { dialog: 'holm_igen' },
     ],
   },
-  karlsson: { id: 'karlsson', sprite: 'forman', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ notFlag: 'karlsson_lart' }], dialog: 'karlsson_lar' }, { dialog: 'karlsson_igen' }] },
+  karlsson: { id: 'karlsson', sprite: 'forman', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ flag: 'karlsson_lart' }], dialog: 'karlsson_igen' }, { if: [{ item: 'hacka' }], dialog: 'karlsson_lar' }, { if: [{ flag: 'hacka_uppdrag' }], dialog: 'karlsson_vantar' }, { dialog: 'karlsson_uppdrag' }] },
   rosa: { id: 'rosa', sprite: 'resenar', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ item: 'medaljong' }, { notFlag: 'medaljong_klar' }], dialog: 'rosa_tack' }, { if: [{ flag: 'medaljong_klar' }], dialog: 'rosa_glad' }, { if: [{ flag: 'medaljong_uppdrag' }], dialog: 'rosa_vantar' }, { dialog: 'rosa_uppdrag' }] },
   sigge: { id: 'sigge', sprite: 'kid4', idle: { frames: [0, 0, 1, 0, 1, 0, 0], every: 0.35 }, talk: [{ if: [{ flag: 'kvarnen_klar' }], dialog: 'sigge_efter' }, { dialog: 'sigge' }] },
   banvakt: { id: 'banvakt', sprite: 'stins', idle: { frames: [0, 0, 2, 0, 0, 1, 0], every: 0.8 }, talk: [{ if: [{ flag: 'visselpipa_klar' }], dialog: 'banvakt_resa' }, { dialog: 'banvakt_vantar' }] },

@@ -18,7 +18,7 @@ or a hidden place. At the start she has only the blade Mormor gives her.
 | Lyse | Gamla Elin | Gruvsamhället | The village is reached by boat (treasure of temple 1) |
 | Eld | Prosten | Kyrkbyn | After the crypt |
 | Skydd | Smeden Holm | Bruksorten | Region gated by the karbidlampa |
-| Uppåtstöt | Förman Karlsson | Bruksorten | As above |
+| Uppåtstöt | Förman Karlsson | Bruksorten | For his pick, left in Sidoorten in 1931 |
 | Hopp | Viola | Fiskeläget | Region gated by the stövlar |
 | Hamn | Gammelmor Karna | Fäboden | After the mine |
 | Åska | Telegrafisten Oskar | Stationssamhället | Region gated by the ficklampa |
@@ -69,7 +69,7 @@ Dagny starts with 8 health (four bars), so the crypt must not drain it faster th
 - **Stenknekt** (the slow stone soldier in the dark Benhuset) hits for 2, not 3: four hits to go down instead of three.
 - **Tomtenisse-krigare** fence instead of rushing. They copy her guard, keep their distance and make a short thrust up close (open while thrusting). Beating them is about switching height faster than they follow, or striking into the thrust (`behaviors/parrier.ts`, `tests/fencer.test.ts`).
 - **Kyrkogrimmen** has 38 health (was 44), stands dazed a little longer after crashing into the wall (85 frames, was 70), and throws bells a little less often as a spirit (every 1.7 s, was 1.4). He still hits as hard.
-- Buns, thermoses and lingonberries lying in rooms are taken once until Dagny leaves for the overworld, so they can't be farmed by stepping in and out.
+- Buns, thermoses and lingonberries lying in rooms stay taken until Dagny rests or wakes in a village (a new day), so going in and out of a place refills nothing. Meetings on the map are fresh ground each time.
 
 ## Levels and strength
 

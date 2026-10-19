@@ -268,5 +268,6 @@ export const villageSprites: Record<string, SpriteDef> = {
   medaljong: item(['...yy...', '..y..y..', '...yy...', '..yYYy..', '.yYWWYy.', '.yYWiYy.', '..yYYy..', '...yy...']),
   kompass: item(['..gggg..', '.gWWWWg.', 'gWWrWWWg', 'gWWrWWWg', 'gWWkWWWg', 'gWWkWWWg', '.gWWWWg.', '..gggg..']),
   skalla: item(['...gg...', '..gYYg..', '.gYYYYg.', '.gYYYYg.', '.gYyYYg.', 'gyyyyyyg', '...kk...', '...kk...']),
+  hacka: item(['.ggggg..', 'gGWGGgg.', 'g..b..gk', '...b....', '...b....', '...b....', '...b....', '...bk...']),
   visselpipa: item(['........', '........', '..gggggg', '.gGGGGGg', 'gGGkGGGg', 'gGGGGGg.', '.ggggg..', '........']),
 };

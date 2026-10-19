@@ -41,14 +41,29 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
     pages: ['Skyddet håller en stund. Men en bra sköld och ett bra öga håller längre.'],
   },
 
+  karlsson_uppdrag: {
+    speaker: 'Förman Karlsson',
+    pages: [
+      'Kom du genom Gamla stollen? Då hade du tur. Jag var med när taket gick 1931.',
+      'Vi sprang för livet, och min hacka blev kvar därinne. I sidoorten, där vi brukade äta vår matsäck. Hämta den åt mig, så ska jag lära dig något.',
+      'Den som har slagit upp lika många luckor i taket som jag vet hur man hugger uppåt.',
+    ],
+    actions: [{ type: 'flag', flag: 'hacka_uppdrag' }],
+  },
+
+  karlsson_vantar: {
+    speaker: 'Förman Karlsson',
+    pages: ['Sidoorten går in från Rasgången, mitt i stollen. Hackan ligger nog högt upp, där vi ställde undan verktygen.'],
+  },
+
   karlsson_lar: {
     speaker: 'Förman Karlsson',
     pages: [
-      'Jaså, du har lärt dig stöta nedåt hos Algot? Då ska du få lära dig åt andra hållet också.',
-      'Håll UPP och slå, så går klingan rakt upp. Bra mot fladdermöss och sådant som hänger i taket.',
+      'Min hacka! Ja, där sitter mitt K i skaftet. Trettiotre år har den legat i berget.',
+      'Nu ska du få ditt. Håll UPP och slå, så går klingan rakt upp. Bra mot fladdermöss och sådant som hänger i taket.',
       'Ska du till kvarnen vid forsen? Där sitter en lucka i taket som mjölnarn alltid slog upp underifrån. Nu vet du hur.',
     ],
-    actions: [{ type: 'learnSkill', skill: 'uppatstot' }, { type: 'flag', flag: 'karlsson_lart' }],
+    actions: [{ type: 'takeItem', item: 'hacka' }, { type: 'flag', flag: 'hacka_klar' }, { type: 'learnSkill', skill: 'uppatstot' }, { type: 'flag', flag: 'karlsson_lart' }],
     next: 'lart_uppatstot',
   },
 

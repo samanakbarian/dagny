@@ -27,12 +27,12 @@ export function takeTrain(game: Game, areaId: string): void {
   if (!s || !area) return;
   if (area.left?.ow) s.ow = { ...area.left.ow };
   game.audio.play('whistle');
-  game.taken.clear();
   goToArea(game, areaId, { entry: 'W' });
 }
 
 export function goToOverworld(game: Game): void {
-  game.taken.clear();
+  // A meeting's room is a fresh stretch of ground every time.
+  for (const k of [...game.taken]) if (AREAS[k.split(':')[0]]?.kind === 'encounter') game.taken.delete(k);
   game.transition(() => {
     if (game.state) game.state.loc = { area: 'overworld', x: game.state.ow.x, y: game.state.ow.y };
     game.setScene(new OverworldScene(game));

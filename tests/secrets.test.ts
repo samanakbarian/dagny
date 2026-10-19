@@ -288,7 +288,9 @@ function softlocks(a: AreaDef, radio: boolean): string[] {
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       const ch = t[y][x];
-      if (((x === 0 || x === w - 1) && free(x, y)) || (/[A-Z]/.test(ch) && !'LXBMT'.includes(ch))) exits.add(`${x},${y}`);
+      // An edge is a way out only on a side the room has an exit.
+      const edge = (x === 0 && !!a.left) || (x === w - 1 && !!a.right);
+      if ((edge && free(x, y)) || (/[A-Z]/.test(ch) && !'LXBMT'.includes(ch))) exits.add(`${x},${y}`);
     }
   }
   const key = (c: [number, number]): string => `${c[0]},${c[1]}`;
@@ -303,7 +305,7 @@ function softlocks(a: AreaDef, radio: boolean): string[] {
   }
   const good = new Set<string>([...seen.keys()].filter((k) => {
     const [x, y] = k.split(',').map(Number);
-    return exits.has(k) || exits.has(`${x - 1},${y}`) || exits.has(`${x + 1},${y}`) || x === 0 || x === w - 1;
+    return exits.has(k) || exits.has(`${x - 1},${y}`) || exits.has(`${x + 1},${y}`) || (x === 0 && !!a.left) || (x === w - 1 && !!a.right);
   }));
   for (let changed = true; changed;) {
     changed = false;

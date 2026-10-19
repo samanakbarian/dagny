@@ -60,8 +60,9 @@ export class Game {
   overlayClosedAt = -1000;
   /**
    * Buns, thermoses and lingonberries lying in rooms that Dagny has taken
-   * (by room position). They stay gone until she goes out onto the overworld
-   * or wakes in a village, so stepping in and out of a room refills nothing.
+   * (by room position). They stay gone until she rests or wakes in a village
+   * (a new day), so going in and out of a place refills nothing. Meetings on
+   * the map are fresh ground each time (game/flow.ts).
    */
   readonly taken = new Set<string>();
   private fade = 0;
@@ -273,6 +274,7 @@ export class Game {
         this.audio.jingle('lara');
         break;
       case 'rest':
+        this.taken.clear();
         s.hp = hpMax(s);
         s.mp = mpMax(s);
         this.audio.play('heal');

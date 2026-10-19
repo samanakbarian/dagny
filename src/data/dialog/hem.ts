@@ -291,6 +291,10 @@ export const HEM: Record<string, DialogDef> = {
     pages: ['En lapp på en pinne, skriven med barnhandstil:\n"AKTA BRÄNNÄSSLORNA I GROPEN! HOPPA ÖVER! /OLLE"'],
   },
 
+  hittade_hacka: {
+    pages: ['Dagny hittade BERGHACKAN! Skaftet är svart av ålder, och någon har bränt in ett K i det.'],
+  },
+
   hittade_tang: {
     pages: ['Dagny hittade SMEDTÅNGEN! Den är tung och sotig. Smeden Algot väntar på den.'],
   },
