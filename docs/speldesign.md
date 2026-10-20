@@ -15,17 +15,20 @@ or a hidden place. At the start she has only the blade Mormor gives her.
 |---|---|---|---|
 | Läkning | Gamle Sven | Mormors by | Fetch **johannesört** from the high ledges in Björkhagen (nettles, crows, jumps) |
 | Nedåtstöt | Smeden Algot | Mormors by | Fetch his **tongs** from Gamla smedjan, east of the village – before the crypt, which he warns against entering without it (Grimmen hovers high) |
-| Lyse | Gamla Elin | Gruvsamhället | The village is reached by boat (treasure of temple 1) |
+| Lyse | Gamla Elin | Gruvsamhället | Dagmar's **solsten** from Måsskäret, the skerry in the fog (the village is reached by boat) |
 | Eld | Prosten | Kyrkbyn | After the crypt |
-| Skydd | Smeden Holm | Bruksorten | Region gated by the karbidlampa |
+| Skydd | Smeden Holm | Bruksorten | A **rönnkvist** from Kolartorpet – charcoal burners kept rowan by the kiln against the skogsrå |
 | Uppåtstöt | Förman Karlsson | Bruksorten | For his pick, left in Sidoorten in 1931 |
-| Hopp | Viola | Fiskeläget | Region gated by the stövlar |
+| Hopp | Viola | Fiskeläget | A wagtail's **fjäder**, high among the rocks at Signalstranden |
 | Hamn | Gammelmor Karna | Fäboden | After the mine |
-| Åska | Telegrafisten Oskar | Stationssamhället | Region gated by the ficklampa |
+| Åska | Telegrafisten Oskar | Stationssamhället | An **åskvigg** (a stone-age axe folk thought the thunder threw down) from Gamla kyrkogården |
 
 The seven readings are taught up in attics (`data/areas/vindar.ts`): each
 teacher sits under the roof of a house in the village, behind the house's own
-door (a lantern hangs by it) and up through a hole in the attic floor. Learning
+door (a lantern hangs by it) and up through a hole in the attic floor. Each
+attic is the teacher's own: herbs and candles at Sven's, rock and lamps at
+Elin's, church books at the parsonage, the forge under Holm's loft, nets at
+Viola's, the summer farm's loft at Kärna's, wires at Oskar's. Learning
 is a rite (`game/rite.ts`): the room goes dark, a ring of runes closes in on
 Dagny, sparks rise, a flash, and the reading's name stands written in the air.
 

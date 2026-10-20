@@ -21,14 +21,42 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
     pages: ['Det är skiftbyte snart. Då blir det trångt här inne, så passa på medan det är lugnt.'],
   },
 
+  holm_uppdrag: {
+    speaker: 'Smeden Holm',
+    pages: [
+      'Upp på loftet, du? Här är det varmt, ässjan står rakt under.',
+      'Jag kan en läsning som skyddar. Men den ska sägas med rönn i handen, annars är den bara ord.',
+      'Kolarna vid torpet i söder har alltid haft rönn vid milan, mot skogsrået. Bryt en kvist åt mig.',
+    ],
+    actions: [{ type: 'flag', flag: 'ronnkvist_uppdrag' }],
+  },
+
+  /** Asked for it, but Dagny has it already: straight on to the lesson. */
+  holm_uppdrag_har: {
+    speaker: 'Smeden Holm',
+    pages: [
+      'Upp på loftet, du? Här är det varmt, ässjan står rakt under.',
+      'Jag kan en läsning som skyddar. Men den ska sägas med rönn i handen, annars är den bara ord.',
+      'Vänta nu. Vad är det du har där?',
+    ],
+    actions: [{ type: 'flag', flag: 'ronnkvist_uppdrag' }],
+    next: 'holm_lar',
+  },
+
+  holm_vantar: {
+    speaker: 'Smeden Holm',
+    pages: ['Rönnen växer vid kolartorpet. Kolarna litar på den.'],
+  },
+
   holm_lar: {
     speaker: 'Smeden Holm',
     pages: [
+      'Rönn, och med bären kvar. Bra. Då kan vi börja.',
       'Du bär en gammal klinga. Bra smide, fast fästet är en klockkläpp. Det har jag aldrig sett förut.',
       'Min far lärde mig en sak i hyttan, när gnistorna flög. Ett kors av rönn över bröstet, och en läsning.',
       '"Rönn för bröstet, järn för hand, inget ont går över min rand." Så. Nu tar du bara halva smällen.',
     ],
-    actions: [{ type: 'learnSpell', spell: 'skydd' }],
+    actions: [{ type: 'takeItem', item: 'ronnkvist' }, { type: 'flag', flag: 'ronnkvist_klar' }, { type: 'learnSpell', spell: 'skydd' }],
     next: 'lart_skydd',
   },
 

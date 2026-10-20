@@ -21,14 +21,42 @@ export const GRUVSAMHALLET: Record<string, DialogDef> = {
     pages: ['Dörren står alltid öppen. Gruvfolk sover dåligt ändå, så någon är alltid vaken.'],
   },
 
+  elin_uppdrag: {
+    speaker: 'Gamla Elin',
+    pages: [
+      'Så du hittade upp hit. Det gör inte många. Jag sitter helst här, nära ljuset från gluggen.',
+      'Det finns en läsning för ljus. Men ljus måste man ha något att tända den med. En sten som samlar solen, en solsten.',
+      'Dagmar hade en sådan. Hon lämnade den någonstans på ett skär, där dimman ligger tätast. Hämta den, så ska jag lära dig.',
+    ],
+    actions: [{ type: 'flag', flag: 'solsten_uppdrag' }],
+  },
+
+  /** Asked for it, but Dagny has it already: straight on to the lesson. */
+  elin_uppdrag_har: {
+    speaker: 'Gamla Elin',
+    pages: [
+      'Så du hittade upp hit. Det gör inte många. Jag sitter helst här, nära ljuset från gluggen.',
+      'Det finns en läsning för ljus. Men ljus måste man ha något att tända den med. En sten som samlar solen, en solsten.',
+      'Vänta nu. Vad är det du har där?',
+    ],
+    actions: [{ type: 'flag', flag: 'solsten_uppdrag' }],
+    next: 'elin_lar',
+  },
+
+  elin_vantar: {
+    speaker: 'Gamla Elin',
+    pages: ['Solstenen ligger på ett skär i dimman. Där måsarna håller till.'],
+  },
+
   elin_lar: {
     speaker: 'Gamla Elin',
     pages: [
+      'Solstenen! Ja, det är hennes. Den lyser fortfarande, fast hon är borta.',
       'Du har kommit långt för att vara så ung. Gruvan är mörk nu, mörkare än den varit på hundra år.',
       'Min mor lärde mig en läsning när jag skulle ner i schaktet första gången. Den har lyst för mig i sextio år.',
       '"Lyse i natt, lyse i berg, lyse för den som går utan färg..." Så. Nu bär du ljuset själv.',
     ],
-    actions: [{ type: 'learnSpell', spell: 'lyse' }],
+    actions: [{ type: 'takeItem', item: 'solsten' }, { type: 'flag', flag: 'solsten_klar' }, { type: 'learnSpell', spell: 'lyse' }],
     next: 'lart_lyse',
   },
 

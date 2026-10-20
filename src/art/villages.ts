@@ -269,5 +269,9 @@ export const villageSprites: Record<string, SpriteDef> = {
   kompass: item(['..gggg..', '.gWWWWg.', 'gWWrWWWg', 'gWWrWWWg', 'gWWkWWWg', 'gWWkWWWg', '.gWWWWg.', '..gggg..']),
   skalla: item(['...gg...', '..gYYg..', '.gYYYYg.', '.gYYYYg.', '.gYyYYg.', 'gyyyyyyg', '...kk...', '...kk...']),
   hacka: item(['.ggggg..', 'gGWGGgg.', 'g..b..gk', '...b....', '...b....', '...b....', '...b....', '...bk...']),
+  solsten: item(['...WW...', '..WCCW..', '.WCWWCc.', 'WCWYWCcW', '.cCWCcW.', '..cCcW..', '...cW...', '........']),
+  ronnkvist: item(['......M.', '..M..MM.', '.MMb.M..', '..Mb.R..', '...bRRR.', '..RbRR..', '.RRb....', '...b....']),
+  fjader: item(['......kW', '.....kWW', '....kWW.', '...kWk..', '..kWk...', '.kWk....', '.Wk.....', 'W.......']),
+  askvigg: item(['..gggg..', '.gGGGGg.', 'gGGwGGGg', 'gGGGGGgk', '.gGGGgk.', '..gGgk..', '...gk...', '........']),
   visselpipa: item(['........', '........', '..gggggg', '.gGGGGGg', 'gGGkGGGg', 'gGGGGGg.', '.ggggg..', '........']),
 };

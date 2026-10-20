@@ -21,15 +21,43 @@ export const STATIONSSAMHALLET: Record<string, DialogDef> = {
     pages: ['Det kom inte ett enda tåg i går. Inte i förrgår heller. Gästerna blir färre och färre.'],
   },
 
+  oskar_uppdrag: {
+    speaker: 'Telegrafisten Oskar',
+    pages: [
+      'Här uppe har jag kvar en mottagare. Den knastrar fortfarande, fast tråden är död.',
+      'Åskan kan man inte bara be om. Man måste ha något som åskan själv har rört vid. En åskvigg.',
+      'Folk hittade sådana i åkrarna förr och murade in dem mot blixten. Vid gamla kyrkogården finns det en, har jag hört.',
+    ],
+    actions: [{ type: 'flag', flag: 'askvigg_uppdrag' }],
+  },
+
+  /** Asked for it, but Dagny has it already: straight on to the lesson. */
+  oskar_uppdrag_har: {
+    speaker: 'Telegrafisten Oskar',
+    pages: [
+      'Här uppe har jag kvar en mottagare. Den knastrar fortfarande, fast tråden är död.',
+      'Åskan kan man inte bara be om. Man måste ha något som åskan själv har rört vid. En åskvigg.',
+      'Vänta nu. Vad är det du har där?',
+    ],
+    actions: [{ type: 'flag', flag: 'askvigg_uppdrag' }],
+    next: 'oskar_lar',
+  },
+
+  oskar_vantar: {
+    speaker: 'Telegrafisten Oskar',
+    pages: ['Åskviggen ska finnas vid gamla kyrkogården. Leta högt, inte i jorden.'],
+  },
+
   oskar_lar: {
     speaker: 'Telegrafisten Oskar',
     pages: [
+      'En åskvigg! Den har varit i åskan, det känner man på den.',
       'Telegrafen tystnade i maj, men trådarna sjunger fortfarande. Hör du? Det är åskan som bor i dem.',
       'Min farfar var rallare. Han lärde mig en läsning som han fick av en gammal man vid Torsåsen. Tors vrede.',
       '"Åska i tråd och åska i sten, slå alla onda, skona var en." Så. Använd den sparsamt. Den tar mycket kraft.',
       'Ljusslingorna i folkparken dog samtidigt som telegrafen. Åskan bor i trådar, kom ihåg det.',
     ],
-    actions: [{ type: 'learnSpell', spell: 'aska' }],
+    actions: [{ type: 'takeItem', item: 'askvigg' }, { type: 'flag', flag: 'askvigg_klar' }, { type: 'learnSpell', spell: 'aska' }],
     next: 'lart_aska',
   },
 

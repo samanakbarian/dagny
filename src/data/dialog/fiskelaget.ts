@@ -21,15 +21,43 @@ export const FISKELAGET: Record<string, DialogDef> = {
     pages: ['Havet ger och havet tar, brukar vi säga. Men just nu tar det mest.'],
   },
 
+  viola_uppdrag: {
+    speaker: 'Nätlagerskan Viola',
+    pages: [
+      'Kom in, kom in. Akta näten. Jag lagar dem här uppe när det blåser för hårt nere vid sjöbodarna.',
+      'Du vill hoppa högre? Då behöver jag något som vet hur man flyger. En fjäder från en sädesärla.',
+      'De bygger bo på stranden på andra sidan sjön, där någon blinkade med en lampa förr i världen.',
+    ],
+    actions: [{ type: 'flag', flag: 'fjader_uppdrag' }],
+  },
+
+  /** Asked for it, but Dagny has it already: straight on to the lesson. */
+  viola_uppdrag_har: {
+    speaker: 'Nätlagerskan Viola',
+    pages: [
+      'Kom in, kom in. Akta näten. Jag lagar dem här uppe när det blåser för hårt nere vid sjöbodarna.',
+      'Du vill hoppa högre? Då behöver jag något som vet hur man flyger. En fjäder från en sädesärla.',
+      'Vänta nu. Vad är det du har där?',
+    ],
+    actions: [{ type: 'flag', flag: 'fjader_uppdrag' }],
+    next: 'viola_lar',
+  },
+
+  viola_vantar: {
+    speaker: 'Nätlagerskan Viola',
+    pages: ['Sädesärlorna håller till på stranden där signalstenen står. Högt upp bland stenarna.'],
+  },
+
   viola_lar: {
     speaker: 'Nätlagerskan Viola',
     pages: [
+      'En ärlefjäder! Känn hur lätt den är. Lika lätt ska du bli.',
       'Du hoppar bra, men du hoppar som en människa. Jag ska lära dig hoppa som en sädesärla.',
       'Min mormor sa läsningen varje vår när fåglarna kom tillbaka. Hon påstod att hon kunde hoppa över båtarna.',
       '"Fjäder i fot och vind under häl, lätt som en ärla, lätt som en själ." Så. Nu ska du se.',
       'Ska du ut i fyren? Där uppe i linsrummet ligger saker på hyllor dit ingen människa når. Men en sädesärla når.',
     ],
-    actions: [{ type: 'learnSpell', spell: 'hopp' }],
+    actions: [{ type: 'takeItem', item: 'fjader' }, { type: 'flag', flag: 'fjader_klar' }, { type: 'learnSpell', spell: 'hopp' }],
     next: 'lart_hopp',
   },
 
