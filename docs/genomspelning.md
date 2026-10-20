@@ -89,7 +89,7 @@ what is checked is that every door, gate, condition and dialog fits together.
 
 ## 13
 
-- **Tjuvgrottan**: finds a container; finds a näverdocka; finds a container; gets Silverbeslaget
+- **Tjuvgrottan** (three rooms): the shaft's life container; in the den a container, a näverdocka and, at the very end, Silverbeslaget
 - **Fiskeläget**: meets Hilma i sjöboden, Nätlagerskan Viola, Stina, Gamle Ture, Fiskaren Johan; learns Hopp
 - **Fyren i skären**: finds a key
 - **Skeppssättningen**: meets runsten; gets Runstensbit

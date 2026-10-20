@@ -148,7 +148,7 @@ har blivit vilda, och bandet håller på att brista. Därför:
 - **Resan:** **Myrlabyrinten**. Dimma döljer allt utom några rutor runt Dagny, och pausmenyns karta visar bara det hon sett.
   - Man hittar via **landmärken:** en död tall, ett vägkors, en övergiven pråm.
   - **Irrbloss** vandrar på myren och lockar mot gungfly som sänker Dagny tillbaka till kanten.
-  - Tjuvgrottan ligger mitt i myren.
+  - Tjuvgrottan ligger mitt i myren: tre mörka rum (ingången med spikgropar, schaktet upp med livbehållaren på en avstickare, och tjuvarnas kammare med magibehållaren, näverdockan och silvret allra innerst).
 - **Område:** Fiskeläget (Hopp från Viola), Skeppssättningen, Fyren i skären.
 - **Byn drar in:** fyren behöver något från Fiskeläget, till exempel att Johan ror Dagny ut till fyrskäret när kompassen är hittad, eller att Viola lär ut Hopp som behövs i fyren.
 - **Återkomst:** stövlarna gör att man kan vada över forsen hem, en genväg från kusten till Hemdalen.
