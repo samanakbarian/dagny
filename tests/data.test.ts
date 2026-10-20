@@ -258,10 +258,10 @@ describe('overworld', () => {
     for (const r of OVERWORLD.tiles) expect(r.length).toBe(w);
     for (const p of OVERWORLD.places) {
       const ch = OVERWORLD.tiles[p.y]?.[p.x];
-      // Hidden places sit on the waterfall or the cliff door that hides them;
+      // Hidden places sit on the waterfall, the cliff door or the sea cleft that hides them;
       // small places on the croft, cross, stone or churchyard that marks them.
       // Voices the radio picks up hang in the open air, on any walkable ground.
-      const ok = p.radio ? !TERRAIN[ch]?.blocked : p.hidden ? 'AE'.includes(ch) : PLACE_CHARS.includes(ch) || !!TERRAIN[ch]?.visitable || !!TERRAIN[ch]?.passage;
+      const ok = p.radio ? !TERRAIN[ch]?.blocked : p.hidden ? 'AE3'.includes(ch) : PLACE_CHARS.includes(ch) || !!TERRAIN[ch]?.visitable || !!TERRAIN[ch]?.passage;
       expect(ok, `${p.name} on '${ch}'`).toBe(true);
       if (p.area) {
         expect(AREAS[p.area], p.area).toBeDefined();

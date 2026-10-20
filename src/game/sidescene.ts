@@ -104,6 +104,8 @@ export class SideScene implements Scene, WorldApi {
   private lastTalk: { key: string; x: number; at: number } | null = null;
   /** Sealed room: 0 not sealed / cleared, 1 waiting for Dagny, 2 shut until the room is cleared. */
   seal = 0;
+  /** Frames a meeting has kept Dagny in (a creature stuck out of reach can't keep her for ever). */
+  sealT = 0;
   nameT = 0;
   flashT = 0;
   private lockMsgT = 0;
@@ -802,17 +804,27 @@ export class SideScene implements Scene, WorldApi {
       grid.wallRight = open ? !this.area.right : true;
     };
     const p = this.player;
-    if (this.seal === 1 && p.x > 3 * TILE && p.x < (grid.w - 4) * TILE && p.state !== 'dead') {
+    const meeting = this.area.kind === 'encounter';
+    if (this.seal === 1 && (meeting || (p.x > 3 * TILE && p.x < (grid.w - 4) * TILE)) && p.state !== 'dead') {
       this.seal = 2;
       edge(false);
+      if (meeting) {
+        // Said the first time only: after that the wall at the edge says it.
+        if (!hasFlag(this.s, 'mote_stangt')) {
+          setFlag(this.s, 'mote_stangt');
+          g.toast(STR.meetingShut, 3);
+        }
+        return;
+      }
       this.sfx('roar');
       this.shake(20, 2);
       g.audio.playMusic(this.music());
       if (this.area.sealed) g.pushOverlay(new DialogOverlay(g, this.area.sealed.dialog));
-    } else if (this.seal === 2 && this.enemies.every((e) => e.dead)) {
+    } else if (this.seal === 2 && (this.enemies.every((e) => e.dead) || (meeting && ++this.sealT > 90 * 60))) {
       this.seal = 0;
       edge(true);
-      setFlag(this.s, `${this.area.id}_rensad`);
+      // A meeting's room is used again and again; only a sealed room stays cleared.
+      if (!meeting) setFlag(this.s, `${this.area.id}_rensad`);
       g.audio.playMusic(this.music());
       this.sfx('unlock');
       g.toast(STR.sealOpen, 3);

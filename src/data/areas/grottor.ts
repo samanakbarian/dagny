@@ -272,4 +272,51 @@ export const GROTTOR: Record<string, AreaDef> = {
       "############################",
     ],
   },
+  /**
+   * Havsgrottan: a sea cave south-east of the lighthouse, found only by rowing
+   * right up to the cliff. Stones in the black water, and at the back a life
+   * container someone hid long ago.
+   */
+  havsgrottan: {
+    id: 'havsgrottan',
+    name: 'Havsgrottan',
+    kind: 'path',
+    tone: 'gra_augusti',
+    music: 'grotta',
+    backdrop: 'mine',
+    theme: 'skar',
+    dark: true,
+    darkness: 0.75,
+    showName: true,
+    ambience: ['spray', 'mist'],
+    left: { to: 'overworld', ow: { x: 94, y: 69 } },
+    tiles: [
+      "################################################",
+      "################################################",
+      "........................................########",
+      "......................f.................########",
+      "..................................f.....########",
+      "........................................########",
+      "...................=====................########",
+      "........................................########",
+      "...............##........##....................#",
+      "..A....##...j..##........##...x..##...x......h.#",
+      "#####~~##~~##~~##~~~~~~~~##~~##~~##~~###########",
+      "#####~~##~~##~~##~~~~~~~~##~~##~~##~~###########",
+    ],
+    deco: [
+      "................................................",
+      "................................................",
+      "rrrrrrrrrrrrrrrrrrrrrarrrrrrrrrrrrrrrrrr........",
+      "rrrrrrrrrrarrrrrrrrrrrrrrrrrrrrrrrrrrrrr........",
+      "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr........",
+      "rrrrrrrrrrrrrrrrrrarrrrrrrrrrrrrrrarrrrr........",
+      "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr........",
+      "rrrrrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr........",
+      "rrrrrrrrrrarrrr..rrrrrrrr..rrrrrarrrrrrrrrrrrrr.",
+      "rrrrrrr..rrrrrr..rrrrrrrr..rrrrrr..rrrrrrrrrrrr.",
+      "................................................",
+      "................................................",
+    ],
+  },
 };

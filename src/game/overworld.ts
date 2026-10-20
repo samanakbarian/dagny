@@ -164,7 +164,7 @@ export function overworldImage(): HTMLCanvasElement {
       if (ch === 'E') drawSprite(ctx, 'owCliffDoor', 0, x * T, y * T);
     }
   }
-  for (const pl of OVERWORLD.places) if (pl.hidden === 'near') drawSprite(ctx, 'owFallCave', 0, pl.x * T, pl.y * T);
+  for (const pl of OVERWORLD.places) if (pl.hidden === 'near') drawSprite(ctx, pl.sprite ?? 'owFallCave', 0, pl.x * T, pl.y * T);
   return c;
 }
 
@@ -867,7 +867,7 @@ export class OverworldScene implements Scene {
       if (pl.hidden !== 'near' || Math.abs(pl.x - this.me.x) + Math.abs(pl.y - this.me.y) > 1) continue;
       const x = pl.x * T - camX;
       const y = pl.y * T - camY;
-      if (visible(x, y)) drawSprite(ctx, 'owFallCave', Math.floor(this.frame / 8), x, y);
+      if (visible(x, y)) drawSprite(ctx, pl.sprite ?? 'owFallCave', Math.floor(this.frame / 8), x, y);
     }
     // Encounters.
     for (const e of this.encounters) {

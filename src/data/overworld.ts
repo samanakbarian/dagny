@@ -90,7 +90,7 @@ export const OVERWORLD: OverworldDef = {
     '^^^..mmm........................wwwwwf....^::::ff...NNNNNNNNNNf..^^_uff_______~__f____~~~~~~~^^^',
     '^^^^.mmu..........^^............wwwww..^^^^^^::....yNNNNNNNNN^^^^^^~___~~~_~~~~~~_~~~~~~~~~~~~^^',
     '^^^^^.m.....mmmm^^^^^^^...^...^.mw^www^^^^^^^^^^^^..NNNN^^^^^^^^^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^',
-    '^^^^^^m....^^^^^^^^^^^^^^^^^^^^^^^^^ww^^^^^^^^^^^^^^NNN^^^^^^^^^^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^',
+    '^^^^^^m....^^^^^^^^^^^^^^^^^^^^^^^^^ww^^^^^^^^^^^^^^NNN^^^^^^^^^^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~3',
     '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^~~~~~~~~~~~~~~~~~~~~^^^^^^^^^',
     '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^',
   ],
@@ -145,6 +145,8 @@ export const OVERWORLD: OverworldDef = {
     { x: 19, y: 30, name: 'Kyrkbacken', view: 24, dialog: 'kyrkbacken_utsikt', doneFlag: 'kyrkbacken_sedd' },
     { x: 40, y: 30, name: 'Eremitholmen', area: 'eremitholmen', entry: 'A' },
     { x: 57, y: 46, name: 'Måsskäret', area: 'masskaret', entry: 'A' },
+    // A sea cave in the cliff south-east of the lighthouse, seen only from a boat right beside it.
+    { x: 95, y: 69, name: 'Havsgrottan', area: 'havsgrottan', entry: 'A', hidden: 'near', sprite: 'owSeaCave' },
     { x: 62, y: 37, name: 'Signalstranden', area: 'signalstranden', entry: 'A' },
     { x: 62, y: 18, name: 'Gamla stollen', area: 'stollen', entry: 'A', leadsTo: { x: 67, y: 18 } },
     // The far mouth and the side gallery open only from inside: one way in, through the cave-in.

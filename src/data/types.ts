@@ -405,6 +405,8 @@ export interface OverworldPlace {
    * (a cave behind a waterfall); 'radio' only when she carries the radio.
    */
   hidden?: 'near' | 'radio';
+  /** What a 'near' place shows when Dagny is beside it (default: the cave behind a waterfall). */
+  sprite?: string;
   /** A viewpoint: standing here maps this many tiles round about (Kyrkbacken). */
   view?: number;
   /**

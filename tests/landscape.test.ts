@@ -143,7 +143,7 @@ describe('hidden places', () => {
 
   it('there are hidden places beyond the three known ones, one found by standing beside it and one with the radio', () => {
     // Väktarkammaren has a door on each side of the cliff: two places, one room.
-    expect([...new Set(hidden.map((p) => `${p.hidden}:${p.area}`))].sort()).toEqual(['near:fallgrottan', 'radio:vaktarkammaren']);
+    expect([...new Set(hidden.map((p) => `${p.hidden}:${p.area}`))].sort()).toEqual(['near:fallgrottan', 'near:havsgrottan', 'radio:vaktarkammaren']);
     for (const p of hidden) expect(AREAS[p.area!], p.area).toBeDefined();
   });
 

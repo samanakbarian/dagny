@@ -66,7 +66,9 @@ describe('the overworld', () => {
       const exits = [a.left, a.right, ...Object.values(a.doors ?? {})].filter((e) => e?.to === 'overworld' && e.ow);
       for (const e of exits) {
         const ch = at(e!.ow!.x, e!.ow!.y)!;
-        expect('^~'.includes(ch), `${a.id} → ${e!.ow!.x},${e!.ow!.y} '${ch}'`).toBe(false);
+        // A place only a boat reaches (the sea cave) lets Dagny out on the water, in the boat.
+        const byBoat = OVERWORLD.places.some((p) => p.area === a.id && TERRAIN[at(p.x, p.y)!]?.needs === 'eka');
+        expect(ch === '^' || (ch === '~' && !byBoat), `${a.id} → ${e!.ow!.x},${e!.ow!.y} '${ch}'`).toBe(false);
         const near = OVERWORLD.places.some((p) => Math.abs(p.x - e!.ow!.x) + Math.abs(p.y - e!.ow!.y) <= 2);
         expect(near, a.id).toBe(true);
       }

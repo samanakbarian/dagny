@@ -57,9 +57,9 @@ function containersPlaced(): Array<{ area: string; kind: 'liv' | 'magi'; via: st
 }
 
 describe('secrets', () => {
-  it('has seven life and seven magic containers (hidden caves and the small places on the map)', () => {
+  it('has eight life and seven magic containers (hidden caves and the small places on the map)', () => {
     const c = containersPlaced();
-    expect(c.filter((x) => x.kind === 'liv')).toHaveLength(7);
+    expect(c.filter((x) => x.kind === 'liv')).toHaveLength(8);
     expect(c.filter((x) => x.kind === 'magi')).toHaveLength(7);
   });
 
