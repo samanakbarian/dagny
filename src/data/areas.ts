@@ -13,6 +13,7 @@ import { FABODSKOGEN } from './areas/fabodskogen';
 import { TROLLBERGET } from './areas/trollberget';
 import { PASSAGER } from './areas/passager';
 import { SJON } from './areas/sjon';
+import { VINDAR } from './areas/vindar';
 
 /**
  * Side-view areas. See data/legend.ts for what the characters mean.
@@ -20,6 +21,6 @@ import { SJON } from './areas/sjon';
  *
  * The rooms live in data/areas/, one file per region or temple.
  */
-export const AREA_GROUPS: ReadonlyArray<Record<string, AreaDef>> = [HEM, MOTEN, BYAR, GROTTOR, SMAPLATSER, KRYPTA, GRUVAN, KVARNEN, FYREN, FOLKPARKEN, FABODSKOGEN, TROLLBERGET, PASSAGER, SJON];
+export const AREA_GROUPS: ReadonlyArray<Record<string, AreaDef>> = [HEM, MOTEN, BYAR, GROTTOR, SMAPLATSER, KRYPTA, GRUVAN, KVARNEN, FYREN, FOLKPARKEN, FABODSKOGEN, TROLLBERGET, PASSAGER, SJON, VINDAR];
 
 export const AREAS: Record<string, AreaDef> = Object.assign({}, ...AREA_GROUPS);

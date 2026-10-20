@@ -23,6 +23,12 @@ or a hidden place. At the start she has only the blade Mormor gives her.
 | Hamn | Gammelmor Karna | Fäboden | After the mine |
 | Åska | Telegrafisten Oskar | Stationssamhället | Region gated by the ficklampa |
 
+The seven readings are taught up in attics (`data/areas/vindar.ts`): each
+teacher sits under the roof of a house in the village, behind the house's own
+door (a lantern hangs by it) and up through a hole in the attic floor. Learning
+is a rite (`game/rite.ts`): the room goes dark, a ring of runes closes in on
+Dagny, sparks rise, a flash, and the reading's name stands written in the air.
+
 The NPC dialog conditions are in `src/data/npcs.ts`; `tests/start.test.ts`
 checks that Läkning and Nedåtstöt cannot be had for free.
 

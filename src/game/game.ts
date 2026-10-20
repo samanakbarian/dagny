@@ -8,6 +8,7 @@ import { drawText, measure } from '../engine/text';
 import { TONES, PALETTE, type ToneFilter } from '../data/palettes';
 import { STR } from '../data/strings';
 import { TEMPLES } from '../data/temples';
+import { SpellRite } from './rite';
 import type { Condition, DialogAction } from '../data/types';
 import { loadSettings, saveSettings, PLACEMENT_OFFSETS, type Settings } from './settings';
 import { readSave, writeSave } from './save';
@@ -32,6 +33,8 @@ export interface Overlay {
   render(ctx: CanvasRenderingContext2D): void;
   /** Hide the HUD while open. */
   hideHud?: boolean;
+  /** Don't draw the overlays beneath this one while it is open. */
+  hidesBelow?: boolean;
 }
 
 interface Toast {
@@ -268,6 +271,8 @@ export class Game {
         if (!s.spells.includes(a.spell)) s.spells.push(a.spell);
         s.selectedSpell ??= a.spell;
         this.audio.jingle('lara');
+        // The rite: the reading is written in the air before the teacher goes on.
+        this.pushOverlay(new SpellRite(this, a.spell));
         break;
       case 'learnSkill':
         if (!s.skills.includes(a.skill)) s.skills.push(a.skill);
@@ -380,7 +385,10 @@ export class Game {
     ctx.fillStyle = PALETTE.k;
     ctx.fillRect(0, 0, VIEW_W, VIEW_H);
     this.scene?.render(ctx);
-    for (const o of this.overlays) o.render(ctx);
+    // An overlay that takes the whole stage (the rite) hides the ones beneath it.
+    let from = 0;
+    this.overlays.forEach((o, i) => { if (o.hidesBelow) from = i; });
+    for (const o of this.overlays.slice(from)) o.render(ctx);
     this.renderToasts(ctx);
     if (this.fade > 0) {
       ctx.globalAlpha = Math.min(1, this.fade);
