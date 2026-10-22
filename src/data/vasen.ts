@@ -151,7 +151,7 @@ export const VASEN: Readonly<Record<string, VasenEntry>> = {
     folktro:
       'Dimma sågs ofta som väsens verk: älvor som dansade, eller rån som ville dölja vägen. Den som gick vilse i dimman skulle vända tröjan ut och in – då släppte förtrollningen.',
     berattelse:
-      'Dimvättarna blinkar fram och tillbaka i dimman och är svåra att träffa.',
+      'Dimvättarna blinkar fram och tillbaka i dimman och är svåra att träffa. I ett starkt ljus har de ingenstans att gömma sig.',
   },
   stubbtroll: {
     folktro:

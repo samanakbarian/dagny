@@ -55,6 +55,7 @@ export const GRUVSAMHALLET: Record<string, DialogDef> = {
       'Du har kommit långt för att vara så ung. Gruvan är mörk nu, mörkare än den varit på hundra år.',
       'Min mor lärde mig en läsning när jag skulle ner i schaktet första gången. Den har lyst för mig i sextio år.',
       '"Lyse i natt, lyse i berg, lyse för den som går utan färg..." Så. Nu bär du ljuset själv.',
+      'Och kom ihåg: det som gömmer sig i dimma tål inte ljus.',
     ],
     actions: [{ type: 'takeItem', item: 'solsten' }, { type: 'flag', flag: 'solsten_klar' }, { type: 'learnSpell', spell: 'lyse' }],
     next: 'lart_lyse',

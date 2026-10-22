@@ -26,6 +26,7 @@ function world(): WorldApi {
     gust: () => undefined,
     spawnEnemy: () => false,
     minions: () => 0,
+    lit: () => false,
   };
 }
 

@@ -204,6 +204,7 @@ describe('Skuggan', () => {
       gust: () => undefined,
       spawnEnemy: () => false,
       minions: () => 0,
+      lit: () => false,
     };
   }
 

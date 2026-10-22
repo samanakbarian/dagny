@@ -231,6 +231,10 @@ export class SideScene implements Scene, WorldApi {
   /** Reused every call (read at once by AI, never kept). */
   private readonly center = { x: 0, y: 0 };
 
+  lit(): boolean {
+    return this.spell.lyse > 0;
+  }
+
   playerCenter(): { x: number; y: number } {
     const p = this.player;
     this.center.x = p.x + p.w / 2;

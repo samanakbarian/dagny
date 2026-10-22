@@ -24,6 +24,7 @@ function world(player: { x: number; y: number }, sounds: string[]): WorldApi {
     gust: () => undefined,
     spawnEnemy: () => false,
     minions: () => 0,
+    lit: () => false,
   };
 }
 
