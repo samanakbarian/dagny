@@ -190,7 +190,7 @@ same meeting doesn't turn up everywhere.
 
 Meetings hunt Dagny: off the road, a creature within about nine tiles walks towards her and starts the fight when it reaches her. Roads and paths are safe. Nothing steps onto them, so a chase ends where the path begins.
 
-Inside a meeting the way back shuts behind Dagny; only the far side leads on. She needn't beat every creature, but she has to get past them. The music starts with a short alarm (`mote`) that runs straight on into the chase (`mote_jakt`).
+Inside a meeting the way back shuts behind Dagny; only the far side leads on. She needn't beat every creature, but she has to get past them. The music (`mote`) is a faster take on the sad cave tune (`grotta`): the same A minor line and echo over a pulsing bass and soft drums.
 
 ### Small places: one per region, each with a task
 
