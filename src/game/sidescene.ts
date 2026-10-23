@@ -284,6 +284,7 @@ export class SideScene implements Scene, WorldApi {
     this.gustDx = dx;
     this.gustT = frames;
     this.sfx('wind');
+    this.sfx('wind');
   }
 
   spawnEnemy(id: string, px: number, py: number): boolean {
@@ -956,6 +957,11 @@ export class SideScene implements Scene, WorldApi {
       if (x < cx - 20 || x > cx + VIEW_W + 20 || y < cy - 20 || y > cy + VIEW_H + 20) continue;
       if (w.up > 0) a.spawn({ x, y, vx: 0, vy: -2.5, life: 30, color: 'rgba(243,230,200,0.5)', size: 1, frames: 5 });
       else a.spawn({ x, y, vx: w.dx * 2.5, vy: 0, life: 30, color: 'rgba(243,230,200,0.5)', size: 1, frames: -8 });
+    }
+    // A storm gust called up by a creature (Havsfrun): streaks across the whole view, so the push is seen.
+    if (this.gustT > 0 && f % 2 === 0) {
+      const dir = Math.sign(this.gustDx);
+      a.spawn({ x: dir > 0 ? cx - 10 : cx + VIEW_W + 10, y: cy + Math.random() * VIEW_H, vx: dir * (5 + Math.random() * 3), vy: 0.2, life: 70, color: 'rgba(243,230,200,0.55)', size: 1, frames: -8 });
     }
     if (amb.includes('spray') && f % 6 === 0) {
       a.spawn({ x: cx + Math.random() * VIEW_W, y: cy + VIEW_H - 10, vx: (Math.random() - 0.5) * 0.6, vy: -1.6 - Math.random(), gravity: 0.05, life: 50, color: 'rgba(243,230,200,0.7)', size: 1 });

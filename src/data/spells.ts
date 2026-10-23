@@ -13,7 +13,7 @@ export const SPELLS: Readonly<Record<SpellId, SpellDef>> = {
   skydd: {
     id: 'skydd',
     name: 'Skydd',
-    description: 'Ett kors av rönn över bröstet. Halverar skadan en stund.',
+    description: 'Ett kors av rönn över bröstet. Halverar skadan så länge Dagny är kvar i rummet.',
     cost: [2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1],
     duration: 20,
     village: 'Bruksorten',
@@ -21,7 +21,7 @@ export const SPELLS: Readonly<Record<SpellId, SpellDef>> = {
   hopp: {
     id: 'hopp',
     name: 'Hopp',
-    description: 'Lätt som en sädesärla. Högre hopp en stund.',
+    description: 'Lätt som en sädesärla. Högre hopp så länge Dagny är kvar i rummet.',
     cost: [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1],
     duration: 20,
     village: 'Fiskeläget',

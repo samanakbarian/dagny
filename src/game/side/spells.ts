@@ -33,6 +33,17 @@ export function castSpell(sc: SideScene): void {
     return;
   }
   const def = SPELLS[id];
+  const p0 = sc.player;
+  // A bird that casts again comes down (if there is room to stand).
+  if (id === 'hamn' && p0.state === 'bird') {
+    if (p0.leaveBird(sc.grid)) sc.spell.hamn = 0;
+    return;
+  }
+  // A reading still burning in this room needs no second casting.
+  if (id !== 'lakning' && id !== 'aska' && sc.spell[id] > 0) {
+    sc.sfx('cancel');
+    return;
+  }
   const cost = spellCost(s, id);
   if (s.mp < cost) {
     sc.sfx('cancel');
@@ -44,7 +55,8 @@ export function castSpell(sc: SideScene): void {
   s.mp -= cost;
   sc.sfx('magic');
   sc.flashT = 8;
-  const frames = def.duration * 60;
+  // Like Zelda II: a reading lasts until Dagny leaves the room (the timers live in the room's scene).
+  const frames = def.duration > 0 ? Infinity : 0;
   const pc = sc.playerCenter();
   for (let i = 0; i < 14; i++) {
     const a = (i / 14) * Math.PI * 2;

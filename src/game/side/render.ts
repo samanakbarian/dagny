@@ -282,10 +282,9 @@ export function renderSpellIcons(sc: SideScene, ctx: CanvasRenderingContext2D): 
   const y = 33;
   for (const [k, t] of Object.entries(sc.spell)) {
     if (t <= 0) continue;
-    const name = SPELLS[k as SpellId].name;
-    const secs = Math.ceil(t / 60);
-    const txt = `${name} ${secs}`;
-    if (t > 120 || Math.floor(t / 8) % 2 === 0) drawText(ctx, txt, x, y, 'c', { shadow: 'k' });
+    // It lasts the room out: just the name, no countdown.
+    const txt = SPELLS[k as SpellId].name;
+    drawText(ctx, txt, x, y, 'c', { shadow: 'k' });
     x += measure(txt) + 6;
   }
 }

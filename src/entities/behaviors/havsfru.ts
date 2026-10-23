@@ -69,7 +69,7 @@ export const havsfru: Behavior = {
         drift();
         if (e.timer === 30) {
           const out = p.x > gw / 2 ? 1 : -1;
-          world.gust(out * (e.phase === 1 ? 1.3 : 0.95), 80);
+          world.gust(out * (e.phase === 1 ? 1.1 : 0.9), 80);
         }
         if (--e.timer <= 0) { e.mode = 0; e.timer = Math.round(ph.attackEvery * 60); }
         break;

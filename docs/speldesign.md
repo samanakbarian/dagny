@@ -32,6 +32,10 @@ Viola's, the summer farm's loft at Kärna's, wires at Oskar's. Learning
 is a rite (`game/rite.ts`): the room goes dark, a ring of runes closes in on
 Dagny, sparks rise, a flash, and the reading's name stands written in the air.
 
+Like Zelda II, a reading cast in a room lasts until Dagny leaves it (Skydd,
+Hopp, Lyse, Eld and Hamn); casting one that is already burning costs nothing
+and does nothing. A bird that casts again comes down where there is room.
+
 The NPC dialog conditions are in `src/data/npcs.ts`; `tests/start.test.ts`
 checks that Läkning and Nedåtstöt cannot be had for free.
 
