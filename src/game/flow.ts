@@ -130,19 +130,6 @@ export function gameOver(game: Game, temple: string | null): void {
   game.save();
 }
 
-/** End of the vertical slice: sunrise cards, then back to the village. */
-export function showSliceEnd(game: Game): void {
-  const st = game.state;
-  if (!st) return;
-  game.transition(() => {
-    game.setScene(
-      new CardsScene(game, STR.sliceEnd, 'soluppgang', () => {
-        goToArea(game, st.lastVillage, { entry: 'H' });
-      }, 'soluppgang'),
-    );
-  });
-}
-
 /** Trollberget is reconciled: sunrise on midsummer morning, then the epilogue. */
 export function playEnding(game: Game): void {
   const st = game.state;

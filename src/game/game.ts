@@ -9,6 +9,8 @@ import { TONES, PALETTE, type ToneFilter } from '../data/palettes';
 import { STR } from '../data/strings';
 import { TEMPLES } from '../data/temples';
 import { SpellRite } from './rite';
+import { SignalScene } from './signal';
+import { DialogOverlay } from './dialog';
 import type { Condition, DialogAction } from '../data/types';
 import { loadSettings, saveSettings, PLACEMENT_OFFSETS, type Settings } from './settings';
 import { readSave, writeSave } from './save';
@@ -317,8 +319,14 @@ export class Game {
           s.opened.push(`liv1:${a.id}`);
           s.lives = Math.min(MAX_LIVES, s.lives + 1);
           this.audio.jingle('fynd');
+          this.toast(STR.extraLife, 3);
         }
         break;
+      case 'signal': {
+        const then = a.then;
+        this.pushOverlay(new SignalScene(this, () => this.pushOverlay(new DialogOverlay(this, then))));
+        break;
+      }
     }
     this.onAction?.(a);
     if (a.type === 'rest') this.save();

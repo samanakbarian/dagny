@@ -785,11 +785,6 @@ export class SideScene implements Scene, WorldApi {
         if (tx >= 0 && a.npcs?.['7'] === 'murre') this.npcs.push(new Npc(NPCS.murre, tx * TILE + 8, (ty + 1) * TILE));
       }
     }
-    if (hasFlag(s, 'hulda_efter_krypta') && !hasFlag(s, 'slice_end_seen')) {
-      setFlag(s, 'slice_end_seen');
-      this.game.save();
-      flow.showSliceEnd(this.game);
-    }
   }
 
   /** Shuts both ways out once Dagny is inside; opens them when the room is cleared. */

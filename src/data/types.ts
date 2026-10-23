@@ -164,6 +164,8 @@ export type DialogAction =
   | { type: 'container'; kind: 'liv' | 'magi'; id: string }
   /** Gives one extra life (a quest reward), once per id. */
   | { type: 'life'; id: string }
+  /** Dagny blinks Dagmar's signal across the lake (game/signal.ts), then `then` is said. */
+  | { type: 'signal'; then: string }
   /** Hands over to a story scene (the ending, the credits). */
   | { type: 'scene'; scene: 'ending' | 'credits' }
   /** Takes the train to a village with a station (the stationmaster's whistle found). */

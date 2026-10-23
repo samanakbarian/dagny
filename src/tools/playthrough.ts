@@ -167,6 +167,10 @@ export function playthrough(opts: Options = {}): Playthrough {
           log('life', a.id);
         }
         break;
+      case 'signal':
+        // The signal across the lake ends in its dialog.
+        talk(a.then);
+        break;
       case 'scene':
         if (a.scene === 'ending' && !ending) {
           ending = true;

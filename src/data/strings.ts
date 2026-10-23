@@ -111,12 +111,6 @@ export const STR = {
     'Bredvid barnet låg en sliten svärdsklinga utan fäste. Solen gick upp när Hulda bar hem henne. Hon kallades Dagny – "ny dag".',
     'Nu är det sommaren 1964, och sommaren är ovanligt mörk.',
   ],
-  // Shown after the first temple – end of the vertical slice.
-  sliceEnd: [
-    'Ljuset kommer tillbaka.',
-    'En av sju platser är förlikad. Sex sover ännu.',
-    'Tack för att du spelade första delen av Dagnys äventyr!',
-  ],
   // Trollberget is reconciled – sunrise on midsummer morning.
   ending: [
     'Dagmar blev ljus – för en tid. Ljuset steg genom berget och ut över skogen, sjön och åkrarna.',

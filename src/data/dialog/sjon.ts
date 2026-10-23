@@ -43,16 +43,12 @@ export const SJON: Record<string, DialogDef> = {
       'Dagny tar fram ficklampan.',
     ],
     choices: [
-      { text: 'Blinka: tre korta, tre långa, tre korta', next: 'signalen_besvaras' },
+      { text: 'Blinka: tre korta, tre långa, tre korta', actions: [{ type: 'signal', then: 'signalen_besvaras' }] },
       { text: 'Låt bli' },
     ],
   },
   signalen_besvaras: {
-    pages: [
-      'Kort, kort, kort. Långt, långt, långt. Kort, kort, kort.',
-      'Det är tyst länge. Bara vågorna.',
-      'Sedan, uppe i klockstapeln på andra sidan sjön, tänds ett ljus. Kort, kort, kort. Långt, långt, långt. Kort, kort, kort.',
-    ],
+    pages: ['Ljuset i klockstapeln lyser en stund till. Sedan slocknar det, och det är bara vågorna igen.'],
     actions: [{ type: 'flag', flag: 'signalen_besvarad' }, { type: 'life', id: 'signalen' }, { type: 'xp', amount: 100 }],
   },
   signalsten_besvarad: {
