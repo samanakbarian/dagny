@@ -86,7 +86,7 @@ export const STR = {
   restartMountain: 'Börja om vid bergets fot',
   extraLife: 'Ett extra liv!',
   sealOpen: 'Vägen är fri',
-  meetingShut: 'Väsena stänger vägen. Här blir det strid.',
+  meetingShut: 'Vägen tillbaka är stängd. Bara framåt.',
   mapKeyTemple: 'Tempel',
   mapKeyVillage: 'By',
   mapKeyPlace: 'Plats',

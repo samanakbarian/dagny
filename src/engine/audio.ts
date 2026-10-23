@@ -28,6 +28,8 @@ export interface SongDef {
   /** Derive from another song (e.g. placeholder temple themes). */
   base?: string;
   transpose?: number;
+  /** A song that doesn't loop goes straight on into this one (an intro and its loop). */
+  then?: string;
 }
 
 export interface SfxStep {
@@ -58,6 +60,7 @@ interface ParsedTrack {
 interface ParsedSong {
   bpm: number;
   loop: boolean;
+  then?: string;
   tracks: ParsedTrack[];
 }
 
@@ -102,7 +105,8 @@ export class AudioEngine {
   private songs: Record<string, SongDef> = {};
   private sfx: Record<string, SfxStep[]> = {};
   private parsed = new Map<string, ParsedSong>();
-  private current: { id: string; song: ParsedSong; idx: number[]; time: number[]; startedAt: number } | null = null;
+  /** `origin` is the song asked for, when this is the loop its intro went on into. */
+  private current: { id: string; origin: string; song: ParsedSong; idx: number[]; time: number[]; startedAt: number } | null = null;
   private wanted: string | null = null;
   private musicVol = 0.6;
   private sfxVol = 0.7;
@@ -215,6 +219,7 @@ export class AudioEngine {
     const song: ParsedSong = {
       bpm,
       loop: def.loop,
+      then: def.then,
       tracks: tracks.map((t) => {
         const notes = parseNotes(t.notes, t.inst === 'drum' ? 0 : transpose + (t.shift ?? 0));
         return { def: t, notes, totalLen: notes.reduce((a, n) => a + n.len, 0) };
@@ -232,7 +237,7 @@ export class AudioEngine {
       this.stopSong();
       return;
     }
-    if (this.current?.id === id) return;
+    if (this.current?.id === id || this.current?.origin === id) return;
     this.startSong(id);
   }
 
@@ -261,6 +266,7 @@ export class AudioEngine {
     const t0 = this.ctx.currentTime + 0.3;
     this.current = {
       id,
+      origin: id,
       song,
       idx: song.tracks.map(() => 0),
       time: song.tracks.map(() => t0),
@@ -290,6 +296,15 @@ export class AudioEngine {
       }
       if (cur.idx[ti] < track.notes.length || cur.song.loop) allDone = false;
     });
+    // An intro ends right where its loop begins, to the sixteenth.
+    if (allDone && !cur.song.loop && cur.song.then) {
+      const next = this.parse(cur.song.then);
+      if (next) {
+        const t0 = Math.max(...cur.time);
+        this.current = { id: cur.song.then, origin: cur.origin, song: next, idx: next.tracks.map(() => 0), time: next.tracks.map(() => t0), startedAt: t0 };
+        return;
+      }
+    }
     if (allDone && !cur.song.loop && ctx.currentTime > Math.max(...cur.time)) {
       this.current = null;
       if (this.wanted === cur.id) this.wanted = null;

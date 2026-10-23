@@ -57,9 +57,18 @@ export const SFX: Record<string, SfxStep[]> = {
     { wave: 'noise', from: 900, to: 300, dur: 0.3, vol: 0.5 },
     { wave: 'sine', from: 600, to: 200, dur: 0.15, vol: 0.3 },
   ],
+  /** A reading cast: a quick rising run of blips that ends in a shimmer. */
   magic: [
-    { wave: 'triangle', from: 400, to: 1600, dur: 0.3, vol: 0.35 },
-    { wave: 'sine', from: 800, to: 2400, dur: 0.3, vol: 0.2, at: 0.05 },
+    { wave: 'square', from: 392, dur: 0.05, vol: 0.22 },
+    { wave: 'square', from: 523, dur: 0.05, vol: 0.22, at: 0.05 },
+    { wave: 'square', from: 659, dur: 0.05, vol: 0.22, at: 0.1 },
+    { wave: 'square', from: 784, dur: 0.05, vol: 0.22, at: 0.15 },
+    { wave: 'square', from: 1047, dur: 0.05, vol: 0.22, at: 0.2 },
+    { wave: 'square', from: 1319, dur: 0.06, vol: 0.22, at: 0.25 },
+    { wave: 'triangle', from: 1047, to: 2093, dur: 0.32, vol: 0.28, at: 0.31 },
+    { wave: 'sine', from: 2093, to: 2637, dur: 0.3, vol: 0.14, at: 0.36 },
+    { wave: 'square', from: 1568, dur: 0.04, vol: 0.1, at: 0.5 },
+    { wave: 'square', from: 2093, dur: 0.04, vol: 0.08, at: 0.58 },
   ],
   heal: [
     { wave: 'sine', from: 523, dur: 0.12, vol: 0.4 },

@@ -134,7 +134,7 @@ export function build(sc: SideScene): void {
               const e = new Enemy(def, px, py);
               if (a.hard) e.harden();
               sc.enemies.push(e);
-              // A meeting on the map is a fight: no walking out of it (game/sidescene.ts, updateSeal).
+              // A meeting on the map shuts the way back (game/sidescene.ts, updateSeal).
               if (a.sealed || a.kind === 'encounter') sc.seal = 1;
             }
           } else if (PICKUP_CHARS[ch]) {

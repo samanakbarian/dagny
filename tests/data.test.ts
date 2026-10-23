@@ -398,7 +398,10 @@ describe('music and sound', () => {
     const elsewhere = ['titel', 'karta', 'seger', 'somnar', 'soluppgang', 'midsommar', 'fynd', 'lara'];
     // A village's brighter tune plays once its place has woken (SideScene.music).
     const bright = (id: string): boolean => id.endsWith('_ljus') && used.has(id.slice(0, -5));
-    for (const id of Object.keys(SONGS)) expect(used.has(id) || elsewhere.includes(id) || bright(id), id).toBe(true);
+    // An intro's loop plays when the intro ends.
+    const after = new Set(Object.values(SONGS).map((x) => x.then).filter(Boolean));
+    for (const id of Object.keys(SONGS)) expect(used.has(id) || elsewhere.includes(id) || bright(id) || after.has(id), id).toBe(true);
+    for (const x of Object.values(SONGS)) if (x.then) expect(SONGS[x.then], x.then).toBeDefined();
   });
 
   it('every village plays brighter once its place has woken', () => {

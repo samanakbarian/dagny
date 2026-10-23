@@ -102,10 +102,8 @@ export class SideScene implements Scene, WorldApi {
   private hazardGrace = 0;
   /** The last thing Dagny talked to or read, where she stood and when. */
   private lastTalk: { key: string; x: number; at: number } | null = null;
-  /** Sealed room: 0 not sealed / cleared, 1 waiting for Dagny, 2 shut until the room is cleared. */
+  /** Sealed room: 0 not sealed / cleared, 1 waiting for Dagny, 2 shut until the room is cleared, 3 a meeting with the way back shut. */
   seal = 0;
-  /** Frames a meeting has kept Dagny in (a creature stuck out of reach can't keep her for ever). */
-  sealT = 0;
   nameT = 0;
   flashT = 0;
   private lockMsgT = 0;
@@ -809,27 +807,32 @@ export class SideScene implements Scene, WorldApi {
       grid.wallRight = open ? !this.area.right : true;
     };
     const p = this.player;
-    const meeting = this.area.kind === 'encounter';
-    if (this.seal === 1 && (meeting || (p.x > 3 * TILE && p.x < (grid.w - 4) * TILE)) && p.state !== 'dead') {
+    // A meeting on the map: the way back shuts behind Dagny. Only the far side
+    // leads on – she needn't beat them all, but she has to get past them.
+    if (this.area.kind === 'encounter') {
+      if (this.seal !== 1 || p.state === 'dead') return;
+      this.seal = 3;
+      const back = this.spawn.entry === 'E' ? grid.w - 1 : 0;
+      for (let y = 0; y < grid.h; y++) if (this.area.tiles[y][back] !== '#') grid.kinds[y * grid.w + back] = Kind.Solid;
+      if (back === 0) grid.wallLeft = true;
+      else grid.wallRight = true;
+      if (!hasFlag(this.s, 'mote_stangt')) {
+        setFlag(this.s, 'mote_stangt');
+        g.toast(STR.meetingShut, 3);
+      }
+      return;
+    }
+    if (this.seal === 1 && p.x > 3 * TILE && p.x < (grid.w - 4) * TILE && p.state !== 'dead') {
       this.seal = 2;
       edge(false);
-      if (meeting) {
-        // Said the first time only: after that the wall at the edge says it.
-        if (!hasFlag(this.s, 'mote_stangt')) {
-          setFlag(this.s, 'mote_stangt');
-          g.toast(STR.meetingShut, 3);
-        }
-        return;
-      }
       this.sfx('roar');
       this.shake(20, 2);
       g.audio.playMusic(this.music());
       if (this.area.sealed) g.pushOverlay(new DialogOverlay(g, this.area.sealed.dialog));
-    } else if (this.seal === 2 && (this.enemies.every((e) => e.dead) || (meeting && ++this.sealT > 90 * 60))) {
+    } else if (this.seal === 2 && this.enemies.every((e) => e.dead)) {
       this.seal = 0;
       edge(true);
-      // A meeting's room is used again and again; only a sealed room stays cleared.
-      if (!meeting) setFlag(this.s, `${this.area.id}_rensad`);
+      setFlag(this.s, `${this.area.id}_rensad`);
       g.audio.playMusic(this.music());
       this.sfx('unlock');
       g.toast(STR.sealOpen, 3);
