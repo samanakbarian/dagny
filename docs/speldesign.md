@@ -222,7 +222,7 @@ dialog is the `life` action.
 
 
 The small places (and the islands on the lake) have their own tune, "Den glömda
-platsen" (`plats`): a slow, strange flute in D minor over harp, organ and a bell,
+platsen" (`plats`): a slow lament in plain D minor, the flute falling over harp, organ and a far bell,
 not the road's or a village's music.
 
 ### Hidden places
