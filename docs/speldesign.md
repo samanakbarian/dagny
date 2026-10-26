@@ -220,6 +220,11 @@ a thing with nothing more to say gives no prompt. People who hand something
 over (the postman, Johan) still give it in the dialog; an extra life from
 dialog is the `life` action.
 
+
+The small places (and the islands on the lake) have their own tune, "Den glömda
+platsen" (`plats`): a slow, strange flute in D minor over harp, organ and a bell,
+not the road's or a village's music.
+
 ### Hidden places
 
 | Place | Where | How it is found | What is in it |

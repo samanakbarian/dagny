@@ -105,6 +105,26 @@ export const SONGS: Record<string, SongDef> = {
     ],
   },
   /**
+   * "Den glömda platsen" – the small places on the map (the old smithy, the
+   * churchyard, the charcoal croft, the skerries): a slow flute in D minor that
+   * keeps leaning on a raised note, over slow harp, a low organ and a bell now
+   * and then. Something happened here once.
+   */
+  plats: {
+    bpm: 72,
+    loop: true,
+    tracks: [
+      {
+        inst: 'flute', vol: 0.75,
+        notes: `d5:6 e5:2 f5:4 a5:4 | g#5:8 a5:4 r:4 | f5:6 e5:2 d5:4 c#5:4 | d5:12 r:4 |
+                a5:6 bb5:2 a5:4 g5:4 | f5:4 e5:4 f5:4 g#5:4 | a5:6 g5:2 f5:4 e5:4 | d5:16`,
+      },
+      { inst: 'harp', vol: 0.45, notes: 'd3:2 a3:2 d4:2 f4:2 a4:2 f4:2 d4:2 a3:2 | e3:2 b3:2 e4:2 g#4:2 b4:2 g#4:2 e4:2 b3:2 | bb2:2 f3:2 bb3:2 d4:2 f4:2 d4:2 bb3:2 f3:2 | d3:2 a3:2 d4:2 f4:2 a4:2 f4:2 d4:2 a3:2 | g2:2 d3:2 g3:2 bb3:2 d4:2 bb3:2 g3:2 d3:2 | d3:2 a3:2 d4:2 f4:2 e3:2 b3:2 e4:2 g#4:2 | bb2:2 f3:2 bb3:2 d4:2 a2:2 e3:2 a3:2 c#4:2 | d3:2 a3:2 d4:2 f4:2 a4:2 f4:2 d4:2 a3:2' },
+      { inst: 'organ', vol: 0.32, notes: 'd2:16 | e2:16 | bb1:16 | d2:16 | g1:16 | d2:8 e2:8 | bb1:8 a1:8 | d2:16' },
+      { inst: 'bell', vol: 0.3, notes: 'r:12 a6:1 r:3 | r:16 | r:8 d6:1 r:7 | r:16 | r:4 g#6:1 r:11 | r:16 | r:10 e6:1 r:5 | r:16' },
+    ],
+  },
+  /**
    * "Grottan" – caves on the road: a slow A minor line that echoes off the
    * rock, a low drone and water dripping somewhere in the dark.
    */
