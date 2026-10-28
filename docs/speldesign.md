@@ -87,6 +87,7 @@ Dagny starts with 8 health (four bars), so the crypt must not drain it faster th
 ## Levels and strength
 
 - Three stats, **Styrka, Magi, Liv**, each 1–12, raised with XP (`COSTS` in `src/data/progression.ts`).
+- **Like Zelda II, a raise spends all the XP:** the counter starts again from 0, whatever was left over. Choosing "Senare" keeps saving up for a dearer level.
 - **Containers:** life (+2) and magic (+1), hidden in temples and caves, each taken once.
 - **Sword upgrades:** smith Holm tempers the blade with ore and hones it with the thunderstone. A silver fitting lies hidden in Tjuvgrottan and only shows in the light of the karbidlampa. Each upgrade gives +1 damage.
 

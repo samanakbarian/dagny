@@ -63,7 +63,7 @@ export const STR = {
   xp: 'XP',
   key: 'Nyckel',
   levelUpTitle: 'Nivå upp!',
-  levelUpHelp: 'Välj vad Dagny ska bli bättre på:',
+  levelUpHelp: 'Välj, så börjar XP om från noll:',
   levelUpLater: 'Spara till senare',
   levelMax: 'MAX',
   needXp: 'XP',

@@ -22,14 +22,15 @@ export function canLevelUp(xp: number, levels: Levels): boolean {
 }
 
 /**
- * Raises a stat if affordable. Returns the remaining XP (unchanged if the
- * stat could not be raised).
+ * Raises a stat if affordable. Like Zelda II, every raise spends all the XP:
+ * the counter starts again from 0, whatever was left over. Returns the XP
+ * after (unchanged if the stat could not be raised).
  */
 export function raise(xp: number, levels: Levels, stat: StatId): number {
   const c = nextCost(stat, levels[stat]);
   if (c === null || xp < c) return xp;
   levels[stat] += 1;
-  return xp - c;
+  return 0;
 }
 
 /** Cheapest XP target across all stats (for the HUD), or null if all are maxed. */

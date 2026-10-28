@@ -23,11 +23,12 @@ describe('XP curve', () => {
 });
 
 describe('raising stats', () => {
-  it('spends XP and raises the level', () => {
+  it('raises the level and spends all the XP, as in Zelda II', () => {
     const lv: Levels = { styrka: 1, magi: 1, liv: 1 };
     const xp = raise(100, lv, 'magi');
+    expect(COSTS.magi[0]).toBeLessThan(100);
     expect(lv.magi).toBe(2);
-    expect(xp).toBe(100 - COSTS.magi[0]);
+    expect(xp).toBe(0);
   });
 
   it('refuses when there is not enough XP', () => {

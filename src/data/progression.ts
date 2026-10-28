@@ -8,7 +8,8 @@ export const OLD_MAX_LEVEL = 8;
 
 /**
  * Rising XP curve: the XP needed to raise a stat from level n to n+1 is
- * COSTS[stat][n − 1]. Spending XP on a level deducts the cost.
+ * COSTS[stat][n − 1]. Raising a level spends all the XP (it starts again from 0,
+ * as in Zelda II), so waiting to save up for a dearer level is a real choice.
  */
 export const COSTS: Readonly<Record<StatId, readonly number[]>> = {
   styrka: [80, 180, 320, 500, 750, 1050, 1450, 1900, 2450, 3100, 3900],
