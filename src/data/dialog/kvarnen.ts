@@ -4,29 +4,29 @@ import type { DialogDef } from '../types';
 export const KVARNEN: Record<string, DialogDef> = {
   kvarnen_lucka: {
     pages: [
-      'Rakt ovanför sitter en lucka i taket, tung och fastrostad. Den går inte att nå med händerna.',
-      'Någon har ristat i bjälken bredvid: "SLÅ UPP DEN UNDERIFRÅN SOM VI GÖR PÅ BRUKET."',
+      'Högt ovanför sitter en fastrostad lucka i taket. Händerna når inte.',
+      'Ristat i bjälken: "SLÅ UPP DEN UNDERIFRÅN SOM VI GÖR PÅ BRUKET."',
     ],
   },
 
   kvarnen_skylt1: {
-    pages: ['En skylt vid bäcken:\n"BADA EJ I FORSEN. FÖLJ EJ EFTER VITA HÄSTAR."\nNågon har strukit under sista raden.'],
+    pages: ['En skylt vid bäcken:\n"BADA EJ I FORSEN. FÖLJ EJ EFTER VITA HÄSTAR."\nSista raden är understruken.'],
   },
 
   kvarnen_skylt2: {
-    pages: ['Inristat i kvarnstenen: en sol, och under den ett namn som någon har försökt skrapa bort.'],
+    pages: ['I kvarnstenen är det ristat en sol. Under den ett namn som någon har skrapat bort.'],
   },
 
   backahast_vaknar: {
     speaker: 'Bäckahästen',
-    pages: ['Sitt upp, lilla tös. Rid med mig ner i forsen. Ingen har sagt mitt namn på länge... ingen kan tvinga mig att gå.'],
+    pages: ['Sitt upp, lilla tös. Rid med mig ner i forsen. Ingen har sagt mitt namn på länge.'],
   },
 
   backahast_forlikad: {
     speaker: 'Bäckahästen',
     pages: [
-      'Den förra Väktaren sa mitt namn högt, och jag blev fri från vreden. Du säger ingenting...',
-      '...men jag hör det ändå. Hur du andas. Hur du står kvar. Det är samma sak.',
+      'Den förra Väktaren sa mitt namn högt. Du säger ingenting.',
+      'Men du stod kvar. Det räcker.',
       'Hon lämnade sina stövlar på stranden den sista sommaren. Ta dem. Myren bär dig nu.',
     ],
   },
@@ -34,8 +34,8 @@ export const KVARNEN: Record<string, DialogDef> = {
   fick_stovlar: {
     pages: [
       'Dagny fick GUMMISTÖVLARNA!\nNu kan hon gå över myren på kartan.',
-      'Regnet tunnas ut över forsen. Kvarnhjulet börjar snurra igen, och en bit till av sommarljuset kommer tillbaka.',
-      'Med stövlarna går det att vada över tidvattenkärret söder om Bruksorten, ner till kusten där fyren står.',
+      'Regnet tunnas ut. Kvarnhjulet börjar snurra igen.',
+      'Söder om Bruksorten ligger tidvattenkärret. Bortom det står fyren vid kusten.',
     ],
     actions: [{ type: 'flag', flag: 'kvarnen_klar' }],
   },

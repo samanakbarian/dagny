@@ -4,7 +4,7 @@ import type { DialogDef } from '../types';
 export const BRUKSORTEN: Record<string, DialogDef> = {
   rut_vila: {
     speaker: 'Rut på värdshuset',
-    pages: ['Värdshuset har mat och sängar, och ingen frågar varifrån man kommer. Vill du vila?'],
+    pages: ['Här frågar ingen varifrån man kommer. Vill du vila?'],
     choices: [
       { text: 'Vila på värdshuset', next: 'rut_vilat', actions: [{ type: 'rest' }] },
       { text: 'Inte nu', next: 'rut_hej' },
@@ -13,20 +13,20 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
 
   rut_vilat: {
     speaker: 'Rut på värdshuset',
-    pages: ['Där är du ju. Gröten står framme. Kom tillbaka när du vill, så har vi en säng åt dig.'],
+    pages: ['Gröten står framme.'],
   },
 
   rut_hej: {
     speaker: 'Rut på värdshuset',
-    pages: ['Det är skiftbyte snart. Då blir det trångt här inne, så passa på medan det är lugnt.'],
+    pages: ['Snart är det skiftbyte. Då blir det trångt här inne.'],
   },
 
   holm_uppdrag: {
     speaker: 'Smeden Holm',
     pages: [
-      'Upp på loftet, du? Här är det varmt, ässjan står rakt under.',
-      'Jag kan en läsning som skyddar. Men den ska sägas med rönn i handen, annars är den bara ord.',
-      'Kolarna vid torpet i söder har alltid haft rönn vid milan, mot skogsrået. Bryt en kvist åt mig.',
+      'Upp på loftet, du? Här är det varmt. Ässjan står rakt under.',
+      'Jag kan en läsning som skyddar. Men den ska sägas med rönn i handen.',
+      'Kolarna vid torpet i söder har rönn vid milan. Bryt en kvist åt mig.',
     ],
     actions: [{ type: 'flag', flag: 'ronnkvist_uppdrag' }],
   },
@@ -35,9 +35,9 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
   holm_uppdrag_har: {
     speaker: 'Smeden Holm',
     pages: [
-      'Upp på loftet, du? Här är det varmt, ässjan står rakt under.',
-      'Jag kan en läsning som skyddar. Men den ska sägas med rönn i handen, annars är den bara ord.',
-      'Vänta nu. Vad är det du har där?',
+      'Upp på loftet, du? Här är det varmt. Ässjan står rakt under.',
+      'Jag kan en läsning som skyddar. Men den ska sägas med rönn i handen.',
+      'Vänta. Vad är det du har där?',
     ],
     actions: [{ type: 'flag', flag: 'ronnkvist_uppdrag' }],
     next: 'holm_lar',
@@ -45,16 +45,15 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
 
   holm_vantar: {
     speaker: 'Smeden Holm',
-    pages: ['Rönnen växer vid kolartorpet. Kolarna litar på den.'],
+    pages: ['Rönnen växer vid kolartorpet i söder.'],
   },
 
   holm_lar: {
     speaker: 'Smeden Holm',
     pages: [
-      'Rönn, och med bären kvar. Bra. Då kan vi börja.',
-      'Du bär en gammal klinga. Bra smide, fast fästet är en klockkläpp. Det har jag aldrig sett förut.',
-      'Min far lärde mig en sak i hyttan, när gnistorna flög. Ett kors av rönn över bröstet, och en läsning.',
-      '"Rönn för bröstet, järn för hand, inget ont går över min rand." Så. Nu tar du bara halva smällen.',
+      'Rönn, med bären kvar. Bra.',
+      'Klingan din är gott smide. Men en klockkläpp som fäste har jag aldrig sett.',
+      '"Rönn för bröstet, järn för hand, inget ont går över min rand."',
     ],
     actions: [{ type: 'takeItem', item: 'ronnkvist' }, { type: 'flag', flag: 'ronnkvist_klar' }, { type: 'learnSpell', spell: 'skydd' }],
     next: 'lart_skydd',
@@ -66,30 +65,30 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
 
   holm_igen: {
     speaker: 'Smeden Holm',
-    pages: ['Skyddet håller en stund. Men en bra sköld och ett bra öga håller längre.'],
+    pages: ['Skyddet håller en stund. Skölden håller längre.'],
   },
 
   karlsson_uppdrag: {
     speaker: 'Förman Karlsson',
     pages: [
       'Kom du genom Gamla stollen? Då hade du tur. Jag var med när taket gick 1931.',
-      'Vi sprang för livet, och min hacka blev kvar därinne. I sidoorten, där vi brukade äta vår matsäck. Hämta den åt mig, så ska jag lära dig något.',
-      'Den som har slagit upp lika många luckor i taket som jag vet hur man hugger uppåt.',
+      'Min hacka blev kvar i sidoorten. Hämta den, så lär jag dig något.',
+      'Den som har slagit upp så många luckor i taket som jag vet hur man hugger uppåt.',
     ],
     actions: [{ type: 'flag', flag: 'hacka_uppdrag' }],
   },
 
   karlsson_vantar: {
     speaker: 'Förman Karlsson',
-    pages: ['Sidoorten går in från Rasgången, mitt i stollen. Hackan ligger nog högt upp, där vi ställde undan verktygen.'],
+    pages: ['Sidoorten går in från Rasgången, mitt i stollen. Hackan ligger högt upp.'],
   },
 
   karlsson_lar: {
     speaker: 'Förman Karlsson',
     pages: [
-      'Min hacka! Ja, där sitter mitt K i skaftet. Trettiotre år har den legat i berget.',
-      'Nu ska du få ditt. Håll UPP och slå, så går klingan rakt upp. Bra mot fladdermöss och sådant som hänger i taket.',
-      'Ska du till kvarnen vid forsen? Där sitter en lucka i taket som mjölnarn alltid slog upp underifrån. Nu vet du hur.',
+      'Min hacka! Där sitter mitt K. Trettiotre år i berget.',
+      'Håll UPP och slå. Bra mot fladdermöss och sådant som hänger i taket.',
+      'I kvarnen vid forsen sitter en lucka i taket. Slå upp den underifrån.',
     ],
     actions: [{ type: 'takeItem', item: 'hacka' }, { type: 'flag', flag: 'hacka_klar' }, { type: 'learnSkill', skill: 'uppatstot' }, { type: 'flag', flag: 'karlsson_lart' }],
     next: 'lart_uppatstot',
@@ -101,28 +100,28 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
 
   karlsson_igen: {
     speaker: 'Förman Karlsson',
-    pages: ['Upp och ner, upp och ner. Precis som hissen i gruvan, fast med svärd.'],
+    pages: ['Upp och ner. Som hissen i gruvan.'],
   },
 
   rosa_uppdrag: {
     speaker: 'Rosa',
     pages: [
-      'Jag hade en medaljong med Gunnars kort i. Han var flottare och drunknade i forsen för länge sedan.',
-      'Jag tappade den vid kvarnen när jag satt och tittade på vattnet. Bäckahästen skrämde mig så jag sprang.',
+      'Jag hade en medaljong med Gunnars kort i. Han var flottare. Forsen tog honom.',
+      'Jag tappade den vid kvarnen när Bäckahästen skrämde mig.',
     ],
     actions: [{ type: 'flag', flag: 'medaljong_uppdrag' }],
   },
 
   rosa_vantar: {
     speaker: 'Rosa',
-    pages: ['Medaljongen föll nog ner någonstans vid vattenfallet bakom kvarnen. Var försiktig, det är halt.'],
+    pages: ['Medaljongen föll nog vid vattenfallet bakom kvarnen. Det är halt där.'],
   },
 
   rosa_tack: {
     speaker: 'Rosa',
     pages: [
-      'Gunnar... Där är du ju. Jag trodde att jag aldrig skulle få se dig igen.',
-      'Ta det här, lilla vän. Han skulle ha tyckt om dig.',
+      'Gunnar... Där är du.',
+      'Ta det här. Han hade tyckt om dig.',
     ],
     actions: [{ type: 'takeItem', item: 'medaljong' }, { type: 'flag', flag: 'medaljong_klar' }, { type: 'xp', amount: 200 }, { type: 'heal' }],
     next: 'rosa_xp',
@@ -134,7 +133,7 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
 
   rosa_glad: {
     speaker: 'Rosa',
-    pages: ['Jag har satt medaljongen på en ny kedja. Nu tar jag aldrig av den igen.'],
+    pages: ['Medaljongen sitter på en ny kedja nu. Jag tar aldrig av den.'],
   },
 
   hittade_medaljong: {
@@ -143,13 +142,13 @@ export const BRUKSORTEN: Record<string, DialogDef> = {
 
   sigge: {
     speaker: 'Sigge',
-    pages: ['Pappa säger att hammaren i bruket stannade när kvarnen slutade mala. Allt hänger ihop, säger han.'],
+    pages: ['Pappa säger att hammaren i bruket stannade när kvarnen slutade mala.'],
   },
 
   sigge_efter: {
     speaker: 'Sigge',
     pages: [
-      'Hammaren går igen! Dunk, dunk, dunk hela dagen. Jag har aldrig tyckt att det låtit så fint.',
+      'Hammaren går igen! Dunk, dunk, dunk hela dagen.',
       'Ska du över myren? Pappa har en ramsa: "Till döda tallen, sen österut där stigen slingrar. Korset visar söderut, och pråmen visar havet."',
       'Och där det bubblar bär det inte. Gå aldrig efter irrbloss!',
     ],

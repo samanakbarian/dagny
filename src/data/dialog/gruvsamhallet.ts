@@ -4,7 +4,7 @@ import type { DialogDef } from '../types';
 export const GRUVSAMHALLET: Record<string, DialogDef> = {
   maj_vila: {
     speaker: 'Maj på pensionatet',
-    pages: ['Välkommen till pensionatet! Ett rum med utsikt över lavtornet och frukost klockan sju. Vill du vila?'],
+    pages: ['Rum med utsikt över lavtornet, frukost klockan sju. Vill du vila?'],
     choices: [
       { text: 'Vila på pensionatet', next: 'maj_vilat', actions: [{ type: 'rest' }] },
       { text: 'Inte nu', next: 'maj_hej' },
@@ -13,20 +13,20 @@ export const GRUVSAMHALLET: Record<string, DialogDef> = {
 
   maj_vilat: {
     speaker: 'Maj på pensionatet',
-    pages: ['God morgon! Kaffet står på spisen. Jag har skrivit in dig i gästboken, så du hittar alltid tillbaka hit.'],
+    pages: ['God morgon! Jag har skrivit in dig i gästboken.'],
   },
 
   maj_hej: {
     speaker: 'Maj på pensionatet',
-    pages: ['Dörren står alltid öppen. Gruvfolk sover dåligt ändå, så någon är alltid vaken.'],
+    pages: ['Gruvfolk sover dåligt. Någon är alltid vaken här.'],
   },
 
   elin_uppdrag: {
     speaker: 'Gamla Elin',
     pages: [
-      'Så du hittade upp hit. Det gör inte många. Jag sitter helst här, nära ljuset från gluggen.',
-      'Det finns en läsning för ljus. Men ljus måste man ha något att tända den med. En sten som samlar solen, en solsten.',
-      'Dagmar hade en sådan. Hon lämnade den någonstans på ett skär, där dimman ligger tätast. Hämta den, så ska jag lära dig.',
+      'Det är inte många som hittar upp hit.',
+      'Jag kan en läsning för ljus. Men den behöver en solsten att tändas av.',
+      'Dagmar hade en. Den ligger kvar på ett skär där dimman är som tätast. Hämta den.',
     ],
     actions: [{ type: 'flag', flag: 'solsten_uppdrag' }],
   },
@@ -35,9 +35,9 @@ export const GRUVSAMHALLET: Record<string, DialogDef> = {
   elin_uppdrag_har: {
     speaker: 'Gamla Elin',
     pages: [
-      'Så du hittade upp hit. Det gör inte många. Jag sitter helst här, nära ljuset från gluggen.',
-      'Det finns en läsning för ljus. Men ljus måste man ha något att tända den med. En sten som samlar solen, en solsten.',
-      'Vänta nu. Vad är det du har där?',
+      'Det är inte många som hittar upp hit.',
+      'Jag kan en läsning för ljus. Men den behöver en solsten att tändas av.',
+      'Vänta. Vad är det du har där?',
     ],
     actions: [{ type: 'flag', flag: 'solsten_uppdrag' }],
     next: 'elin_lar',
@@ -51,11 +51,10 @@ export const GRUVSAMHALLET: Record<string, DialogDef> = {
   elin_lar: {
     speaker: 'Gamla Elin',
     pages: [
-      'Solstenen! Ja, det är hennes. Den lyser fortfarande, fast hon är borta.',
-      'Du har kommit långt för att vara så ung. Gruvan är mörk nu, mörkare än den varit på hundra år.',
-      'Min mor lärde mig en läsning när jag skulle ner i schaktet första gången. Den har lyst för mig i sextio år.',
-      '"Lyse i natt, lyse i berg, lyse för den som går utan färg..." Så. Nu bär du ljuset själv.',
-      'Och kom ihåg: det som gömmer sig i dimma tål inte ljus.',
+      'Solstenen! Det är hennes. Den lyser fortfarande.',
+      'Gruvan är mörkare nu än på hundra år. Du behöver det här.',
+      '"Lyse i natt, lyse i berg, lyse för den som går utan färg."',
+      'Det som gömmer sig i dimma tål inte ljus.',
     ],
     actions: [{ type: 'takeItem', item: 'solsten' }, { type: 'flag', flag: 'solsten_klar' }, { type: 'learnSpell', spell: 'lyse' }],
     next: 'lart_lyse',
@@ -67,33 +66,33 @@ export const GRUVSAMHALLET: Record<string, DialogDef> = {
 
   elin_igen: {
     speaker: 'Gamla Elin',
-    pages: ['Glöm inte att hälsa på rået när du går ner. Och tacka henne när du kommer upp.'],
+    pages: ['Hälsa på rået när du går ner. Tacka henne när du kommer upp.'],
   },
 
   elin_efter: {
     speaker: 'Gamla Elin',
-    pages: ['Jag hörde lyktorna tändas där nere, en efter en, som förr. Hon har förlåtit oss, tror jag.'],
+    pages: ['Jag hörde lyktorna tändas där nere, en efter en. Hon har förlåtit oss.'],
   },
 
   anders_uppdrag: {
     speaker: 'Gruvarbetaren Anders',
     pages: [
-      'Mitt fickur! Jag tappade det nere i Orten när lyktorna slocknade och vi fick springa.',
-      'Det var farfars. Jag vågar inte gå ner igen. Om du ändå ska dit... håll utkik.',
+      'Jag tappade mitt fickur nere i Orten när lyktorna slocknade.',
+      'Det var farfars. Jag vågar inte gå ner igen.',
     ],
     actions: [{ type: 'flag', flag: 'fickur_uppdrag' }],
   },
 
   anders_vantar: {
     speaker: 'Gruvarbetaren Anders',
-    pages: ['Orten ligger efter hisschaktet. Uret måste ligga någonstans längst in, nära lyktan vid valvet.'],
+    pages: ['Orten ligger efter hisschaktet. Uret är nog längst in, vid lyktan under valvet.'],
   },
 
   anders_tack: {
     speaker: 'Gruvarbetaren Anders',
     pages: [
-      'Det tickar fortfarande! Farfar sa alltid att det här uret stannar den dag gruvan dör.',
-      'Ta det här, jag har sparat det till en regnig dag. Och kom till pensionatet i kväll, Maj bjuder.',
+      'Det tickar fortfarande! Farfar sa att det stannar den dag gruvan dör.',
+      'Ta det här.',
     ],
     actions: [
       { type: 'takeItem', item: 'fickur' },
@@ -110,18 +109,18 @@ export const GRUVSAMHALLET: Record<string, DialogDef> = {
 
   anders_glad: {
     speaker: 'Gruvarbetaren Anders',
-    pages: ['Jag lyssnar på uret varje kväll innan jag somnar. Tack, Dagny.'],
+    pages: ['Jag lyssnar på uret varje kväll innan jag somnar.'],
   },
 
   hittade_fickur: {
-    pages: ['Dagny hittade ett FICKUR i mässing. Det tickar fortfarande. Det är nog Anders.'],
+    pages: ['Dagny hittade ett FICKUR i mässing. Det tickar. Det är nog Anders.'],
   },
 
   lisa: {
     speaker: 'Lisa',
     pages: [
-      'Pappa säger att gruvan stängde när jag var liten. Men om nätterna hör jag hackor där nere.',
-      'Och ibland står en grå tant vid lavtornet med en lykta. Hon vinkar aldrig tillbaka.',
+      'Gruvan stängde när jag var liten. Men om nätterna hör jag hackor där nere.',
+      'Ibland står en grå tant vid lavtornet med en lykta. Hon vinkar aldrig tillbaka.',
     ],
   },
 
@@ -132,11 +131,11 @@ export const GRUVSAMHALLET: Record<string, DialogDef> = {
 
   nils: {
     speaker: 'Gruvarbetaren Nils',
-    pages: ['Bolaget vill riva lavtornet och bygga en bilväg. Men ingen vågar gå nära schaktet längre. Lyktorna har slocknat.'],
+    pages: ['Bolaget vill riva lavtornet. Men ingen vågar gå nära schaktet sedan lyktorna slocknade.'],
   },
 
   nils_efter: {
     speaker: 'Gruvarbetaren Nils',
-    pages: ['Lavtornet får stå kvar, sa bolaget i dag. Konstigt nog var det ingen som ville riva det längre.'],
+    pages: ['Lavtornet får stå kvar, sa bolaget i dag. Ingen ville riva det längre.'],
   },
 };

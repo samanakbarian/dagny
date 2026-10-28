@@ -5,7 +5,7 @@ export const SMAPLATSER: Record<string, DialogDef> = {
   // --- Gamla kyrkogården: read the stones, move the right one ------------------------------
   kyrkogarden_grind: {
     pages: [
-      'På grinden sitter en bleck skylt, skriven med kyrkvaktarens krumelurer:',
+      'En bleck skylt på grinden, i kyrkvaktarens krumelurer:',
       '"MIN PLÅTASK LIGGER UNDER STENEN HOS DEN SOM SOMNADE PÅ MIDSOMMARDAGEN. DEN SOM LÄSER STENARNA HITTAR DEN."',
     ],
   },
@@ -31,10 +31,10 @@ export const SMAPLATSER: Record<string, DialogDef> = {
     ],
   },
   sten_fast: {
-    pages: ['Stenen sitter som berget. Här har ingen rört något på hundra år.'],
+    pages: ['Stenen sitter fast.'],
   },
   sten_karin: {
-    pages: ['"KARIN NILSDOTTER 1840–1888.\nSOMNADE PÅ MIDSOMMARDAGEN."\nStenen lutar lite, som om någon har rört vid den.'],
+    pages: ['"KARIN NILSDOTTER 1840–1888.\nSOMNADE PÅ MIDSOMMARDAGEN."\nStenen lutar lite.'],
     choices: [
       { text: 'Rucka på stenen', next: 'sten_karin_ask' },
       { text: 'Låt den stå' },
@@ -42,8 +42,8 @@ export const SMAPLATSER: Record<string, DialogDef> = {
   },
   sten_karin_ask: {
     pages: [
-      'Stenen glider åt sidan med ett gnissel. I gropen under ligger en rostig plåtask.',
-      'I asken ligger en lapp, och under den blänker något.\n"Till den som läser stenarna och inte glömmer dem. /Kyrkvaktaren, 1946"',
+      'Stenen glider åt sidan. I gropen ligger en rostig plåtask.',
+      'I asken ligger en lapp, och under den blänker något.\n"Till den som läser stenarna. /Kyrkvaktaren, 1946"',
     ],
     actions: [
       { type: 'flag', flag: 'karins_sten_rubbad' },
@@ -51,26 +51,26 @@ export const SMAPLATSER: Record<string, DialogDef> = {
     ],
   },
   sten_karin_tom: {
-    pages: ['Stenen står snett nu. Gropen under är tom.'],
+    pages: ['Stenen står snett. Gropen är tom.'],
   },
 
   // --- Kolartorpet: light the dead charcoal stack with Eld ----------------------------------
   kolartorpet_skylt: {
-    pages: ['Ett ödetorp vid hygget. En kolmila har stått här i alla år – marken är svart än, och när det regnar luktar det rök.'],
+    pages: ['Ett ödetorp vid hygget. Marken är svart efter kolmilan. När det regnar luktar det rök.'],
   },
   kolmila_kall: {
     pages: [
-      'Kolmilan har slocknat. Torven har sjunkit ihop, och veden därinne är kall.',
-      'Gamle kolaren lät aldrig sin mila slockna. Det skulle behövas eld – riktig eld. Prosten i Kyrkbyn lär ska kunna en läsning.',
+      'Kolmilan har slocknat. Veden därinne är kall.',
+      'Det behövs riktig eld. Prosten i Kyrkbyn ska kunna en läsning.',
     ],
   },
   kolmila_eld: {
-    pages: ['Kolmilan har slocknat. Torven har sjunkit ihop, och veden därinne är kall. Den väntar på eld.'],
+    pages: ['Kolmilan har slocknat. Den väntar på eld.'],
   },
   kolmila_tand: {
     pages: [
-      'Lågan kryper in under torven. Det knäpper och pyser – och sedan stiger röken, rak och blå, som förr.',
-      'I röken tycker Dagny att hon ser en gammal man som lyfter på mössan. Där han stod blänker något i askan.',
+      'Lågan kryper in under torven. Röken stiger, rak och blå.',
+      'I röken lyfter en gammal man på mössan. Där han stod blänker något i askan.',
     ],
     actions: [{ type: 'xp', amount: 60 }],
   },
@@ -82,22 +82,22 @@ export const SMAPLATSER: Record<string, DialogDef> = {
   grafru_ber: {
     speaker: 'Den grå frun',
     pages: [
-      'Du ser mig? Då är du den första på länge.',
-      'De som vilar här fick aldrig några blommor. Ingen vågade komma nära, det året. Och sedan glömde man.',
-      'Det växer prästkragar uppe på klippan. Plocka en bukett åt dem – då kan jag också få vila.',
+      'Du ser mig? Det var länge sedan någon gjorde det.',
+      'De som vilar här fick aldrig några blommor. Ingen vågade komma nära, det året.',
+      'Uppe på klippan växer prästkragar. Plocka en bukett åt dem.',
     ],
     actions: [{ type: 'flag', flag: 'grafru_bad' }],
   },
   grafru_vantar: {
     speaker: 'Den grå frun',
-    pages: ['Prästkragarna växer högt uppe på klippan, där solen når. Jag väntar. Jag har väntat länge.'],
+    pages: ['Prästkragarna växer högt uppe på klippan. Jag väntar.'],
   },
   grafru_tack: {
     speaker: 'Den grå frun',
     pages: [
-      'Prästkragar... Precis som de växte på ängen hemma.',
-      'Tack, lilla vän. Ta det här – en näverdocka som jag flätade en gång åt min dotter. Den håller ett liv åt dig.',
-      'Den grå frun bleknar som dimma i solen. Hon ler.',
+      'Prästkragar. Som på ängen hemma.',
+      'Ta den här näverdockan. Jag flätade den åt min dotter. Den håller ett liv åt dig.',
+      'Den grå frun bleknar bort i solen.',
     ],
     actions: [
       { type: 'takeItem', item: 'prastkragar' },
@@ -108,20 +108,20 @@ export const SMAPLATSER: Record<string, DialogDef> = {
     ],
   },
   hittade_prastkragar: {
-    pages: ['Dagny plockade en bukett PRÄSTKRAGAR. De lyser vita mot den gråa klippan.'],
+    pages: ['Dagny plockade en bukett PRÄSTKRAGAR.'],
   },
 
   // --- Skeppssättningen: the missing piece of the rune stone --------------------------------
   skeppssattningen_skylt: {
-    pages: ['Stenar ställda som ett skepp, med stäven mot havet. Fiskarna säger att en hövding seglar ut i det varje gång det stormar.'],
+    pages: ['Stenar ställda som ett skepp, med stäven mot havet. Fiskarna säger att en hövding seglar ut i det när det stormar.'],
   },
   runsten_trasig: {
-    pages: ['En runsten står vid aktern. En bit av den saknas – den har slagits loss och blivit liggande någonstans i sanden.'],
+    pages: ['En runsten vid aktern. En bit är bortslagen. Den ligger någonstans i sanden.'],
   },
   runsten_laga: {
     pages: [
-      'Dagny sätter biten på plats. Den passar precis. Runorna lyser upp, en efter en, som glöd.',
-      'Det susar i stenskeppet, som av ett segel. Vid stenens fot ligger en liten amulett av bärnsten – den håller ett liv åt den som bär den.',
+      'Biten passar. Runorna lyser upp, en efter en.',
+      'Det susar i stenskeppet, som av ett segel. Vid stenens fot ligger en bärnstensamulett. Den håller ett liv åt den som bär den.',
     ],
     actions: [
       { type: 'takeItem', item: 'runbit' },
@@ -132,35 +132,35 @@ export const SMAPLATSER: Record<string, DialogDef> = {
     ],
   },
   runsten_hel: {
-    pages: ['"HÖVDINGEN SEGLAR VIDARE, SÅ LÄNGE NÅGON MINNS HONOM." Runorna glimmar svagt.'],
+    pages: ['"HÖVDINGEN SEGLAR VIDARE, SÅ LÄNGE NÅGON MINNS HONOM."'],
   },
   hittade_runbit: {
-    pages: ['Dagny hittade en RUNSTENSBIT i sanden. Ristningarna på den fortsätter någon annanstans.'],
+    pages: ['Dagny hittade en RUNSTENSBIT i sanden.'],
   },
 
   // --- Milstolpen: the drowned postman's horn ------------------------------------------------
   milstolpen_skylt: {
-    pages: ['En milstolpe: "TILL STADEN 2 MIL".\nVägen den pekar mot finns inte kvar. Den gick där forsen går nu, innan vårfloden tog bron.'],
+    pages: ['En milstolpe: "TILL STADEN 2 MIL".\nVägen finns inte kvar. Vårfloden tog bron.'],
   },
   postiljon_ber: {
     speaker: 'Postiljonen',
     pages: [
-      'Godag, fröken. Postiljon Lindgren, till er tjänst. Jag var på väg över bron med söndagsposten när floden kom.',
-      'Posten kom fram till slut, det gjorde den. Men mitt horn – det for i forsen. Utan horn kan jag inte blåsa att posten är här.',
-      'Det ligger nog kvar nedanför, på stenarna vid vattnet. Akta er för strömmen.',
+      'Postiljon Lindgren. Jag var på bron med söndagsposten när floden kom.',
+      'Posten kom fram. Men hornet for i forsen. Utan horn kan jag inte blåsa att posten är här.',
+      'Det ligger nog på stenarna nedanför. Akta strömmen.',
     ],
     actions: [{ type: 'flag', flag: 'postiljon_bad' }],
   },
   postiljon_vantar: {
     speaker: 'Postiljonen',
-    pages: ['Hornet ligger säkert kvar på stenarna nere vid forsen. Hoppa försiktigt, fröken.'],
+    pages: ['Hornet ligger på stenarna nere vid forsen.'],
   },
   postiljon_tack: {
     speaker: 'Postiljonen',
     pages: [
-      'Mitt horn! Fröken, ni är en ängel.',
-      'Postiljonen blåser en lång, klar ton över forsen. Någonstans långt borta svarar en annan.',
-      'Här – det här brev har aldrig kunnat delas ut. Adressaten är borta sedan länge. Ta innehållet, ni har förtjänat det.\nI kuvertet ligger en MAGIBEHÅLLARE.',
+      'Mitt horn!',
+      'Postiljonen blåser en lång ton över forsen. Långt borta svarar en annan.',
+      'Det här brevet har aldrig kunnat delas ut. Adressaten är borta. Ta det.\nI kuvertet ligger en MAGIBEHÅLLARE.',
     ],
     actions: [
       { type: 'takeItem', item: 'posthorn' },
@@ -171,18 +171,18 @@ export const SMAPLATSER: Record<string, DialogDef> = {
   },
   postiljon_frid: {
     speaker: 'Postiljonen',
-    pages: ['Nu kan jag blåsa för posten igen. Sista turen går vid solnedgången. Hälsa er mormor!'],
+    pages: ['Sista turen går vid solnedgången. Hälsa er mormor.'],
   },
   hittade_posthorn: {
-    pages: ['Dagny hittade POSTHORNET på en sten vid forsen. Det är bucklat, men glänser fortfarande.'],
+    pages: ['Dagny hittade POSTHORNET. Det är bucklat men glänser.'],
   },
 
   // --- Fäbodtorpet: clear the healing spring ------------------------------------------------
   fabodtorpet_skylt: {
-    pages: ['Fäbodtorpet. Spisen står kvar, och på hyllan en näverask med torkade örter. Här bodde vallkullorna om somrarna, förr i tiden.'],
+    pages: ['Fäbodtorpet. Spisen står kvar. På hyllan en näverask med torkade örter.'],
   },
   kalla_igensatt: {
-    pages: ['Trefaldighetskällan. Förr drack folk här på trefaldighetsafton för att bli friska. Nu är den igensatt av löv och kvistar.'],
+    pages: ['Trefaldighetskällan. Förr drack folk här för att bli friska. Nu är den igensatt av löv och kvistar.'],
     choices: [
       { text: 'Rensa källan', next: 'kalla_rensa' },
       { text: 'Låt den vara' },
@@ -190,8 +190,8 @@ export const SMAPLATSER: Record<string, DialogDef> = {
   },
   kalla_rensa: {
     pages: [
-      'Dagny plockar bort löv och kvistar, en näve i taget. Vattnet börjar porla, kallt och klart.',
-      'Vid kanten, där vattnet rinner undan, blänker något som någon offrade här en gång.',
+      'Dagny rensar bort löven. Vattnet porlar, kallt och klart.',
+      'Vid kanten blänker något som någon offrade här en gång.',
     ],
     actions: [
       { type: 'flag', flag: 'kallan_rensad' },
@@ -200,7 +200,7 @@ export const SMAPLATSER: Record<string, DialogDef> = {
     ],
   },
   kalla_drick: {
-    pages: ['Dagny dricker ur källan. Vattnet är iskallt och smakar järn och mossa. Hon känner sig som ny.'],
+    pages: ['Vattnet är iskallt och smakar järn. Liv och magi är fyllda.'],
     actions: [{ type: 'heal' }, { type: 'magic' }],
   },
 };
