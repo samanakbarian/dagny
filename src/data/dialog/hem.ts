@@ -5,14 +5,16 @@ export const HEM: Record<string, DialogDef> = {
   intro_hulda: {
     speaker: 'Mormor Hulda',
     pages: [
-      'Där är du, Dagny. Sätt dig.',
-      'Sommaren är mörk i år. Irrblossen dansar över myren mitt på dagen.',
-      'Förr vårdade Väktarna de sju heliga platserna. Nu är vägarna igenvuxna och ingen säger väsendenas namn. Platserna har vaknat i vrede.',
-      'Den sista Väktaren försvann midsommarnatten 1946. Samma natt hittade jag dig under klockstapeln.',
-      'Det finns saker om den natten som jag har lovat att inte säga. Inte än.',
-      'Bredvid dig låg en klinga. Jag har satt kläppen från kyrkklockan som fäste. Ta den. Den är till för att förlika, inte för att döda.',
-      'Gå till Stenkyrkan i norr. Kryptan har börjat ringa om nätterna.',
-      'Tala med gamle Sven och smeden Algot först.',
+      'Där är du, Dagny. Sätt dig. Kaffet är nyss kokat.',
+      'Du har väl också märkt det. Sommaren är så mörk i år. Irrblossen dansar över myren mitt på dagen.',
+      'Förr vaktades de sju heliga platserna av Väktarna. De höll fred mellan folket och skogens väsen.',
+      'Men folk glömmer. Vägarna dit växer igen, ingen tänder ljusen, ingen säger väsendenas namn... och platserna vaknar i vrede.',
+      'Den sista Väktaren försvann midsommarnatten 1946. Samma natt som jag hittade dig under klockstapeln.',
+      'Det finns saker om den natten som jag har lovat att inte säga. Inte än, Dagny. Du får se dem med egna ögon först.',
+      'Bredvid dig låg en klinga utan fäste. Jag har smitt ihop den åt dig, med kläppen från kyrkklockan.',
+      'Ta den. Inte för att förinta väsendena, mitt barn – utan för att förlika världarna.',
+      'Gå först till Stenkyrkan i norr. Kryptan där nere har börjat ringa igen om nätterna.',
+      'Och prata med gamle Sven och smeden Algot innan du går. De kan ett och annat.',
     ],
     actions: [
       { type: 'giveItem', item: 'svard' },
@@ -27,7 +29,7 @@ export const HEM: Record<string, DialogDef> = {
 
   hulda_vila: {
     speaker: 'Mormor Hulda',
-    pages: ['Du ser trött ut. Vill du vila?'],
+    pages: ['Du ser trött ut, lilla vän. Vill du vila en stund? Jag håller kaffet varmt.'],
     choices: [
       { text: 'Vila hos mormor', next: 'hulda_vilat', actions: [{ type: 'rest' }] },
       { text: 'Gå vidare', next: 'hulda_hej' },
@@ -36,7 +38,7 @@ export const HEM: Record<string, DialogDef> = {
 
   hulda_vilat: {
     speaker: 'Mormor Hulda',
-    pages: ['Liv och magi är fyllda. Jag har skrivit upp var du är.'],
+    pages: ['Så där. Nu har du sovit gott. Liv och magi är fyllda, och jag har skrivit upp var du är.'],
   },
 
   hulda_hej: {
@@ -47,9 +49,9 @@ export const HEM: Record<string, DialogDef> = {
   hulda_efter_krypta: {
     speaker: 'Mormor Hulda',
     pages: [
-      'Solen bröt igenom över Stenkyrkan i morse.',
-      'Grimmen har slutit fred. Då är det sant. Du är den vi väntat på.',
-      'Sex platser återstår. Vila nu.',
+      'Dagny! Såg du? Solen bröt igenom molnen över Stenkyrkan i morse. Hela byn stod ute och tittade.',
+      'Den gamla grimmen har slutit fred... Då är det sant. Du är den vi väntat på.',
+      'Sex platser återstår. Vila nu, så pratar vi mer i morgon.',
     ],
     actions: [{ type: 'flag', flag: 'hulda_efter_krypta' }, { type: 'rest' }],
   },
@@ -57,23 +59,24 @@ export const HEM: Record<string, DialogDef> = {
   sven_uppdrag: {
     speaker: 'Gamle Sven',
     pages: [
-      'Så Hulda har skickat dig. Du har ögon som... nej. Glöm det.',
-      'Jag kan en läsning mot värk. Men den biter inte utan johannesört, och mina knän bär mig inte till skogen.',
-      'Den växer högt uppe i Björkhagen, sydost om byn. Hämta en kvist, så lär jag dig.',
+      'Så Hulda har skickat dig. Hmm. Du har ögon som... nej. Glöm det. Gamla gubbar pratar för mycket.',
+      'Jag kan en gammal läsning mot värk. Men den biter inte utan johannesört – och mina knän tar mig inte till skogen längre.',
+      'Den växer i Björkhagen, sydost om byn, högt uppe där solen når. Akta dig för nässlorna. Hämta en kvist, så lär jag dig.',
     ],
     actions: [{ type: 'flag', flag: 'sven_uppdrag' }],
   },
 
   sven_vantar: {
     speaker: 'Gamle Sven',
-    pages: ['Johannesörten växer högt uppe i Björkhagen. Hoppa på hyllorna. Akta nässlorna.'],
+    pages: ['Johannesörten växer högt uppe i Björkhagen, sydost om byn. Hoppa på hyllorna – och akta nässlorna.'],
   },
 
   sven_lar: {
     speaker: 'Gamle Sven',
     pages: [
-      'Johannesört! Och med rötterna kvar i jorden. Du är din mormors barnbarn.',
-      '"Värk ut, värk ner, i jord och sten, läk kött och ben."',
+      'Johannesört! Och plockad med rötterna kvar i jorden, som sig bör. Du är din mormors barnbarn.',
+      'Hör här nu. Min farmor lärde mig den här vid vedspisen.',
+      '"Värk ut, värk ner, i jord och sten, läk kött och ben..." Så. Nu kan du den.',
     ],
     actions: [
       { type: 'takeItem', item: 'johannesort' },
@@ -89,20 +92,20 @@ export const HEM: Record<string, DialogDef> = {
 
   sven_igen: {
     speaker: 'Gamle Sven',
-    pages: ['Läkningen kostar magi. Där väsen har varit hittar du termosar med kaffe.'],
+    pages: ['Läkningen kostar magi. Kaffe hjälper, så klart. Det finns termosar överallt där väsen har varit.'],
   },
 
   sven_efter: {
     speaker: 'Gamle Sven',
-    pages: ['Så här ljust har det inte varit på år och dag.'],
+    pages: ['Det har inte varit så här ljust på år och dag. Min farmor hade varit stolt över dig, jäntan.'],
   },
 
   algot_uppdrag: {
     speaker: 'Smeden Algot',
     pages: [
-      'Ska du ner i kryptan? Inte utan att kunna stöta nedåt.',
-      'Grimmen svävar högt. Den som inte slår neråt i luften kommer inte åt honom.',
-      'Jag lär dig. Men först vill jag ha min tång. Den ligger i gamla smedjan, öster om byn.',
+      'Så det är du som bär klockans kläpp nu. Ska du ner i kryptan? Inte utan att kunna stöta nedåt, säger jag.',
+      'Grimmen svävar högt och hugger ovanifrån. Den som inte kan slå neråt i luften kommer inte åt honom.',
+      'Jag lär dig. Men först vill jag ha tillbaka min gamla tång. Den ligger kvar i gamla smedjan, öster om byn.',
     ],
     actions: [{ type: 'flag', flag: 'tang_uppdrag' }],
   },
@@ -110,8 +113,8 @@ export const HEM: Record<string, DialogDef> = {
   algot_tack: {
     speaker: 'Smeden Algot',
     pages: [
-      'Min tång! Tack, jäntan.',
-      'Hoppa, håll NER och låt tyngden göra jobbet.',
+      'Min tång! Den har hållit mer järn än du har ätit gröt, jäntan. Tack.',
+      'Nu ska du få ditt knep: när du hoppar, håll NER och låt tyngden göra jobbet.',
     ],
     actions: [
       { type: 'takeItem', item: 'tang' },
@@ -125,7 +128,7 @@ export const HEM: Record<string, DialogDef> = {
   algot_vantar: {
     speaker: 'Smeden Algot',
     pages: [
-      'Tången ligger i gamla smedjan, öster om byn. Gå inte ner i kryptan utan att kunna stöta nedåt.',
+      'Tången ligger i gamla smedjan, öster om byn. Och gå inte ner i kryptan förrän du kan stöta nedåt.',
     ],
   },
 
@@ -136,30 +139,30 @@ export const HEM: Record<string, DialogDef> = {
   algot_igen: {
     speaker: 'Smeden Algot',
     pages: [
-      'Stöten nedåt studsar dig upp igen. Bra mot väsen med sköld, och mot sten som ska knäckas.',
-      'Kråkor och fladdermöss skriker innan de dyker. Håll skölden mot dem då, så blir de yra. Sedan slår du.',
+      'En stöt nedåt studsar dig upp igen. Bra mot väsen med sköld, och mot stenar som behöver knäckas.',
+      'Och fåglarna, kråkor och fladdermöss: de skriker och stannar upp innan de dyker. Vänd skölden mot dem då, så blir de yra en stund. Sedan slår du.',
     ],
   },
 
   karin_uppdrag: {
     speaker: 'Karin',
     pages: [
-      'Dagny! Har du sett Murre? Han smet ut i går kväll.',
-      'Han brukar springa till Kyrkbyn och tigga strömming.',
+      'Åh, Dagny! Har du sett Murre? Han smet ut i går kväll och har inte kommit hem.',
+      'Han brukar smita bort till Kyrkbyn och tigga strömming. Men vägen dit har varit så otäck nu...',
     ],
     actions: [{ type: 'flag', flag: 'murre_uppdrag' }],
   },
 
   karin_vantar: {
     speaker: 'Karin',
-    pages: ['Kyrkbyn ligger nordost om byn, vid sjön. Titta efter Murre där.'],
+    pages: ['Kyrkbyn ligger nordost om byn, vid sjön. Snälla, titta efter Murre om du går förbi.'],
   },
 
   karin_tack: {
     speaker: 'Karin',
     pages: [
-      'MURRE! Din lilla rackare! Tack, Dagny!',
-      'Ta en kanelbulle. Mamma bakade i morse.',
+      'MURRE! Där är du ju, din lilla rackare! Tack, Dagny, tack!',
+      'Här, ta de här kanelbullarna. Mamma bakade i morse. Du förtjänar dem.',
     ],
     actions: [
       { type: 'takeItem', item: 'murre' },
@@ -176,7 +179,7 @@ export const HEM: Record<string, DialogDef> = {
 
   karin_glad: {
     speaker: 'Karin',
-    pages: ['Murre har inte gått från spisen sedan han kom hem.'],
+    pages: ['Murre har inte lämnat spisen sedan han kom hem. Han spinner så fort han ser dig.'],
   },
 
   murre_spinner: {
@@ -184,41 +187,41 @@ export const HEM: Record<string, DialogDef> = {
   },
 
   murre_hittad: {
-    pages: ['Dagny hittade MURRE! Han kryper upp i hennes famn. Karin väntar hemma.'],
+    pages: ['Dagny hittade MURRE! Han kryper upp i hennes famn och spinner. Dags att gå hem till Karin.'],
   },
 
   handlarn: {
     speaker: 'Handlarn',
     pages: [
-      'Leveranserna är försenade. Chauffören vågar inte köra genom skogen.',
-      'Han säger att han såg en skugga med lysande ögon vid vägskälet.',
+      'Välkommen in! Kaffe, socker, tändstickor... fast leveranserna är försenade. Lastbilen vågar inte köra genom skogen.',
+      'Chauffören säger att han såg en skugga med lysande ögon vid vägskälet.',
     ],
   },
 
   handlarn_efter: {
     speaker: 'Handlarn',
-    pages: ['Lastbilen kom i dag! Jag har ställt undan ett paket kaffe åt Hulda.'],
+    pages: ['Lastbilen kom i dag! Det första jag gjorde var att ställa undan ett paket kaffe åt Hulda.'],
   },
 
   olle: {
     speaker: 'Olle',
     pages: [
-      'Jag har fått en transistorradio av morbror i Stockholm!',
-      'Fast den brusar konstigt på kvällarna. Som om någon sjunger mellan stationerna.',
+      'Hej Dagny! Lyssna! Jag har fått en transistorradio av morbror i Stockholm!',
+      'Fast den brusar så konstigt på kvällarna. Som om någon sjunger mellan stationerna.',
     ],
   },
 
   olle_efter: {
     speaker: 'Olle',
-    pages: ['Radion spelar bara schlager nu. Inget brus. Lite tråkigt.'],
+    pages: ['Radion spelar bara schlager nu. Inget sjungande brus. Lite tråkigt, faktiskt.'],
   },
 
   greta: {
     speaker: 'Telefonist-Greta',
     pages: [
       'Telefonkiosken har ringt av sig själv tre nätter i rad. När jag svarar hörs bara kyrkklockor.',
-      'Stenkyrkan ligger rakt norrut, förbi rågfälten.',
-      'Om kvällarna lyser det ute på en holme i sjön. Någon bor där. Ingen vet vem.',
+      'Stenkyrkan ligger rakt norrut, förbi rågfälten. Var försiktig, Dagny.',
+      'Och en sak till. Om kvällarna har jag sett ett ljus ute på en holme mitt i sjön. Någon bor där, fast ingen här vet vem.',
     ],
     actions: [{ type: 'flag', flag: 'rykte_eremitholmen' }],
   },
@@ -226,9 +229,9 @@ export const HEM: Record<string, DialogDef> = {
   hulda_efter_gruvan: {
     speaker: 'Mormor Hulda',
     pages: [
-      'Lampan... låt mig se. H.D. De bokstäverna har jag inte sett på arton år.',
-      'Jag lovar att berätta, Dagny. Men inte än.',
-      'Vila nu.',
+      'Lampan... låt mig se den. H.D. Jag har inte sett de bokstäverna på arton år.',
+      'Jag lovar att berätta, Dagny. Men inte än. Först måste du se mer själv.',
+      'Vila nu. Kaffet är varmt.',
     ],
     actions: [{ type: 'flag', flag: 'hulda_efter_gruvan' }, { type: 'rest' }],
   },
@@ -236,9 +239,9 @@ export const HEM: Record<string, DialogDef> = {
   hulda_efter_kvarnen: {
     speaker: 'Mormor Hulda',
     pages: [
-      'Gröna stövlar, storlek trettioåtta. Jag köpte dem i Kyrkbyn 1945.',
-      'Ja. Jag kände henne. Bättre än någon. Mer säger jag inte förrän du har sett alla platserna.',
-      'Tre platser har vaknat. Sov nu.',
+      'Stövlar... gröna stövlar, storlek trettioåtta. Jag köpte dem på lanthandeln i Kyrkbyn 1945.',
+      'Ja, Dagny. Jag kände henne. Bättre än någon. Mer än så säger jag inte förrän du har sett alla platserna.',
+      'Sov nu. Tre platser har vaknat i godo. Det känns i luften.',
     ],
     actions: [{ type: 'flag', flag: 'hulda_efter_kvarnen' }, { type: 'rest' }],
   },
@@ -246,9 +249,9 @@ export const HEM: Record<string, DialogDef> = {
   hulda_efter_fyren: {
     speaker: 'Mormor Hulda',
     pages: [
-      'Tre korta, tre långa, tre korta. Varje kväll i åtta år.',
-      'Det var jag som svarade. Från vinden i klockstapeln, med fotogenlyktan.',
-      'Fyra platser har vaknat. Vila nu.',
+      'Den där lampan... Tre korta, tre långa, tre korta. Varje kväll i åtta år.',
+      'Det var jag som svarade, Dagny. Från vinden i klockstapeln, med fotogenlyktan.',
+      'Nu vet du lite till. Fyra platser har vaknat. Vila nu.',
     ],
     actions: [{ type: 'flag', flag: 'hulda_efter_fyren' }, { type: 'rest' }],
   },
@@ -256,51 +259,51 @@ export const HEM: Record<string, DialogDef> = {
   hulda_efter_folkparken: {
     speaker: 'Mormor Hulda',
     pages: [
-      'Det fotografiet tog jag själv, midsommar 1945. Sista gången jag såg henne skratta.',
-      'Hon hette Dagmar.',
-      'Två platser kvar. Sedan Trollberget. Vila nu.',
+      'Fotografiet från dansbanan... Jag tog det själv, midsommar 1945. Det var sista gången jag såg henne skratta.',
+      'Hon hette Dagmar. Mer säger jag inte än. Två platser kvar, och sedan Trollberget.',
+      'Vila nu, vännen.',
     ],
     actions: [{ type: 'flag', flag: 'hulda_efter_folkparken' }, { type: 'rest' }],
   },
 
   olle_radio: {
     speaker: 'Olle',
-    pages: ['Har du också en radio? Nära Björkhagen brusar den annorlunda. Som om berget hade en dörr.'],
+    pages: ['Har du också fått en radio! Lyssna... det brusar annorlunda nära Björkhagen. Som om berget hade en dörr.'],
   },
 
   hulda_efter_fabodskogen: {
     speaker: 'Mormor Hulda',
     pages: [
-      'Näverfilten. Den du låg i när jag hittade dig. Dagmar hann aldrig väva den klar.',
+      'Näverfilten... den du låg i när jag hittade dig. Dagmar vävde den åt dig, fast hon aldrig hann bli klar.',
       'Hon var din mamma, Dagny. Och hon var min dotter.',
-      'Namnet i kryptan är mitt. H.D. på lampan är jag, Hulda Dahl. Jag var Väktare före henne.',
-      'Det var jag som slutade gå. Under kriget förlöste jag halva bygden. En sommar till, tänkte jag. Och så en till.',
-      'Midsommarnatten 1946 vaknade berget. Gåvan hade lämnat mig, och jag var ute på en förlossning. Dagmar gick i stället.',
-      'Hon lade dig under klockstapeln. I korgen låg en lapp: "Berätta inget för henne förrän hon har sett platserna själv."',
-      'Hade du vetat, hade du sprungit rakt upp i berget. Och berget släpper ingen som inte väckt de andra platserna först.',
+      '"...da, Väktare 1921–1946" – det står Hulda i kryptan. H.D., Hulda Dahl, står det på lampan. Jag var Väktare före henne. Du kallar mig mormor som alla andra. Jag är det på riktigt.',
+      'Det var jag som slutade gå. Kriget kom, och jag förlöste halva bygden de åren. En sommar till, tänkte jag, så tänder jag ljusen igen. Och så en till.',
+      'Midsommarnatten 1946 vaknade berget. Jag var ute på en förlossning. Gåvan hade redan lämnat mig, och Dagmar gick i stället. Hon lade dig under klockstapeln och lät klockan ringa. I korgen låg en lapp till mig.',
+      '"Berätta inget för henne förrän hon har sett platserna själv." Hade du vetat, hade du sprungit rakt upp i berget. Och berget släpper ingen som inte först väckt de andra platserna.',
       'Jag fick aldrig säga ja. Men jag har hållit det. Förlåt att jag lät dig gå ensam, som jag lät henne.',
-      'Nu återstår bara Trollberget. Där är hon. Men först vilar du.',
+      'Sex platser har vaknat i godo. Nu återstår bara Trollberget. Där är hon.',
+      'Men först vilar du. Kom hit.',
     ],
     actions: [{ type: 'flag', flag: 'hulda_efter_fabodskogen' }, { type: 'rest' }],
   },
 
   bjorkhagen_nasslor: {
-    pages: ['En lapp på en pinne:\n"AKTA BRÄNNÄSSLORNA I GROPEN! HOPPA ÖVER! /OLLE"'],
+    pages: ['En lapp på en pinne, skriven med barnhandstil:\n"AKTA BRÄNNÄSSLORNA I GROPEN! HOPPA ÖVER! /OLLE"'],
   },
 
   hittade_hacka: {
-    pages: ['Dagny hittade BERGHACKAN! Någon har bränt in ett K i skaftet.'],
+    pages: ['Dagny hittade BERGHACKAN! Skaftet är svart av ålder, och någon har bränt in ett K i det.'],
   },
 
   hittade_tang: {
-    pages: ['Dagny hittade SMEDTÅNGEN! Smeden Algot väntar på den.'],
+    pages: ['Dagny hittade SMEDTÅNGEN! Den är tung och sotig. Smeden Algot väntar på den.'],
   },
 
   smedjan_skylt: {
-    pages: ['Gamla smedjan. Ässjan är kall sedan länge.'],
+    pages: ['Gamla smedjan. Ässjan är kall sedan länge, och skorstenen har rasat. Här bodde väsen förr, säger folk.'],
   },
 
   hittade_johannesort: {
-    pages: ['Dagny hittade JOHANNESÖRT! Gamle Sven väntar på den.'],
+    pages: ['Dagny hittade JOHANNESÖRT! Små gula stjärnor som lyser i solen. Gamle Sven väntar på den.'],
   },
 };

@@ -2,21 +2,21 @@ import type { DialogDef } from '../types';
 
 /** Finds: the sword upgrades, life and magic containers and the näverdockor. */
 export const FOREMAL: Record<string, DialogDef> = {
-  hittade_solsten: { pages: ['Dagny hittade SOLSTENEN! Mot dimman lyser den som om solen satt inuti.'] },
+  hittade_solsten: { pages: ['Dagny hittade SOLSTENEN! Hon håller den mot dimman, och den lyser upp – som om solen satt inuti.'] },
   hittade_ronnkvist: { pages: ['Dagny bröt en RÖNNKVIST! Bären är röda som glöd.'] },
   hittade_fjader: { pages: ['Dagny hittade ÄRLANS FJÄDER! Den väger nästan ingenting.'] },
-  hittade_askvigg: { pages: ['Dagny hittade ÅSKVIGGEN! Det pirrar i fingrarna.'] },
+  hittade_askvigg: { pages: ['Dagny hittade ÅSKVIGGEN! Stenen är sval och slät, och det pirrar i fingrarna.'] },
 
   holm_tips_malm: {
     speaker: 'Smeden Holm',
-    pages: ['Klingan är mjuk efter alla år i en korg. Ge mig en klump järnmalm från gamla gruvan, så härdar jag den.'],
+    pages: ['Klingan är bra, men den är mjuk efter alla år i en korg. Hitta mig en klump järnmalm i gamla gruvan, så härdar jag den åt dig.'],
   },
 
   holm_hardar: {
     speaker: 'Smeden Holm',
     pages: [
-      'Malmen! Ge mig klingan.',
-      'Rött i ässjan, svart i vattnet. Så. Känn hur den biter.',
+      'Där har vi malmen! Ge mig klingan en stund.',
+      'Rött i ässjan, svart i vattnet... Så. Känn hur den biter nu.',
     ],
     actions: [{ type: 'takeItem', item: 'malm' }, { type: 'flag', flag: 'malm_klar' }, { type: 'giveItem', item: 'klingaHardad' }],
     next: 'fick_klingaHardad',
@@ -28,14 +28,14 @@ export const FOREMAL: Record<string, DialogDef> = {
 
   holm_tips_askstenen: {
     speaker: 'Smeden Holm',
-    pages: ['Blixten slår ner i fyren ute i skären. Där den slår blir stenen till glas. Med en sådan åsksten kan jag slipa eggen.'],
+    pages: ['Vill du ha en egg som ingen annan? Det sägs att blixten slår ner i fyren ute i skären. Där den slår blir stenen till glas. En sådan åsksten skulle jag kunna slipa med.'],
   },
 
   holm_slipar: {
     speaker: 'Smeden Holm',
     pages: [
-      'En åsksten! Den är fortfarande varm.',
-      'Hör hur det knastrar mot eggen. Där. Akta fingrarna.',
+      'En åsksten! Den är ju fortfarande varm.',
+      'Hör hur det knastrar när jag drar den mot eggen... Där. Akta fingrarna, den här skär i ljus.',
     ],
     actions: [{ type: 'takeItem', item: 'askstenen' }, { type: 'flag', flag: 'askstenen_klar' }, { type: 'giveItem', item: 'klingaBlank' }],
     next: 'fick_klingaBlank',
@@ -46,15 +46,15 @@ export const FOREMAL: Record<string, DialogDef> = {
   },
 
   hittade_malm: {
-    pages: ['Dagny hittade en klump JÄRNMALM. Smeden Holm i Bruksorten kan använda den.'],
+    pages: ['Dagny hittade en klump JÄRNMALM. Smeden Holm i Bruksorten kan nog använda den.'],
   },
 
   hittade_askstenen: {
-    pages: ['Dagny hittade ÅSKSTENEN! Där blixten slog är stenen glaserad och varm.'],
+    pages: ['Dagny hittade ÅSKSTENEN, en glaserad sten där blixten har slagit ner. Den är fortfarande varm.'],
   },
 
   hittade_silverbeslag: {
-    pages: ['Bakom en sten blänker Grå-Pelles silver. Ett beslag som passar runt kläppen.', 'Dagny fäster SILVERBESLAGET på klingan.\nSvärdet gör 1 mer i skada. Väsen ryggar för silver.'],
+    pages: ['I lampans sken blänker något bakom en sten: Grå-Pelles silver! Det är smitt till ett beslag som passar precis runt kläppen.', 'Dagny fäster SILVERBESLAGET på klingan.\nSvärdet gör 1 mer i skada. Väsen ryggar för silver.'],
   },
 
   fick_livbehallare: {
@@ -63,8 +63,8 @@ export const FOREMAL: Record<string, DialogDef> = {
 
   fick_naverdocka: {
     pages: [
-      'Dagny hittade en NÄVERDOCKA!\nFlätad av björknäver, med en röd snibb.',
-      'En näverdocka håller ett liv åt den som bär den.\n(+1 liv. Fler dockor finns gömda här och där.)',
+      'Dagny hittade en NÄVERDOCKA!\nNågon har flätat den av björknäver och knutit en röd snibb om den.',
+      'Mormor sa alltid att en näverdocka håller ett liv åt den som bär den.\n(+1 liv. Fler dockor finns gömda här och där.)',
     ],
   },
 

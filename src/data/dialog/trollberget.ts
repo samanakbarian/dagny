@@ -3,47 +3,47 @@ import type { DialogDef } from '../types';
 /** Temple 7: Trollberget – the maze, Skuggan, Bergakungen and Dagmar. */
 export const TROLLBERGET: Record<string, DialogDef> = {
   troll_gangar_skylt1: {
-    pages: ['Djupt ristat i berget:\n"TRE GÅNGAR. TVÅ GÅR I RING.\nDEN MITTERSTA BÄR."'],
+    pages: ['Någon har ristat i berget, djupt och länge sedan:\n"TRE GÅNGAR. TVÅ GÅR I RING.\nDEN MITTERSTA BÄR."'],
   },
 
   troll_gangar_skylt2: {
-    pages: ['Samma hand:\n"SOLEN GÅR NER I VÄSTER.\nGÅ DIT HON GÅR."'],
+    pages: ['Samma hand har ristat igen:\n"SOLEN GÅR NER I VÄSTER.\nGÅ DIT HON GÅR."'],
   },
 
   troll_villse: {
-    pages: ['Gången slingrar sig i mörkret...\n...och Dagny kommer ut där hon började.'],
+    pages: ['Gången slingrade sig i mörkret...\n...och Dagny kom ut där hon började.'],
   },
 
   troll_villse2: {
-    pages: ['Gången vrider sig om och om igen.\nDagny står vid ingången till Trollgångarna igen.'],
+    pages: ['Gången vred sig om och om igen.\nNär den tog slut stod Dagny vid ingången till Trollgångarna igen.'],
   },
 
   skuggan_moter: {
     pages: [
-      'Ur mörkret kliver en gestalt. Dagnys flätor, Dagnys sjal. Röda ögon.',
-      'Den lyfter svärdet som hon. Den parerar där hon parerar.\nVägen ut stängs.',
+      'Ur mörkret kliver en gestalt. Den har Dagnys flätor, Dagnys sjal – och röda, glödande ögon.',
+      'Den lyfter sitt svärd precis som hon. Den parerar där hon parerar.\nVägen ut stängs bakom dem.',
     ],
   },
 
   troll_skylt1: {
-    pages: ['Ristat i berget:\n"D. GICK HÄR MIDSOMMARNATT 1946. GLÖM OSS INTE."'],
+    pages: ['Någon har ristat i berget, för länge sedan:\n"D. GICK HÄR MIDSOMMARNATT 1946. GLÖM OSS INTE."'],
   },
 
   bergakung_vaknar: {
     speaker: 'Bergakungen',
     pages: [
-      'SÅ. NÅGON KOMMER UPP FÖR BERGET IGEN.',
-      'DE GÄRDSGÅRDAR NI RIVER. DE KÄLLOR NI FYLLER IGEN. DE NAMN NI GLÖMMER. ALLT DET BÄR JAG.',
-      'HON SOM BAND MIG ÄR SVAG NU. ÄR DU STARKARE, LILLA VÄKTARE?',
+      'SÅ. ÄNTLIGEN KOMMER NÅGON UPP FÖR BERGET IGEN.',
+      'DE STENGÄRDSGÅRDAR NI RIVER. DE KÄLLOR NI FYLLER IGEN. DE NAMN NI GLÖMMER. ALLT DET BÄR JAG.',
+      'HON SOM BAND MIG ÄR SVAG NU. VISA MIG OM DU ÄR STARKARE, LILLA VÄKTARE.',
     ],
   },
 
   bergakung_forlikad: {
     speaker: 'Bergakungen',
     pages: [
-      'Sex platser har vaknat i godo. Människorna minns oss igen.',
-      'Vreden får vila.',
-      'Hon som har hållit mig i arton år väntar därinne. Gå till henne.',
+      'Du slog... men inte för att döda. Och du gick upp hela vägen, genom sex platser som alla har vaknat i godo.',
+      'Då minns människorna oss igen. Vreden får vila.',
+      'Hon som väntar här har hållit mig i arton år. Gå till henne nu. Hon har väntat längre på dig än på mig.',
     ],
   },
 
@@ -51,8 +51,10 @@ export const TROLLBERGET: Record<string, DialogDef> = {
     speaker: 'Dagmar',
     pages: [
       'Dagny. Du har blivit så stor.',
-      'Jag höll honom stilla i arton år. Nu har du väckt platserna. Han behöver inte mig längre.',
-      'Men jag kan inte stanna. Inte än.',
+      'Midsommarnatten 1946 sov alla platserna in, och Bergakungen vaknade i vrede. Mamma hade släppt platserna under kriget, och gåvan hade lämnat henne. Det fanns ingen annan Väktare än jag.',
+      'Mamma var ute på en förlossning. Så jag lade dig i näverfilten under klockstapeln och lät klockan ringa, så att hon skulle komma. Och så gick jag upp i berget.',
+      'Jag band mig vid honom, så länge människorna mindes de heliga platserna. Men de glömde. Bandet blev svagare för varje sommar.',
+      'Nu har du väckt dem igen, en efter en. Bandet behövs inte längre. Och jag... jag kan inte stanna. Inte än, älskling.',
     ],
     choices: [{ text: 'Krama henne', next: 'dagmar_ljus' }],
   },
@@ -60,8 +62,9 @@ export const TROLLBERGET: Record<string, DialogDef> = {
   dagmar_ljus: {
     speaker: 'Dagmar',
     pages: [
-      'Där. Det räckte gott.',
-      'Berget släpper mig inte på en gång. Men en dag kommer jag hem. Det lovar jag.',
+      'Där. Nu vet jag hur det känns. Det räckte gott.',
+      'Du behöver inte säga något. Det har du aldrig behövt. Ditt namn säger allt: ny dag.',
+      'Berget släpper mig inte på en gång. Arton år sitter i. Men en dag kommer jag hem. Det lovar jag.',
       'Hälsa mamma. Säg att det aldrig var hennes fel. Och att hon höll sitt löfte.',
       'Se. Solen går upp.',
     ],

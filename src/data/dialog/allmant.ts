@@ -7,14 +7,14 @@ export const ALLMANT: Record<string, DialogDef> = {
   },
 
   nyckel_saknas: {
-    pages: ['Dörren är låst.'],
+    pages: ['Dörren är låst. Det behövs en nyckel.'],
   },
 
   boss_vaknar: {
-    pages: ['Marken skälver. Något gammalt vaknar.'],
+    pages: ['Marken skälver. Något mycket gammalt vaknar.'],
   },
 
   boss_forlikad: {
-    pages: ['Väsendet suckar, som efter en lång dröm, och sjunker ner i marken.'],
+    pages: ['Väsendet suckar djupt, som efter en lång dröm, och sjunker ner i marken.'],
   },
 };
